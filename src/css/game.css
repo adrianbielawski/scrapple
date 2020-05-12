@@ -1,0 +1,23 @@
+.game {
+    position: relative;
+    display: flex;
+    flex-flow: column;
+    flex-grow: 1;
+    max-height: 100%;
+}
+
+#game-finish-button {
+    margin: 10px auto;
+    padding: 3px 20px;
+}
+
+.game.show-words {
+    overflow: scroll;
+    display: flex;
+    flex-flow: column;
+    flex-grow: 1;
+}
+
+.game.show-words::-webkit-scrollbar {
+    display: none;
+}

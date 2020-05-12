@@ -1,0 +1,80 @@
+.game-summary h2 {
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #5f5f5f;
+    text-align: center;
+}
+
+.game-summary button {
+    margin: 10px auto;    
+    text-transform: uppercase;
+    display: block;
+}
+
+.game-summary .results {
+    text-align: center;
+    font-size: 1.3em;
+}
+
+.game-summary .results li {
+    background: #ddd;
+    margin: 5px 0;
+}
+
+.game-summary .results li.sub {
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+}
+
+.game-summary .results input {
+    width: 30%;
+    max-width: 50px;
+    margin-left: 10px;
+}
+
+.game-summary .results input::-webkit-time-picker-indicator,
+.game-summary .results input::-webkit-clear-button,
+.game-summary .results input::-webkit-inner-spin-button {
+    display: none;
+    -webkit-appearance: none;
+}
+
+.game-summary .results .player-name {
+    font-size: 1.4em;
+    margin: 5px 0;
+    text-align: center;
+    color: #5f5f5f;
+}
+
+.game-summary .results .player-name .place {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 0;
+}
+
+.game-summary .results .player-name .place img {
+    margin-left: 10px;
+}
+
+.game-summary .results li.sub .player-name {
+    width: 50%;
+    text-align: end;
+}
+
+.game-summary .results span {
+    font-weight: 600;
+}
+
+.game-summary .result {
+    display: inline-flex;
+    justify-content: space-evenly;
+    width: 100%;
+    margin: 5px 0;
+}
+
+.game-summary .player-result {
+    width: 100%;
+}

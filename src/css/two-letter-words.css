@@ -1,0 +1,33 @@
+.two-letter-words {
+    width: 100%;
+    position: relative;
+}
+
+.two-letter-words button {
+    display: block;
+    margin: 0 auto;
+    z-index: 3;
+}
+
+.two-letter-words .words {
+    position: absolute;
+    top: 40px;
+    z-index: 2;
+    width: 100%;
+    border: 1px solid #888;
+    background: #32c7a2;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.two-letter-words img {
+    width: 98%;
+    margin: 1% 0;
+}
+
+.two-letter-words .words.active {
+    display: flex;
+}

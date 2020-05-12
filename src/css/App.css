@@ -1,0 +1,156 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700,900");
+
+html, body, div, span, h1, h2, p,
+a, ul, li {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: 'lato';
+}
+
+#root {
+  margin: 0 auto;
+  padding: 5px 0;
+  max-width: 800px;
+  background: #32c7a2;
+  box-sizing: border-box;
+  font-family: 'lato';
+}
+
+.App {
+  position: relative;
+  margin: 5px 2%;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: column;
+  flex-grow: 1;
+  height: 100%;
+  overflow: hidden;
+  background: #eee;
+}
+
+h1 {
+  margin: 0 0 20px 0;
+  width: 100%;
+}
+
+h1 img {
+  width: 100%;
+}
+
+li {
+  list-style: none;
+}
+
+p {
+  color: #5f5f5f;
+}
+
+button {
+  border: 1px solid #888;
+  background: #32c7a2;
+  color: #fff;
+  height: 35px;
+  padding: 3px 20px;
+  border-radius: 17.5px;
+  box-shadow: 2px 2px 3px #707070;
+  text-shadow: 1px 1px #808080;
+  font-weight: 700;
+  font-size: 1.3em;
+  box-sizing: border-box;
+  cursor: pointer;
+  outline: none;
+  font-family: 'lato';
+}
+
+input {
+  padding: 3px;
+  height: 35px;
+  border: 1px solid #a3a3a3;
+  background: #f5f5f5;
+  font-weight: 700;
+  font-size: 1.5em;
+  color: #32c7a2;
+  text-align: center;
+  text-transform: uppercase;
+  box-sizing: border-box;
+  outline: none;
+}
+
+input::placeholder {
+    color: #32c7a2;
+    opacity: .5;
+}
+
+.remove {
+  color: #f00;
+  width: 25px;
+  height: 25px;
+  padding: 1px;
+  font-weight: 700;
+  border: 1px solid #f8c668;
+  border-radius: 50%;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.confirm {
+  color: #fff;
+  width: 35px;
+  font-weight: 900;
+  font-size: 1.2em;
+  line-height: 0;
+  padding: 2px 0 0 0;
+  border-radius: 50%;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.check-box {
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+    border-radius: 50%;
+    border: 1px solid #888;
+    background: #fff;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+}
+
+.check-box.active {
+    color: #32c7a2;
+}
+
+@media only screen and (max-height: 640px) {
+  .game, .game-menu, .game-summary {
+    overflow: scroll;
+    display: flex;
+    flex-flow: column;
+    flex-grow: 1;
+  }
+
+  .game-summary::-webkit-scrollbar,
+  .game-menu::-webkit-scrollbar,
+  .game::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media only screen and (max-height: 500px) {
+  .game .stats {
+    overflow: visible;
+  }
+  .stats::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 400px) {
+  .stats {
+    width: 400px;
+  }
+}

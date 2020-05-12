@@ -1,0 +1,18 @@
+.word-checker {
+    width: 95%;
+    margin: 0 auto 5px;
+}
+
+.word-checker input {
+    display: block;
+    margin: 5px auto 0;
+}
+
+.resoult-img {
+    width: 70px;
+    margin: 10px auto;
+}
+
+.thumb {
+    width: 100%;
+}
