@@ -3,13 +3,12 @@ import { Trans } from 'react-i18next';
 import '../../../css/game-summary.css';
 //Components
 import { PlayerSummary } from './player-summary';
-import { PlayerSubPoints } from './player-subtract-points';
+import { PlayerSubPoints } from '../subtract_points/player-subtract-points';
 
 export class GameSummary extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showSummary: false,
             players: this.props.players
         }
     }
@@ -57,40 +56,20 @@ export class GameSummary extends Component {
         return playersSummary
     }
 
-    getPlayersSubPoints = () => {
-        let playersSubPoints = this.state.players.map((player, index) => {
-            return <PlayerSubPoints subPoints={this.subPoints} playerName={player.playerName} key={index} index={index}/>
-        });
-        return playersSubPoints
-    }
-
-    subPoints = (e) => {
-        e.preventDefault();
-        let players = this.state.players;
-        players.map((player, index) => {
-            const inputVal = document.getElementById(`sub-points${index}`).value;
-            let newPlayer = player.currentScore -= inputVal;
-            return newPlayer
-        });
-        this.setState({players, showSummary: true});
-    }
-
     closeGame = () => {
         this.props.closeGame();
     }
 
     render() {
-        const playersContent = this.state.showSummary ? this.getPlayersPositions() : this.getPlayersSubPoints();
-        const title = this.state.showSummary ? <Trans>Game results</Trans> : <Trans>Subtract points of unused letters</Trans>;
-        const button = this.state.showSummary ? <Trans>Exit</Trans> : <Trans>Continue</Trans>;
+        const playersContent = this.getPlayersPositions();
         return (
             <div className="game-summary">
                 <h1><img src="../src/img/logo.jpg"></img></h1>
-                <h2>{title}</h2>
+                <h2><Trans>Game results</Trans></h2>
                 <ul className="results">
                     {playersContent}
                 </ul>
-                <button onClick={this.state.showSummary ? this.closeGame : this.subPoints} value="exit">{button}</button>
+                <button onClick={this.closeGame} value="exit"><Trans>Exit</Trans></button>
             </div>
         );
     }

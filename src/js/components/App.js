@@ -5,6 +5,7 @@ import { Game } from './game/game';
 import { GameMenu } from './game_menu/game-menu';
 import { Alert } from './global_components/alerts/alert';
 import { GameSummary } from './game_summary/game-summary';
+import { SubtractPoints } from './subtract_points/subtract_points';
 
 export class App extends React.Component {
   constructor(props) {
@@ -14,6 +15,7 @@ export class App extends React.Component {
       language: 'en',
       showMenu: true,
       showGame: false,
+      showSubtractPoints: false,
       showGameSummary: false,
       showAlert: false,
       playersMemory: [],
@@ -85,7 +87,7 @@ export class App extends React.Component {
       if(response === 'true') {
         switch(this.state.alert.action) {
           case 'game-finish-button':
-            this.setState({showAlert: false, showGame: false, showGameSummary: true, alert: {type: '', action: '', alertMessage: ''}});
+            this.setState({showAlert: false, showGame: false, showSubtractPoints: true, alert: {type: '', action: '', alertMessage: ''}});
         }
       } else {
         this.setState({showAlert: false, alert: {type: '', alertMessage: '', action: ''}});
@@ -93,6 +95,10 @@ export class App extends React.Component {
     } else if(this.state.alert.type === 'alert') {
       this.setState({showAlert: false, alert: {type: '', alertMessage: '', action: ''}});
     }
+  }
+  
+  renderGameSummary = (players) => {
+    this.setState({showSubtractPoints: false, showGameSummary: true, players});
   }
 
   closeGame = () => {
@@ -105,6 +111,9 @@ export class App extends React.Component {
     }
     if(this.state.showMenu) {
       return <GameMenu alert={this.alert} language={this.state.language} startGame={this.startGame} players={this.state.players}/>
+    }
+    if(this.state.showSubtractPoints) {
+      return <SubtractPoints renderGameSummary={this.renderGameSummary} players={this.state.players} />
     }
     if(this.state.showGameSummary) {
       return <GameSummary closeGame={this.closeGame} players={this.state.players} />
