@@ -13,6 +13,10 @@ export class WordChecker extends Component {
         this.timeout = null;
     }
 
+    clearInput = (e) => {
+        e.target.value = '';
+    }
+
     handleInputChange = () => {
         let word = this.refs.word.value;
         
@@ -66,7 +70,7 @@ export class WordChecker extends Component {
         
         return (
             <div className="word-checker">
-                <input type="text" onChange={this.handleInputChange} ref="word" placeholder={i18next.t("Check your word")} spellCheck="false" />
+                <input type="text" onClick={this.clearInput} onChange={this.handleInputChange} ref="word" placeholder={i18next.t("Check your word")} spellCheck="false" />
                 <div className="resoult-img">
                     <img className="thumb" src={thumb}></img>
                 </div>

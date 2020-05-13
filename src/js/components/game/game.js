@@ -41,12 +41,7 @@ export class Game extends React.Component {
     } else {
       game.currentPlayer = 0;
     }
-
     this.setState({game})
-  }
-
-  switchPlayer = () => {
-    return nextPlayer
   }
 
   timeOut = () => {

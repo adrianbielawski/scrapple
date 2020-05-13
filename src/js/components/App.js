@@ -17,7 +17,7 @@ export class App extends React.Component {
       showGameSummary: false,
       showAlert: false,
       playersMemory: [],
-      players: ['Adrian', 'Joannna'],
+      players: ['Adrian', 'Joannna', 'sdf', 'gfh'],
       timer: false,
       time: {
         hours: '00',
