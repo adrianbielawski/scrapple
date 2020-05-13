@@ -41,7 +41,13 @@ export class Game extends React.Component {
     } else {
       game.currentPlayer = 0;
     }
+    this.scrollPlayersStats(game.currentPlayer);
     this.setState({game})
+  }
+
+  scrollPlayersStats = (currentPlayer) => {
+    const playerStats = document.getElementsByClassName('player-stats');
+    playerStats[currentPlayer].scrollIntoView();
   }
 
   timeOut = () => {
