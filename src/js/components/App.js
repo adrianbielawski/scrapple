@@ -13,13 +13,10 @@ export class App extends React.Component {
     this.state = {
       screenHeight: window.innerHeight -20,
       language: 'en',
-      showMenu: true,
-      showGame: false,
-      showSubtractPoints: false,
-      showGameSummary: false,
+      content: 'GameMenu',
       showAlert: false,
       playersMemory: [],
-      players: ['Adrian', 'Joannna', 'sdf', 'gfh'],
+      players: ['Adrian', 'Joanna'],
       timer: false,
       time: {
         hours: '00',
@@ -60,7 +57,7 @@ export class App extends React.Component {
 
     const players = this.getPlayers(playersNames);
 
-    this.setState({showMenu: false, showGame: true, language, playersMemory: playersNames, players, timer, time: timeObj});
+    this.setState({content: 'Game', language, playersMemory: playersNames, players, timer, time: timeObj});
   }
 
   getPlayers = (playersNames) => {    
@@ -87,7 +84,7 @@ export class App extends React.Component {
       if(response === 'true') {
         switch(this.state.alert.action) {
           case 'game-finish-button':
-            this.setState({showAlert: false, showGame: false, showSubtractPoints: true, alert: {type: '', action: '', alertMessage: ''}});
+            this.setState({showAlert: false, content: 'SubtractPoints', alert: {type: '', action: '', alertMessage: ''}});
         }
       } else {
         this.setState({showAlert: false, alert: {type: '', alertMessage: '', action: ''}});
@@ -98,26 +95,30 @@ export class App extends React.Component {
   }
   
   renderGameSummary = (players) => {
-    this.setState({showSubtractPoints: false, showGameSummary: true, players});
+    this.setState({content: 'GameSummary', players});
   }
 
   closeGame = () => {
-    this.setState({language: this.state.language, showMenu:true, showGameSummary: false, players: this.state.playersMemory});
+    this.setState({language: this.state.language, content: 'GameMenu', players: this.state.playersMemory});
   }
 
-  getContent = () => {    
-    if(this.state.showGame) {
-      return <Game alert={this.alert} language={this.state.language} players={this.state.players} timer={this.state.timer} time={this.state.time}/>
+  getContent = () => { 
+    let content = '';   
+    switch(this.state.content) {
+      case 'GameMenu':
+        content = <GameMenu alert={this.alert} language={this.state.language} startGame={this.startGame} players={this.state.players}/>
+        break;
+      case 'Game':
+        content = <Game alert={this.alert} language={this.state.language} players={this.state.players} timer={this.state.timer} time={this.state.time}/>;
+        break;
+      case 'SubtractPoints':
+        content = <SubtractPoints renderGameSummary={this.renderGameSummary} players={this.state.players} />
+        break;
+      case 'GameSummary':
+        content = <GameSummary closeGame={this.closeGame} players={this.state.players} />
+        break;
     }
-    if(this.state.showMenu) {
-      return <GameMenu alert={this.alert} language={this.state.language} startGame={this.startGame} players={this.state.players}/>
-    }
-    if(this.state.showSubtractPoints) {
-      return <SubtractPoints renderGameSummary={this.renderGameSummary} players={this.state.players} />
-    }
-    if(this.state.showGameSummary) {
-      return <GameSummary closeGame={this.closeGame} players={this.state.players} />
-    }
+    return content
   }
 
   render() {
