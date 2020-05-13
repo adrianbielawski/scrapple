@@ -2,9 +2,9 @@ import React from 'react';
 import '../../css/App.css';
 //Components
 import { Game } from './game/game';
-import { GameMenu } from './game menu/game-menu';
-import { Alert } from './global components/alerts/alert';
-import { GameSummary } from './game summary/game-summary';
+import { GameMenu } from './game_menu/game-menu';
+import { Alert } from './global_components/alerts/alert';
+import { GameSummary } from './game_summary/game-summary';
 
 export class App extends React.Component {
   constructor(props) {
