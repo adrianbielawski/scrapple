@@ -45,7 +45,6 @@
 }
 
 .stats .add-points {
-    width: 80%;
     max-width: 300px;
     margin-top: 5px;
     display: inline-flex;
@@ -54,7 +53,7 @@
 }
 
 .stats input {
-    width: 200px;
+    max-width: 240px;
 }
 
 .stats .confirm {

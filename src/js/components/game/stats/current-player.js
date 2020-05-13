@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Trans } from 'react-i18next';
+import  i18next  from 'i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
@@ -62,6 +64,7 @@ export class CurrentPlayer extends Component {
 
     render() {
         const player = this.props.player;
+        const playerName = player.playerName;
         const hrs = this.state.timer.hours;
         const min = this.state.timer.minutes;
         const sec = this.state.timer.seconds;
@@ -71,17 +74,19 @@ export class CurrentPlayer extends Component {
         let timer = hrs == '00' ?
             `${min}:${sec}` :
             `${hrs}:${min}:${sec}`;
-
-        const pointsPlaceholder = this.props.language === 'en' ? 'add points' : 'dodaj punkty';
-    
+        
         return (
             <div className="current-player">
-                {this.props.language === 'en' ? <p>It is <span>{player.playerName}'s</span> turn now!</p> : <p>Teraz gra <span>{player.playerName}</span></p>}
+                <p>
+                <Trans i18nKey="ItsTurnNow">
+                    It is <span>{{playerName}}</span>'s turn now
+                </Trans>!
+                </p>
                 <div className={`timer ${shortTimeClass} ${timerDisplay}`}>
                     {timer}
                 </div>
                 <form className="add-points" onSubmit={this.handleSubmit}>
-                    <input type="number" placeholder={pointsPlaceholder} ref="points" required min="0"></input>
+                    <input type="number" placeholder={i18next.t("add points")} ref="points" required min="0"></input>
                     <button type="submit" className="confirm">
                         <FontAwesomeIcon icon={faCheck}/>
                     </button>

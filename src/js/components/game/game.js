@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trans } from 'react-i18next';
 import '../../../css/game.css';
 //Components
 import {WordChecker} from './word-checker';
@@ -64,7 +65,7 @@ export class Game extends React.Component {
     e.preventDefault();
     const action = e.target.id;
     const type = e.target.value;
-    const alertMessage = this.props.language === 'en' ? 'Are you sure you want to finish this game?' : 'Jesteś pewien, że chcesz zakończyć grę';
+    const alertMessage = <Trans>Are you sure you want to finish this game?</Trans>;
     this.props.alert(type, alertMessage, action)
   }
 
@@ -75,8 +76,6 @@ export class Game extends React.Component {
   render() {
     const currentPlayer = this.state.game.currentPlayer;
     const players = this.state.game.players;
-
-    const finishButton = this.props.language === 'en' ? 'Finish the game' : 'Zakończ grę';
     const gameClass = this.state.showWords ? 'show-words' : '';
       
     return (
@@ -86,12 +85,11 @@ export class Game extends React.Component {
         <Stats
           timeOut={this.timeOut}
           addPoints={this.addPoints}
-          language={this.props.language}
           timer={this.props.timer}
           time={this.state.game.time}
           currentPlayer={currentPlayer}
           players={players} />
-        <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm">{finishButton}</button>
+        <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm"><Trans>Finish the game</Trans></button>
       </div>
     );
   }

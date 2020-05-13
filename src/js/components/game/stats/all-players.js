@@ -10,7 +10,7 @@ export class AllPlayers extends Component {
         let playerStats = players.map((player, index) => {
             let className = currentPlayer === index ? 'current' : '';
             return (
-                <PlayerStats language={this.props.language} className={className} player={player} key={index}/>
+                <PlayerStats className={className} player={player} key={index}/>
             )
         });
         return (

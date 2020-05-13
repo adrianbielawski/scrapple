@@ -11,15 +11,13 @@ export class Stats extends Component {
         return (
             <div className="stats">
                 <CurrentPlayer
-                    language={this.props.language}
                     timeOut={this.props.timeOut}
                     timer={this.props.timer}
                     time={this.props.time}
                     addPoints={this.props.addPoints}
                     player={players[currentPlayer]}
                     key={players[currentPlayer].playerId} />
-                <AllPlayers 
-                    language={this.props.language}
+                <AllPlayers
                     players={players}
                     currentPlayer={currentPlayer}/>
             </div>

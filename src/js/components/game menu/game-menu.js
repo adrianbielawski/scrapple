@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { Trans } from 'react-i18next';
+import i18next from 'i18next';
+import i18n from '../../../i18n';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -21,18 +24,18 @@ export class GameMenu extends Component {
         const isPlayerExists = this.isPlayerExists(player);
         
         if(isPlayerExists) {
-            const alert = this.state.language === 'en' ? `Player with name ${player} already exists.` : `Gracz o imieniu ${player} już istnieje`;
+            const alert = i18next.t('Player with name {player} already exists', {player});
             this.props.alert('alert', alert);
             return true
         }
 
         if(player.length < 1) {
-            const alert = this.state.language === 'en' ? `Please type in player's name.` : `Proszę podać imię gracza.`;
+            const alert = "Please type in player's name";
             this.props.alert('alert', alert);
             return
         }
         if(this.state.players.length >= 4) {
-            const alert = this.state.language === 'en' ? `Max 4 players.` : `Maksymalnie 4 graczy.`;
+            const alert = 'Max 4 players';
             this.props.alert('alert', alert);
             return
         }
@@ -57,14 +60,14 @@ export class GameMenu extends Component {
         e.preventDefault();
         let time = this.refs.time.value;
         if(this.state.players.length < 2) {
-            const alert = this.state.language === 'en' ? 'Please add at least 2 players.' : `Proszę dodać co najmniej 2 graczy.`;
+            const alert = 'Please add at least 2 players';
             this.props.alert('alert', alert)
             return 
         }
         let hrs = time.slice(0, 2);
         let min = time.slice(3, 5);
         if(hrs == 0 && min == 0) {
-            const alert = this.state.language === 'en' ? "Minimum player's time limit is 1 min." : `Minimalny limit czasu to 1 min.`;
+            const alert = "Minimum player's time limit is 1 min";
             this.props.alert('alert', alert)
             return
         }
@@ -89,29 +92,18 @@ export class GameMenu extends Component {
         const html = document.getElementsByTagName('html');
         html[0].lang = language;
         this.setState({language})
+        i18n.changeLanguage(`${language}-${language.toUpperCase()}`);
     }
 
     toggleShowLanguages = () => {
         this.setState({showLanguages: !this.state.showLanguages})
     }
 
-    getTexts = (lang) => {
-        const texts = {
-            language: lang === 'en' ? 'Language' : 'Język',
-            limit: lang === 'en' ? "Player's time limit" : 'Limit czasu',
-            addPlayer: lang === 'en' ? 'Add player' : 'Dodaj Gracza',
-            player: lang === 'en' ? 'Player' : 'Gracz',
-            start: lang === 'en' ? 'Start game' : 'Start',
-        }
-        return texts
-    }
-
     render() {
-        const texts = this.getTexts(this.state.language)
         const flag = `../src/img/${this.state.language}-flag.png`;
 
         const players = this.state.players.map((player, index) => {
-            return <li key={index}>{texts.player} {index + 1}: <span>{player}</span></li>
+            return <li key={index}><Trans>Player</Trans> {index + 1}: <span>{player}</span></li>
         })
 
         const checkboxClass = this.state.timer ? 'active' : '';
@@ -126,7 +118,7 @@ export class GameMenu extends Component {
                     <div className="choose-language" onClick={this.toggleShowLanguages}>
                         <div className="current-lang">
                             <img src={flag}></img>
-                            <p>{texts.language}</p>
+                            <p><Trans>Language</Trans></p>
                         </div>
                         <div className={`languages ${languageClass}`}>
                             <div className="language" onClick={this.handleLanguageChange} id="en">
@@ -143,10 +135,10 @@ export class GameMenu extends Component {
                         <div className={`check-box ${checkboxClass}`}>
                             <FontAwesomeIcon icon={faCheck}/>
                         </div>
-                            <p>{texts.limit}</p>
+                            <p><Trans>Player's time limit</Trans></p>
                     </div>
                     <input type="time" className={timeInputClass} required={required} ref="time" defaultValue="00:05:00" step="1"></input>
-                    <p>{texts.addPlayer}</p>                    
+                    <p><Trans>Add player</Trans></p>                    
                     <div className="add-player">
                         <input id="player-name" type="text" autoComplete="false" spellCheck="false" ref="playerName"></input>
                         <button className="add" onClick={this.addPlayer}>
@@ -156,7 +148,7 @@ export class GameMenu extends Component {
                     <ul>
                         {players}
                     </ul>
-                    <button type="submit">{texts.start}</button>
+                    <button type="submit"><Trans>Start game</Trans></button>
                 </form>
             </div>
         );

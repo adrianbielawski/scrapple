@@ -6,6 +6,7 @@
 .word-checker input {
     display: block;
     margin: 5px auto 0;
+    width: 95%;
 }
 
 .resoult-img {

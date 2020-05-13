@@ -107,7 +107,7 @@ export class App extends React.Component {
       return <GameMenu alert={this.alert} language={this.state.language} startGame={this.startGame} players={this.state.players}/>
     }
     if(this.state.showGameSummary) {
-      return <GameSummary closeGame={this.closeGame} language={this.state.language} players={this.state.players} />
+      return <GameSummary closeGame={this.closeGame} players={this.state.players} />
     }
   }
 
@@ -116,11 +116,9 @@ export class App extends React.Component {
     let alert = '';    
     if(this.state.showAlert) {
       alert = <Alert alertResponse={this.alertResponse}
-        language={this.state.language}
         type={this.state.alert.type}
         alertMessage={this.state.alert.alertMessage} />
     }
-      
     return (
       <div className="App" style={{height: this.state.screenHeight}}>
         {alert}

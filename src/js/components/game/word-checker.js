@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import i18next from 'i18next';
 import '../../../../src/css/word-checker.css'
 
 export class WordChecker extends Component {
@@ -61,11 +62,11 @@ export class WordChecker extends Component {
     }
 
     render() {
-        let thumb = this.state.valid ? '../src/img/thumb-up.png' : '../src/img/thumb-down.png';
-        const placeholder = this.props.language === 'en' ? 'Check your word' : 'Sprawdź słowo';
+        const thumb = this.state.valid ? '../src/img/thumb-up.png' : '../src/img/thumb-down.png';
+        
         return (
             <div className="word-checker">
-                <input type="text" onChange={this.handleInputChange} ref="word" placeholder={placeholder} spellCheck="false" />
+                <input type="text" onChange={this.handleInputChange} ref="word" placeholder={i18next.t("Check your word")} spellCheck="false" />
                 <div className="resoult-img">
                     <img className="thumb" src={thumb}></img>
                 </div>

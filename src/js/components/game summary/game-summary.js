@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Trans } from 'react-i18next';
 import '../../../css/game-summary.css';
 //Components
 import { PlayerSummary } from './player-summary';
@@ -24,22 +25,21 @@ export class GameSummary extends Component {
         let playersSummary = players.map((player, index) => {
             let placeText = '';
             let place = '';
-            let language = this.props.language;
             switch(index) {
                 case 0:
-                    placeText = language === 'en' ? '1st' : 'Pierwsze';
+                    placeText = "1st";
                     place = 1;
                     break
                 case 1:
-                    placeText = language === 'en' ? '2nd' : 'Drugie';
+                    placeText = "2nd";
                     place = 2;
                     break
                 case 2:
-                    placeText = language === 'en' ? '3rd' : 'Trzecie';
+                    placeText = "3rd";
                     place = 3;
                     break
-                default:
-                    placeText = language === 'en' ? `${index + 1}th` : 'Czwarte'
+                case 3:
+                    placeText = "4th";
                     place = 4;
                     break
             };
@@ -52,7 +52,7 @@ export class GameSummary extends Component {
             previousPlayerPlaceText = placeText;
             previousPlace = place;
 
-            return <PlayerSummary language={this.props.language} player={player} placeText={placeText} place={place} key={index}/>
+            return <PlayerSummary player={player} placeText={placeText} place={place} key={index}/>
         });
         return playersSummary
     }
@@ -79,33 +79,18 @@ export class GameSummary extends Component {
         this.props.closeGame();
     }
 
-    getText = () => {
-        let text = {
-            title: '',
-            button: ''
-        };
-        const showSummary = this.state.showSummary;
-        if(this.props.language === 'en') {
-            text.title = showSummary ? 'Game results' : 'Subtract points of unused letters';
-            text.button = showSummary ? 'Exit' : 'Continue';
-        } else {
-            text.title = showSummary ? 'Wyniki Gry' : 'Odejmij wartość pozostałych liter';
-            text.button = showSummary ? 'Wyjdź' : 'Kontynuuj';
-        };
-        return text
-    }
-
     render() {
-        const text = this.getText();
         const playersContent = this.state.showSummary ? this.getPlayersPositions() : this.getPlayersSubPoints();
+        const title = this.state.showSummary ? <Trans>Game results</Trans> : <Trans>Subtract points of unused letters</Trans>;
+        const button = this.state.showSummary ? <Trans>Exit</Trans> : <Trans>Continue</Trans>;
         return (
             <div className="game-summary">
                 <h1><img src="../src/img/logo.jpg"></img></h1>
-                <h2>{text.title}</h2>
+                <h2>{title}</h2>
                 <ul className="results">
                     {playersContent}
                 </ul>
-                <button onClick={this.state.showSummary ? this.closeGame : this.subPoints} value="exit">{text.button}</button>
+                <button onClick={this.state.showSummary ? this.closeGame : this.subPoints} value="exit">{button}</button>
             </div>
         );
     }
