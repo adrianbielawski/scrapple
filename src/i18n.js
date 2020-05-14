@@ -32,7 +32,10 @@ const resources = {
       "Best score" : "Best score",
       //RoundPoints
       "Round" : "Round",
-      "points" : "points",
+      "points" : {
+        "key": "point",
+        "key_plural": "points",
+      },
       //GameSummary
       "Game results" : "Game results",
       "Subtract points of unused letters" : "Subtract points of unused letters",
@@ -81,7 +84,11 @@ const resources = {
       "Best score" : "Nalepszy wynik",
       //RoundPoints
       "Round" : "Runda",
-      "points" : "punktów",
+      "points" : {
+        "key_0": "punkt",
+        "key_1": "punkty",
+        "key_2": "punktów",
+      },
       //GameSummary
       "Game results" : "Wyniki Gry",
       "Subtract points of unused letters" : "Odejmij wartość pozostałych liter",

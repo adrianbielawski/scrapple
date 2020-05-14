@@ -3,7 +3,6 @@ import { Trans } from 'react-i18next';
 import '../../../css/game-summary.css';
 //Components
 import { PlayerSummary } from './player-summary';
-import { PlayerSubPoints } from '../subtract_points/player-subtract-points';
 
 export class GameSummary extends Component {
     constructor(props) {
