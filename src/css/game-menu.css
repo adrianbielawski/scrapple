@@ -7,11 +7,13 @@
 
 .game-menu form {
     width: 100%;
+    padding: 0 10px;
     max-width: 400px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     flex-flow: column;
+    box-sizing: border-box;
 }
 
 .game-menu .choose-language {

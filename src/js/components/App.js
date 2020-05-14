@@ -11,7 +11,7 @@ export class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      screenHeight: window.innerHeight -20,
+      screenHeight: window.innerHeight,
       language: 'en',
       content: 'GameMenu',
       showAlert: false,
@@ -33,7 +33,7 @@ export class App extends React.Component {
   }
 
   setInnerHeight = () => {
-    const screenHeight = window.innerHeight -20;
+    const screenHeight = window.innerHeight;
     this.setState({screenHeight});
   }
 

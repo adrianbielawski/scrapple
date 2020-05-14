@@ -33,12 +33,9 @@ export class PlayerSummary extends Component {
                     </div>
                     <p>{player.playerName}</p>
                 </div>
-                <div className="player-result">
-                    <div className="result">
-                        <p>{<Trans>Total</Trans>}: {player.currentScore}</p>
-                        <p>{<Trans>Best score</Trans>}: {player.bestScore}</p>
-                    </div>
-                </div>
+                <p className="player-result">
+                    {<Trans>Total</Trans>}: {player.currentScore} {<Trans>Best score</Trans>}: {player.bestScore}
+                </p>
             </li>
         );
     }
