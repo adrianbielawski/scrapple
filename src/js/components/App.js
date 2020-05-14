@@ -12,7 +12,7 @@ export class App extends React.Component {
     super(props);
     this.state = {
       screenHeight: window.innerHeight,
-      language: 'en',
+      language: 'en-GB',
       content: 'GameMenu',
       showAlert: false,
       playersMemory: [],
@@ -38,21 +38,19 @@ export class App extends React.Component {
   }
 
   startGame = (playersNames, time, language) => {
-    let timeObj = this.state.time;
+    let timeObj = {};
     let timer = false;
     if(time) {
       let hrs = time.slice(0, 2);
       let min = time.slice(3, 5);
       let sec = time.slice(6, 8);
-      if(sec =='') {
+      if(sec == '') {
         sec= '00';
       }
       timeObj.hours = hrs;
       timeObj.minutes = min;
       timeObj.seconds = sec;
       timer = true;
-    } else {
-      timer = false;
     }
 
     const players = this.getPlayers(playersNames);

@@ -92,7 +92,7 @@ export class GameMenu extends Component {
         const html = document.getElementsByTagName('html');
         html[0].lang = language;
         this.setState({language})
-        i18n.changeLanguage(`${language}-${language.toUpperCase()}`);
+        i18n.changeLanguage(`${language}`);
     }
 
     toggleShowLanguages = () => {
@@ -121,12 +121,12 @@ export class GameMenu extends Component {
                             <p><Trans>Language</Trans></p>
                         </div>
                         <div className={`languages ${languageClass}`}>
-                            <div className="language" onClick={this.handleLanguageChange} id="en">
-                                <img src="../src/img/en-flag.png"></img>
+                            <div className="language" onClick={this.handleLanguageChange} id="en-GB">
+                                <img src="../src/img/en-GB-flag.png"></img>
                                 <p>English</p>
                             </div>
-                            <div className="language" onClick={this.handleLanguageChange} id="pl">
-                                <img src="../src/img/pl-flag.png"></img>
+                            <div className="language" onClick={this.handleLanguageChange} id="pl-PL">
+                                <img src="../src/img/pl-PL-flag.png"></img>
                                 <p>Polski</p>
                             </div>
                         </div>
