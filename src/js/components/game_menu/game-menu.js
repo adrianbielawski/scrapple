@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
 import i18next from 'i18next';
 import i18n from '../../../i18n';
+import Switch from '@material-ui/core/Switch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -132,10 +133,8 @@ export class GameMenu extends Component {
                         </div>
                     </div>
                     <div className="time-option" onClick={this.toggleTimeCheckbox}>
-                        <div className={`check-box ${checkboxClass}`}>
-                            <FontAwesomeIcon icon={faCheck}/>
-                        </div>
-                            <p><Trans>Player's time limit</Trans></p>
+                        <Switch onChange={this.toggleTimeCheckbox} checked={this.state.timer ? 1 : 0}></Switch>
+                        <p><Trans>Player's time limit</Trans></p>
                     </div>
                     <input type="time" className={timeInputClass} required={required} ref="time" defaultValue="00:05:00" step="1"></input>
                     <p><Trans>Add player</Trans></p>                    
