@@ -58,7 +58,7 @@
         display: none;
         justify-content: center;
         -webkit-appearance: none;
-        &:-webkit-time-picker-indicator,
+        &::-webkit-time-picker-indicator,
         &::-webkit-clear-button,
         &::-webkit-inner-spin-button {
             display: none;

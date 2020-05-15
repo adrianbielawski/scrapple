@@ -98,10 +98,9 @@ input {
 
 .App .MuiSwitch-colorSecondary.Mui-checked {
     color: $mainGreen;
-}
-
-.App .MuiSwitch-colorSecondary.Mui-checked + .MuiSwitch-track {
-    background-color: darken($grey, 30);
+    + .MuiSwitch-track {
+      background-color: darken($grey, 30);
+  }
 }
 
 @media only screen and (max-height: 640px) {
@@ -110,21 +109,18 @@ input {
     display: flex;
     flex-flow: column;
     flex-grow: 1;
-  }
-
-  .game-summary::-webkit-scrollbar,
-  .game-menu::-webkit-scrollbar,
-  .game::-webkit-scrollbar {
-    display: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }
 
 @media only screen and (max-height: 500px) {
   .game .stats {
     overflow: visible;
-  }
-  .stats::-webkit-scrollbar {
-    display: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }
 
