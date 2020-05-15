@@ -1,0 +1,139 @@
+@import 'variables';
+
+.stats {
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-flow: column;
+    flex-grow: 1;
+    overflow: hidden;
+    
+    p, .timer {
+        text-align: center;
+        width: 100%;
+        margin: 10px 0 0 0;
+        font-size: 1.5em;
+        font-weight: 400;
+    }
+    
+    .timer {
+        font-size: 2.5em;
+        line-height: 1em;
+        font-weight: 900;
+        color: darken($mainGreen, 10);
+        display: none;
+    }
+    
+    .show-timer {
+        display: block;
+    }
+    
+    .short-time {
+        color: $red;
+    }
+    
+    span {
+        font-weight: 900;
+        font-size: 1.5em;
+    }
+    
+    .current-player {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+    
+    .add-points {
+        max-width: 300px;
+        margin-top: 5px;
+        display: inline-flex;
+        justify-content: center;
+        justify-items: center;
+    }
+    
+    input {
+        max-width: 240px;
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+    }
+    
+    .confirm {
+        margin-left: 3px;
+    }
+    
+    .all-players {
+        display: flex;
+        flex-flow: column;
+        overflow: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+    
+    .player-stats {
+        width: 100%;
+        padding: 0 15px;
+        margin-bottom: 10px;
+        color: darken($grey, 60);
+        background: darken($grey, 6);
+        box-sizing: border-box;
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        &.current {
+            background: darken($grey, 20);
+        }
+
+        .wraper {
+            width: 100%;
+            margin: 3px 0 5px 0;
+            display: inline-flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .player-name {    
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        
+        button {
+            height: 30px;
+            padding: 3px 10px;
+            font-size: 1.2em;
+        }
+        
+        .all-points {
+            width: 100%;
+            margin-top: 10px;
+            display: none;
+            &.active {
+                display: block;
+            }
+
+            p {
+                margin-bottom: 5px;
+            }
+            
+            li {
+                width: 100%;
+                display: inline-flex;
+                justify-content: center;
+                margin-bottom: 2px;
+                border-bottom: .5px solid darken($grey, 20);
+                div {
+                    margin: 0 10px 0 5px;
+                    width: 50%;
+                }
+                
+                .round {
+                    text-align: end;
+                }
+            }
+        }
+    }
+}

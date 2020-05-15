@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
-import '../../../css/game-summary.css';
+import '../../../styles/game-summary.scss';
 //Components
 import { PlayerSummary } from './player-summary';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
-import '../../../css/game.css';
+import '../../../styles/game.scss';
 //Components
 import {WordChecker} from './word-checker';
 import {Stats} from './stats/stats';

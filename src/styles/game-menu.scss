@@ -1,0 +1,114 @@
+@import 'variables';
+
+.game-menu {
+    p {
+        margin: 10px auto 3px;
+        font-size: 1.2em;
+        color: $darkText;
+        font-weight: 600;
+    }
+
+    form {
+        width: 100%;
+        padding: 0 10px;
+        max-width: 400px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        flex-flow: column;
+        box-sizing: border-box;
+    }
+
+    .choose-language {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 5px;
+
+        .language, .current-lang {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px;
+        }
+
+        .languages  {
+            display: none;
+        }
+
+        .languages.active {
+            display: flex;
+        }
+
+        p {
+            margin: 0 0 0 5px;
+        }
+
+        img {
+            width: 35px;
+        }
+    }
+
+    input {
+        width: 80%;
+        text-transform: none;
+    }    
+
+    input[type=time] {
+        font-size: 2.3em;
+        display: none;
+        justify-content: center;
+        -webkit-appearance: none;
+        &:-webkit-time-picker-indicator,
+        &::-webkit-clear-button,
+        &::-webkit-inner-spin-button {
+            display: none;
+            -webkit-appearance: none;
+        }
+        &.active {
+            display: flex;
+        }
+    }
+
+    .add {
+        padding: 5px 7px;
+        margin-left: 3px;
+        height: 35px;
+        width: 35px;
+        font-size: 1.3em;
+        color: #fff;
+    }
+
+    .add-player {
+        display: inline-flex;
+        justify-content: center;
+        text-transform: none;
+    }
+
+    ul {
+        color: $darkText;
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    li {
+        font-size: 1.2em;
+        border-bottom: .5px solid darken($grey, 20);
+        padding: 3px 0 3px 5px;
+        span {
+            font-weight: 700;
+        }
+    }
+
+    button[type=submit] {
+        margin: 10px auto;
+    }
+
+    .time-option {
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 5px;
+        p {
+            margin: 0;
+        }
+    }
+}

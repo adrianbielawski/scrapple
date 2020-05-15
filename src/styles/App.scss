@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900");
+@import "variables";
 
-html, body, div, span, h1, h2, p,
-a, ul, li {
+html, body, div, span, h1, h2, p, a, ul, li {
   margin: 0;
   padding: 0;
   border: 0;
@@ -23,22 +23,21 @@ a, ul, li {
   flex-grow: 1;
   height: 100%;
   overflow: hidden;
-  background: #eee;
+  background: $grey;
 }
 
 h1 {
   margin: 0 0 20px 0;
   width: 100%;
-}
-
-h1 img {
-  width: 100%;
+  img {
+    width: 100%;
+  }
 }
 
 h2 {
   font-size: 2em;
   font-weight: 600;
-  color: #5f5f5f;
+  color: $darkText;
   text-align: center;
 }
 
@@ -47,18 +46,18 @@ li {
 }
 
 p {
-  color: #5f5f5f;
+  color: $darkText;
 }
 
 button {
-  border: 1px solid #888;
-  background: #32c7a2;
+  border: 1px solid darken($grey, 30);
+  background: $mainGreen;
   color: #fff;
   height: 35px;
   padding: 3px 20px;
   border-radius: 17.5px;
-  box-shadow: 2px 2px 3px #707070;
-  text-shadow: 1px 1px #808080;
+  box-shadow: 2px 2px 3px $boxShadow;
+  text-shadow: 1px 1px $textShadow;
   font-weight: 700;
   font-size: 1.3em;
   box-sizing: border-box;
@@ -70,32 +69,19 @@ button {
 input {
   padding: 3px;
   height: 35px;
-  border: 1px solid #a3a3a3;
-  background: #f5f5f5;
+  border: 1px solid darken($grey, 20);
+  background: lighten($grey, 3);
   font-weight: 700;
   font-size: 1.5em;
-  color: #32c7a2;
+  color: $mainGreen;
   text-align: center;
   text-transform: uppercase;
   box-sizing: border-box;
   outline: none;
-}
-
-input::placeholder {
-    color: #32c7a2;
+  &::placeholder {
+    color: $mainGreen;
     opacity: .5;
-}
-
-.remove {
-  color: #f00;
-  width: 25px;
-  height: 25px;
-  padding: 1px;
-  font-weight: 700;
-  border: 1px solid #f8c668;
-  border-radius: 50%;
-  box-sizing: border-box;
-  cursor: pointer;
+  }
 }
 
 .confirm {
@@ -111,10 +97,11 @@ input::placeholder {
 }
 
 .App .MuiSwitch-colorSecondary.Mui-checked {
-    color: #32c7a2;
+    color: $mainGreen;
 }
+
 .App .MuiSwitch-colorSecondary.Mui-checked + .MuiSwitch-track {
-    background-color: #444;
+    background-color: darken($grey, 30);
 }
 
 @media only screen and (max-height: 640px) {

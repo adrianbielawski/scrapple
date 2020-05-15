@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../../../../css/stats.css';
+import '../../../../styles/stats.scss';
 //Components
 import { CurrentPlayer } from './current-player';
 import { AllPlayers } from './all-players';

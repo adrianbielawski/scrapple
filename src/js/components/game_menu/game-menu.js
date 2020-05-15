@@ -5,8 +5,7 @@ import i18n from '../../../i18n';
 import Switch from '@material-ui/core/Switch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import '../../../css/game-menu.css';
+import '../../../styles/game-menu.scss';
 
 export class GameMenu extends Component {
     constructor(props) {
@@ -29,7 +28,6 @@ export class GameMenu extends Component {
             this.props.alert('alert', alert);
             return true
         }
-
         if(player.length < 1) {
             const alert = "Please type in player's name";
             this.props.alert('alert', alert);
@@ -52,8 +50,7 @@ export class GameMenu extends Component {
         const statePlayers = this.state.players.map((player) => {
             const lowPlayer = player.toLowerCase();
             return lowPlayer
-        })
-        
+        })        
         return statePlayers.includes(LowPlayer) ? true : false;
     }
 
@@ -102,11 +99,9 @@ export class GameMenu extends Component {
 
     render() {
         const flag = `../src/img/${this.state.language}-flag.png`;
-
         const players = this.state.players.map((player, index) => {
             return <li key={index}><Trans>Player</Trans> {index + 1}: <span>{player}</span></li>
         })
-
         const checkboxClass = this.state.timer ? 'active' : '';
         const timeInputClass = checkboxClass;
         const required = this.state.timer ? true : false;
@@ -133,7 +128,7 @@ export class GameMenu extends Component {
                         </div>
                     </div>
                     <div className="time-option" onClick={this.toggleTimeCheckbox}>
-                        <Switch onChange={this.toggleTimeCheckbox} checked={this.state.timer ? 1 : 0}></Switch>
+                        <Switch onChange={this.toggleTimeCheckbox} checked={this.state.timer}></Switch>
                         <p><Trans>Player's time limit</Trans></p>
                     </div>
                     <input type="time" className={timeInputClass} required={required} ref="time" defaultValue="00:05:00" step="1"></input>

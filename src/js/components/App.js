@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../css/App.css';
+import '../../styles/App.scss';
 //Components
 import { Game } from './game/game';
 import { GameMenu } from './game_menu/game-menu';

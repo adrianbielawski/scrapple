@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
-import '../../../css/two-letter-words.css';
+import '../../../styles/two-letter-words.scss';
 
 export class TwoLetterWords extends Component {
     constructor(props) {

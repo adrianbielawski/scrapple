@@ -1,0 +1,71 @@
+@import 'variables';
+
+.game-summary {
+    h2 {
+        margin-bottom: 20px;
+    }
+
+    button {
+        margin: 10px auto;    
+        text-transform: uppercase;
+        display: block;
+    }
+
+    .results {
+        text-align: center;
+        font-size: 1.3em;
+
+        li {
+            background: darken($grey, 10);
+            margin: 5px 0;
+            &.sub {
+                display: inline-flex;
+                align-items: center;
+                width: 100%;
+                .player-name {
+                    padding-left: 5px;
+                    width: 50%;
+                    text-align: end;
+                }
+            }
+        }
+    
+        input {
+            width: 30%;
+            max-width: 50px;
+            margin-left: 10px;
+            &::-webkit-time-picker-indicator,
+            &::-webkit-clear-button,
+            &::-webkit-inner-spin-button {
+                display: none;
+                -webkit-appearance: none;
+            }
+        }
+    
+        .player-name {
+            font-size: 1.4em;
+            margin: 5px 0;
+            text-align: center;
+            color: darken($grey, 55);
+
+            .place {
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                padding: 3px 0;
+            }
+        
+            .place img {
+                margin-left: 10px;
+            }
+        }    
+    
+        span {
+            font-weight: 600;
+        }
+    }
+
+    .player-result {
+        width: 100%;
+    }
+}

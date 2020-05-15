@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import i18next from 'i18next';
-import '../../../../src/css/word-checker.css'
+import '../../../styles/word-checker.scss'
 
 export class WordChecker extends Component {
     constructor(props) {
@@ -40,12 +40,12 @@ export class WordChecker extends Component {
 
         let url = '';
         let params = '';
-        if(this.props.language === 'en') {
+        if(this.props.language === 'en-GB') {
             url = 'https://burek.it/sowpods/';
             params = new URLSearchParams({
                 word: word
             });
-        } else {
+        } else if(this.props.language === 'pl-PL') {
             url = 'https://burek.it/osps/files/php/osps_funkcje2.php';
             params = new URLSearchParams({
                 s: 'spr',
