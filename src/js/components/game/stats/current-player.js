@@ -13,6 +13,8 @@ export class CurrentPlayer extends Component {
             timer: this.props.time,
             timeLeft: this.props.timeLeft
         }
+        this.beep = new Audio('../../../../src/audio/beep.mp3');
+        this.longBeep = new Audio('../../../../src/audio/long-beep.mp3');
         this.endTime = this.getEndTime();
         this.startTimer = this.props.timer ? setInterval(this.updateTimer, 1000) : '';
     }
@@ -42,21 +44,31 @@ export class CurrentPlayer extends Component {
         const now = moment();
         const diff = this.endTime.diff(now);
         const duration = moment.duration(diff);
-        const timeLeft = duration > 3590000 ? duration.format('HH:mm:ss') : duration.format('mm:ss',{trim: false});
+        let timeLeft = duration > 3590000 ? duration.format('HH:mm:ss') : duration.format('mm:ss',{trim: false});
 
-        const x = moment(timeLeft, 'mm:ss')
-        const y = moment('00:00', 'mm:ss')
-        if(x.isSame(y)) {
-            this.props.timeOut()
+        const time = moment(timeLeft, 'mm:ss');
+        const time0 = moment('00:00', 'mm:ss');
+        const shortTime = moment('00:10', 'mm:ss');
+        if(time.isSameOrBefore(shortTime) && time.isAfter(time0)) {
+            this.beep.play();
         }
-
+        if(time.isSame(time0)){
+            timeLeft = '00:00'
+            this.longBeep.play();
+            clearInterval(this.startTimer);
+            setTimeout(this.timeOut, 1000);
+        }
         this.setState({timeLeft})
     }
 
+    timeOut = () => {
+        this.props.timeOut();
+    }
+
     getTimerClass = () => {
-        let x = moment(this.state.timeLeft, 'mm:ss')
-        let y = moment('00:30', 'mm:ss');
-        let shortTimeClass = x.isSameOrBefore(y) ? 'short-time' : '';
+        let time = moment(this.state.timeLeft, 'mm:ss')
+        let shortTime = moment('00:30', 'mm:ss');
+        let shortTimeClass = time.isSameOrBefore(shortTime) ? 'short-time' : '';
         return shortTimeClass   
     }
 

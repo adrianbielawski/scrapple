@@ -63,12 +63,12 @@ export class GameMenu extends Component {
             return 
         }
         let hrs = time.slice(0, 2);
-        let min = time.slice(3, 5);
+        let min = time.slice(3, 5);/*
         if(hrs == 0 && min == 0) {
             const alert = "Minimum player's time limit is 1 min";
             this.props.alert('alert', alert)
             return
-        }
+        }*/
         this.handleFormSubmit(time)
     }
 
@@ -131,7 +131,7 @@ export class GameMenu extends Component {
                         <Switch onChange={this.toggleTimeCheckbox} checked={this.state.timer}></Switch>
                         <p><Trans>Player's time limit</Trans></p>
                     </div>
-                    <input type="time" className={timeInputClass} required={required} ref="time" defaultValue="00:05:00" step="1"></input>
+                    <input type="time" className={timeInputClass} required={required} ref="time" defaultValue="00:00:03" step="1"></input>
                     <p><Trans>Add player</Trans></p>                    
                     <div className="add-player">
                         <input id="player-name" type="text" autoComplete="false" spellCheck="false" ref="playerName"></input>
