@@ -89,16 +89,39 @@
         color: $darkText;
         width: 100%;
         margin: 10px 0;
-    }
-
-    li {
-        font-size: 1.2em;
-        border-bottom: .5px solid darken($grey, 20);
-        padding: 3px 0 3px 5px;
-        span {
-            font-weight: 700;
+        position: relative;
+        .player {
+            font-size: 1.2em;
+            background: $grey;
+            border-bottom: .5px solid darken($grey, 20);
+            padding: 3px 0 3px 0;
+            cursor: grab;
+            span {
+                font-weight: 700;
+            }
+            .player-name {
+                padding-left: 10px;
+            }
+            .top-list-space {
+                border-top: .5px solid darken($grey, 20);
+                border-bottom: .5px solid darken($grey, 20);
+                visibility: hidden;
+            }
+            .bottom-list-space {
+                border-top: .5px solid darken($grey, 20);
+                visibility: hidden;
+            }
+            &.caught {
+                position: absolute;
+                width: 100%;
+                border-radius: 10px;
+                border: .5px solid darken($grey, 5);
+                box-shadow: 2px 2px 3px darken($grey, 30);
+                z-index: 999;
+            }
         }
     }
+
 
     button[type=submit] {
         margin: 10px auto;
