@@ -6,7 +6,6 @@ import Switch from '@material-ui/core/Switch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import '../../../styles/game-menu.scss';
-import { Player } from './player';
 import { Players } from './players';
 
 export class GameMenu extends Component {
@@ -20,6 +19,13 @@ export class GameMenu extends Component {
             listSpace: null,
             caughtElement: null,
         }
+    }
+
+    removePlayer = (i) => {
+        const players = this.state.players.filter((player, index) => {
+            return i !== index
+        })
+        this.setState({players})
     }
 
     addPlayer = (e) => {
@@ -139,7 +145,7 @@ export class GameMenu extends Component {
                             <FontAwesomeIcon icon={faPlus} className="plus"/>
                         </button>
                     </div>
-                    <Players players={this.state.players} />
+                    <Players removePlayer={this.removePlayer} players={this.state.players} />
                     <button type="submit"><Trans>Start game</Trans></button>
                 </form>
             </div>

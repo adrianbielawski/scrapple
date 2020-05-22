@@ -25,77 +25,88 @@ html, body, div, span, h1, h2, p, a, ul, li {
   height: 100%;
   overflow: hidden;
   background: $grey;
-}
-
-h1 {
-  margin: 0 0 20px 0;
-  width: 100%;
-  img {
+  
+  h1 {
+    margin: 0 0 20px 0;
     width: 100%;
+    img {
+      width: 100%;
+    }
   }
-}
 
-h2 {
-  font-size: 2em;
-  font-weight: 600;
-  color: $darkText;
-  text-align: center;
-}
+  h2 {
+    font-size: 2em;
+    font-weight: 600;
+    color: $darkText;
+    text-align: center;
+  }
 
-li {
-  list-style: none;
-}
+  li {
+    list-style: none;
+  }
 
-p {
-  color: $darkText;
-}
+  p {
+    color: $darkText;
+  }
 
-button {
-  border: 1px solid darken($grey, 30);
-  background: $mainGreen;
-  color: #fff;
-  height: 35px;
-  padding: 3px 20px;
-  border-radius: 17.5px;
-  box-shadow: 2px 2px 3px $boxShadow;
-  text-shadow: 1px 1px $textShadow;
-  font-weight: 700;
-  font-size: 1.3em;
-  box-sizing: border-box;
-  cursor: pointer;
-  outline: none;
-  font-family: 'lato';
-}
+  button {
+    border: 1px solid darken($grey, 30);
+    background: $mainGreen;
+    color: #fff;
+    height: 35px;
+    padding: 3px 20px;
+    border-radius: 17.5px;
+    box-shadow: 2px 2px 3px $boxShadow;
+    text-shadow: 1px 1px $textShadow;
+    font-weight: 700;
+    font-size: 1.3em;
+    box-sizing: border-box;
+    cursor: pointer;
+    outline: none;
+    font-family: 'lato';
+  }
 
-input {
-  padding: 3px;
-  height: 35px;
-  border: 1px solid darken($grey, 20);
-  background: lighten($grey, 3);
-  font-weight: 700;
-  font-size: 1.5em;
-  color: $mainGreen;
-  text-align: center;
-  text-transform: uppercase;
-  box-sizing: border-box;
-  outline: none;
-  &::placeholder {
+  input {
+    padding: 3px;
+    height: 35px;
+    border: 1px solid darken($grey, 20);
+    background: lighten($grey, 3);
+    font-weight: 700;
+    font-size: 1.5em;
     color: $mainGreen;
-    opacity: .5;
+    text-align: center;
+    text-transform: uppercase;
+    box-sizing: border-box;
+    outline: none;
+    &::placeholder {
+      color: $mainGreen;
+      opacity: .5;
+    }
+  }
+
+  .confirm {
+    color: #fff;
+    width: 35px;
+    font-weight: 900;
+    font-size: 1.2em;
+    line-height: 0;
+    padding: 2px 0 0 0;
+    border-radius: 50%;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+
+  .remove {
+    color: white;
+    border-radius: 50%;
+    padding: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
   }
 }
 
-.confirm {
-  color: #fff;
-  width: 35px;
-  font-weight: 900;
-  font-size: 1.2em;
-  line-height: 0;
-  padding: 2px 0 0 0;
-  border-radius: 50%;
-  cursor: pointer;
-  box-sizing: border-box;
-}
 
 .App .MuiSwitch-colorSecondary.Mui-checked {
     color: $mainGreen;

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 export class Player extends Component {
     constructor(props) {
@@ -92,6 +94,12 @@ export class Player extends Component {
         this.props.handleDrop(this.state.index, this.state.distance);
         this.setState({isGrabbed: false, top: 0, left: 0, distance: 0, startX: 0});
     }
+    
+    removePlayer = (e) => {
+        e.preventDefault();
+        this.setState({isHovered: false})
+        this.props.removePlayer(this.state.index);
+    }
 
     render() {
         let topDivStyle = this.props.topSpace && !this.state.isGrabbed ? {height: this.state.elementH, visibility: 'visible'} : {};
@@ -110,8 +118,13 @@ export class Player extends Component {
         return (
             <li onMouseOver={this.toggleHover} onMouseOut={this.toggleHover} onMouseDown={this.handleGrab} onMouseUp={this.handleDrop} onTouchStart={this.handleGrab} onTouchEnd={this.handleDrop} className={`player ${classNameGrabbed} ${classNameHovered}`} style={style} value={this.props.index}>
                 <div className="top-list-space" style={topDivStyle}></div>
-                <div className="player-name">
-                    <Trans>Player</Trans> {this.props.index + 1}: <span>{this.props.player}</span>
+                <div className="wrapper">
+                    <div className="player-name">
+                        <Trans>Player</Trans> {this.props.index + 1}: <span>{this.props.player}</span>
+                    </div>
+                    <button onClick={this.removePlayer} className="remove">
+                        <FontAwesomeIcon icon={faTimes} onClick={this.handleClick}/>
+                    </button>
                 </div>
                 <div className="bottom-list-space" style={bottomDivStyle}></div>
             </li>

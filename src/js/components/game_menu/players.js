@@ -5,7 +5,6 @@ export class Players extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            players: this.props.players,
             listSpace: null,
             grabbedElement: null,
             touches: 0
@@ -30,7 +29,7 @@ export class Players extends Component {
     }
 
     handleDrop = (index, distance) => {
-        let players = this.state.players;
+        let players = this.props.players;
         let newIndex = index + distance
         if(newIndex < 1) {
             newIndex = 0;
@@ -43,7 +42,7 @@ export class Players extends Component {
     }
 
     getPlayers = () => {
-        const players = this.state.players.map((player, index) => {
+        const players = this.props.players.map((player, index) => {
             let bottomSpace = index === this.state.listSpace ? true : false;
             
             let topSpace = this.state.grabbedElement != 0 && this.state.listSpace < 0 && index === 0 ||
@@ -58,6 +57,7 @@ export class Players extends Component {
                 handleSpace={this.handleSpace}
                 setGrabbedElement={this.setGrabbedElement}
                 setTouches={this.setTouches}
+                removePlayer={this.props.removePlayer}
                 isOtherGrabbed={isOtherGrabbed}
                 key={index}
                 index={index}
