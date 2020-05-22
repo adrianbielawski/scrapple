@@ -23,24 +23,34 @@ export class Player extends Component {
     }
 
     handleCatch = (e) => {
-        e.preventDefault();
+        console.log(e)
         this.props.setCaughtElement(this.state.index)
         const parent = document.getElementsByClassName('players')[0];
         const parentD = parent.getBoundingClientRect();
         parent.style.height = `${parentD.height}px`;
+        const el = e.currentTarget;
         const element = e.currentTarget.getBoundingClientRect();
         const topStart =  element.y - parentD.y;
         const elementH = element.height;
-        const startX = e.clientX;
-        const startY = e.clientY;
+        let startX = e.clientX;
+        let startY = e.clientY;
+        if(e.type === 'touchstart') {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        }
         this.setState({isCought: true, top: topStart, topStart, startX, elementH});
         this.handleMove = () => {this.move(event, startX, startY, elementH, topStart)}
-        document.addEventListener('mousemove', this.handleMove);
+        el.addEventListener('mousemove', this.handleMove);
+        el.addEventListener('touchmove', this.handleMove, {passive:false});
     }
 
     move = (e, startX, startY, elementH, topStart) => {
-        const x = e.clientX;
-        const y = e.clientY;
+        let x = e.clientX;
+        let y = e.clientY;
+        if(e.type == 'touchmove') {
+            x = e.touches[0].clientX;
+            y = e.touches[0].clientY;
+        }
         const top = y - startY + topStart;
         const left = x - startX ;
         let distance = (top - topStart) / elementH;
@@ -55,18 +65,21 @@ export class Player extends Component {
     }
 
     handleDrop = (e) => {
-        e.preventDefault();
         this.props.handleSpace(0);
         const parent = document.getElementsByClassName('players')[0];
+        const el = e.currentTarget;
         parent.style.height = `auto`;
         this.props.handleDrop(this.state.index, this.state.distance);
-        document.removeEventListener('mousemove', this.handleMove);
+        el.removeEventListener('mousemove', this.handleMove);
+        el.addEventListener('touchmove', this.handleMove, {passive:false});
         this.setState({isCought: false, top: 0, left: 0, distance: 0, startX: 0});
     }
 
     render() {
         let className = '';
-        let style = {};
+        let style = {
+            top: 0,
+            left: 0};
         let topDivStyle = this.props.topSpace && !this.state.isCought ? {height: this.state.elementH, visibility: 'visible'} : {};
         let bottomDivStyle = this.props.bottomSpace && !this.state.isCought ? {height: this.state.elementH, visibility: 'visible'} : {};
         if(this.state.isCought) {
@@ -78,7 +91,7 @@ export class Player extends Component {
         }
         
         return (
-            <li onMouseDown={this.handleCatch} onMouseUp={this.handleDrop} className={`player ${className}`} style={style} value={this.props.index}>
+            <li onMouseDown={this.handleCatch} onTouchStart={this.handleCatch} onMouseUp={this.handleDrop} onTouchEnd={this.handleDrop} className={`player ${className}`} style={style} value={this.props.index}>
                 <div className="top-list-space" style={topDivStyle}></div>
                 <div className="player-name">
                     <Trans>Player</Trans> {this.props.index + 1}: <span>{this.props.player}</span>
