@@ -68,6 +68,12 @@
         &.active {
             display: flex;
         }
+        &::-webkit-datetime-edit-hour-field:focus,
+        &::-webkit-datetime-edit-minute-field:focus,
+        &::-webkit-datetime-edit-second-field:focus {
+            background: darken($grey, 5);
+            color: $mainGreen;
+        }
     }
 
     .add {
@@ -129,7 +135,6 @@
                 border-radius: 10px;
                 border: .5px solid darken($grey, 5);
                 box-shadow: 2px 2px 3px darken($grey, 30);
-                z-index: 999;
             }
             &.grabbed {
                 position: absolute;

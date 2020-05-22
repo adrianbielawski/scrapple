@@ -16,7 +16,7 @@ export class App extends React.Component {
       content: 'GameMenu',
       showAlert: false,
       playersMemory: [],
-      players: [],
+      players: ['Adrian', 'Joanna'],
       timer: false,
       time: {
         hours: '00',

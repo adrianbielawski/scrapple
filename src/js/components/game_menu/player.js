@@ -40,7 +40,7 @@ export class Player extends Component {
         const parentD = parent.getBoundingClientRect();
         parent.style.height = `${parentD.height}px`;
         
-        const element = e.currentTarget;
+        const element = document.getElementsByClassName('player')[this.props.index];
         const elementD = element.getBoundingClientRect();
         const elementH = elementD.height;
         
@@ -55,8 +55,8 @@ export class Player extends Component {
 
         this.setState({isGrabbed: true, top: topStart, topStart, startX, elementH});
         this.handleMove = () => {this.move(event, startX, startY, elementH, topStart)}
-        element.addEventListener('mousemove', this.handleMove);
-        element.addEventListener('touchmove', this.handleMove);
+        e.currentTarget.addEventListener('mousemove', this.handleMove);
+        e.currentTarget.addEventListener('touchmove', this.handleMove);
     }
 
     move = (e, startX, startY, elementH, topStart) => {
@@ -116,10 +116,10 @@ export class Player extends Component {
         }
         
         return (
-            <li onMouseOver={this.toggleHover} onMouseOut={this.toggleHover} onMouseDown={this.handleGrab} onMouseUp={this.handleDrop} onTouchStart={this.handleGrab} onTouchEnd={this.handleDrop} className={`player ${classNameGrabbed} ${classNameHovered}`} style={style} value={this.props.index}>
+            <li className={`player ${classNameGrabbed} ${classNameHovered}`} style={style}>
                 <div className="top-list-space" style={topDivStyle}></div>
                 <div className="wrapper">
-                    <div className="player-name">
+                    <div onMouseOver={this.toggleHover} onMouseOut={this.toggleHover} onMouseDown={this.handleGrab} onMouseUp={this.handleDrop} onTouchStart={this.handleGrab} onTouchEnd={this.handleDrop} className="player-name">
                         <Trans>Player</Trans> {this.props.index + 1}: <span>{this.props.player}</span>
                     </div>
                     <button onClick={this.removePlayer} className="remove">
