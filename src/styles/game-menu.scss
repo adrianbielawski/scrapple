@@ -95,6 +95,11 @@
             background: $grey;
             border-bottom: .5px solid darken($grey, 20);
             padding: 3px 0 3px 0;
+            user-select:none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select:none;
+                -o-user-select:none;
             cursor: grab;
             span {
                 font-weight: 700;
@@ -111,13 +116,20 @@
                 border-top: .5px solid darken($grey, 20);
                 visibility: hidden;
             }
-            &.caught {
-                position: absolute;
-                width: 100%;
+            &.hovered {
+                position: relative;
                 border-radius: 10px;
                 border: .5px solid darken($grey, 5);
                 box-shadow: 2px 2px 3px darken($grey, 30);
                 z-index: 999;
+            }
+            &.grabbed {
+                position: absolute;
+                border-radius: 10px;
+                border: .5px solid darken($grey, 5);
+                box-shadow: 2px 2px 3px darken($grey, 30);
+                z-index: 999;
+                width: 100%;
             }
         }
     }

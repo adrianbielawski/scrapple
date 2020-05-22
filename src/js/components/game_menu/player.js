@@ -6,7 +6,8 @@ export class Player extends Component {
         super(props);
         this.state = {
             index: this.props.index,
-            isCought: false,
+            isHovered: false,
+            isGrabbed: false,
             top: 0,
             left: 0,
             startX: 0,
@@ -19,11 +20,19 @@ export class Player extends Component {
 
     componentDidMount () {
         const elementH = document.getElementsByClassName('player')[this.props.index].getBoundingClientRect().height;
-        this.setState({elementH})
+        this.setState({elementH});
     }
 
-    handleCatch = (e) => {
-        this.props.setCaughtElement(this.state.index)
+    toggleHover = (e) => {
+        this.setState({isHovered: !this.state.isHovered});
+    }
+
+    handleGrab = (e) => {
+        if(this.props.isOtherGrabbed) {
+            this.props.setTouches(1);
+            return
+        };
+        this.props.setGrabbedElement(this.state.index);
         
         const parent = document.getElementsByClassName('players')[0];
         const parentD = parent.getBoundingClientRect();
@@ -42,7 +51,7 @@ export class Player extends Component {
             startY = e.touches[0].clientY;
         }
 
-        this.setState({isCought: true, top: topStart, topStart, startX, elementH});
+        this.setState({isGrabbed: true, top: topStart, topStart, startX, elementH});
         this.handleMove = () => {this.move(event, startX, startY, elementH, topStart)}
         element.addEventListener('mousemove', this.handleMove);
         element.addEventListener('touchmove', this.handleMove);
@@ -54,9 +63,9 @@ export class Player extends Component {
         if(e.type == 'touchmove') {
             x = e.touches[0].clientX;
             y = e.touches[0].clientY;
-        }
+        };
         const top = y - startY + topStart;
-        const left = x - startX ;
+        const left = x - startX;
         let distance = (top - topStart) / elementH;
         distance = Math.round(distance);
         if(distance === -0) {
@@ -69,6 +78,10 @@ export class Player extends Component {
     }
 
     handleDrop = (e) => {
+        if(this.props.isOtherGrabbed) {
+            this.props.setTouches(-1)
+            return
+        };
         e.currentTarget.removeEventListener('mousemove', this.handleMove);
         e.currentTarget.addEventListener('touchmove', this.handleMove);
         
@@ -77,16 +90,17 @@ export class Player extends Component {
         
         this.props.handleSpace(0);
         this.props.handleDrop(this.state.index, this.state.distance);
-        this.setState({isCought: false, top: 0, left: 0, distance: 0, startX: 0});
+        this.setState({isGrabbed: false, top: 0, left: 0, distance: 0, startX: 0});
     }
 
     render() {
-        let topDivStyle = this.props.topSpace && !this.state.isCought ? {height: this.state.elementH, visibility: 'visible'} : {};
-        let bottomDivStyle = this.props.bottomSpace && !this.state.isCought ? {height: this.state.elementH, visibility: 'visible'} : {};
-        let className = '';
+        let topDivStyle = this.props.topSpace && !this.state.isGrabbed ? {height: this.state.elementH, visibility: 'visible'} : {};
+        let bottomDivStyle = this.props.bottomSpace && !this.state.isGrabbed ? {height: this.state.elementH, visibility: 'visible'} : {};
+        let classNameHovered = this.state.isHovered ? 'hovered' : '';
+        let classNameGrabbed = '';
         let style = {};
-        if(this.state.isCought) {
-            className = 'caught'
+        if(this.state.isGrabbed) {
+            classNameGrabbed = 'grabbed'
             style = {
                 top: this.state.top,
                 left: this.state.left
@@ -94,7 +108,7 @@ export class Player extends Component {
         }
         
         return (
-            <li onMouseDown={this.handleCatch} onTouchStart={this.handleCatch} onMouseUp={this.handleDrop} onTouchEnd={this.handleDrop} className={`player ${className}`} style={style} value={this.props.index}>
+            <li onMouseOver={this.toggleHover} onMouseOut={this.toggleHover} onMouseDown={this.handleGrab} onMouseUp={this.handleDrop} onTouchStart={this.handleGrab} onTouchEnd={this.handleDrop} className={`player ${classNameGrabbed} ${classNameHovered}`} style={style} value={this.props.index}>
                 <div className="top-list-space" style={topDivStyle}></div>
                 <div className="player-name">
                     <Trans>Player</Trans> {this.props.index + 1}: <span>{this.props.player}</span>

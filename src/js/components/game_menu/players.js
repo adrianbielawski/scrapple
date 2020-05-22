@@ -7,17 +7,23 @@ export class Players extends Component {
         this.state = {
             players: this.props.players,
             listSpace: null,
-            caughtElement: null,
+            grabbedElement: null,
+            touches: 0
         }
     }
 
-    setCaughtElement = (index) => {
-        this.setState({caughtElement: index, firstListSpace: index -1, listSpace: index -1})
+    setTouches = (val) => {
+        this.setState({touches: this.state.touches + val})
+    }
+
+    setGrabbedElement = (index) => {
+        const touches = this.state.touches + 1
+        this.setState({grabbedElement: index, initialListSpace: index -1, listSpace: index -1, touches})
     }
 
     handleSpace = (distance) => {
-        let listSpace = this.state.firstListSpace + distance;
-        if(this.state.caughtElement <= listSpace) {
+        let listSpace = this.state.initialListSpace + distance;
+        if(this.state.grabbedElement <= listSpace) {
             listSpace +=1;
         };
         this.setState({listSpace});
@@ -31,23 +37,28 @@ export class Players extends Component {
         } else if(newIndex >= players.length) {
             newIndex = players.length -1;
         }
+        const touches = this.state.touches - 1;
         players.splice(newIndex, 0, players.splice(index, 1)[0]);
-        this.setState({players, caughtElement: '', firstListSpace: -1, listSpace: null})
+        this.setState({players, grabbedElement: null, initialListSpace: -1, listSpace: null, touches})
     }
 
     getPlayers = () => {
         const players = this.state.players.map((player, index) => {
             let bottomSpace = index === this.state.listSpace ? true : false;
             
-            let topSpace = this.state.caughtElement != 0 && this.state.listSpace < 0 && index === 0 ||
-                this.state.caughtElement === 0 && this.state.listSpace < 0 && index === 1 ? 
+            let topSpace = this.state.grabbedElement != 0 && this.state.listSpace < 0 && index === 0 ||
+                this.state.grabbedElement === 0 && this.state.listSpace < 0 && index === 1 ? 
                 true :
                 false;
+            
+            const isOtherGrabbed = this.state.touches > 0 && index !== this.state.grabbedElement ? true : false;
 
             return <Player
                 handleDrop={this.handleDrop}
                 handleSpace={this.handleSpace}
-                setCaughtElement={this.setCaughtElement}
+                setGrabbedElement={this.setGrabbedElement}
+                setTouches={this.setTouches}
+                isOtherGrabbed={isOtherGrabbed}
                 key={index}
                 index={index}
                 player={player}
