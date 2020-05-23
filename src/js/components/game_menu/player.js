@@ -21,8 +21,9 @@ export class Player extends Component {
     }
 
     componentDidMount () {
-        const elementH = document.getElementsByClassName('player')[this.props.index].getBoundingClientRect().height;
-        this.setState({elementH});
+        const element = document.getElementsByClassName('player')[this.props.index];
+        const elementH = element.getBoundingClientRect().height;
+        this.setState({element, elementH});
     }
 
     toggleHover = (e) => {
@@ -40,8 +41,7 @@ export class Player extends Component {
         const parentD = parent.getBoundingClientRect();
         parent.style.height = `${parentD.height}px`;
         
-        const element = document.getElementsByClassName('player')[this.props.index];
-        const elementD = element.getBoundingClientRect();
+        const elementD = this.state.element.getBoundingClientRect();
         const elementH = elementD.height;
         
         const topStart =  elementD.y - parentD.y;
@@ -60,6 +60,7 @@ export class Player extends Component {
     }
 
     move = (e, startX, startY, elementH, topStart) => {
+        this.props.toggelTransition(true);
         let x = e.clientX;
         let y = e.clientY;
         if(e.type == 'touchmove') {
@@ -80,6 +81,7 @@ export class Player extends Component {
     }
 
     handleDrop = (e) => {
+        this.props.toggelTransition(false);
         if(this.props.isOtherGrabbed) {
             this.props.setTouches(-1)
             return
@@ -94,30 +96,70 @@ export class Player extends Component {
         this.props.handleDrop(this.state.index, this.state.distance);
         this.setState({isGrabbed: false, top: 0, left: 0, distance: 0, startX: 0});
     }
-    
+
     removePlayer = (e) => {
         e.preventDefault();
+        this.removedPlayerTransition();
+        setTimeout(this.remove, 500);
+    }
+    
+    removedPlayerTransition = () => {
+        const element = this.state.element;
+        element.style.transitionProperty = 'width, max-height';
+        element.style.transitionDuration = '.4s, .4s';
+        element.style.transitionDelay = '0.1s, .4s';
+        element.style.transitionTimingFunction = 'ease-in, ease';
+        element.style.width = 0;
+        element.style.maxHeight = 0;
         this.setState({isHovered: false})
+    }
+
+    remove = () => {
+        this.state.element.style = {};
         this.props.removePlayer(this.state.index);
     }
 
-    render() {
-        let topDivStyle = this.props.topSpace && !this.state.isGrabbed ? {height: this.state.elementH, visibility: 'visible'} : {};
-        let bottomDivStyle = this.props.bottomSpace && !this.state.isGrabbed ? {height: this.state.elementH, visibility: 'visible'} : {};
-        let classNameHovered = this.state.isHovered ? 'hovered' : '';
-        let classNameGrabbed = '';
-        let style = {};
+    getStyles = () => {
+        let styles = {
+            topDivStyle: {},
+            bottomDivStyle: {},
+            topSpaceClassName: '',
+            bottomSpaceClassName: '',
+            classNameGrabbed: '',
+            position: {},
+            classNameHovered: this.state.isHovered ? 'hovered' : '',
+        }
+
+        if(this.props.topSpace && !this.state.isGrabbed) {
+            styles.topDivStyle = {height: this.state.elementH};
+            styles.topSpaceClassName = 'visible';
+        } else if(this.props.bottomSpace && !this.state.isGrabbed) {
+            styles.bottomDivStyle = {height: this.state.elementH}
+            styles.bottomSpaceClassName = 'visible';
+        };
+
+        if(!this.props.isTransitionEnableed && !this.state.isGrabbed) {
+            styles.bottomDivStyle.transition = 'none'
+            styles.topDivStyle.transition = 'none'
+        }
+
         if(this.state.isGrabbed) {
-            classNameGrabbed = 'grabbed'
-            style = {
+            styles.classNameGrabbed = 'grabbed'
+            styles.position = {
                 top: this.state.top,
                 left: this.state.left
             }
         }
+
+        return styles
+    }
+
+    render() {
+        const styles = this.getStyles();
         
         return (
-            <li className={`player ${classNameGrabbed} ${classNameHovered}`} style={style}>
-                <div className="top-list-space" style={topDivStyle}></div>
+            <li className={`player ${styles.classNameGrabbed} ${styles.classNameHovered}`} style={styles.position}>
+                <div className={`top-list-space ${styles.topSpaceClassName}`} style={styles.topDivStyle}></div>
                 <div className="wrapper">
                     <div onMouseOver={this.toggleHover} onMouseOut={this.toggleHover} onMouseDown={this.handleGrab} onMouseUp={this.handleDrop} onTouchStart={this.handleGrab} onTouchEnd={this.handleDrop} className="player-name">
                         <Trans>Player</Trans> {this.props.index + 1}: <span>{this.props.player}</span>
@@ -126,7 +168,7 @@ export class Player extends Component {
                         <FontAwesomeIcon icon={faTimes} onClick={this.handleClick}/>
                     </button>
                 </div>
-                <div className="bottom-list-space" style={bottomDivStyle}></div>
+                <div className={`bottom-list-space ${styles.bottomSpaceClassName}`} style={styles.bottomDivStyle}></div>
             </li>
         );
     }

@@ -100,8 +100,10 @@
             font-size: 1.2em;
             background: $grey;
             border-bottom: .5px solid darken($grey, 20);
-            padding: 3px 0 5px 0;
-            justify-content: space-between;
+            width: 100%;
+            max-height: 1000px;
+            overflow: hidden;
+            float: right;
             user-select:none;
                 -moz-user-select: none;
                 -webkit-user-select: none;
@@ -114,21 +116,31 @@
             .wrapper {
                 padding-left: 10px;
                 display: flex;
-                align-items: flex-end;
+                align-items: center;
                 justify-content: space-between;
             }
             .player-name {
+                margin: 5px 0 5px 0;
                 display: flex;
                 flex-grow: 1;
+                flex-shrink: 0;
             }
             .top-list-space {
-                border-top: .5px solid darken($grey, 20);
-                border-bottom: .5px solid darken($grey, 20);
-                visibility: hidden;
+                height: 0;
+                overflow: hidden;
+                transition: height .3s ease-out;
+                &.visible {
+                    border-top: .5px solid darken($grey, 20);
+                    border-bottom: .5px solid darken($grey, 20);
+                }
             }
             .bottom-list-space {
-                border-top: .5px solid darken($grey, 20);
-                visibility: hidden;
+                overflow: hidden;
+                height: 0;
+                transition: height .3s ease-out;
+                &.visible {
+                    border-top: .5px solid darken($grey, 20);
+                }
             }
             &.hovered {
                 position: relative;

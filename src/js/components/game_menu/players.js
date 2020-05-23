@@ -7,8 +7,13 @@ export class Players extends Component {
         this.state = {
             listSpace: null,
             grabbedElement: null,
+            isTransitionEnableed: false,
             touches: 0
         }
+    }
+
+    toggelTransition = (val) => {
+        this.setState({isTransitionEnableed: val})
     }
 
     setTouches = (val) => {
@@ -16,8 +21,8 @@ export class Players extends Component {
     }
 
     setGrabbedElement = (index) => {
-        const touches = this.state.touches + 1
-        this.setState({grabbedElement: index, initialListSpace: index -1, listSpace: index -1, touches})
+        const touches = this.state.touches + 1;
+        this.setState({isTransitionEnableed: false, grabbedElement: index, initialListSpace: index -1, listSpace: index -1, touches})
     }
 
     handleSpace = (distance) => {
@@ -57,8 +62,10 @@ export class Players extends Component {
                 handleSpace={this.handleSpace}
                 setGrabbedElement={this.setGrabbedElement}
                 setTouches={this.setTouches}
+                toggelTransition={this.toggelTransition}
                 removePlayer={this.props.removePlayer}
                 isOtherGrabbed={isOtherGrabbed}
+                isTransitionEnableed={this.state.isTransitionEnableed}
                 key={index}
                 index={index}
                 player={player}
