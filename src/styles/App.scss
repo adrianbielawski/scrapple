@@ -64,6 +64,10 @@ html, body, div, span, h1, h2, p, a, ul, li {
     cursor: pointer;
     outline: none;
     font-family: 'lato';
+    &:active {
+      box-shadow: none;
+      background: darken($mainGreen, 10);
+    }
   }
 
   input {
