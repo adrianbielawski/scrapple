@@ -13,8 +13,8 @@ export class CurrentPlayer extends Component {
             timer: this.props.time,
             timeLeft: this.props.timeLeft
         }
-        this.beep = new Audio('../../../../src/audio/beep.mp3');
-        this.longBeep = new Audio('../../../../src/audio/long-beep.mp3');
+        this.beep = new Audio('../../../../src/assets/audio/beep.mp3');
+        this.longBeep = new Audio('../../../../src/assets/audio/long-beep.mp3');
         this.endTime = this.getEndTime();
         this.startTimer = this.props.timer ? setInterval(this.updateTimer, 1000) : '';
     }

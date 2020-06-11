@@ -25,7 +25,7 @@ export class Game extends React.Component {
   }
 
   addPoints = (points) => {
-    const currentPlayer = this.state.currentPlayer;
+    let currentPlayer = this.state.currentPlayer;
     let players = [ ...this.state.players];
     players[currentPlayer].currentScore += points;
     players[currentPlayer].allPoints.push(points);

@@ -1,19 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Trans } from 'react-i18next';
 import '../../../styles/game-summary.scss';
 //Components
 import { PlayerSummary } from './player-summary';
+import { Header } from '../global_components/header';
 
-export class GameSummary extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            players: this.props.players
-        }
-    }
-
-    getPlayersPositions = () => {
-        let players = this.state.players.sort((a, b) => {
+export const GameSummary = (props) => {
+    const getPlayersPositions = () => {
+        let players = [ ...props.players];
+        players.sort((a, b) => {
             return b.currentScore - a.currentScore
         });
 
@@ -55,21 +50,18 @@ export class GameSummary extends Component {
         return playersSummary
     }
 
-    closeGame = () => {
-        this.props.closeGame();
+    const closeGame = () => {
+        props.closeGame();
     }
 
-    render() {
-        const playersContent = this.getPlayersPositions();
-        return (
-            <div className="game-summary">
-                <h1><img src="../src/img/logo.jpg"></img></h1>
-                <h2><Trans>Game results</Trans></h2>
-                <ul className="results">
-                    {playersContent}
-                </ul>
-                <button onClick={this.closeGame} value="exit"><Trans>Exit</Trans></button>
-            </div>
-        );
-    }
+    return (
+        <div className="game-summary">
+            <Header />
+            <h2><Trans>Game results</Trans></h2>
+            <ul className="results">
+                {getPlayersPositions()}
+            </ul>
+            <button onClick={closeGame} value="exit"><Trans>Exit</Trans></button>
+        </div>
+    );
 }

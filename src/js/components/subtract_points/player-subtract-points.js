@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export class PlayerSubPoints extends Component {
-    render() { 
-        return (
-            <li className="sub">
-                <div className="player-name">{this.props.playerName}</div>
-                <input id={`sub-points${this.props.index}`} type="number" min="0" placeholder="0" ref="points"></input>
-            </li>
-        );
-    }
+export const PlayerSubPoints = (props) => {
+    return (
+        <li className="sub">
+            <div className="player-name">{props.playerName}</div>
+            <input id={`sub-points${props.index}`} type="number" min="0" placeholder="0"></input>
+        </li>
+    );
 }

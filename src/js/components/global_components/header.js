@@ -1,9 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export class Header extends Component {
-    render() {
-        return (
-            <h1><img src="../src/img/logo.jpg"></img></h1>
-        );
-    }
+export const Header = () => {
+    return (
+        <h1><img src="../src/assets/img/logo.jpg"></img></h1>
+    );
 }

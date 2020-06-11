@@ -1,32 +1,30 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Trans } from 'react-i18next';
 import '../../../styles/alert.scss';
 
-export class Alert extends Component {
-    handleAlertResponse = (e) => {
+export const Alert = (props) => {
+    const handleAlertResponse = (e) => {
         const response = e.target.value;
-        this.props.alertResponse(response);
+        props.alertResponse(response);
     }
 
-    render() {
-        let alertButtons = '';
-        if(this.props.type === 'confirm') {
-            alertButtons =
-                <div className="wraper">
-                    <button className="yes" value="true" onClick={this.handleAlertResponse}>{<Trans>Yes</Trans>}</button>
-                    <button className="no" value="false" onClick={this.handleAlertResponse}>{<Trans>No</Trans>}</button>
-                </div>
-        } else if(this.props.type === 'alert'){
-            alertButtons = <button className="ok" value="false" onClick={this.handleAlertResponse}>OK</button>
-        };
-
-        return (
-            <div className="alert-cover">
-                <div className="alert">
-                    <p><Trans>{this.props.alertMessage}</Trans></p>
-                    {alertButtons}
-                </div>
+    let alertButtons = '';
+    if(props.type === 'confirm') {
+        alertButtons =
+            <div className="wraper">
+                <button className="yes" value="true" onClick={handleAlertResponse}>{<Trans>Yes</Trans>}</button>
+                <button className="no" value="false" onClick={handleAlertResponse}>{<Trans>No</Trans>}</button>
             </div>
-        );
-    }
+    } else if(props.type === 'alert') {
+        alertButtons = <button className="ok" value="false" onClick={handleAlertResponse}>OK</button>
+    };
+
+    return (
+        <div className="alert-cover">
+            <div className="alert">
+                <p><Trans>{props.alertMessage}</Trans></p>
+                {alertButtons}
+            </div>
+        </div>
+    );
 }

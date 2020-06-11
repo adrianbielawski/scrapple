@@ -63,7 +63,7 @@ export class WordChecker extends Component {
     }
 
     render() {
-        const thumb = this.state.valid ? '../src/img/thumb-up.png' : '../src/img/thumb-down.png';
+        const thumb = this.state.valid ? '../src/assets/img/thumb-up.png' : '../src/assets/img/thumb-down.png';
         
         return (
             <div className="word-checker">
