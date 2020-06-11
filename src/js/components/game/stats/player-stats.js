@@ -34,7 +34,7 @@ export class PlayerStats extends Component {
                 <div className="player-name"><span>{player.playerName}</span></div>
                 <div className="wraper">
                     <div>{<Trans>Current score</Trans>} {player.currentScore}</div>
-                    <button onClick={this.toggleDisplayAllPoints}>{<Trans>all points</Trans>}</button>
+                    <button onClick={this.toggleDisplayAllPoints}>{<Trans>All points</Trans>}</button>
                 </div>
                 <div className={`all-points ${allPointsDisplay}`}>
                     <p>{<Trans>Best score</Trans>}: {player.bestScore}</p>

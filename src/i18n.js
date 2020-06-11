@@ -51,7 +51,6 @@ const resources = {
       "Best score" : "Best score",
       "Yes" : "Yes",
       "No" : "No",
-      "x" : "x",
     }
   },
   pl: {

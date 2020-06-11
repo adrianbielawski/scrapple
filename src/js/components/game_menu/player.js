@@ -21,27 +21,26 @@ export class Player extends Component {
     }
 
     componentDidMount () {
-        const element = document.getElementsByClassName('player')[this.props.index];
-        const elementH = element.getBoundingClientRect().height;
-        this.setState({element, elementH});
+        this.element = document.getElementsByClassName('player')[this.props.index];
+        this.elementH = this.element.getBoundingClientRect().height;
     }
 
-    toggleHover = (e) => {
-        this.setState({isHovered: !this.state.isHovered});
+    toggleHover = () => {
+        this.setState(state => ({ ...state, isHovered: !this.state.isHovered}));
     }
 
     handleGrab = (e) => {
-        if(this.props.isOtherGrabbed) {
+        if(e.type === 'touchstart' && this.props.isOtherGrabbed) {
             this.props.setTouches(1);
             return
         };
-        this.props.setGrabbedElement(this.state.index);
+        this.props.setGrabbedElement(this.state.index, e.type);
         
         const parent = document.getElementsByClassName('players')[0];
         const parentD = parent.getBoundingClientRect();
         parent.style.height = `${parentD.height}px`;
         
-        const elementD = this.state.element.getBoundingClientRect();
+        const elementD = this.element.getBoundingClientRect();
         
         const topStart =  elementD.y - parentD.y;
         
@@ -52,14 +51,18 @@ export class Player extends Component {
             startY = e.touches[0].clientY;
         }
 
-        this.setState({isGrabbed: true, top: topStart, topStart, startX});
+        this.setState(state => ({ ...state, isGrabbed: true, top: topStart, topStart, startX}));
         this.handleMove = () => {this.move(event, startX, startY, topStart)}
-        e.currentTarget.addEventListener('mousemove', this.handleMove);
-        e.currentTarget.addEventListener('touchmove', this.handleMove);
+        if(e.type === 'mousedown') {
+            window.addEventListener('mousemove', this.handleMove);
+        }
+        if(e.type === 'touchstart') {
+            window.addEventListener('touchmove', this.handleMove);
+        }
     }
 
     move = (e, startX, startY, topStart) => {
-        this.props.toggelTransition(true);
+        this.props.setTransition(true);
         let x = e.clientX;
         let y = e.clientY;
         if(e.type == 'touchmove') {
@@ -68,32 +71,33 @@ export class Player extends Component {
         };
         const top = y - startY + topStart;
         const left = x - startX;
-        let distance = (top - topStart) / this.state.elementH;
+        let distance = (top - topStart) / this.elementH;
         distance = Math.round(distance);
         if(distance === -0) {
             distance = 0;
         };
         if(distance !== this.state.distance) {
-            this.props.handleSpace(distance);
+            this.props.addSpace(distance);
         };
-        this.setState({top, left, startX, distance});
+        this.setState(state => ({ ...state, top, left, startX, distance}));
     }
 
     handleDrop = (e) => {
-        this.props.toggelTransition(false);
+        this.props.setTransition(false);
         if(this.props.isOtherGrabbed) {
             this.props.setTouches(-1)
             return
         };
-        e.currentTarget.removeEventListener('mousemove', this.handleMove);
-        e.currentTarget.addEventListener('touchmove', this.handleMove);
+        
+        window.removeEventListener('mousemove', this.handleMove);
+        window.removeEventListener('touchmove', this.handleMove);
         
         let parent = document.getElementsByClassName('players')[0];
         parent.style.height = `auto`;
         
-        this.props.handleSpace(0);
-        this.props.handleDrop(this.state.index, this.state.distance);
-        this.setState({isGrabbed: false, top: 0, left: 0, distance: 0, startX: 0});
+        this.props.addSpace(0);
+        this.props.drop(this.state.index, this.state.distance, e.type);
+        this.setState(state => ({ ...state, isGrabbed: false, top: 0, left: 0, distance: 0, startX: 0}));
     }
 
     removePlayer = (e) => {
@@ -103,18 +107,18 @@ export class Player extends Component {
     }
     
     removedPlayerTransition = () => {
-        const element = this.state.element;
+        const element = this.element;
         element.style.transitionProperty = 'width, max-height';
         element.style.transitionDuration = '.4s, .4s';
         element.style.transitionDelay = '0.1s, .4s';
         element.style.transitionTimingFunction = 'ease-in, ease';
         element.style.width = 0;
         element.style.maxHeight = 0;
-        this.setState({isHovered: false})
+        this.setState(state => ({ ...state, isHovered: false}));
     }
 
     remove = () => {
-        this.state.element.style = {};
+        this.element.style = {};
         this.props.removePlayer(this.state.index);
     }
 
@@ -130,10 +134,10 @@ export class Player extends Component {
         }
 
         if(this.props.topSpace && !this.state.isGrabbed) {
-            styles.topSpaceStyle = {height: this.state.elementH};
+            styles.topSpaceStyle = {height: this.elementH};
             styles.topSpaceClass = 'visible';
         } else if(this.props.bottomSpace && !this.state.isGrabbed) {
-            styles.bottomSpaceStyle = {height: this.state.elementH}
+            styles.bottomSpaceStyle = {height: this.elementH}
             styles.bottomSpaceClass = 'visible';
         };
 
@@ -160,7 +164,14 @@ export class Player extends Component {
             <li className={`player ${styles.grabbed} ${styles.hovered}`} style={styles.position}>
                 <div className={`top-list-space ${styles.topSpaceClass}`} style={styles.topSpaceStyle}></div>
                 <div className="wrapper">
-                    <div onMouseOver={this.toggleHover} onMouseOut={this.toggleHover} onMouseDown={this.handleGrab} onMouseUp={this.handleDrop} onTouchStart={this.handleGrab} onTouchEnd={this.handleDrop} className="player-name">
+                    <div onMouseOver={this.toggleHover}
+                        onMouseOut={this.toggleHover}
+                        onMouseDown={this.handleGrab}
+                        onMouseUp={this.handleDrop}
+                        onTouchStart={this.handleGrab}
+                        onTouchEnd={this.handleDrop}
+                        className="player-name"
+                    >
                         <Trans>Player</Trans> {this.props.index + 1}: <span>{this.props.player}</span>
                     </div>
                     <button onClick={this.removePlayer} className="remove">

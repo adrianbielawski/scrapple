@@ -1,5 +1,6 @@
 import React from 'react';
 import '../../styles/App.scss';
+import i18n from '../../i18n';
 //Components
 import { Game } from './game/game';
 import { GameMenu } from './game_menu/game-menu';
@@ -34,7 +35,20 @@ export class App extends React.Component {
 
   setInnerHeight = () => {
     const screenHeight = window.innerHeight;
-    this.setState({screenHeight});
+    this.setState(state => ({ ...state, screenHeight}));
+  }
+
+  addPlayer = (player) => {
+      const players = [ ...this.state.players ];
+      players.push(player);
+      this.setState(state => ({ ...state, players}));
+  }
+
+  changeLanguage = (language) => {
+      const html = document.getElementsByTagName('html');
+      html[0].lang = language;
+      this.setState(state => ({ ...state, language}));
+      i18n.changeLanguage(`${language}`);
   }
 
   startGame = (playersNames, time, language) => {
@@ -55,7 +69,7 @@ export class App extends React.Component {
 
     const players = this.getPlayers(playersNames);
 
-    this.setState({content: 'Game', language, playersMemory: playersNames, players, timer, time: timeObj});
+    this.setState(state => ({ ...state, content: 'Game', language, playersMemory: playersNames, players, timer, time: timeObj}));
   }
 
   getPlayers = (playersNames) => {    
@@ -73,8 +87,23 @@ export class App extends React.Component {
     return players
   }
 
+  removePlayer = (i) => {
+      const playersCoppy = [ ...this.state.players ];
+      const players = playersCoppy.filter((player, index) => {
+          return i !== index
+      })
+      console.log(players)
+      this.setState(state => ({ ...state, players}));
+  }
+
+  reorderPlayers = (index, newIndex) => {
+    const players = [ ...this.state.players];
+    players.splice(newIndex, 0, players.splice(index, 1)[0]);
+    this.setState((state) => ({ ...state, players}));
+  }
+
   alert = (type, alertMessage, action) => {
-    this.setState({showAlert: true, alert: {type, action, alertMessage}});
+    this.setState(state => ({ ...state, showAlert: true, alert: {type, action, alertMessage}}));
   }
 
   alertResponse = (response) => {
@@ -82,29 +111,29 @@ export class App extends React.Component {
       if(response === 'true') {
         switch(this.state.alert.action) {
           case 'game-finish-button':
-            this.setState({showAlert: false, content: 'SubtractPoints', alert: {type: '', action: '', alertMessage: ''}});
+            this.setState(state => ({ ...state, showAlert: false, content: 'SubtractPoints', alert: {type: '', action: '', alertMessage: ''}}));
         }
       } else {
-        this.setState({showAlert: false, alert: {type: '', alertMessage: '', action: ''}});
+        this.setState(state => ({ ...state, showAlert: false, alert: {type: '', alertMessage: '', action: ''}}));
       }
     } else if(this.state.alert.type === 'alert') {
-      this.setState({showAlert: false, alert: {type: '', alertMessage: '', action: ''}});
+      this.setState(state => ({ ...state, showAlert: false, alert: {type: '', alertMessage: '', action: ''}}));
     }
   }
   
   renderGameSummary = (players) => {
-    this.setState({content: 'GameSummary', players});
+    this.setState(state => ({ ...state, content: 'GameSummary', players}));
   }
 
   closeGame = () => {
-    this.setState({language: this.state.language, content: 'GameMenu', players: this.state.playersMemory});
+    this.setState(state => ({ ...state, language: this.state.language, content: 'GameMenu', players: this.state.playersMemory}));
   }
 
   getContent = () => { 
     let content = '';   
     switch(this.state.content) {
       case 'GameMenu':
-        content = <GameMenu alert={this.alert} language={this.state.language} startGame={this.startGame} players={this.state.players}/>
+        content = <GameMenu alert={this.alert} startGame={this.startGame} addPlayer={this.addPlayer} changeLanguage={this.changeLanguage} reorderPlayers={this.reorderPlayers} removePlayer={this.removePlayer} language={this.state.language} players={this.state.players} />
         break;
       case 'Game':
         content = <Game alert={this.alert} language={this.state.language} players={this.state.players} timer={this.state.timer} time={this.state.time}/>;

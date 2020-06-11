@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
 import i18next from 'i18next';
-import i18n from '../../../i18n';
 import Switch from '@material-ui/core/Switch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -12,23 +11,14 @@ export class GameMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            language: this.props.language,
             showLanguages: false,
             timer: false,
-            players: this.props.players,
             listSpace: null,
             caughtElement: null,
         }
     }
 
-    removePlayer = (i) => {
-        const players = this.state.players.filter((player, index) => {
-            return i !== index
-        })
-        this.setState({players})
-    }
-
-    addPlayer = (e) => {
+    addPlayerHandler = (e) => {
         e.preventDefault();
         const player = this.refs.playerName.value;
         const isPlayerExists = this.isPlayerExists(player);
@@ -43,31 +33,30 @@ export class GameMenu extends Component {
             this.props.alert('alert', alert);
             return
         }
-        if(this.state.players.length >= 4) {
+        if(this.props.players.length >= 4) {
             const alert = 'Max 4 players';
             this.props.alert('alert', alert);
             return
         }
-        let players = this.state.players;
-        players.push(player);
         const input = document.getElementById('player-name');
         input.value = '';
-        this.setState({players})
+        this.props.addPlayer(player);
     }
     
     isPlayerExists = (player) => {
         const LowPlayer = player.toLowerCase();
-        const statePlayers = this.state.players.map((player) => {
+        const propsPlayers = [ ...this.props.players ]
+        propsPlayers.map((player) => {
             const lowPlayer = player.toLowerCase();
             return lowPlayer
         })        
-        return statePlayers.includes(LowPlayer) ? true : false;
+        return propsPlayers.includes(LowPlayer);
     }
 
     validateForm = (e) => {
         e.preventDefault();
         let time = this.refs.time.value;
-        if(this.state.players.length < 2) {
+        if(this.props.players.length < 2) {
             const alert = 'Please add at least 2 players';
             this.props.alert('alert', alert)
             return 
@@ -83,32 +72,29 @@ export class GameMenu extends Component {
     }
 
     handleFormSubmit = (time) => {
-        const players = this.state.players;
+        const players = this.props.players;
         if(!this.state.timer) {
             time = false
         }
 
-        this.props.startGame(players, time, this.state.language);
+        this.props.startGame(time);
     }
 
     toggleTimeCheckbox = () => {
-        this.setState({timer: !this.state.timer});
+        this.setState(state => ({ ...state, timer: !this.state.timer}));
     }
 
     handleLanguageChange = (e) => {
         const language = e.currentTarget.id;
-        const html = document.getElementsByTagName('html');
-        html[0].lang = language;
-        this.setState({language})
-        i18n.changeLanguage(`${language}`);
+        this.props.changeLanguage(language);
     }
 
     toggleShowLanguages = () => {
-        this.setState({showLanguages: !this.state.showLanguages})
+        this.setState(state => ({ ...state, showLanguages: !this.state.showLanguages}));
     }
 
     render() {
-        const flag = `../src/img/${this.state.language}-flag.png`;
+        const flag = `../src/img/${this.props.language}-flag.png`;
         const timeInputClass = this.state.timer ? 'active' : '';
         const required = this.state.timer ? true : false;
         const languageClass = this.state.showLanguages ? 'active' : '';
@@ -141,11 +127,11 @@ export class GameMenu extends Component {
                     <p><Trans>Add player</Trans></p>                    
                     <div className="add-player">
                         <input id="player-name" type="text" autoComplete="false" spellCheck="false" ref="playerName"></input>
-                        <button className="add" onClick={this.addPlayer}>
+                        <button className="add" onClick={this.addPlayerHandler}>
                             <FontAwesomeIcon icon={faPlus} className="plus"/>
                         </button>
                     </div>
-                    <Players removePlayer={this.removePlayer} players={this.state.players} />
+                    <Players removePlayer={this.props.removePlayer} reorderPlayers={this.props.reorderPlayers} players={this.props.players} />
                     <button type="submit"><Trans>Start game</Trans></button>
                 </form>
             </div>

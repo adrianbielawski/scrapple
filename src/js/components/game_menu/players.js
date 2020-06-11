@@ -5,6 +5,7 @@ export class Players extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            initialListSpace: null,
             listSpace: null,
             grabbedElement: null,
             isTransitionEnableed: false,
@@ -12,42 +13,46 @@ export class Players extends Component {
         }
     }
 
-    toggelTransition = (val) => {
-        this.setState({isTransitionEnableed: val})
+    setTransition = (val) => {
+        this.setState(state => ({ ...state, isTransitionEnableed: val}));
     }
 
     setTouches = (val) => {
-        this.setState({touches: this.state.touches + val})
+        this.setState(state => ({ ...state, touches: this.state.touches + val}));
     }
 
-    setGrabbedElement = (index) => {
-        const touches = this.state.touches + 1;
-        this.setState({isTransitionEnableed: false, grabbedElement: index, initialListSpace: index -1, listSpace: index -1, touches})
+    setGrabbedElement = (index, eType) => {
+        const touches = eType === 'touchstart' && this.state.touches + 1;
+        this.setState(state => ({ ...state, grabbedElement: index, initialListSpace: index -1, listSpace: index -1, touches}));
     }
 
-    handleSpace = (distance) => {
+    addSpace = (distance) => {
         let listSpace = this.state.initialListSpace + distance;
         if(this.state.grabbedElement <= listSpace) {
             listSpace +=1;
         };
-        this.setState({listSpace});
+        this.setState(state => ({ ...state, listSpace}));
     }
 
-    handleDrop = (index, distance) => {
-        let players = this.props.players;
+    drop = (index, distance, eType) => {
+        let players = [ ...this.props.players];
         let newIndex = index + distance
         if(newIndex < 1) {
             newIndex = 0;
         } else if(newIndex >= players.length) {
             newIndex = players.length -1;
         }
-        const touches = this.state.touches - 1;
-        players.splice(newIndex, 0, players.splice(index, 1)[0]);
-        this.setState({players, grabbedElement: null, initialListSpace: -1, listSpace: null, touches})
+        let touches = 0;
+        if (eType === 'touchend') {
+            touches = this.state.touches - 1;
+        }
+        this.props.reorderPlayers(index, newIndex)
+        this.setState(state => ({ ...state, grabbedElement: null, initialListSpace: null, listSpace: null, touches}));
     }
 
     getPlayers = () => {
-        const players = this.props.players.map((player, index) => {
+        const propsPlayers = [ ...this.props.players ]
+        const players = propsPlayers.map((player, index) => {
             let bottomSpace = index === this.state.listSpace ? true : false;
             
             let topSpace = this.state.grabbedElement != 0 && this.state.listSpace < 0 && index === 0 ||
@@ -58,11 +63,11 @@ export class Players extends Component {
             const isOtherGrabbed = this.state.touches > 0 && index !== this.state.grabbedElement ? true : false;
 
             return <Player
-                handleDrop={this.handleDrop}
-                handleSpace={this.handleSpace}
+                drop={this.drop}
+                addSpace={this.addSpace}
                 setGrabbedElement={this.setGrabbedElement}
                 setTouches={this.setTouches}
-                toggelTransition={this.toggelTransition}
+                setTransition={this.setTransition}
                 removePlayer={this.props.removePlayer}
                 isOtherGrabbed={isOtherGrabbed}
                 isTransitionEnableed={this.state.isTransitionEnableed}
