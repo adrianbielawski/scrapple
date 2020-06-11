@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import '../../../styles/game-menu.scss';
 import { Players } from './players';
+import { Languages } from './languages';
 
 export class GameMenu extends Component {
     constructor(props) {
@@ -94,7 +95,6 @@ export class GameMenu extends Component {
     }
 
     render() {
-        const flag = `../src/img/${this.props.language}-flag.png`;
         const timeInputClass = this.state.timer ? 'active' : '';
         const required = this.state.timer ? true : false;
         const languageClass = this.state.showLanguages ? 'active' : '';
@@ -103,22 +103,7 @@ export class GameMenu extends Component {
             <div className="game-menu">
                 <h1><img src="../src/img/logo.jpg"></img></h1>
                 <form onSubmit={this.validateForm}>
-                    <div className="choose-language" onClick={this.toggleShowLanguages}>
-                        <div className="current-lang">
-                            <img src={flag}></img>
-                            <p><Trans>Language</Trans></p>
-                        </div>
-                        <div className={`languages ${languageClass}`}>
-                            <div className="language" onClick={this.handleLanguageChange} id="en-GB">
-                                <img src="../src/img/en-GB-flag.png"></img>
-                                <p>English</p>
-                            </div>
-                            <div className="language" onClick={this.handleLanguageChange} id="pl-PL">
-                                <img src="../src/img/pl-PL-flag.png"></img>
-                                <p>Polski</p>
-                            </div>
-                        </div>
-                    </div>
+                    <Languages toggleShowLanguages={this.toggleShowLanguages} handleLanguageChange={this.handleLanguageChange} languageClass={languageClass} language={this.props.language}/>
                     <div className="time-option" onClick={this.toggleTimeCheckbox}>
                         <Switch onChange={this.toggleTimeCheckbox} checked={this.state.timer}></Switch>
                         <p><Trans>Player's time limit</Trans></p>
