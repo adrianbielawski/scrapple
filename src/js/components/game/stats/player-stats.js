@@ -27,7 +27,6 @@ export class PlayerStats extends Component {
     render() {
         const player = this.props.player;
         const allPointsDisplay = this.state.displayAllPoints ? 'active' : '';
-        const roundPoints = this.getRoundPoints();
 
         return (
             <div className={`player-stats ${this.props.className}`}>
@@ -39,7 +38,7 @@ export class PlayerStats extends Component {
                 <div className={`all-points ${allPointsDisplay}`}>
                     <p>{<Trans>Best score</Trans>}: {player.bestScore}</p>
                     <ul>
-                        {roundPoints}
+                        {this.getRoundPoints()}
                     </ul>
                 </div>
             </div>

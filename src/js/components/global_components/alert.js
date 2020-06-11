@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
-import '../../../../styles/alert.scss';
+import '../../../styles/alert.scss';
 
 export class Alert extends Component {
     handleAlertResponse = (e) => {

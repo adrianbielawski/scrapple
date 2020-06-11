@@ -4,7 +4,7 @@ import { PlayerStats } from './player-stats';
 
 export class AllPlayers extends Component {
     render() {
-        const players = this.props.players;
+        const players = [ ...this.props.players];
         const currentPlayer = this.props.currentPlayer
 
         let playerStats = players.map((player, index) => {

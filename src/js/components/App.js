@@ -4,7 +4,7 @@ import i18n from '../../i18n';
 //Components
 import { Game } from './game/game';
 import { GameMenu } from './game_menu/game-menu';
-import { Alert } from './global_components/alerts/alert';
+import { Alert } from './global_components/alert';
 import { GameSummary } from './game_summary/game-summary';
 import { SubtractPoints } from './subtract_points/subtract_points';
 
@@ -16,12 +16,12 @@ export class App extends React.Component {
       language: 'en-GB',
       content: 'GameMenu',
       showAlert: false,
-      playersMemory: [],
-      players: ['Adrian', 'Joanna'],
+      playersNames: ['Adrian', 'Joanna'],
+      players: [],
       timer: false,
       time: {
         hours: '00',
-        minutes: '00',
+        minutes: '05',
         seconds: '00'
       },
       alert: {
@@ -33,15 +33,31 @@ export class App extends React.Component {
     this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
   }
 
+  setTime = (val) => {
+    let time = {};
+    let hrs = val.slice(0, 2);
+    let min = val.slice(3, 5);
+    let sec = val.slice(6, 8);
+    if(sec == '') {
+      sec= '00';
+    }
+    time.hours = hrs;
+    time.minutes = min;
+    time.seconds = sec;
+
+    this.setState(state => ({ ...state, time}));
+
+  }
+
   setInnerHeight = () => {
     const screenHeight = window.innerHeight;
     this.setState(state => ({ ...state, screenHeight}));
   }
 
   addPlayer = (player) => {
-      const players = [ ...this.state.players ];
-      players.push(player);
-      this.setState(state => ({ ...state, players}));
+      const playersNames = [ ...this.state.playersNames ];
+      playersNames.push(player);
+      this.setState(state => ({ ...state, playersNames}));
   }
 
   changeLanguage = (language) => {
@@ -51,28 +67,17 @@ export class App extends React.Component {
       i18n.changeLanguage(`${language}`);
   }
 
-  startGame = (playersNames, time, language) => {
-    let timeObj = {};
-    let timer = false;
-    if(time) {
-      let hrs = time.slice(0, 2);
-      let min = time.slice(3, 5);
-      let sec = time.slice(6, 8);
-      if(sec == '') {
-        sec= '00';
-      }
-      timeObj.hours = hrs;
-      timeObj.minutes = min;
-      timeObj.seconds = sec;
-      timer = true;
-    }
-
-    const players = this.getPlayers(playersNames);
-
-    this.setState(state => ({ ...state, content: 'Game', language, playersMemory: playersNames, players, timer, time: timeObj}));
+  toggleTimer = () => {
+      this.setState(state => ({ ...state, timer: !this.state.timer}));
   }
 
-  getPlayers = (playersNames) => {    
+  startGame = () => {
+    const players = this.getPlayers();
+    this.setState(state => ({ ...state, content: 'Game', players }));
+  }
+
+  getPlayers = () => {    
+    let playersNames = [ ...this.state.playersNames ];
     let players = playersNames.map((player, index) => {
       return {
         playerName: player,
@@ -88,18 +93,17 @@ export class App extends React.Component {
   }
 
   removePlayer = (i) => {
-      const playersCoppy = [ ...this.state.players ];
-      const players = playersCoppy.filter((player, index) => {
+      const playersNamesState = [ ...this.state.playersNames ];
+      const playersNames = playersNamesState.filter((player, index) => {
           return i !== index
       })
-      console.log(players)
-      this.setState(state => ({ ...state, players}));
+      this.setState(state => ({ ...state, playersNames}));
   }
 
   reorderPlayers = (index, newIndex) => {
-    const players = [ ...this.state.players];
-    players.splice(newIndex, 0, players.splice(index, 1)[0]);
-    this.setState((state) => ({ ...state, players}));
+    const playersNames = [ ...this.state.playersNames];
+    playersNames.splice(newIndex, 0, playersNames.splice(index, 1)[0]);
+    this.setState((state) => ({ ...state, playersNames}));
   }
 
   alert = (type, alertMessage, action) => {
@@ -122,18 +126,30 @@ export class App extends React.Component {
   }
   
   renderGameSummary = (players) => {
-    this.setState(state => ({ ...state, content: 'GameSummary', players}));
+    this.setState(state => ({ ...state, content: 'GameSummary', players }));
   }
 
   closeGame = () => {
-    this.setState(state => ({ ...state, language: this.state.language, content: 'GameMenu', players: this.state.playersMemory}));
+    this.setState(state => ({ ...state, language: this.state.language, content: 'GameMenu' }));
   }
 
   getContent = () => { 
     let content = '';   
     switch(this.state.content) {
       case 'GameMenu':
-        content = <GameMenu alert={this.alert} startGame={this.startGame} addPlayer={this.addPlayer} changeLanguage={this.changeLanguage} reorderPlayers={this.reorderPlayers} removePlayer={this.removePlayer} language={this.state.language} players={this.state.players} />
+        content = <GameMenu
+          alert={this.alert}
+          startGame={this.startGame}
+          addPlayer={this.addPlayer}
+          changeLanguage={this.changeLanguage}
+          toggleTimer={this.toggleTimer}
+          setTime={this.setTime}
+          reorderPlayers={this.reorderPlayers}
+          removePlayer={this.removePlayer}
+          language={this.state.language}
+          timer={this.state.timer}
+          time={this.state.time}
+          players={this.state.playersNames} />
         break;
       case 'Game':
         content = <Game alert={this.alert} language={this.state.language} players={this.state.players} timer={this.state.timer} time={this.state.time}/>;

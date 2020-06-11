@@ -50,6 +50,9 @@ html, body, div, span, h1, h2, p, a, ul, li {
   }
 
   button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     border: 1px solid darken($grey, 30);
     background: $mainGreen;
     color: #fff;
