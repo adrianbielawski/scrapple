@@ -83,7 +83,6 @@ export class App extends React.Component {
         playerName: player,
         playerId: index,
         currentScore: 0,
-        currentGamePoints: 0,
         bestScore: 0,
         allPoints: [],
       }

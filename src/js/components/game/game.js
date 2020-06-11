@@ -12,37 +12,35 @@ export class Game extends React.Component {
     this.state = {
       screenHeight: window.innerHeight,
       showWords: false,
-      game: {
-        currentPlayer: 0,
-        time: this.props.time,
-        players: this.props.players
-      }
+      currentPlayer: 0,
+      time: this.props.time,
+      players: this.props.players
     };
     this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
   }
 
   setInnerHeight = () => {
     const screenHeight = window.innerHeight;
-    this.setState({screenHeight});
+    this.setState(state => ({ ...state, screenHeight}));
   }
 
   addPoints = (points) => {
-    const currentPlayer = this.state.game.currentPlayer;
-    let game = this.state.game;
-    game.players[currentPlayer].currentScore += points;
-    game.players[currentPlayer].allPoints.push(points);
+    const currentPlayer = this.state.currentPlayer;
+    let players = [ ...this.state.players];
+    players[currentPlayer].currentScore += points;
+    players[currentPlayer].allPoints.push(points);
 
-    if(points > game.players[currentPlayer].bestScore) {
-      game.players[currentPlayer].bestScore = points;
+    if(points > players[currentPlayer].bestScore) {
+      players[currentPlayer].bestScore = points;
     }
 
-    if (currentPlayer < game.players.length -1) {
-      game.currentPlayer++;
+    if (currentPlayer < players.length -1) {
+      currentPlayer++;
     } else {
-      game.currentPlayer = 0;
+      currentPlayer = 0;
     }
-    this.scrollPlayersStats(game.currentPlayer);
-    this.setState({game})
+    this.scrollPlayersStats(currentPlayer);
+    this.setState(state => ({ ...state, players, currentPlayer}));
   }
 
   scrollPlayersStats = (currentPlayer) => {
@@ -51,15 +49,15 @@ export class Game extends React.Component {
   }
 
   timeOut = () => {
-    const currentPlayer = this.state.game.currentPlayer;
-    let game = this.state.game;
-    if (currentPlayer < game.players.length -1) {
-      game.currentPlayer++;
+    const currentPlayer = this.state.currentPlayer ;
+    let players = [ ...this.state.players ];
+    if (currentPlayer < players.length -1) {
+      currentPlayer++;
     } else {
-      game.currentPlayer = 0;
+      currentPlayer = 0;
     }
 
-    this.setState({game})
+    this.setState(state => ({ ...state, players, currentPlayer}));
   }
 
   handleGameFinish = (e) => {
@@ -70,24 +68,24 @@ export class Game extends React.Component {
     this.props.alert(type, alertMessage, action)
   }
 
-  toggleShowWords = (value) => {
-    this.setState({showWords: value})
+  toggleShowWords = () => {
+    this.setState(state => ({ ...state, showWords: !this.state.showWords}));
   }
 
   render() {
-    const currentPlayer = this.state.game.currentPlayer;
-    const players = this.state.game.players;
+    const currentPlayer = this.state.currentPlayer;
+    const players = this.state.players;
     const gameClass = this.state.showWords ? 'show-words' : '';
       
     return (
       <div className={`game ${gameClass}`}>
         <WordChecker language={this.props.language}/>
-        <TwoLetterWords toggleShowWords={this.toggleShowWords} language={this.props.language}/>
+        <TwoLetterWords toggleShowWords={this.toggleShowWords} showWords={this.state.showWords} language={this.props.language}/>
         <Stats
           timeOut={this.timeOut}
           addPoints={this.addPoints}
           timer={this.props.timer}
-          time={this.state.game.time}
+          time={this.state.time}
           currentPlayer={currentPlayer}
           players={players} />
         <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm"><Trans>Finish the game</Trans></button>

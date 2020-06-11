@@ -81,9 +81,9 @@ export class CurrentPlayer extends Component {
         return (
             <div className="current-player">
                 <p>
-                <Trans i18nKey="ItsTurnNow">
-                    It is <span>{{playerName}}</span>'s turn now
-                </Trans>!
+                    <Trans i18nKey="ItsTurnNow">
+                        It is <span>{{playerName}}</span>'s turn now
+                    </Trans>!
                 </p>
                 <div className={`timer ${shortTimeClass} ${timerDisplay}`}>
                     {this.state.timeLeft}

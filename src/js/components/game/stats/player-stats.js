@@ -12,7 +12,7 @@ export class PlayerStats extends Component {
     }
 
     toggleDisplayAllPoints = () => {
-        this.setState({displayAllPoints: !this.state.displayAllPoints});
+        this.setState(state => ({ ...state, displayAllPoints: !this.state.displayAllPoints}));
     }
 
     getRoundPoints = () => {

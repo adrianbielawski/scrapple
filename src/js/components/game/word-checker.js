@@ -32,11 +32,11 @@ export class WordChecker extends Component {
 
     checkWord = (word) => {
         if (word.length < 2) {
-            this.setState({fetching: false, valid: null });
+            this.setState(state => ({ ...state, fetching: false, valid: null }));
             return;
         };
     
-        this.setState({fetching: true, valid: null });        
+        this.setState(state => ({ ...state, fetching: true, valid: null })); 
 
         let url = '';
         let params = '';
@@ -57,10 +57,7 @@ export class WordChecker extends Component {
             response => response.text()
         ).then(
             response => {
-                this.setState({
-                    fetching: false,
-                    valid: response === '1' ? true : false,
-                });
+                this.setState(state => ({ ...state, fetching: false, valid: response === '1' ? true : false }));
             }
         );
     }
@@ -70,7 +67,13 @@ export class WordChecker extends Component {
         
         return (
             <div className="word-checker">
-                <input type="text" onClick={this.clearInput} onChange={this.handleInputChange} ref="word" placeholder={i18next.t("Check your word")} spellCheck="false" />
+                <input type="text"
+                    onClick={this.clearInput}
+                    onChange={this.handleInputChange}
+                    ref="word"
+                    placeholder={i18next.t("Check your word")}
+                    spellCheck="false"
+                />
                 <div className="resoult-img">
                     <img className="thumb" src={thumb}></img>
                 </div>
