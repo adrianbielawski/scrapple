@@ -26,7 +26,7 @@ export class Player extends Component {
     }
 
     toggleHover = () => {
-        this.setState(state => ({ ...state, isHovered: !this.state.isHovered}));
+        this.setState(state => ({ ...state, isHovered: !state.isHovered}));
     }
 
     handleGrab = (e) => {

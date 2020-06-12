@@ -50,10 +50,6 @@ export const GameSummary = (props) => {
         return playersSummary
     }
 
-    const closeGame = () => {
-        props.closeGame();
-    }
-
     return (
         <div className="game-summary">
             <Header />
@@ -61,7 +57,7 @@ export const GameSummary = (props) => {
             <ul className="results">
                 {getPlayersPositions()}
             </ul>
-            <button onClick={closeGame} value="exit"><Trans>Exit</Trans></button>
+            <button onClick={props.closeGame} value="exit"><Trans>Exit</Trans></button>
         </div>
     );
 }

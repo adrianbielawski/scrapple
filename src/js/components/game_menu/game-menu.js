@@ -76,7 +76,7 @@ export class GameMenu extends Component {
     }
 
     toggleShowLanguages = () => {
-        this.setState(state => ({ ...state, showLanguages: !this.state.showLanguages}));
+        this.setState(state => ({ ...state, showLanguages: !state.showLanguages}));
     }
 
     render() {

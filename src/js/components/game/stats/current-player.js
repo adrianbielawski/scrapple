@@ -58,7 +58,7 @@ export class CurrentPlayer extends Component {
             clearInterval(this.startTimer);
             setTimeout(this.timeOut, 1000);
         }
-        this.setState({timeLeft})
+        this.setState(state => ({ ...state, timeLeft}));
     }
 
     timeOut = () => {

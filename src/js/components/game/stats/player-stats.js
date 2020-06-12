@@ -4,19 +4,17 @@ import { Trans } from 'react-i18next';
 import { RoundPoints } from './round-points';
 
 export class PlayerStats extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            displayAllPoints: false,
-        }
+    state = {
+        displayAllPoints: false,
     }
 
     toggleDisplayAllPoints = () => {
-        this.setState(state => ({ ...state, displayAllPoints: !this.state.displayAllPoints}));
+        this.setState(state => ({ ...state, displayAllPoints: !state.displayAllPoints}));
     }
 
     getRoundPoints = () => {
-        let roundPoints = this.props.player.allPoints.map((points, index) => {
+        const allPoints = [ ...this.props.player.allPoints ]
+        const roundPoints = allPoints.map((points, index) => {
             return (
                 <RoundPoints round={index + 1} points={points} key={index}/>
             )

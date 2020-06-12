@@ -69,7 +69,7 @@ export class Game extends React.Component {
   }
 
   toggleShowWords = () => {
-    this.setState(state => ({ ...state, showWords: !this.state.showWords}));
+    this.setState(state => ({ ...state, showWords: !state.showWords}));
   }
 
   render() {

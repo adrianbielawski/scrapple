@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import i18next from 'i18next';
 import '../../../styles/word-checker.scss'
+import { LoadingSpinner } from '../global_components/loadingSpinner'
+
+const IMAGES = {
+    thumbUp: '../src/assets/img/thumb-up.png',
+    thumbDown: '../src/assets/img/thumb-down.png'
+}
 
 export class WordChecker extends Component {
     constructor(props) {
@@ -63,7 +69,11 @@ export class WordChecker extends Component {
     }
 
     render() {
-        const thumb = this.state.valid ? '../src/assets/img/thumb-up.png' : '../src/assets/img/thumb-down.png';
+        const thumb = this.state.valid ? IMAGES.thumbUp : IMAGES.thumbDown ;
+        let image = <img className="thumb" src={thumb}></img>;
+        if(this.state.fetching) {
+            image = <LoadingSpinner />
+        }
         
         return (
             <div className="word-checker">
@@ -72,10 +82,9 @@ export class WordChecker extends Component {
                     onChange={this.handleInputChange}
                     ref="word"
                     placeholder={i18next.t("Check your word")}
-                    spellCheck="false"
-                />
+                    spellCheck="false" />
                 <div className="resoult-img">
-                    <img className="thumb" src={thumb}></img>
+                    {image}
                 </div>
             </div>
         );
