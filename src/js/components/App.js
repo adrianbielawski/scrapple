@@ -1,12 +1,14 @@
 import React from 'react';
 import '../../styles/App.scss';
 import i18n from '../../i18n';
+import db from '../../firebase';
 //Components
 import { Game } from './game/game';
 import { GameMenu } from './game_menu/game-menu';
 import { Alert } from './global_components/alert';
 import { GameSummary } from './game_summary/game-summary';
 import { SubtractPoints } from './subtract_points/subtract_points';
+import { MainMenu } from './main_Menu/MainMenu';
 
 export class App extends React.Component {
   constructor(props) {
@@ -14,9 +16,9 @@ export class App extends React.Component {
     this.state = {
       screenHeight: window.innerHeight,
       language: 'en-GB',
-      content: 'GameMenu',
+      screen: 'MainMenu',
       showAlert: false,
-      playersNames: ['Adrian', 'Joanna'],
+      playersNames: [],
       players: [],
       timer: false,
       time: {
@@ -46,7 +48,6 @@ export class App extends React.Component {
     time.seconds = sec;
 
     this.setState(state => ({ ...state, time}));
-
   }
 
   setInnerHeight = () => {
@@ -68,12 +69,12 @@ export class App extends React.Component {
   }
 
   toggleTimer = () => {
-      this.setState(state => ({ ...state, timer: !this.state.timer}));
+      this.setState(state => ({ ...state, timer: !state.timer}));
   }
 
   startGame = () => {
     const players = this.getPlayers();
-    this.setState(state => ({ ...state, content: 'Game', players }));
+    this.createNewGame(players);
   }
 
   getPlayers = () => {    
@@ -93,7 +94,7 @@ export class App extends React.Component {
 
   removePlayer = (i) => {
       const playersNamesState = [ ...this.state.playersNames ];
-      const playersNames = playersNamesState.filter((player, index) => {
+      const playersNames = playersNamesState.filter((_, index) => {
           return i !== index
       })
       this.setState(state => ({ ...state, playersNames}));
@@ -114,7 +115,7 @@ export class App extends React.Component {
       if(response === 'true') {
         switch(this.state.alert.action) {
           case 'game-finish-button':
-            this.setState(state => ({ ...state, showAlert: false, content: 'SubtractPoints', alert: {type: '', action: '', alertMessage: ''}}));
+            this.setState(state => ({ ...state, showAlert: false, screen: 'SubtractPoints', alert: {type: '', action: '', alertMessage: ''}}));
         }
       } else {
         this.setState(state => ({ ...state, showAlert: false, alert: {type: '', alertMessage: '', action: ''}}));
@@ -125,18 +126,61 @@ export class App extends React.Component {
   }
   
   renderGameSummary = (players) => {
-    this.setState(state => ({ ...state, content: 'GameSummary', players }));
+    this.setState(state => ({ ...state, screen: 'GameSummary', players }));
   }
 
   closeGame = () => {
-    this.setState(state => ({ ...state, language: this.state.language, content: 'GameMenu' }));
+    this.setState(state => ({ ...state, screen: 'GameMenu' }));
+  }
+
+  showGameMenu = () => {
+    this.setState(state => ({ ...state, screen: 'GameMenu' }));
+  }
+
+  createNewGame = (players) => {
+    const game = {
+      players: players,
+      language: this.state.language,
+      timer: this.state.timer,
+      time: this.state.time,
+      currentPlayer: 0
+    }
+
+    db.collection('games').add(game).then((response) => {
+        const gameId = response.id
+        console.log(gameId)
+        this.setState(state => ({ ...state, screen: 'Game', players, gameId }));
+      }
+    ).catch(error => {
+      console.log(error)
+    });
+  }
+
+  joinGame = (d, gameId) => {
+    let data = d;
+    data.players.map(player => {
+      player.allPoints = []
+    })
+    this.setState(state => ({
+      ...state,
+      gameId,
+      language: data.language,
+      players: data.players,
+      timer: data.timer,
+      time: data.time,
+      currentPlayer: data.currentPlayer,
+      screen: 'Game',
+    }))
   }
 
   getContent = () => { 
-    let content = '';   
-    switch(this.state.content) {
+    let screen = '';   
+    switch(this.state.screen) {
+      case 'MainMenu':
+        screen = <MainMenu showGameMenu={this.showGameMenu} joinGame={this.joinGame}/>
+        break;
       case 'GameMenu':
-        content = <GameMenu
+        screen = <GameMenu
           alert={this.alert}
           startGame={this.startGame}
           addPlayer={this.addPlayer}
@@ -151,20 +195,20 @@ export class App extends React.Component {
           players={this.state.playersNames} />
         break;
       case 'Game':
-        content = <Game alert={this.alert} language={this.state.language} players={this.state.players} timer={this.state.timer} time={this.state.time}/>;
+        screen = <Game alert={this.alert} gameId={this.state.gameId} language={this.state.language} players={this.state.players} timer={this.state.timer} time={this.state.time}/>;
         break;
       case 'SubtractPoints':
-        content = <SubtractPoints renderGameSummary={this.renderGameSummary} players={this.state.players} />
+        screen = <SubtractPoints renderGameSummary={this.renderGameSummary} players={this.state.players} />
         break;
       case 'GameSummary':
-        content = <GameSummary closeGame={this.closeGame} players={this.state.players} />
+        screen = <GameSummary closeGame={this.closeGame} players={this.state.players} />
         break;
     }
-    return content
+    return screen
   }
 
   render() {
-    let content = this.getContent();    
+    let screen = this.getContent();    
     let alert = '';    
     if(this.state.showAlert) {
       alert = <Alert alertResponse={this.alertResponse}
@@ -174,7 +218,7 @@ export class App extends React.Component {
     return (
       <div className="App" style={{height: this.state.screenHeight}}>
         {alert}
-        {content}
+        {screen}
       </div>
     );
   }

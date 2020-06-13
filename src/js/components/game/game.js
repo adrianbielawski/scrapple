@@ -5,6 +5,7 @@ import '../../../styles/game.scss';
 import {WordChecker} from './word-checker';
 import {Stats} from './stats/stats';
 import { TwoLetterWords } from './two-letter-words';
+import db from '../../../firebase';
 
 export class Game extends React.Component {
   constructor(props) {
@@ -12,11 +13,19 @@ export class Game extends React.Component {
     this.state = {
       screenHeight: window.innerHeight,
       showWords: false,
+      gameId: this.props.gameId,
       currentPlayer: 0,
       time: this.props.time,
       players: this.props.players
     };
     this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
+  }
+
+  componentDidMount() {
+    db.collection('games').doc(this.state.gameId).onSnapshot(doc => {
+      const data = doc.data();
+      this.setState(state => ({ ...state, players: data.players, currentPlayer: data.currentPlayer}))
+    })
   }
 
   setInnerHeight = () => {
@@ -41,7 +50,18 @@ export class Game extends React.Component {
     }
     this.scrollPlayersStats(currentPlayer);
     this.setState(state => ({ ...state, players, currentPlayer}));
+    db.collection('games').doc(this.state.gameId).update({
+      players: players,
+      currentPlayer: currentPlayer
+    }).then(
+      response => {
+        console.log(response)
+      }
+    ).catch(error => {
+      console.log(error)
+    });
   }
+
 
   scrollPlayersStats = (currentPlayer) => {
     const playerStats = document.getElementsByClassName('player-stats');
@@ -88,6 +108,7 @@ export class Game extends React.Component {
           time={this.state.time}
           currentPlayer={currentPlayer}
           players={players} />
+        <p>{this.state.gameId}</p>
         <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm"><Trans>Finish the game</Trans></button>
       </div>
     );
