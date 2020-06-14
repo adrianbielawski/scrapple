@@ -150,7 +150,6 @@ export class App extends React.Component {
       language: this.state.language,
       currentPlayer: 0
     }
-    console.log(game)
     const gameId = Math.floor(Math.random() * 1000000).toString()
 
     db.collection('games').doc(gameId).set(game).then(() => {
@@ -167,8 +166,11 @@ export class App extends React.Component {
       player.allPoints = []
     })
 
+    if(this.state.language !== data.language) {
+      this.changeLanguage(data.language)
+    }
+
     if(data.timer) {
-      console.log('timer')
       this.setState(state => ({
         ...state,
         gameId,
@@ -222,7 +224,7 @@ export class App extends React.Component {
           admin={this.state.admin} 
           language={this.state.language} 
           players={this.state.players}
-          timer={this.state.timer && null}
+          timer={this.state.timer ? this.state.timer : null}
           time={this.state.timer ? this.state.time : null}
           endTime={this.state.timer ? this.state.endTime : null}/>;
         break;
