@@ -1,5 +1,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
+import Moment from 'react-moment';//important
+import moment from 'moment';
 import '../../../styles/game.scss';
 //Components
 import {WordChecker} from './word-checker';
@@ -12,19 +14,27 @@ export class Game extends React.Component {
     super(props);
     this.state = {
       screenHeight: window.innerHeight,
+      admin: this.props.admin,
       showWords: false,
       gameId: this.props.gameId,
       currentPlayer: 0,
       time: this.props.time,
+      endTime: !this.props.admin ? this.props.endTime : this.getEndTime(),
       players: this.props.players
     };
     this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
   }
 
   componentDidMount() {
+    if (this.state.admin == true && this.props.timer) {      
+      db.collection('games').doc(this.state.gameId).update({
+        endTime: this.state.endTime
+      });
+    }
     db.collection('games').doc(this.state.gameId).onSnapshot(doc => {
       const data = doc.data();
-      this.setState(state => ({ ...state, players: data.players, currentPlayer: data.currentPlayer}))
+      const endTime = data.endTime
+      this.setState(state => ({ ...state, players: data.players, currentPlayer: data.currentPlayer, endTime: endTime }))
     })
   }
 
@@ -41,43 +51,55 @@ export class Game extends React.Component {
 
     if(points > players[currentPlayer].bestScore) {
       players[currentPlayer].bestScore = points;
-    }
+    };
 
     if (currentPlayer < players.length -1) {
       currentPlayer++;
     } else {
       currentPlayer = 0;
-    }
+    };
+
+    const endTime = this.props.timer ? this.getEndTime() : null;
+
     this.scrollPlayersStats(currentPlayer);
-    this.setState(state => ({ ...state, players, currentPlayer}));
     db.collection('games').doc(this.state.gameId).update({
       players: players,
-      currentPlayer: currentPlayer
-    }).then(
-      response => {
-        console.log(response)
-      }
-    ).catch(error => {
-      console.log(error)
+      currentPlayer: currentPlayer,
+      endTime: endTime
     });
   }
-
 
   scrollPlayersStats = (currentPlayer) => {
     const playerStats = document.getElementsByClassName('player-stats');
     playerStats[currentPlayer].scrollIntoView();
   }
 
+  getEndTime = () => {
+    if(!this.props.timer) {
+      return null
+    }
+    const endTime = moment().add({
+        'hours': this.props.time.hours,
+        'minutes': this.props.time.minutes,
+        'seconds': this.props.time.seconds
+    });
+    return endTime.toJSON();
+  }
+
   timeOut = () => {
-    const currentPlayer = this.state.currentPlayer ;
+    let currentPlayer = this.state.currentPlayer ;
     let players = [ ...this.state.players ];
     if (currentPlayer < players.length -1) {
       currentPlayer++;
     } else {
       currentPlayer = 0;
     }
-
-    this.setState(state => ({ ...state, players, currentPlayer}));
+    const endTime = this.props.timer ? this.getEndTime() : null;
+    db.collection('games').doc(this.state.gameId).update({
+      players: players,
+      currentPlayer: currentPlayer,
+      endTime: endTime
+    });
   }
 
   handleGameFinish = (e) => {
@@ -104,11 +126,12 @@ export class Game extends React.Component {
         <Stats
           timeOut={this.timeOut}
           addPoints={this.addPoints}
+          endTime={this.state.endTime}
           timer={this.props.timer}
           time={this.state.time}
           currentPlayer={currentPlayer}
           players={players} />
-        <p>{this.state.gameId}</p>
+        <p><strong style={{color: 'red'}}>{this.state.gameId}</strong></p>
         <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm"><Trans>Finish the game</Trans></button>
       </div>
     );

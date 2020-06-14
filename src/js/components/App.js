@@ -138,18 +138,23 @@ export class App extends React.Component {
   }
 
   createNewGame = (players) => {
-    const game = {
+    const game = this.state.timer ? {
       players: players,
       language: this.state.language,
+      currentPlayer: 0,
       timer: this.state.timer,
       time: this.state.time,
+      endTime: null
+    } : {
+      players: players,
+      language: this.state.language,
       currentPlayer: 0
     }
+    console.log(game)
+    const gameId = Math.floor(Math.random() * 1000000).toString()
 
-    db.collection('games').add(game).then((response) => {
-        const gameId = response.id
-        console.log(gameId)
-        this.setState(state => ({ ...state, screen: 'Game', players, gameId }));
+    db.collection('games').doc(gameId).set(game).then(() => {
+        this.setState(state => ({ ...state, screen: 'Game', players, gameId, admin: true }));
       }
     ).catch(error => {
       console.log(error)
@@ -161,19 +166,35 @@ export class App extends React.Component {
     data.players.map(player => {
       player.allPoints = []
     })
-    this.setState(state => ({
-      ...state,
-      gameId,
-      language: data.language,
-      players: data.players,
-      timer: data.timer,
-      time: data.time,
-      currentPlayer: data.currentPlayer,
-      screen: 'Game',
-    }))
+
+    if(data.timer) {
+      console.log('timer')
+      this.setState(state => ({
+        ...state,
+        gameId,
+        admin: false,
+        language: data.language,
+        players: data.players,
+        timer: data.timer,
+        time: data.time,
+        endTime: data.endTime,
+        currentPlayer: data.currentPlayer,
+        screen: 'Game',
+      }))
+    } else {
+      this.setState(state => ({
+        ...state,
+        gameId,
+        admin: false,
+        language: data.language,
+        players: data.players,
+        currentPlayer: data.currentPlayer,
+        screen: 'Game',
+      }))
+    }
   }
 
-  getContent = () => { 
+  getContent = () => {
     let screen = '';   
     switch(this.state.screen) {
       case 'MainMenu':
@@ -195,7 +216,15 @@ export class App extends React.Component {
           players={this.state.playersNames} />
         break;
       case 'Game':
-        screen = <Game alert={this.alert} gameId={this.state.gameId} language={this.state.language} players={this.state.players} timer={this.state.timer} time={this.state.time}/>;
+        screen = <Game 
+          alert={this.alert} 
+          gameId={this.state.gameId} 
+          admin={this.state.admin} 
+          language={this.state.language} 
+          players={this.state.players}
+          timer={this.state.timer && null}
+          time={this.state.timer ? this.state.time : null}
+          endTime={this.state.timer ? this.state.endTime : null}/>;
         break;
       case 'SubtractPoints':
         screen = <SubtractPoints renderGameSummary={this.renderGameSummary} players={this.state.players} />

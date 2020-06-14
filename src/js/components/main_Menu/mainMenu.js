@@ -7,9 +7,8 @@ import { Header } from '../global_components/header';
 
 export const MainMenu = (props) => {
     const gameIdInput = useRef(null)
-    const joinGame = () => {
+    const handleJoinGame = () => {
         const gameId = gameIdInput.current.value;
-        console.log(typeof gameId)
         
         db.collection('games').doc(gameId).get().then((response) => {
             if (response.exists) {
@@ -30,7 +29,7 @@ export const MainMenu = (props) => {
                 <button onClick={() => props.showGameMenu()}><Trans>Create new game</Trans></button>
                 <div className="join-game">
                     <input placeholder={i18Next.t("Game ID")} ref={gameIdInput}></input>
-                    <button onClick={joinGame}><Trans>Join the game</Trans></button>
+                    <button onClick={handleJoinGame}><Trans>Join the game</Trans></button>
                 </div>
             </div>
         </div>

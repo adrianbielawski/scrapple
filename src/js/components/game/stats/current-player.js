@@ -10,17 +10,21 @@ export class CurrentPlayer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            timer: this.props.time,
-            timeLeft: this.props.timeLeft
+            timeLeft: null
         }
         this.beep = new Audio('../../../../src/assets/audio/beep.mp3');
         this.longBeep = new Audio('../../../../src/assets/audio/long-beep.mp3');
-        this.endTime = this.getEndTime();
         this.startTimer = this.props.timer ? setInterval(this.updateTimer, 1000) : '';
     }
 
     componentWillUnmount = () => {
         clearInterval(this.startTimer);
+    }
+    
+    componentDidMount() {
+        if(this.props.timer) {
+            this.updateTimer();
+        }
     }
 
     handleSubmit = (e) => {
@@ -31,18 +35,9 @@ export class CurrentPlayer extends Component {
         e.target.reset();
     }
 
-    getEndTime = () => {
-        const endTime = moment().add({
-            'hours': this.state.timer.hours,
-            'minutes': this.state.timer.minutes,
-            'seconds': this.state.timer.seconds
-        });        
-        return endTime;
-    }
-
     updateTimer = () => {
         const now = moment();
-        const diff = this.endTime.diff(now);
+        const diff = moment(this.props.endTime).diff(now);
         const duration = moment.duration(diff);
         let timeLeft = duration > 3590000 ? duration.format('HH:mm:ss') : duration.format('mm:ss',{trim: false});
 
