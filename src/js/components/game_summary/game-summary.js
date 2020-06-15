@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Trans } from 'react-i18next';
 import '../../../styles/game-summary.scss';
 //Components
 import { PlayerSummary } from './player-summary';
 import { Header } from '../global_components/header';
+import ExitOptions from './exit-options';
 
 export const GameSummary = (props) => {
+    const [showExitOptions, setShowExitOptions] = useState(false)
     const getPlayersPositions = () => {
         let players = [ ...props.players];
         players.sort((a, b) => {
@@ -50,14 +52,22 @@ export const GameSummary = (props) => {
         return playersSummary
     }
 
+    const handleExit = () => {
+        setShowExitOptions(true)
+    }
+
     return (
         <div className="game-summary">
+            {showExitOptions ? <ExitOptions 
+                playAgain={props.playAgain}
+                playAgainSettings={props.playAgainSettings}
+                exitGame={props.exitGame} /> : null}
             <Header />
             <h2><Trans>Game results</Trans></h2>
             <ul className="results">
                 {getPlayersPositions()}
             </ul>
-            <button onClick={props.closeGame} value="exit"><Trans>Exit</Trans></button>
+            <button onClick={handleExit}><Trans>Exit</Trans></button>
         </div>
     );
 }

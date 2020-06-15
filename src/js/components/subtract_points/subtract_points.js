@@ -1,5 +1,6 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
+import db from '../../../firebase';
 import '../../../styles/game-summary.scss';
 //Components
 import { PlayerSubPoints } from '../subtract_points/player-subtract-points';
@@ -13,6 +14,10 @@ export const SubtractPoints = (props) => {
             const inputVal = document.getElementById(`sub-points${index}`).value;
             let newPlayer = player.currentScore -= inputVal;
             return newPlayer
+        });
+        db.collection('games').doc(props.gameId).update({
+          players: players,
+          pointsSubtracted: true
         });
         props.renderGameSummary(players)
     }
@@ -32,7 +37,7 @@ export const SubtractPoints = (props) => {
             <ul className="results">
                 {getPlayers()}
             </ul>
-            <button onClick={subPoints} value="exit"><Trans>Continue</Trans></button>
+            <button onClick={subPoints}><Trans>Continue</Trans></button>
         </div>
     );
 }

@@ -8,6 +8,7 @@ import {WordChecker} from './word-checker';
 import {Stats} from './stats/stats';
 import { TwoLetterWords } from './two-letter-words';
 import db from '../../../firebase';
+import FinishedGameCover from './finished-game-cover';
 
 export class Game extends React.Component {
   constructor(props) {
@@ -16,26 +17,26 @@ export class Game extends React.Component {
       screenHeight: window.innerHeight,
       admin: this.props.admin,
       showWords: false,
-      gameId: this.props.gameId,
       currentPlayer: 0,
       time: this.props.time,
-      endTime: !this.props.admin ? this.props.endTime : this.getEndTime(),
+      endTime: this.props.endTime,
       players: this.props.players
     };
     this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
   }
 
   componentDidMount() {
-    if (this.state.admin == true && this.props.timer) {      
-      db.collection('games').doc(this.state.gameId).update({
-        endTime: this.state.endTime
-      });
-    }
-    db.collection('games').doc(this.state.gameId).onSnapshot(doc => {
+    db.collection('games').doc(this.props.gameId).onSnapshot(doc => {
       const data = doc.data();
       const endTime = data.endTime
-      this.setState(state => ({ ...state, players: data.players, currentPlayer: data.currentPlayer, endTime: endTime }))
-    })
+      if(!data.pointsSubtracted && !data.gameFinished) {
+        this.setState(state => ({ ...state, players: data.players, currentPlayer: data.currentPlayer, endTime: endTime }))
+      } else if(!data.pointsSubtracted && data.gameFinished){
+        this.props.handleFinishGame()
+      } else if(data.pointsSubtracted && data.gameFinished){
+        this.props.renderGameSummary(data.players)
+      }
+    });
   }
 
   setInnerHeight = () => {
@@ -62,7 +63,7 @@ export class Game extends React.Component {
     const endTime = this.props.timer ? this.getEndTime() : null;
 
     this.scrollPlayersStats(currentPlayer);
-    db.collection('games').doc(this.state.gameId).update({
+    db.collection('games').doc(this.props.gameId).update({
       players: players,
       currentPlayer: currentPlayer,
       endTime: endTime
@@ -75,9 +76,6 @@ export class Game extends React.Component {
   }
 
   getEndTime = () => {
-    if(!this.props.timer) {
-      return null
-    }
     const endTime = moment().add({
         'hours': this.props.time.hours,
         'minutes': this.props.time.minutes,
@@ -95,7 +93,7 @@ export class Game extends React.Component {
       currentPlayer = 0;
     }
     const endTime = this.props.timer ? this.getEndTime() : null;
-    db.collection('games').doc(this.state.gameId).update({
+    db.collection('games').doc(this.props.gameId).update({
       players: players,
       currentPlayer: currentPlayer,
       endTime: endTime
@@ -121,6 +119,7 @@ export class Game extends React.Component {
       
     return (
       <div className={`game ${gameClass}`}>
+        {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
         <WordChecker language={this.props.language}/>
         <TwoLetterWords toggleShowWords={this.toggleShowWords} showWords={this.state.showWords} language={this.props.language}/>
         <Stats
@@ -131,8 +130,9 @@ export class Game extends React.Component {
           time={this.state.time}
           currentPlayer={currentPlayer}
           players={players} />
-        <p><strong style={{color: 'red'}}>{this.state.gameId}</strong></p>
-        <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm"><Trans>Finish the game</Trans></button>
+        <p><strong style={{color: 'red'}}>{this.props.gameId}</strong></p>
+        {this.props.admin ? 
+          <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm"><Trans>Finish the game</Trans></button> : null }
       </div>
     );
   }

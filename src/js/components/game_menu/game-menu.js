@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
 import i18next from 'i18next';
+import db from '../../../firebase';
 import '../../../styles/game-menu.scss';
 import { Players } from './players/players';
 import { Languages } from './languages';
 import { Timer } from './timer';
 import { AddPlayer } from './add-player';
 import { Header } from '../global_components/header';
+import Confirmation from './confirmation';
 
 export class GameMenu extends Component {
     constructor(props) {
@@ -15,6 +17,8 @@ export class GameMenu extends Component {
             showLanguages: false,
             listSpace: null,
             caughtElement: null,
+            showConfirmation: false,
+            allPlayersJoined: false
         }
     }
 
@@ -67,7 +71,17 @@ export class GameMenu extends Component {
                 return
             }
         }
-        this.props.startGame();
+        const gameId = Math.floor(Math.random() * 1000000).toString()
+        this.props.handleCreateNewGame(gameId);
+        if(this.props.timer) {
+            db.collection('games').doc(gameId).onSnapshot(doc => {
+            const data = doc.data();
+            if(data.joinedPlayers.length >= this.props.players.length) {
+                this.setState(state => ({ ...state, allPlayersJoined: true }))
+            }
+            })
+            this.setState(state => ({ ...state, showConfirmation: !state.showConfirmation}))
+        }
     }
 
     handleLanguageChange = (e) => {
@@ -84,6 +98,12 @@ export class GameMenu extends Component {
 
         return (
             <div className="game-menu">
+                {this.state.showConfirmation ? 
+                    <Confirmation 
+                        gameId={this.props.gameId} 
+                        handleGameStart={this.props.startAdminGame} 
+                        allPlayersJoined={this.state.allPlayersJoined}
+                    /> : null}
                 <Header />
                 <div className="menu">
                     <Languages
@@ -95,7 +115,7 @@ export class GameMenu extends Component {
                     <Timer toggleTimer={this.props.toggleTimer} setTime={this.props.setTime} timer={this.props.timer} />
                     <AddPlayer validatePlayerName={this.validatePlayerName} alert={this.props.alert} />
                     <Players removePlayer={this.props.removePlayer} reorderPlayers={this.props.reorderPlayers} players={this.props.players} />
-                    <button onClick={this.validateSettings} type="submit"><Trans>Start game</Trans></button>
+                    <button onClick={this.validateSettings} type="submit"><Trans>Create game</Trans></button>
                 </div>
             </div>
         );

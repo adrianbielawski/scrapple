@@ -10,6 +10,14 @@
         text-transform: uppercase;
         display: block;
     }
+    .card {
+        justify-content: center;
+        button {
+            margin: 30px auto;
+            height: auto;
+            max-width: 95%;
+        }
+    }
 
     .results {
         text-align: center;
