@@ -20,6 +20,7 @@ export class App extends React.Component {
       screenHeight: window.innerHeight,
       gameStarted: false,
       showFinishedGameCover: false,
+      playedAgain: false,
       language: 'en-GB',
       screen: 'MainMenu',
       showAlert: false,
@@ -39,6 +40,10 @@ export class App extends React.Component {
       },
     }
     this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
+  }
+  
+  componentWillUnmount(){
+    this.unsubscribe();
   }
 
   setTime = (val) => {
@@ -104,7 +109,7 @@ export class App extends React.Component {
             this.handleFinishGame()
         }
       } else {
-        this.setState(state => ({ ...state, showAlert: false, alert: {type: '', alertMessage: '', action: ''}}));
+        this.setState(state => ({ ...state, showAlert: false, alert: {type: '', alertMessage: '', action: ''}})); 
       }
     } else if(this.state.alert.type === 'alert') {
       this.setState(state => ({ ...state, showAlert: false, alert: {type: '', alertMessage: '', action: ''}}));
@@ -119,6 +124,7 @@ export class App extends React.Component {
       if(this.state.admin) {
         db.collection('games').doc(this.state.gameId).update({
           gameFinished: true,
+          exitOption: null,
         });
         this.setState(state => ({ ...state, screen: 'SubtractPoints', players, showAlert: false, alert: {type: '', action: '', alertMessage: ''}}));
       } else {
@@ -129,48 +135,6 @@ export class App extends React.Component {
   
   renderGameSummary = (players) => {
     this.setState(state => ({ ...state, screen: 'GameSummary', players }));
-  }
-
-  exitGame = () => {
-    this.setState(state => ({
-      ...state,
-      screen: 'MainMenu',
-      gameId: null,
-      admin: false,
-      gameStarted: false,
-      showFinishedGameCover: false,
-      playersNames: [],
-      players: [],
-      timer: false,
-      time: {
-        hours: '00',
-        minutes: '05',
-        seconds: '00'
-      },
-      initialEndTime: null
-    }));
-  }
-
-  handlePlayAgainSettings = () => {
-    this.setState(state => ({
-      ...state,
-      screen: 'GameMenu',
-      gameStarted: false,
-      showFinishedGameCover: false,
-      players: [],
-      initialEndTime: null
-    }));
-  }
-
-  handlePlayAgain = () => {
-    const players = this.getPlayers();
-    this.setState(state => ({
-      ...state,
-      screen: 'Game',
-      showFinishedGameCover: false,
-      players,
-      initialEndTime: null
-    }));
   }
 
   showGameMenu = () => {
@@ -206,20 +170,22 @@ export class App extends React.Component {
       currentPlayer: 0,
       timer: this.state.timer,
       time: this.state.time,
-      endTime: null
+      endTime: null,
+      exitOption: this.state.playedAgainWithSettings ? 'playAgainWithSettings' : null
     } : {
       gameStarted: true,
       players: players,
       joinedPlayers: [1],
       language: this.state.language,
-      currentPlayer: 0
+      currentPlayer: 0,
+      exitOption: this.state.playedAgainWithSettings ? 'playAgainWithSettings' : null
     }
 
     db.collection('games').doc(gameId).set(game).then(() => {
       if(this.state.timer) {
-        this.setState(state => ({ ...state, players, gameId, admin: true }));
+        this.setState(state => ({ ...state, players, gameId, admin: true, exitOption: false }));
       } else {
-        this.setState(state => ({ ...state, players, gameId, admin: true, gameStarted: true, screen: 'Game' }));
+        this.setState(state => ({ ...state, players, gameId, admin: true, gameStarted: true, exitOption: false, screen: 'Game' }));
       }
     }).catch(error => {
       console.log(error)
@@ -230,17 +196,18 @@ export class App extends React.Component {
     db.collection('games').doc(gameId).get().then((response) => {
       const data = response.data();
       if(data.timer) {
+        console.log('kjsdfkjhsdf')
         const random = Math.floor(Math.random() * 100000).toString();
         
         db.collection('games').doc(gameId).update({'joinedPlayers': firebase.firestore.FieldValue.arrayUnion(random)}).then(() => {
           this.setState(state => ({ ...state, gameId }));
         
-          db.collection('games').doc(gameId).onSnapshot(doc => {
+          this.unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
             const data = doc.data();
             if(data.gameStarted == true) {
               this.startJoinedPlayerGameWithTimer();
             }
-          })
+          });
         }).catch(error => {
           console.log(error)
         });
@@ -252,12 +219,17 @@ export class App extends React.Component {
     });
   }
 
+  getInitialEndTime = () => {
+    const time = moment().add({
+      'hours': this.state.time.hours,
+      'minutes': this.state.time.minutes,
+      'seconds': this.state.time.seconds
+    }).toJSON()
+    return time
+  }
+
   startAdminGame = () => {
-    const endTime = this.state.timer ? moment().add({
-        'hours': this.state.time.hours,
-        'minutes': this.state.time.minutes,
-        'seconds': this.state.time.seconds
-    }).toJSON() : null
+    const endTime = this.state.timer ? this.getInitialEndTime() : null;
 
     db.collection('games').doc(this.state.gameId).update({gameStarted: true, endTime: endTime}).then(() => {
       this.setState(state => ({ ...state, screen: 'Game', initialEndTime: endTime }));
@@ -270,7 +242,7 @@ export class App extends React.Component {
   startJoinedPlayerGameWithTimer = () => {
     db.collection('games').doc(this.state.gameId).get().then((response) => {
       const data = response.data();
-      this.startJoinedPlayerGame(data)
+      this.startJoinedPlayerGame(data, this.state.gameId)
     }).catch(error => {
         console.log(error)
     });
@@ -306,6 +278,108 @@ export class App extends React.Component {
     }
   }
 
+  exitGame = () => {
+    if(this.state.admin) {
+      db.collection('games').doc(this.state.gameId).set({
+        exitOption: 'exitGame',
+      });
+    }
+
+    this.setState(state => ({
+      ...state,
+      screen: 'MainMenu',
+      gameId: null,
+      admin: false,
+      gameStarted: false,
+      showFinishedGameCover: false,
+      playersNames: [],
+      players: [],
+      timer: false,
+      time: {
+        hours: '00',
+        minutes: '05',
+        seconds: '00'
+      },
+      initialEndTime: null
+    }));
+  }
+
+  playAgainSettings = () => {
+    if(this.state.admin) {
+      db.collection('games').doc(this.state.gameId).update({
+        showFinishedGameCover: false,
+        gameStarted: false,
+        gameFinished: false,
+        pointsSubtracted: false,
+        joinedPlayers: [],
+        players: [],
+        exitOption: 'playAgainWithSettings'
+      }).then(() => {
+        this.setState(state => ({
+          ...state,
+          screen: 'GameMenu',
+          showFinishedGameCover: false,
+          gameStarted: false,
+          playedAgain: true,
+          playedAgainWithSettings: true,
+        }));
+      }).catch(error => {
+          console.log(error)
+      });
+    } else {
+      db.collection('games').doc(this.state.gameId).get().then((response) => {
+        const data = response.data();
+        console.log(data)
+        this.setState(state => ({
+          ...state,
+          screen: 'MainMenu',
+          showFinishedGameCover: false,
+          gameStarted: data.timer ? false : true,
+          timer: data.timer,
+          time: data.time,
+          initialEndTime: data.endTime,
+        }));
+        this.joinGame(this.state.gameId);
+      });
+    };
+  }
+
+  playAgain = () => {
+    if(this.state.admin) {
+      const players = this.getPlayers();
+
+      db.collection('games').doc(this.state.gameId).update({
+        showFinishedGameCover: false,
+        gameStarted: false,
+        gameFinished: false,
+        pointsSubtracted: false,
+        joinedPlayers: [1],
+        players,
+        exitOption: 'playAgain'
+      }).then(() => {
+        this.setState(state => ({
+          ...state,
+          screen: state.timer ? 'GameMenu' : 'Game',
+          showFinishedGameCover: false,
+          gameStarted: state.timer ? false : true,
+          showConfirmation: state.timer ? true : false,
+          playedAgain: true,
+          players
+        }));
+      }).catch(error => {
+          console.log(error)
+      });
+    } else {
+      this.setState(state => ({
+        ...state,
+        screen: 'MainMenu',
+        showFinishedGameCover: false,
+        gameStarted: state.timer ? false : true,
+      }));
+      this.joinGame(this.state.gameId);
+    };
+  }
+
   getContent = () => {
     let screen = '';   
     switch(this.state.screen) {
@@ -323,7 +397,9 @@ export class App extends React.Component {
           setTime={this.setTime}
           reorderPlayers={this.reorderPlayers}
           removePlayer={this.removePlayer}
-          gameId={this.state.gameId} 
+          gameId={this.state.gameId}
+          playedAgain={this.state.playedAgain}
+          playedAgainWithSettings={this.state.playedAgainWithSettings}
           language={this.state.language}
           timer={this.state.timer}
           time={this.state.time}
@@ -347,7 +423,7 @@ export class App extends React.Component {
         screen = <SubtractPoints renderGameSummary={this.renderGameSummary} players={this.state.players} gameId={this.state.gameId} />
         break;
       case 'GameSummary':
-        screen = <GameSummary exitGame={this.exitGame} players={this.state.players} />
+        screen = <GameSummary playAgain={this.playAgain} playAgainSettings={this.playAgainSettings} exitGame={this.exitGame} players={this.state.players} admin={this.state.admin} gameId={this.state.gameId} />
         break;
     }
     return screen

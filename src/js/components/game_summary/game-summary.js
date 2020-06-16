@@ -1,13 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Trans } from 'react-i18next';
+import db from '../../../firebase';
 import '../../../styles/game-summary.scss';
 //Components
 import { PlayerSummary } from './player-summary';
 import { Header } from '../global_components/header';
 import ExitOptions from './exit-options';
+import WaitingCover from './waiting-cover';
 
 export const GameSummary = (props) => {
-    const [showExitOptions, setShowExitOptions] = useState(false)
+    const [showExitOptions, setShowExitOptions] = useState(false);
+    const [exitOption, setExitOption] = useState(null);
+    const [gameCreated, setGameCreated] = useState(false);
+
+    useEffect(() => {
+        const unsubscribe = db.collection('games').doc(props.gameId).onSnapshot(doc => {
+            const data = doc.data();
+            if(data.exitOption !== exitOption && data.timer) {
+                setExitOption(data.exitOption)
+            } else if(data.exitOption === 'playAgain') {
+                props.playAgain();
+            };
+            if(data.joinedPlayers.length > 0 && data.exitOption === 'playAgainWithSettings') {
+                setGameCreated(true);
+                props.playAgainSettings()
+            }
+        })
+        return () => {
+            unsubscribe();
+        };
+    }, []);
+
     const getPlayersPositions = () => {
         let players = [ ...props.players];
         players.sort((a, b) => {
@@ -52,12 +75,24 @@ export const GameSummary = (props) => {
         return playersSummary
     }
 
+    const getButton = () => {
+        switch (exitOption) {
+            case 'exitGame':
+                return <button onClick={props.exitGame}><Trans>Exit</Trans></button>
+            case 'playAgain':
+                return <button onClick={props.playAgain}><Trans>Play again</Trans></button>
+            default:
+                return <button onClick={props.exitGame}><Trans>Exit</Trans></button>
+        }       
+    }
+
     const handleExit = () => {
         setShowExitOptions(true)
     }
 
     return (
         <div className="game-summary">
+            {exitOption === 'playAgainWithSettings' ? <WaitingCover gameCreated={gameCreated} /> : null}
             {showExitOptions ? <ExitOptions 
                 playAgain={props.playAgain}
                 playAgainSettings={props.playAgainSettings}
@@ -67,7 +102,8 @@ export const GameSummary = (props) => {
             <ul className="results">
                 {getPlayersPositions()}
             </ul>
-            <button onClick={handleExit}><Trans>Exit</Trans></button>
+            {props.admin ? <button onClick={handleExit}><Trans>Exit</Trans></button> : null}
+            {exitOption ? getButton() : null}
         </div>
     );
 }

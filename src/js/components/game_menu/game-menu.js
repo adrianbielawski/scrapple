@@ -17,8 +17,15 @@ export class GameMenu extends Component {
             showLanguages: false,
             listSpace: null,
             caughtElement: null,
-            showConfirmation: false,
+            showConfirmation: this.props.playedAgain && !this.props.playedAgainWithSettings ? true : false,
             allPlayersJoined: false
+        };
+        this.listenServerChanges = this.props.playedAgain ? this.serverChangeListener(this.props.gameId) : null
+    }
+  
+    componentWillUnmount() {
+        if(this.props.timer) {
+            this.unsubscribe();
         }
     }
 
@@ -71,17 +78,23 @@ export class GameMenu extends Component {
                 return
             }
         }
-        const gameId = Math.floor(Math.random() * 1000000).toString()
+        const gameId = this.props.gameId ? this.props.gameId : Math.floor(Math.random() * 1000000).toString();
         this.props.handleCreateNewGame(gameId);
+
         if(this.props.timer) {
-            db.collection('games').doc(gameId).onSnapshot(doc => {
+            this.serverChangeListener(gameId);
+        }
+        
+        this.setState(state => ({ ...state, showConfirmation: !state.showConfirmation}))
+    }
+
+    serverChangeListener = (gameId) => {
+        this.unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
             const data = doc.data();
             if(data.joinedPlayers.length >= this.props.players.length) {
-                this.setState(state => ({ ...state, allPlayersJoined: true }))
-            }
-            })
-            this.setState(state => ({ ...state, showConfirmation: !state.showConfirmation}))
-        }
+                this.setState(state => ({ ...state, allPlayersJoined: true }));
+            };
+        });
     }
 
     handleLanguageChange = (e) => {
@@ -95,6 +108,7 @@ export class GameMenu extends Component {
 
     render() {
         const languageClass = this.state.showLanguages ? 'active' : '';
+        const buttonText = this.props.playedAgainWithSettings ? 'Play again' : 'Create game';
 
         return (
             <div className="game-menu">
@@ -115,7 +129,7 @@ export class GameMenu extends Component {
                     <Timer toggleTimer={this.props.toggleTimer} setTime={this.props.setTime} timer={this.props.timer} />
                     <AddPlayer validatePlayerName={this.validatePlayerName} alert={this.props.alert} />
                     <Players removePlayer={this.props.removePlayer} reorderPlayers={this.props.reorderPlayers} players={this.props.players} />
-                    <button onClick={this.validateSettings} type="submit"><Trans>Create game</Trans></button>
+                    <button onClick={this.validateSettings} type="submit"><Trans>{buttonText}</Trans></button>
                 </div>
             </div>
         );

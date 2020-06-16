@@ -20,13 +20,14 @@ export class Game extends React.Component {
       currentPlayer: 0,
       time: this.props.time,
       endTime: this.props.endTime,
-      players: this.props.players
+      players: this.props.players,
+      mounted: false
     };
     this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
   }
 
   componentDidMount() {
-    db.collection('games').doc(this.props.gameId).onSnapshot(doc => {
+    this.unsubscribe = db.collection('games').doc(this.props.gameId).onSnapshot(doc => {
       const data = doc.data();
       const endTime = data.endTime
       if(!data.pointsSubtracted && !data.gameFinished) {
@@ -37,6 +38,13 @@ export class Game extends React.Component {
         this.props.renderGameSummary(data.players)
       }
     });
+    this.setState((state) => ({ ...state, mounted: true}));
+  }
+
+  componentWillUnmount(){
+    if(this.state.mounted) {
+      this.unsubscribe();
+    }
   }
 
   setInnerHeight = () => {
