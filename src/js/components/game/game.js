@@ -128,7 +128,7 @@ export class Game extends React.Component {
     return (
       <div className={`game ${gameClass}`}>
         {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
-        <WordChecker language={this.props.language}/>
+        <WordChecker language={this.props.language} gameId={this.props.gameId} />
         <TwoLetterWords toggleShowWords={this.toggleShowWords} showWords={this.state.showWords} language={this.props.language}/>
         <Stats
           timeOut={this.timeOut}
@@ -138,7 +138,6 @@ export class Game extends React.Component {
           time={this.state.time}
           currentPlayer={currentPlayer}
           players={players} />
-        <p><strong style={{color: 'red'}}>{this.props.gameId}</strong></p>
         {this.props.admin ? <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm">
           <Trans>Finish the game</Trans>
         </button> : null }

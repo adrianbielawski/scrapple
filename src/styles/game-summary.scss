@@ -12,6 +12,7 @@
     }
     .card {
         justify-content: center;
+        width: 100%;
         button {
             margin: 30px auto;
             height: auto;
@@ -22,14 +23,24 @@
     .results {
         text-align: center;
         font-size: 1.3em;
-
+        padding: 0 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .card {
+            justify-content: unset;
+        }
         li {
-            background: darken($grey, 10);
             margin: 5px 0;
+            width: 100%;
+            max-width: 400px;
             &.sub {
                 display: inline-flex;
                 align-items: center;
-                width: 100%;
+                .card {
+                    flex-direction: row;
+                    justify-content: unset;
+                }
                 .player-name {
                     padding-left: 5px;
                     width: 50%;

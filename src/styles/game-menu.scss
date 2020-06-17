@@ -17,12 +17,14 @@
         flex-flow: column;
         box-sizing: border-box;
     }
+  
+    .card {
+        margin-bottom: 5px;
+    }
 
     .choose-language {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 5px;
-
+        display: flex;
+        flex-direction: column;
         .language, .current-lang {
             display: inline-flex;
             align-items: center;
@@ -176,13 +178,12 @@
 
 
     button[type=submit] {
-        margin: 10px auto;
+        margin: 5px auto;
     }
 
     .time-option {
         display: inline-flex;
         align-items: center;
-        margin-bottom: 5px;
         margin-left: -15px;
         p {
             margin: 0;

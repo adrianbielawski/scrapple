@@ -1,23 +1,83 @@
+@import "variables";
+
 .game {
     position: relative;
     display: flex;
     flex-flow: column;
     flex-grow: 1;
     height: 100%;
+    .menu {
+        .img-wrapper {
+            flex: 1;
+        }
+        img {
+            width: 35px;
+            margin-right: 5px;
+        }
+        .menu-background {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            z-index: 999;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            transition: all .2s linear;
+            &.show {
+                left: 0;
+                background-color: rgba(128, 128, 128, .5);
+            }
+        }
+        .card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            width: 70%;
+            max-width: 300px;
+            min-width: 150px;
+            height: 100%;
+            padding: 0;
+            .menu-header {
+                width: 100%;
+                margin-bottom: 20px;
+                border-bottom: 1px solid $boxShadow;
+                display: inline-flex;
+                align-items: center;
+                .arrow {
+                    font-size: 24px;
+                    padding: 10px;
+                    color: $darkText;
+                }
+                p {
+                    width: 100%;
+                    text-align: center;
+                    font-size: 24px;
+                }
+            }
+            .menu-content {
+                padding: 10px;
+                width: 100%;
+                height: 100%;
+                align-items: flex-start;
+                box-sizing: border-box;
+            }
+        }
+    }
+    #game-finish-button {
+        margin: 10px auto;
+        padding: 3px 20px;
+    }
+    
+    .show-words {
+        overflow: scroll;
+        display: flex;
+        flex-flow: column;
+        flex-grow: 1;
+    }
+    
+    .show-words::-webkit-scrollbar {
+        display: none;
+    }
 }
 
-#game-finish-button {
-    margin: 10px auto;
-    padding: 3px 20px;
-}
-
-.game.show-words {
-    overflow: scroll;
-    display: flex;
-    flex-flow: column;
-    flex-grow: 1;
-}
-
-.game.show-words::-webkit-scrollbar {
-    display: none;
-}

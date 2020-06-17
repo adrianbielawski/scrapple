@@ -9,6 +9,7 @@ import { Timer } from './timer';
 import { AddPlayer } from './add-player';
 import { Header } from '../global_components/header';
 import Confirmation from './confirmation';
+import Card from '../global_components/card';
 
 export class GameMenu extends Component {
     constructor(props) {
@@ -121,15 +122,20 @@ export class GameMenu extends Component {
                     /> : null}
                 <Header />
                 <div className="menu">
-                    <Languages
-                        toggleShowLanguages={this.toggleShowLanguages}
-                        handleLanguageChange={this.handleLanguageChange}
-                        languageClass={languageClass}
-                        language={this.props.language}
-                    />
-                    <Timer toggleTimer={this.props.toggleTimer} setTime={this.props.setTime} timer={this.props.timer} />
-                    <AddPlayer validatePlayerName={this.validatePlayerName} alert={this.props.alert} />
-                    <Players removePlayer={this.props.removePlayer} reorderPlayers={this.props.reorderPlayers} players={this.props.players} />
+                    <Card>
+                        <Languages
+                            toggleShowLanguages={this.toggleShowLanguages}
+                            handleLanguageChange={this.handleLanguageChange}
+                            languageClass={languageClass}
+                            language={this.props.language} />
+                    </Card>
+                    <Card>
+                        <Timer toggleTimer={this.props.toggleTimer} setTime={this.props.setTime} timer={this.props.timer} />
+                    </Card>
+                    <Card>
+                        <AddPlayer validatePlayerName={this.validatePlayerName} alert={this.props.alert} />
+                        <Players removePlayer={this.props.removePlayer} reorderPlayers={this.props.reorderPlayers} players={this.props.players} />
+                    </Card>
                     <button onClick={this.validateSettings} type="submit"><Trans>{buttonText}</Trans></button>
                 </div>
             </div>

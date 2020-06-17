@@ -1,7 +1,11 @@
 .word-checker {
     width: 100%;
-    padding: 10px 20px;
+    padding: 10px 5px;
     box-sizing: border-box;
+    .wrapper {
+        display: inline-flex;
+        width: 100%;
+    }
     input {
         display: block;
         margin: 0 auto;

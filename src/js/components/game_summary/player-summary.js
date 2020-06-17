@@ -1,5 +1,6 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
+import Card from '../global_components/card';
 
 export const PlayerSummary = (props) => {
     const getImg = () => {
@@ -25,16 +26,18 @@ export const PlayerSummary = (props) => {
     const player = props.player;
     return (
         <li>
-            <div className="player-name">
-                <div className="place">
-                    <p>{<Trans>{props.placeText}</Trans>} {<Trans>place</Trans>}</p>
-                    {img}
+            <Card>
+                <div className="player-name">
+                    <div className="place">
+                        <p>{<Trans>{props.placeText}</Trans>} {<Trans>place</Trans>}</p>
+                        {img}
+                    </div>
+                    <p>{player.playerName}</p>
                 </div>
-                <p>{player.playerName}</p>
-            </div>
-            <p className="player-result">
-                {<Trans>Total</Trans>}: {player.currentScore} {<Trans>Best score</Trans>}: {player.bestScore}
-            </p>
+                <p className="player-result">
+                    {<Trans>Total</Trans>}: {player.currentScore} {<Trans>Best score</Trans>}: {player.bestScore}
+                </p>
+            </Card>
         </li>
     );
 }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import i18next from 'i18next';
 import '../../../styles/word-checker.scss'
 import { LoadingSpinner } from '../global_components/loadingSpinner'
+import Menu from './menu';
 
 const IMAGES = {
     thumbUp: '../src/assets/img/thumb-up.png',
@@ -77,12 +78,15 @@ export class WordChecker extends Component {
         
         return (
             <div className="word-checker">
-                <input type="text"
-                    onClick={this.clearInput}
-                    onChange={this.handleInputChange}
-                    ref="word"
-                    placeholder={i18next.t("Check your word")}
-                    spellCheck="false" />
+                <div className="wrapper">
+                    <Menu gameId={this.props.gameId}/>
+                    <input type="text"
+                        onClick={this.clearInput}
+                        onChange={this.handleInputChange}
+                        ref="word"
+                        placeholder={i18next.t("Check your word")}
+                        spellCheck="false" />
+                </div>
                 <div className="resoult-img">
                     {image}
                 </div>
