@@ -6,18 +6,13 @@ import { Trans } from 'react-i18next';
 const WaitingCover = (props) => {
     let title = 'Game continues!'
     let message = 'Please wait until settings will be changed';
-    let buttonStyle = {opacity: .5, cursor: 'no-drop'};
-    let isButtonDisabled = true;
-    if(props.gameCreated) {
-        title = 'Waiting for players'
-        buttonStyle = null;
-        message = 'Settings changed, press play again to begin';
-        isButtonDisabled = false;
+    if(props.exitOption === 'playAgain') {
+        message = 'Please wait until game started';
     }
     return ( 
         <Dropdown className="confirmation">
-            <h2>{title}</h2>
-            <p className="message">{message}</p>
+            <h2><Trans>{title}</Trans></h2>
+            <p className="message"><Trans>{message}</Trans></p>
             <LoadingSpinner></LoadingSpinner>          
         </Dropdown>
     );

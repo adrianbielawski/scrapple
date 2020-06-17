@@ -4,20 +4,32 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   en: {
     translation: {
+      //MainMenu
+      "Game ID" : "Game ID",
+      "Create new game" : "Create new game",
+      "Join the game" : "Join the game",
+      "You has joined the game!" : "You has joined the game!",
+      "Please wait until game started" : "Please wait until game started",
       //GameMenu
       "Language" : "Language",
       "Player's time limit" : "Player's time limit",
       "Add player" : "Add player",
       "Player" : "Player",
       "Start game" : 'Start game',
-      "Player with name {player} already exists": "Player with name {{player}} already exists",
+      "Player exists": "Player with name {{player}} already exists",
       "Please type in player's name" : "Please type in player's name",
       "Max 4 players" : "Max 4 players",
+      "Create game" : "Create game",
       "Please add at least 2 players" : "Please add at least 2 players",
       "Minimum player's time limit is 1 min" : "Minimum player's time limit is 1 min",
+      "Game created succesfully!" : "Game created succesfully!",
+      "Waiting for other players to join the game" : "Waiting for other players to join the game",
+      "All players has joined the game, press start game to begin" : "All players has joined the game, press start game to begin",
       //Game
       "Finish the game" : "Finish the game",
       "Are you sure you want to finish this game?" : "Are you sure you want to finish this game?",
+      "Game finished!" : "Game finished!",
+      "Please wait until points of unused letters will be substracted" : "Please wait until points of unused letters will be substracted",
       //TwoLetterWords
       "Show two-letter words" : "Show two-letter words",
       "Hide two-letter words" : "Hide two-letter words",
@@ -44,7 +56,11 @@ const resources = {
       "1st" : "1st",
       "2nd" : "2nd",
       "3rd" : "3rd",
-      "" : "",
+      "4th" : "4th",
+      "Play again" : "play again",
+      "Play again with new settings" : "play again with new settings",
+      "Game continues!" : "Game continues!",
+      "Please wait until settings will be changed" : "Please wait until settings will be changed",
       //PlayerSummary
       "place" : "place",
       "Total" : "Total",
@@ -55,20 +71,32 @@ const resources = {
   },
   pl: {
     translation: {
+      //MainMenu
+      "Game ID" : "Numer gry",
+      "Create new game" : "Utwórz nową grę",
+      "Join the game" : "Dołącz do gry",
+      "You has joined the game!" : "Dołączyłeś do gry!",
+      "Please wait until game started" : "Poczekaj, aż gra się rozpocznie",
       //GameMenu
       "Language" : 'Język',
       "Player's time limit" : 'Limit czasu',
       "Add player" : 'Dodaj Gracza',
       "Player" : 'Gracz',
       "Start game" : 'Start',
-      "Player with name {player} already exists" : "Gracz o imieniu {{player}} już istnieje",
+      "Player exists" : "Gracz o imieniu {{player}} już istnieje",
       "Please type in player's name" : "Proszę podać imię gracza",
       "Max 4 players" : "Maksymalnie 4 graczy",
       "Please add at least 2 players" : "Proszę dodać co najmniej 2 graczy",
       "Minimum player's time limit is 1 min" : "Minimalny limit czasu to 1 min",
+      "Create game" : "Utwórz grę",
+      "Game created succesfully!" : "Gra utworzona!",
+      "Waiting for other players to join the game" : "Poczekaj, aż pozostali gracze dołączą do gry",
+      "All players has joined the game, press start game to begin" : "Wszyscy gracze dołączyli do gry, wciśnij start aby rozpocząć grę",
       //Game
       "Finish the game" : "Zakończ grę",
       "Are you sure you want to finish this game?" : "Jesteś pewien, że chcesz zakończyć grę?",
+      "Game finished!" : "Gra zakończona!",
+      "Please wait until points of unused letters will be substracted" : "Poczekaj, aż wartość pozostałych liter zostanie odjęta",
       //TwoLetterWords
       "Show two-letter words" : "Pokaż slowa dwuliterowe",
       "Hide two-letter words" : "Ukryj slowa dwuliterowe",
@@ -97,6 +125,10 @@ const resources = {
       "2nd" : "Drugie",
       "3rd" : "Trzecie",
       "4th" : "Czwarte",
+      "Play again" : "Zagraj ponownie",
+      "Play again with new settings" : "Zagraj ponownie ze zmienionymi ustawieniami",
+      "Game continues!" : "Kontynuujemy grę!",
+      "Please wait until settings will be changed" : "Poczekaj, aż ustawienia gry zostaną zmienione",
       //PlayerSummary
       "place" : "miejsce",
       "Total" : "Wynik",

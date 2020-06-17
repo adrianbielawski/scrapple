@@ -6,8 +6,8 @@ import { Trans } from 'react-i18next';
 const FinishedGameCover = () => {
     return ( 
         <Dropdown className="confirmation">
-            <h2>Game finished!</h2>
-            <p className="message">Please wait until points of unused letters will be substracted</p>
+            <h2><Trans>Game finished!</Trans></h2>
+            <p className="message"><Trans>Please wait until points of unused letters will be substracted</Trans></p>
             <LoadingSpinner></LoadingSpinner>                
         </Dropdown>
     );

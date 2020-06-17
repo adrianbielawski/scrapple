@@ -36,7 +36,8 @@ export class App extends React.Component {
       alert: {
         type: '',
         action: '',
-        alertMessage: ''
+        alertMessage: '',
+        messageValue: ''
       },
     }
     this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
@@ -97,8 +98,8 @@ export class App extends React.Component {
     this.setState((state) => ({ ...state, playersNames}));
   }
 
-  alert = (type, alertMessage, action) => {
-    this.setState(state => ({ ...state, showAlert: true, alert: {type, action, alertMessage}}));
+  alert = (type, alertMessage, action, messageValue) => {
+    this.setState(state => ({ ...state, showAlert: true, alert: {type, action, alertMessage, messageValue}}));
   }
 
   alertResponse = (response) => {
@@ -183,9 +184,9 @@ export class App extends React.Component {
 
     db.collection('games').doc(gameId).set(game).then(() => {
       if(this.state.timer) {
-        this.setState(state => ({ ...state, players, gameId, admin: true, exitOption: false }));
+        this.setState(state => ({ ...state, players, gameId, admin: true, exitOption: false, playedAgainWithSettings: false }));
       } else {
-        this.setState(state => ({ ...state, players, gameId, admin: true, gameStarted: true, exitOption: false, screen: 'Game' }));
+        this.setState(state => ({ ...state, players, gameId, admin: true, gameStarted: true, exitOption: false, playedAgainWithSettings: false, screen: 'Game' }));
       }
     }).catch(error => {
       console.log(error)
@@ -195,8 +196,12 @@ export class App extends React.Component {
   joinGame = (gameId) => {
     db.collection('games').doc(gameId).get().then((response) => {
       const data = response.data();
+      
+      if(this.state.language !== data.language) {
+        this.changeLanguage(data.language)
+      }
+
       if(data.timer) {
-        console.log('kjsdfkjhsdf')
         const random = Math.floor(Math.random() * 100000).toString();
         
         db.collection('games').doc(gameId).update({'joinedPlayers': firebase.firestore.FieldValue.arrayUnion(random)}).then(() => {
@@ -205,7 +210,7 @@ export class App extends React.Component {
           this.unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
             const data = doc.data();
             if(data.gameStarted == true) {
-              this.startJoinedPlayerGameWithTimer();
+              this.startJoinedPlayerGame(data, gameId);
             }
           });
         }).catch(error => {
@@ -239,43 +244,19 @@ export class App extends React.Component {
     
   }
 
-  startJoinedPlayerGameWithTimer = () => {
-    db.collection('games').doc(this.state.gameId).get().then((response) => {
-      const data = response.data();
-      this.startJoinedPlayerGame(data, this.state.gameId)
-    }).catch(error => {
-        console.log(error)
-    });
-  }
-
   startJoinedPlayerGame = (data, gameId) => {
-    if(this.state.language !== data.language) {
-      this.changeLanguage(data.language)
-    }
-
-    if(data.timer) {
-      this.setState(state => ({
-        ...state,
-        admin: false,
-        language: data.language,
-        players: data.players,
-        timer: data.timer,
-        time: data.time,
-        initialEndTime: data.endTime,
-        currentPlayer: data.currentPlayer,
-        screen: 'Game',
-      }))
-    } else {
-      this.setState(state => ({
-        ...state,
-        admin: false,
-        gameId,
-        language: data.language,
-        players: data.players,
-        currentPlayer: data.currentPlayer,
-        screen: 'Game',
-      }))
-    }
+    this.setState(state => ({
+      ...state,
+      admin: false,
+      gameId,
+      players: data.players,
+      timer: data.timer,
+      time: data.time,
+      initialEndTime: data.endTime,
+      currentPlayer: data.currentPlayer,
+      showFinishedGameCover: false,
+      screen: 'Game',
+    }))
   }
 
   exitGame = () => {
@@ -420,27 +401,36 @@ export class App extends React.Component {
           endTime={this.state.timer ? this.state.initialEndTime : null}/>;
         break;
       case 'SubtractPoints':
-        screen = <SubtractPoints renderGameSummary={this.renderGameSummary} players={this.state.players} gameId={this.state.gameId} />
+        screen = <SubtractPoints
+          renderGameSummary={this.renderGameSummary}
+          players={this.state.players}
+          gameId={this.state.gameId} />
         break;
       case 'GameSummary':
-        screen = <GameSummary playAgain={this.playAgain} playAgainSettings={this.playAgainSettings} exitGame={this.exitGame} players={this.state.players} admin={this.state.admin} gameId={this.state.gameId} />
+        screen = <GameSummary
+          playAgain={this.playAgain}
+          joinGame={this.joinGame}
+          playAgainSettings={this.playAgainSettings}
+          exitGame={this.exitGame}
+          players={this.state.players}
+          admin={this.state.admin}
+          gameId={this.state.gameId}
+          timer={this.state.timer}/>
         break;
     }
     return screen
   }
 
   render() {
-    let screen = this.getContent();    
-    let alert = '';    
-    if(this.state.showAlert) {
-      alert = <Alert alertResponse={this.alertResponse}
-        type={this.state.alert.type}
-        alertMessage={this.state.alert.alertMessage} />
-    }
     return (
       <div className="App" style={{height: this.state.screenHeight}}>
-        {alert}
-        {screen}
+        {this.state.showAlert ?
+          <Alert alertResponse={this.alertResponse}
+            type={this.state.alert.type}
+            alertMessage={this.state.alert.alertMessage}
+            messageValue={this.state.alert.messageValue} />
+        : null}
+        {this.getContent()}
       </div>
     );
   }

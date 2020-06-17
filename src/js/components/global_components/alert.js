@@ -1,5 +1,6 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
+import i18next from 'i18next';
 import '../../../styles/alert.scss';
 
 export const Alert = (props) => {
@@ -22,7 +23,7 @@ export const Alert = (props) => {
     return (
         <div className="alert-cover">
             <div className="alert">
-                <p><Trans>{props.alertMessage}</Trans></p>
+                <p>{i18next.t(props.alertMessage, props.messageValue)}</p>
                 {alertButtons}
             </div>
         </div>

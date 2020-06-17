@@ -1,7 +1,7 @@
 import React from 'react';
+import { Trans } from 'react-i18next';
 import Dropdown from '../global_components/dropdown';
 import { LoadingSpinner } from '../global_components/loadingSpinner';
-import { Trans } from 'react-i18next';
 
 const Confirmation = (props) => {
     let message = 'Waiting for other players to join the game';
@@ -14,9 +14,9 @@ const Confirmation = (props) => {
     }
     return ( 
         <Dropdown className="confirmation">
-            <h2>Game created succesfully!</h2>
-            <p className="game-id">Game ID: {props.gameId}</p>
-            <p className="message">{message}</p>
+            <h2><Trans>Game created succesfully!</Trans></h2>
+            <p className="game-id"><Trans>Game ID</Trans>: {props.gameId}</p>
+            <p className="message"><Trans>{message}</Trans></p>
             {!props.allPlayersJoined && <LoadingSpinner></LoadingSpinner>}
             <button disabled={isButtonDisabled} onClick={props.handleGameStart} style={buttonStyle}><Trans>Start game</Trans></button>                
         </Dropdown>

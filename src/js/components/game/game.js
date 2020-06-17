@@ -112,7 +112,7 @@ export class Game extends React.Component {
     e.preventDefault();
     const action = e.target.id;
     const type = e.target.value;
-    const alertMessage = <Trans>Are you sure you want to finish this game?</Trans>;
+    const alertMessage = 'Are you sure you want to finish this game?';
     this.props.alert(type, alertMessage, action)
   }
 
@@ -139,8 +139,10 @@ export class Game extends React.Component {
           currentPlayer={currentPlayer}
           players={players} />
         <p><strong style={{color: 'red'}}>{this.props.gameId}</strong></p>
-        {this.props.admin ? 
-          <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm"><Trans>Finish the game</Trans></button> : null }
+        {this.props.admin ? <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm">
+          <Trans>Finish the game</Trans>
+        </button> : null }
+        <div style={{flex: 1000}}></div>
       </div>
     );
   }

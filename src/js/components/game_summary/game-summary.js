@@ -16,11 +16,12 @@ export const GameSummary = (props) => {
     useEffect(() => {
         const unsubscribe = db.collection('games').doc(props.gameId).onSnapshot(doc => {
             const data = doc.data();
-            if(data.exitOption !== exitOption && data.timer) {
+            if(data.exitOption !== exitOption) {
                 setExitOption(data.exitOption)
-            } else if(data.exitOption === 'playAgain') {
-                props.playAgain();
-            };
+                if(data.exitOption === 'playAgain') {
+                    props.playAgain();
+                };
+            }
             if(data.joinedPlayers.length > 0 && data.exitOption === 'playAgainWithSettings') {
                 setGameCreated(true);
                 props.playAgainSettings()
@@ -75,24 +76,13 @@ export const GameSummary = (props) => {
         return playersSummary
     }
 
-    const getButton = () => {
-        switch (exitOption) {
-            case 'exitGame':
-                return <button onClick={props.exitGame}><Trans>Exit</Trans></button>
-            case 'playAgain':
-                return <button onClick={props.playAgain}><Trans>Play again</Trans></button>
-            default:
-                return <button onClick={props.exitGame}><Trans>Exit</Trans></button>
-        }       
-    }
-
     const handleExit = () => {
         setShowExitOptions(true)
     }
 
     return (
         <div className="game-summary">
-            {exitOption === 'playAgainWithSettings' ? <WaitingCover gameCreated={gameCreated} /> : null}
+            {exitOption === 'playAgainWithSettings' || (exitOption === 'playAgain' && props.timer) ? <WaitingCover gameCreated={gameCreated} exitOption={exitOption} /> : null}
             {showExitOptions ? <ExitOptions 
                 playAgain={props.playAgain}
                 playAgainSettings={props.playAgainSettings}
@@ -103,7 +93,7 @@ export const GameSummary = (props) => {
                 {getPlayersPositions()}
             </ul>
             {props.admin ? <button onClick={handleExit}><Trans>Exit</Trans></button> : null}
-            {exitOption ? getButton() : null}
+            {exitOption === 'exitGame' ? <button onClick={props.exitGame}><Trans>Exit</Trans></button> : null}
         </div>
     );
 }

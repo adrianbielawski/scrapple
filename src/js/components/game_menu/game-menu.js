@@ -33,18 +33,19 @@ export class GameMenu extends Component {
         const isPlayerExists = this.isPlayerExists(player);
         
         if(isPlayerExists) {
-            const alert = i18next.t('Player with name {player} already exists', {player});
-            this.props.alert('alert', alert);
+            const alertMessage = 'Player exists';
+            const messageValue = {'player': player};
+            this.props.alert('alert', alertMessage, null, messageValue);
             return true
         }
         if(player.length < 1) {
-            const alert = "Please type in player's name";
-            this.props.alert('alert', alert);
+            const alertMessage = "Please type in player's name";
+            this.props.alert('alert', alertMessage);
             return
         }
         if(this.props.players.length >= 4) {
-            const alert = 'Max 4 players';
-            this.props.alert('alert', alert);
+            const alertMessage = 'Max 4 players';
+            this.props.alert('alert', alertMessage);
             return
         }
         const input = document.getElementById('player-name');
@@ -109,7 +110,7 @@ export class GameMenu extends Component {
     render() {
         const languageClass = this.state.showLanguages ? 'active' : '';
         const buttonText = this.props.playedAgainWithSettings ? 'Play again' : 'Create game';
-
+        
         return (
             <div className="game-menu">
                 {this.state.showConfirmation ? 
