@@ -8,7 +8,6 @@ export class Player extends Component {
         super(props);
         this.state = {
             index: this.props.index,
-            isHovered: false,
             isGrabbed: false,
             top: 0,
             left: 0,
@@ -23,10 +22,6 @@ export class Player extends Component {
     componentDidMount () {
         this.element = document.getElementsByClassName('player')[this.props.index];
         this.elementH = this.element.getBoundingClientRect().height;
-    }
-
-    toggleHover = () => {
-        this.setState(state => ({ ...state, isHovered: !state.isHovered}));
     }
 
     handleGrab = (e) => {
@@ -96,7 +91,8 @@ export class Player extends Component {
         parent.style.height = `auto`;
         
         this.props.addSpace(0);
-        this.props.drop(this.state.index, this.state.distance, e.type);
+        const event = e.type;
+        this.props.drop(this.state.index, this.state.distance, event);
         this.setState(state => ({ ...state, isGrabbed: false, top: 0, left: 0, distance: 0, startX: 0}));
     }
 
@@ -114,7 +110,6 @@ export class Player extends Component {
         element.style.transitionTimingFunction = 'ease-in, ease';
         element.style.width = 0;
         element.style.maxHeight = 0;
-        this.setState(state => ({ ...state, isHovered: false}));
     }
 
     remove = () => {
@@ -130,7 +125,6 @@ export class Player extends Component {
             bottomSpaceClass: '',
             grabbed: '',
             position: {},
-            hovered: this.state.isHovered ? 'hovered' : '',
         }
 
         if(this.props.topSpace && !this.state.isGrabbed) {
@@ -161,12 +155,10 @@ export class Player extends Component {
         const styles = this.getStyles();
         
         return (
-            <li className={`player ${styles.grabbed} ${styles.hovered}`} style={styles.position}>
+            <li className={`player ${styles.grabbed}`} style={styles.position}>
                 <div className={`top-list-space ${styles.topSpaceClass}`} style={styles.topSpaceStyle}></div>
                 <div className="wrapper">
-                    <div onMouseOver={this.toggleHover}
-                        onMouseOut={this.toggleHover}
-                        onMouseDown={this.handleGrab}
+                    <div onMouseDown={this.handleGrab}
                         onMouseUp={this.handleDrop}
                         onTouchStart={this.handleGrab}
                         onTouchEnd={this.handleDrop}

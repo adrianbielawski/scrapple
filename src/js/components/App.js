@@ -273,6 +273,7 @@ export class App extends React.Component {
       admin: false,
       gameStarted: false,
       showFinishedGameCover: false,
+      playedAgain: false,
       playersNames: [],
       players: [],
       timer: false,
@@ -387,7 +388,7 @@ export class App extends React.Component {
           players={this.state.playersNames} />
         break;
       case 'Game':
-        screen = <Game 
+        screen = <Game
           alert={this.alert}
           renderGameSummary={this.renderGameSummary}
           handleFinishGame={this.handleFinishGame}
@@ -403,6 +404,7 @@ export class App extends React.Component {
       case 'SubtractPoints':
         screen = <SubtractPoints
           renderGameSummary={this.renderGameSummary}
+          alert={this.alert}
           players={this.state.players}
           gameId={this.state.gameId} />
         break;

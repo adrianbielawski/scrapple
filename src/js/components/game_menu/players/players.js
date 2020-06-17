@@ -31,6 +31,9 @@ export class Players extends Component {
         if(this.state.grabbedElement <= listSpace) {
             listSpace +=1;
         };
+        if(listSpace >= this.props.players.length) {
+            listSpace = this.props.players.length -1;
+        };
         this.setState(state => ({ ...state, listSpace}));
     }
 

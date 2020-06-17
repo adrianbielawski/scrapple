@@ -7,6 +7,17 @@ import { PlayerSubPoints } from '../subtract_points/player-subtract-points';
 import { Header } from '../global_components/header';
 
 export const SubtractPoints = (props) => {
+    const validateUserInputs = (e) => {
+        for (let i = 0; i < props.players.length; i++) {
+            const inputVal = document.getElementById(`sub-points${i}`).value;
+            if (inputVal < 0) {
+                const alertMessage = 'Minimum points value is 0';
+                props.alert('alert', alertMessage);
+                return
+            };
+        };
+        subPoints(e);
+    }
     const subPoints = (e) => {
         e.preventDefault();
         const players = [ ...props.players ];
@@ -37,7 +48,7 @@ export const SubtractPoints = (props) => {
             <ul className="results">
                 {getPlayers()}
             </ul>
-            <button onClick={subPoints}><Trans>Continue</Trans></button>
+            <button onClick={validateUserInputs}><Trans>Continue</Trans></button>
         </div>
     );
 }

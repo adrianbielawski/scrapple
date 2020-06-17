@@ -37,7 +37,7 @@ export class GameMenu extends Component {
             const alertMessage = 'Player exists';
             const messageValue = {'player': player};
             this.props.alert('alert', alertMessage, null, messageValue);
-            return true
+            return
         }
         if(player.length < 1) {
             const alertMessage = "Please type in player's name";
