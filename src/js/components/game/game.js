@@ -71,6 +71,7 @@ export class Game extends React.Component {
     const endTime = this.props.timer ? this.getEndTime() : null;
 
     this.scrollPlayersStats(currentPlayer);
+      
     db.collection('games').doc(this.props.gameId).update({
       players: players,
       currentPlayer: currentPlayer,

@@ -24,7 +24,7 @@ export class App extends React.Component {
       language: 'en-GB',
       screen: 'MainMenu',
       showAlert: false,
-      playersNames: [],
+      playersNames: ['sdf', 'sdfgf'],
       players: [],
       timer: false,
       time: {
@@ -260,6 +260,7 @@ export class App extends React.Component {
       ...state,
       admin: false,
       gameId,
+      language: data.language,
       players: data.players,
       timer: data.timer,
       time: data.time,
@@ -267,7 +268,8 @@ export class App extends React.Component {
       currentPlayer: data.currentPlayer,
       showFinishedGameCover: false,
       screen: 'Game',
-    }))
+    }));
+    this.unsubscribe();
   }
 
   exitGame = () => {
