@@ -105,7 +105,9 @@ export class Game extends React.Component {
       players: players,
       currentPlayer: currentPlayer,
       endTime: endTime
-    });
+    }).catch(() => {
+      this.alert('alert', 'Something went wrong, please check your internet connection and try again');
+    });;
   }
 
   handleGameFinish = (e) => {

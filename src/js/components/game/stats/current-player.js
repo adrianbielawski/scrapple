@@ -87,7 +87,7 @@ export class CurrentPlayer extends Component {
                     {this.state.timeLeft}
                 </div>
                 <form className="add-points" onSubmit={this.handleSubmit}>
-                    <input type="number" placeholder={i18next.t("add points")} ref="points" required min="0"></input>
+                    <input type="number" placeholder={i18next.t("Add points")} ref="points" required min="0"></input>
                     <button type="submit" className="confirm">
                         <FontAwesomeIcon icon={faCheck}/>
                     </button>

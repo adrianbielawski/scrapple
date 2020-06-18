@@ -24,7 +24,7 @@ export class App extends React.Component {
       language: 'en-GB',
       screen: 'MainMenu',
       showAlert: false,
-      playersNames: ['sdf', 'dfff'],
+      playersNames: [],
       players: [],
       timer: false,
       time: {
@@ -118,7 +118,8 @@ export class App extends React.Component {
   }
 
   handleFinishGame = () => {
-    db.collection('games').doc(this.state.gameId).get().then(response => {
+    db.collection('games').doc(this.state.gameId).get()
+    .then(response => {
       const data = response.data();
       const players = data.players;
 
@@ -131,6 +132,9 @@ export class App extends React.Component {
       } else {
         this.setState(state => ({ ...state, showFinishedGameCover: true, players, showAlert: false, alert: {type: '', action: '', alertMessage: ''}}));
       }
+    })
+    .catch(() => {
+      this.alert('alert', 'Something went wrong, please check your internet connection and try again');
     });
   }
   
@@ -142,9 +146,9 @@ export class App extends React.Component {
     this.setState(state => ({ ...state, screen: 'GameMenu' }));
   }
 
-  handleCreateNewGame = (gameId) => {
+  handleCreateNewGame = (gameId, alertMessage) => {
     const players = this.getPlayers();
-    this.createNewGame(players, gameId);
+    this.createNewGame(players, gameId, alertMessage);
   }
 
   getPlayers = () => {    
@@ -162,7 +166,7 @@ export class App extends React.Component {
     return players
   }
 
-  createNewGame = (players, gameId) => {
+  createNewGame = (players, gameId, alertMessage) => {
     const game = this.state.timer ? {
       gameStarted: false,
       players: players,
@@ -182,19 +186,22 @@ export class App extends React.Component {
       exitOption: this.state.playedAgainWithSettings ? 'playAgainWithSettings' : null
     }
 
-    db.collection('games').doc(gameId).set(game).then(() => {
+    db.collection('games').doc(gameId).set(game)
+    .then(() => {
       if(this.state.timer) {
         this.setState(state => ({ ...state, players, gameId, admin: true, exitOption: false, playedAgainWithSettings: false }));
       } else {
         this.setState(state => ({ ...state, players, gameId, admin: true, gameStarted: true, exitOption: false, playedAgainWithSettings: false, screen: 'Game' }));
       }
-    }).catch(error => {
-      console.log(error)
+    })
+    .catch(() => {
+      this.alert('alert', alertMessage);
     });
   }
 
-  joinGame = (gameId) => {
-    db.collection('games').doc(gameId).get().then((response) => {
+  joinGame = (gameId, alertMessage) => {
+    db.collection('games').doc(gameId).get()
+    .then((response) => {
       const data = response.data();
       
       if(this.state.language !== data.language) {
@@ -213,14 +220,16 @@ export class App extends React.Component {
               this.startJoinedPlayerGame(data, gameId);
             }
           });
-        }).catch(error => {
-          console.log(error)
+        })
+        .catch(() => {
+          this.alert('alert', alertMessage);
         });
       } else {
         this.startJoinedPlayerGame(data, gameId)
       }
-    }).catch(error => {
-      console.log(error)
+    })
+    .catch(() => {
+      this.alert('alert', alertMessage);
     });
   }
 
@@ -236,10 +245,12 @@ export class App extends React.Component {
   startAdminGame = () => {
     const endTime = this.state.timer ? this.getInitialEndTime() : null;
 
-    db.collection('games').doc(this.state.gameId).update({gameStarted: true, endTime: endTime}).then(() => {
+    db.collection('games').doc(this.state.gameId).update({gameStarted: true, endTime: endTime})
+    .then(() => {
       this.setState(state => ({ ...state, screen: 'Game', initialEndTime: endTime }));
-    }).catch(error => {
-        console.log(error)
+    })
+    .catch(() => {
+      this.alert('alert', alertMessage);
     });
     
   }
@@ -296,7 +307,8 @@ export class App extends React.Component {
         joinedPlayers: [],
         players: [],
         exitOption: 'playAgainWithSettings'
-      }).then(() => {
+      })
+      .then(() => {
         this.setState(state => ({
           ...state,
           screen: 'GameMenu',
@@ -305,13 +317,14 @@ export class App extends React.Component {
           playedAgain: true,
           playedAgainWithSettings: true,
         }));
-      }).catch(error => {
-          console.log(error)
+      })
+      .catch(() => {
+        this.alert('alert', 'Something went wrong, please check your internet connection and try again');
       });
     } else {
-      db.collection('games').doc(this.state.gameId).get().then((response) => {
+      db.collection('games').doc(this.state.gameId).get()
+      .then((response) => {
         const data = response.data();
-        console.log(data)
         this.setState(state => ({
           ...state,
           screen: 'MainMenu',
@@ -322,7 +335,10 @@ export class App extends React.Component {
           initialEndTime: data.endTime,
         }));
         this.joinGame(this.state.gameId);
-      });
+      })
+      .catch(() => {
+        this.alert('alert', 'Something went wrong, please check your internet connection and try again');
+      });;
     };
   }
 
@@ -338,7 +354,8 @@ export class App extends React.Component {
         joinedPlayers: [1],
         players,
         exitOption: 'playAgain'
-      }).then(() => {
+      })
+      .then(() => {
         this.setState(state => ({
           ...state,
           screen: state.timer ? 'GameMenu' : 'Game',
@@ -348,8 +365,9 @@ export class App extends React.Component {
           playedAgain: true,
           players
         }));
-      }).catch(error => {
-          console.log(error)
+      })
+      .catch(() => {
+        this.alert('alert', 'Something went wrong, please check your internet connection and try again');
       });
     } else {
       this.setState(state => ({
@@ -366,7 +384,13 @@ export class App extends React.Component {
     let screen = '';   
     switch(this.state.screen) {
       case 'MainMenu':
-        screen = <MainMenu showGameMenu={this.showGameMenu} joinGame={this.joinGame} changeLanguage={this.changeLanguage} currentLanguage={this.state.language} gameId={this.state.gameId}/>
+        screen = <MainMenu
+          alert={this.alert}
+          showGameMenu={this.showGameMenu}
+          joinGame={this.joinGame}
+          changeLanguage={this.changeLanguage}
+          currentLanguage={this.state.language}
+          gameId={this.state.gameId}/>
         break;
       case 'GameMenu':
         screen = <GameMenu

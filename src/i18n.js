@@ -10,6 +10,8 @@ const resources = {
       "Join the game" : "Join the game",
       "You has joined the game!" : "You has joined the game!",
       "Please wait until game started" : "Please wait until game started",
+      "Please type in game ID" : "Please type in game ID",
+      "Something went wrong, please check game ID" : "Something went wrong, please check game ID",
       //GameMenu
       "Language" : "Language",
       "Player's time limit" : "Player's time limit",
@@ -38,7 +40,7 @@ const resources = {
       //WordChecker
       "Check your word" : "Check your word",
       //CurrentPlayer
-      "add points" : "add points",
+      "Add points" : "Add points",
       "ItsTurnNow" : "It is <1>{{playerName}}</1>'s turn now",
       //PlayerStats
       "Current score" : "Current score",
@@ -60,8 +62,8 @@ const resources = {
       "2nd" : "2nd",
       "3rd" : "3rd",
       "4th" : "4th",
-      "Play again" : "play again",
-      "Play again with new settings" : "play again with new settings",
+      "Play again" : "Play again",
+      "Play again with new settings" : "Play again with new settings",
       "Game continues!" : "Game continues!",
       "Please wait until settings will be changed" : "Please wait until settings will be changed",
       //PlayerSummary
@@ -80,6 +82,8 @@ const resources = {
       "Join the game" : "Dołącz do gry",
       "You has joined the game!" : "Dołączyłeś do gry!",
       "Please wait until game started" : "Poczekaj, aż gra się rozpocznie",
+      "Please type in game ID" : "Proszę podać numer gry",
+      "Something went wrong, please check game ID" : "Coś nie zadziałało, sprawdź numer gry",
       //GameMenu
       "Language" : 'Język',
       "Player's time limit" : 'Limit czasu',
@@ -108,7 +112,7 @@ const resources = {
       //WordChecker
       "Check your word" : "Sprawdź słowo",
       //CurrentPlayer
-      "add points" : "dodaj punkty",
+      "Add points" : "Dodaj punkty",
       "ItsTurnNow" : "Teraz gra <1>{{playerName}}</1>",
       //PlayerStats
       "Current score" : "Suma punktów",

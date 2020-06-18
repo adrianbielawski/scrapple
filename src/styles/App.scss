@@ -1,11 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;800");
 @import "variables";
 
 html, body, div, span, h1, h2, p, a, ul, li {
   margin: 0;
   padding: 0;
   border: 0;
-  font-family: 'lato';
+  font-family: 'nunito';
   overscroll-behavior: none;
 }
 
@@ -13,7 +14,7 @@ html, body, div, span, h1, h2, p, a, ul, li {
   margin: 0 auto;
   max-width: 800px;
   box-sizing: border-box;
-  font-family: 'lato';
+  font-family: 'nunito';
 }
 
 .App {
@@ -66,7 +67,7 @@ html, body, div, span, h1, h2, p, a, ul, li {
     box-sizing: border-box;
     cursor: pointer;
     outline: none;
-    font-family: 'lato';
+    font-family: 'nunito';
     &:active {
       box-shadow: none;
       background: darken($mainGreen, 10);
@@ -80,13 +81,12 @@ html, body, div, span, h1, h2, p, a, ul, li {
     background: lighten($grey, 3);
     font-weight: 700;
     font-size: 1.5em;
+    font-family: 'nunito';
     color: $mainGreen;
     text-align: center;
-    text-transform: uppercase;
     box-sizing: border-box;
     outline: none;
     &::placeholder {
-      color: $mainGreen;
       opacity: .5;
     }
   }

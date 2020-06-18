@@ -9,9 +9,17 @@ import { Language } from '../global_components/language/language';
 
 export const MainMenu = (props) => {
     const gameIdInput = useRef(null)
-    const handleJoinGame = () => {
+
+    const validateUserInput = () => {
         const gameId = gameIdInput.current.value;
-        props.joinGame(gameId);
+
+        if (!gameId) {
+            const alertMessage = 'Please type in game ID';
+            props.alert('alert', alertMessage);
+            return
+        };
+
+        props.joinGame(gameId, 'Something went wrong, please check game ID');
     }
 
     return ( 
@@ -25,7 +33,7 @@ export const MainMenu = (props) => {
                 </Card>
                 <Card className="join-game">
                     <input placeholder={i18Next.t("Game ID")} ref={gameIdInput}></input>
-                    <button onClick={handleJoinGame}><Trans>Join the game</Trans></button>
+                    <button onClick={validateUserInput}><Trans>Join the game</Trans></button>
                 </Card>
             </div>
         </div>

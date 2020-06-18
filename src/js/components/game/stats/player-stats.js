@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
 //Components
 import { RoundPoints } from './round-points';
+import Card from '../../global_components/card';
 
 export class PlayerStats extends Component {
     state = {
@@ -27,7 +28,7 @@ export class PlayerStats extends Component {
         const allPointsDisplay = this.state.displayAllPoints ? 'active' : '';
 
         return (
-            <div className={`player-stats ${this.props.className}`}>
+            <Card className={`player-stats ${this.props.className}`}>
                 <div className="player-name"><span>{player.playerName}</span></div>
                 <div className="wraper">
                     <div>{<Trans>Current score</Trans>} {player.currentScore}</div>
@@ -39,7 +40,7 @@ export class PlayerStats extends Component {
                         {this.getRoundPoints()}
                     </ul>
                 </div>
-            </div>
+            </Card>
         );
     }
 }

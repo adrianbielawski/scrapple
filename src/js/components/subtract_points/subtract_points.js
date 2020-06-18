@@ -11,7 +11,7 @@ export const SubtractPoints = (props) => {
         for (let i = 0; i < props.players.length; i++) {
             const inputVal = document.getElementById(`sub-points${i}`).value;
             inputVal = parseFloat(inputVal);
-            if(isNaN(inputVal)) {
+            if(!inputVal) {
                 inputVal = 0
             }
             if (inputVal < 0 || !Number.isInteger(inputVal)) {

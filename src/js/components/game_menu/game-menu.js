@@ -79,7 +79,7 @@ export class GameMenu extends Component {
             }
         }
         const gameId = this.props.gameId ? this.props.gameId : Math.floor(Math.random() * 1000000).toString();
-        this.props.handleCreateNewGame(gameId);
+        this.props.handleCreateNewGame(gameId, 'Something went wrong, please check your internet connection and try again');
 
         if(this.props.timer) {
             this.serverChangeListener(gameId);
