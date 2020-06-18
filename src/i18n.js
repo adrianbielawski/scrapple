@@ -30,6 +30,8 @@ const resources = {
       "Are you sure you want to finish this game?" : "Are you sure you want to finish this game?",
       "Game finished!" : "Game finished!",
       "Please wait until points of unused letters will be substracted" : "Please wait until points of unused letters will be substracted",
+      //Game/Menu
+      "Menu" : "Menu",
       //TwoLetterWords
       "Show two-letter words" : "Show two-letter words",
       "Hide two-letter words" : "Hide two-letter words",
@@ -50,6 +52,7 @@ const resources = {
       },
       //GameSummary
       "Game results" : "Game results",
+      "Points value must be positive integer" : "Points value must be positive integer",
       "Subtract points of unused letters" : "Subtract points of unused letters",
       "Exit" : "Exit",
       "Continue" : "Continue",
@@ -97,6 +100,8 @@ const resources = {
       "Are you sure you want to finish this game?" : "Jesteś pewien, że chcesz zakończyć grę?",
       "Game finished!" : "Gra zakończona!",
       "Please wait until points of unused letters will be substracted" : "Poczekaj, aż wartość pozostałych liter zostanie odjęta",
+      //Game/Menu
+      "Menu" : "Menu",
       //TwoLetterWords
       "Show two-letter words" : "Pokaż slowa dwuliterowe",
       "Hide two-letter words" : "Ukryj slowa dwuliterowe",
@@ -118,6 +123,7 @@ const resources = {
       },
       //GameSummary
       "Game results" : "Wyniki Gry",
+      "Points value must be positive integer" : "Wprowadzona wartość musi byc całkowitą liczbą dodatnią",
       "Subtract points of unused letters" : "Odejmij wartość pozostałych liter",
       "Exit" : "Wyjdź",
       "Continue" : "Kontynuuj",
@@ -143,13 +149,13 @@ const resources = {
 i18n
   .use(initReactI18next)
   .init({
-    resources,
+    lng: 'en',
     fallbackLng: 'en',
+    resources,
     debug: true,
     interpolation: {
       escapeValue: false,
     }
   });
-
 
 export default i18n;

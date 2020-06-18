@@ -6,7 +6,7 @@ export const PlayerSubPoints = (props) => {
         <li className="sub">
             <Card>
                 <div className="player-name">{props.playerName}</div>
-                <input id={`sub-points${props.index}`} type="number" min="0" placeholder="0"></input>
+                <input id={`sub-points${props.index}`} type="number" placeholder="0"></input>
             </Card>
         </li>
     );

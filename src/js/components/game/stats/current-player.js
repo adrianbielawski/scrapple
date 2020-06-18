@@ -6,14 +6,17 @@ import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
+const audio = {
+    beep: new Audio('../../../../src/assets/audio/beep.mp3'),
+    longBeep: new Audio('../../../../src/assets/audio/long-beep.mp3')
+}
+
 export class CurrentPlayer extends Component {
     constructor(props) {
         super(props);
         this.state = {
             timeLeft: null
         }
-        this.beep = new Audio('../../../../src/assets/audio/beep.mp3');
-        this.longBeep = new Audio('../../../../src/assets/audio/long-beep.mp3');
         this.startTimer = this.props.timer ? setInterval(this.updateTimer, 1000) : '';
     }
 
@@ -45,11 +48,11 @@ export class CurrentPlayer extends Component {
         const time0 = moment('00:00', 'mm:ss');
         const shortTime = moment('00:10', 'mm:ss');
         if(time.isSameOrBefore(shortTime) && time.isAfter(time0)) {
-            this.beep.play();
+            audio.beep.play();
         }
         if(time.isSame(time0)){
             timeLeft = '00:00'
-            this.longBeep.play();
+            audio.longBeep.play();
             clearInterval(this.startTimer);
             setTimeout(this.timeOut, 1000);
         }

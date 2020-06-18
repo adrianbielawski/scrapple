@@ -24,7 +24,7 @@ export class App extends React.Component {
       language: 'en-GB',
       screen: 'MainMenu',
       showAlert: false,
-      playersNames: ['sdf', 'sfdg'],
+      playersNames: ['sdf', 'dfff'],
       players: [],
       timer: false,
       time: {
@@ -76,8 +76,8 @@ export class App extends React.Component {
   changeLanguage = (language) => {
       const html = document.getElementsByTagName('html');
       html[0].lang = language;
-      this.setState(state => ({ ...state, language}));
       i18n.changeLanguage(`${language}`);
+      this.setState(state => ({ ...state, language}));
   }
 
   toggleTimer = () => {
@@ -366,7 +366,7 @@ export class App extends React.Component {
     let screen = '';   
     switch(this.state.screen) {
       case 'MainMenu':
-        screen = <MainMenu showGameMenu={this.showGameMenu} joinGame={this.joinGame} gameId={this.state.gameId}/>
+        screen = <MainMenu showGameMenu={this.showGameMenu} joinGame={this.joinGame} changeLanguage={this.changeLanguage} currentLanguage={this.state.language} gameId={this.state.gameId}/>
         break;
       case 'GameMenu':
         screen = <GameMenu

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
-import i18next from 'i18next';
 import db from '../../../firebase';
 import '../../../styles/game-menu.scss';
 import { Players } from './players/players';
-import { Languages } from './languages';
+import { Language } from '../global_components/language/language';
 import { Timer } from './timer';
 import { AddPlayer } from './add-player';
 import { Header } from '../global_components/header';
@@ -15,7 +14,6 @@ export class GameMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showLanguages: false,
             listSpace: null,
             caughtElement: null,
             showConfirmation: this.props.playedAgain && !this.props.playedAgainWithSettings ? true : false,
@@ -99,17 +97,7 @@ export class GameMenu extends Component {
         });
     }
 
-    handleLanguageChange = (e) => {
-        const language = e.currentTarget.id;
-        this.props.changeLanguage(language);
-    }
-
-    toggleShowLanguages = () => {
-        this.setState(state => ({ ...state, showLanguages: !state.showLanguages}));
-    }
-
     render() {
-        const languageClass = this.state.showLanguages ? 'active' : '';
         const buttonText = this.props.playedAgainWithSettings ? 'Play again' : 'Create game';
         
         return (
@@ -123,11 +111,7 @@ export class GameMenu extends Component {
                 <Header />
                 <div className="menu">
                     <Card>
-                        <Languages
-                            toggleShowLanguages={this.toggleShowLanguages}
-                            handleLanguageChange={this.handleLanguageChange}
-                            languageClass={languageClass}
-                            language={this.props.language} />
+                        <Language changeLanguage={this.props.changeLanguage} currentLanguage={this.props.language} showName={true}/>
                     </Card>
                     <Card>
                         <Timer toggleTimer={this.props.toggleTimer} setTime={this.props.setTime} timer={this.props.timer} />

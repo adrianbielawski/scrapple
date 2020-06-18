@@ -20,10 +20,10 @@ const Menu = (props) => {
                 <Card>
                     <div className="menu-header">
                         <FontAwesomeIcon icon={faArrowLeft} className="arrow" onClick={toggleMenu} />
-                        <p className="title">Menu</p>
+                        <p className="title"><Trans>Menu</Trans></p>
                     </div>
                     <div className="menu-content">
-                        <p><Trans>Game Id</Trans>: <strong>{props.gameId}</strong></p>
+                        <p><Trans>Game ID</Trans>: <strong>{props.gameId}</strong></p>
                     </div>
                 </Card>
             </div>

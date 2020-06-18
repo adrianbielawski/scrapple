@@ -10,8 +10,12 @@ export const SubtractPoints = (props) => {
     const validateUserInputs = (e) => {
         for (let i = 0; i < props.players.length; i++) {
             const inputVal = document.getElementById(`sub-points${i}`).value;
-            if (inputVal < 0) {
-                const alertMessage = 'Minimum points value is 0';
+            inputVal = parseFloat(inputVal);
+            if(isNaN(inputVal)) {
+                inputVal = 0
+            }
+            if (inputVal < 0 || !Number.isInteger(inputVal)) {
+                const alertMessage = 'Points value must be positive integer';
                 props.alert('alert', alertMessage);
                 return
             };

@@ -5,6 +5,7 @@ import { Trans } from 'react-i18next';
 import { Header } from '../global_components/header';
 import Confirmation from './confirmation';
 import Card from '../global_components/card';
+import { Language } from '../global_components/language/language';
 
 export const MainMenu = (props) => {
     const gameIdInput = useRef(null)
@@ -18,6 +19,7 @@ export const MainMenu = (props) => {
             {props.gameId ? <Confirmation gameId={props.gameId}/> : null}
             <Header />
             <div className="content">
+                <Language changeLanguage={props.changeLanguage} currentLanguage={props.currentLanguage} showName={false} />
                 <Card >
                     <button onClick={() => props.showGameMenu()}><Trans>Create new game</Trans></button>
                 </Card>

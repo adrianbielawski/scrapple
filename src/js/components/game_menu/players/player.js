@@ -9,6 +9,7 @@ export class Player extends Component {
         this.state = {
             index: this.props.index,
             isGrabbed: false,
+            isTouchDevice: false,
             top: 0,
             left: 0,
             startX: 0,
@@ -25,9 +26,12 @@ export class Player extends Component {
     }
 
     handleGrab = (e) => {
-        if(e.type === 'touchstart' && this.props.isOtherGrabbed) {
-            this.props.setTouches(1);
-            return
+        if(e.type === 'touchstart') {
+            if(this.props.isOtherGrabbed) {
+                this.props.setTouches(1);
+                return
+            }
+            this.setState(state => ({ ...state, isTouchDevice: true}));
         };
         this.props.setGrabbedElement(this.state.index, e.type);
         
@@ -125,6 +129,7 @@ export class Player extends Component {
             bottomSpaceClass: '',
             grabbed: '',
             position: {},
+            hover: 'no-touch-device'
         }
 
         if(this.props.topSpace && !this.state.isGrabbed) {
@@ -136,17 +141,20 @@ export class Player extends Component {
         };
 
         if(!this.props.isTransitionEnableed && !this.state.isGrabbed) {
-            styles.bottomSpaceStyle.transition = 'none'
-            styles.topSpaceStyle.transition = 'none'
-        }
+            styles.bottomSpaceStyle.transition = 'none';
+            styles.topSpaceStyle.transition = 'none';
+        };
 
         if(this.state.isGrabbed) {
             styles.grabbed = 'grabbed'
             styles.position = {
                 top: this.state.top,
                 left: this.state.left
-            }
-        }
+            };
+        };
+        if (this.state.isTouchDevice) {
+            styles.hover = '';
+        };
 
         return styles
     }
@@ -155,7 +163,7 @@ export class Player extends Component {
         const styles = this.getStyles();
         
         return (
-            <li className={`player ${styles.grabbed}`} style={styles.position}>
+            <li className={`player ${styles.grabbed} ${styles.hover}`} style={styles.position}>
                 <div className={`top-list-space ${styles.topSpaceClass}`} style={styles.topSpaceStyle}></div>
                 <div className="wrapper">
                     <div onMouseDown={this.handleGrab}
