@@ -24,7 +24,7 @@ export class App extends React.Component {
       language: 'en-GB',
       screen: 'MainMenu',
       showAlert: false,
-      playersNames: [],
+      playersNames: ['sd', 'sdf'],
       players: [],
       timer: false,
       time: {

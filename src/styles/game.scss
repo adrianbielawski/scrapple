@@ -6,7 +6,7 @@
     flex-grow: 1;
     height: 100%;
     .menu-wrapper {
-        .img-wrapper {
+        .menu-icon {
             flex: 1;
         }
         img {
@@ -30,7 +30,7 @@
             .menu {
                 top: 0;
                 left: 0;
-                width: 70%;
+                width: 80%;
                 max-width: 300px;
                 min-width: 150px;
                 height: 100%;
@@ -63,7 +63,33 @@
                     align-items: flex-start;
                     box-sizing: border-box;
                     p {
-                        font-size: 26px;
+                        font-size: 22px;
+                    }
+                    .game-id {
+                        display: inline-flex;
+                        align-items: center;
+                        div {
+                            position: relative;
+                            display: inline-flex;
+                        }
+                        p.id {
+                            margin-left: 5px;
+                            font-size: 26px;
+                            font-weight: 700;
+                        }
+                        p.copy-id {
+                            position: absolute;
+                            &.move {
+                                transform: translateX(50px);
+                                transition-duration: .3s;
+                                opacity: 0;
+                            }
+                        }
+                        span {
+                            margin-left: 10px;
+                            font-size: 26px;
+                            z-index: 10;
+                        }
                     }
                 }
             }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import i18next from 'i18next';
 import '../../../styles/word-checker.scss'
 import { LoadingSpinner } from '../global_components/loadingSpinner'
-import Menu from './menu';
+import Menu from './menu/menu';
 
 const IMAGES = {
     thumbUp: '../src/assets/img/thumb-up.png',
