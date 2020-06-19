@@ -166,17 +166,18 @@ export class App extends React.Component {
 
   createNewGame = (players, gameId, alertMessage) => {
     let game = {
-      gameStarted: true,
-      players: players,
-      joinedPlayers: [1],
       language: this.state.language,
+      players: players,
       currentPlayer: 0,
+      gameStarted: true,
+      joinedPlayers: [1],
       exitOption: this.state.playedAgainWithSettings ? 'playAgainWithSettings' : null
     }
 
     if(this.state.timer) {
       game = {
         ...game,
+        gameStarted: false,
         timer: this.state.timer,
         time: this.state.time,
         endTime: null,

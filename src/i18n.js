@@ -7,6 +7,8 @@ const resources = {
       //MainMenu
       "Game ID" : "Game ID",
       "Create new game" : "Create new game",
+      "Creating new game" : "Creating new game",
+      "Please wait" : "Please wait...",
       "Join the game" : "Join the game",
       "You has joined the game!" : "You has joined the game!",
       "Please wait until game started" : "Please wait until game started",
@@ -24,7 +26,7 @@ const resources = {
       "Create game" : "Create game",
       "Please add at least 2 players" : "Please add at least 2 players",
       "Minimum player's time limit is 1 min" : "Minimum player's time limit is 1 min",
-      "Game created succesfully!" : "Game created succesfully!",
+      "Game created succesfully" : "Game created succesfully!",
       "Waiting for other players to join the game" : "Waiting for other players to join the game",
       "All players has joined the game, press start game to begin" : "All players has joined the game, press start game to begin",
       //Game
@@ -79,8 +81,10 @@ const resources = {
       //MainMenu
       "Game ID" : "Numer gry",
       "Create new game" : "Utwórz nową grę",
+      "Creating new game" : "Trwa tworzenie gry",
+      "Please wait" : "Proszę czekać...",
       "Join the game" : "Dołącz do gry",
-      "You has joined the game!" : "Dołączyłeś do gry!",
+      "You has joined the game" : "Dołączyłeś do gry!",
       "Please wait until game started" : "Poczekaj, aż gra się rozpocznie",
       "Please type in game ID" : "Proszę podać numer gry",
       "Something went wrong, please check game ID" : "Coś nie zadziałało, sprawdź numer gry",
@@ -96,7 +100,7 @@ const resources = {
       "Please add at least 2 players" : "Proszę dodać co najmniej 2 graczy",
       "Minimum player's time limit is 1 min" : "Minimalny limit czasu to 1 min",
       "Create game" : "Utwórz grę",
-      "Game created succesfully!" : "Gra utworzona!",
+      "Game created succesfully" : "Gra utworzona!",
       "Waiting for other players to join the game" : "Poczekaj, aż pozostali gracze dołączą do gry",
       "All players has joined the game, press start game to begin" : "Wszyscy gracze dołączyli do gry, wciśnij start aby rozpocząć grę",
       //Game

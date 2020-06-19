@@ -4,21 +4,21 @@ import Dropdown from '../global_components/dropdown';
 import { LoadingSpinner } from '../global_components/loadingSpinner';
 
 const Confirmation = (props) => {
-    let message = 'Waiting for other players to join the game';
-    let buttonStyle = {marginTop: '40px', opacity: .5, cursor: 'no-drop'};
-    let isButtonDisabled = true;
+    let title = props.gameId ? 'Game created succesfully' : 'Creating new game'
+    let message = 'Please wait';
+    if(props.gameId) {
+        message = 'Waiting for other players to join the game'
+    }
     if(props.allPlayersJoined) {
-        buttonStyle = null;
         message = 'All players has joined the game, press start game to begin';
-        isButtonDisabled = false;
     }
     return ( 
         <Dropdown className="confirmation">
-            <h2><Trans>Game created succesfully!</Trans></h2>
-            <p className="game-id"><Trans>Game ID</Trans>: {props.gameId}</p>
+            <h2><Trans>{title}</Trans></h2>
+            {props.gameId ? <p className="game-id"><Trans>Game ID</Trans>: {props.gameId}</p> : null}
             <p className="message"><Trans>{message}</Trans></p>
             {!props.allPlayersJoined && <LoadingSpinner></LoadingSpinner>}
-            <button disabled={isButtonDisabled} onClick={props.handleGameStart} style={buttonStyle}><Trans>Start game</Trans></button>                
+            {props.allPlayersJoined && <button onClick={props.handleGameStart}><Trans>Start game</Trans></button>}
         </Dropdown>
     );
 }
