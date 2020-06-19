@@ -25,7 +25,7 @@ const Menu = (props) => {
                         <p><Trans>Game ID</Trans>: <strong>{props.gameId}</strong></p>
                     </div>
                 </div>
-                <div className="background" onClick={toggleMenu}></div>
+                <div className={showMenu ? "background show" : "background"} onClick={toggleMenu}></div>
             </div>
         </div>
     );

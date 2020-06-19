@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import Card from './card';
 
 const Dropdown = (props) => {
+    const [cardClass, setCardClass] = useState(null)
+    useEffect(() => {
+        setCardClass('show')
+    }, [])
     return (
         <div className={`dropdown ${props.className}`}>
-            <div className="card">
+            <Card className={cardClass}>
                 {props.children}
-            </div>
+            </Card>
         </div>
     );
 }

@@ -172,7 +172,7 @@ export class Player extends Component {
                         onTouchEnd={this.handleDrop}
                         className="player-name"
                     >
-                        <Trans>Player</Trans> {this.props.index + 1}: <span>{this.props.player}</span>
+                        <p><Trans>Player</Trans> {this.props.index + 1}: <span> {this.props.player}</span></p>
                     </div>
                     <button onClick={this.removePlayer} className="remove">
                         <FontAwesomeIcon icon={faTimes} onClick={this.handleClick}/>

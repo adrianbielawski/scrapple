@@ -107,7 +107,8 @@ export class GameMenu extends Component {
                         gameId={this.props.gameId} 
                         handleGameStart={this.props.startAdminGame} 
                         allPlayersJoined={this.state.allPlayersJoined}
-                    /> : null}
+                    /> : null
+                }
                 <Header />
                 <div className="menu">
                     <Card>

@@ -133,14 +133,13 @@ html, body, div, span, h1, h2, p, a, ul, li {
     z-index: 100;
     box-sizing: border-box;
     .card {
-      background-color: $offWhite;
       box-shadow: 0 0 10px #000;
       width: 100%;
-      height: 100%;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      height: 0;
+      transition: height .2s linear;
+      &.show {
+        height: 100%;
+      }
     }
   }
   .confirmation {

@@ -42,10 +42,6 @@ export class App extends React.Component {
     }
     this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
   }
-  
-  componentWillUnmount(){
-    this.unsubscribe();
-  }
 
   setTime = (val) => {
     let time = {};
@@ -159,7 +155,7 @@ export class App extends React.Component {
         playerId: index,
         currentScore: 0,
         bestScore: 0,
-        allPoints: [],
+        allPoints: [4,4],
       }
     });
 

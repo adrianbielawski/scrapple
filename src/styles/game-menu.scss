@@ -5,7 +5,6 @@
         margin: 0;
     }
     p {
-        margin: 10px auto 3px;
         font-size: 1.2em;
         color: $darkText;
         font-weight: 600;
@@ -57,6 +56,12 @@
         }
     }
 
+    .time-option {
+        display: inline-flex;
+        align-items: center;
+        margin-left: -15px;
+    }
+
     input {
         width: 80%;
         text-transform: none;
@@ -106,6 +111,7 @@
         align-items: center;
         p {
             text-align: center;
+            margin: 0 0 5px 0;
         }
         .form {
             display: inline-flex;
@@ -136,9 +142,6 @@
                 -ms-user-select:none;
                 -o-user-select:none;
             cursor: grab;
-            span {
-                font-weight: 700;
-            }
             .wrapper {
                 padding-left: 10px;
                 display: flex;
@@ -150,6 +153,17 @@
                 display: flex;
                 flex-grow: 1;
                 flex-shrink: 0;
+            }
+            p {
+                font-weight: unset;
+                font-size: 1em;
+                text-align: left;
+                width: 100%;
+                margin: 0;
+            }
+            span {
+                font-weight: 700;
+                font-size: 1.2em;
             }
             .top-list-space {
                 height: 0;
@@ -194,14 +208,5 @@
 
     button[type=submit] {
         margin: 5px auto;
-    }
-
-    .time-option {
-        display: inline-flex;
-        align-items: center;
-        margin-left: -15px;
-        p {
-            margin: 0;
-        }
     }
 }

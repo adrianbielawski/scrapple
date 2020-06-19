@@ -116,10 +116,7 @@
             margin-top: 10px;
             max-height: 0;
             overflow: hidden;
-            transition: max-height .5s ease-in-out;
-            &.active {
-                max-height: 1000px;
-            }
+            transition: max-height .2s ease-in-out;
 
             p {
                 margin-bottom: 5px;
