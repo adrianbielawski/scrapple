@@ -2,8 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './i18n';
 import {App} from './js/components/App';
+import { BrowserRouter } from 'react-router-dom';
 
-ReactDOM.render(
-    <App/>,
+const app = (
+  <BrowserRouter>
+    <App/>
+  </BrowserRouter>
+);
+
+ReactDOM.render( app,
   document.getElementById('root')
 );

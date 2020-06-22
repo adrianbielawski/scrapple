@@ -1,6 +1,7 @@
 import React from 'react';
 import '../../styles/App.scss';
 import i18n from '../../i18n';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import db from '../../firebase';
 import * as firebase from 'firebase';
 import Moment from 'react-moment';//important
@@ -384,73 +385,6 @@ export class App extends React.Component {
     }));
   }
 
-  getContent = () => {
-    let screen = '';   
-    switch(this.state.screen) {
-      case 'MainMenu':
-        screen = <MainMenu
-          alert={this.alert}
-          showGameMenu={this.showGameMenu}
-          joinGame={this.joinGame}
-          changeLanguage={this.changeLanguage}
-          currentLanguage={this.state.language}
-          gameId={this.state.gameId}/>
-        break;
-      case 'GameMenu':
-        screen = <GameMenu
-          alert={this.alert}
-          handleCreateNewGame={this.handleCreateNewGame}
-          startAdminGame={this.startAdminGame}
-          addPlayer={this.addPlayer}
-          changeLanguage={this.changeLanguage}
-          toggleTimer={this.toggleTimer}
-          setTime={this.setTime}
-          reorderPlayers={this.reorderPlayers}
-          removePlayer={this.removePlayer}
-          gameId={this.state.gameId}
-          playedAgain={this.state.playedAgain}
-          playedAgainWithSettings={this.state.playedAgainWithSettings}
-          language={this.state.language}
-          timer={this.state.timer}
-          time={this.state.time}
-          players={this.state.playersNames} />
-        break;
-      case 'Game':
-        screen = <Game
-          alert={this.alert}
-          renderGameSummary={this.renderGameSummary}
-          handleFinishGame={this.handleFinishGame}
-          gameId={this.state.gameId} 
-          admin={this.state.admin}
-          showFinishedGameCover={this.state.showFinishedGameCover}
-          language={this.state.language} 
-          players={this.state.players}
-          timer={this.state.timer ? this.state.timer : null}
-          time={this.state.timer ? this.state.time : null}
-          endTime={this.state.timer ? this.state.initialEndTime : null}/>;
-        break;
-      case 'SubtractPoints':
-        screen = <SubtractPoints
-          renderGameSummary={this.renderGameSummary}
-          alert={this.alert}
-          players={this.state.players}
-          gameId={this.state.gameId} />
-        break;
-      case 'GameSummary':
-        screen = <GameSummary
-          playAgain={this.playAgain}
-          joinGame={this.joinGame}
-          playAgainSettings={this.playAgainSettings}
-          exitGame={this.exitGame}
-          players={this.state.players}
-          admin={this.state.admin}
-          gameId={this.state.gameId}
-          timer={this.state.timer}/>
-        break;
-    }
-    return screen
-  }
-
   render() {
     return (
       <div className="App" style={{height: this.state.screenHeight}}>
@@ -460,7 +394,59 @@ export class App extends React.Component {
             alertMessage={this.state.alert.alertMessage}
             messageValue={this.state.alert.messageValue} />
         : null}
-        {this.getContent()}
+        <Redirect to={`/${this.state.screen}`} />
+        <Switch>
+          <Route path="/GameMenu" render={() => (<GameMenu
+            alert={this.alert}
+            handleCreateNewGame={this.handleCreateNewGame}
+            startAdminGame={this.startAdminGame}
+            addPlayer={this.addPlayer}
+            changeLanguage={this.changeLanguage}
+            toggleTimer={this.toggleTimer}
+            setTime={this.setTime}
+            reorderPlayers={this.reorderPlayers}
+            removePlayer={this.removePlayer}
+            gameId={this.state.gameId}
+            playedAgain={this.state.playedAgain}
+            playedAgainWithSettings={this.state.playedAgainWithSettings}
+            language={this.state.language}
+            timer={this.state.timer}
+            time={this.state.time}
+            players={this.state.playersNames} />)} />
+          <Route path="/MainMenu" render={() => (<MainMenu
+            alert={this.alert}
+            showGameMenu={this.showGameMenu}
+            joinGame={this.joinGame}
+            changeLanguage={this.changeLanguage}
+            currentLanguage={this.state.language}
+            gameId={this.state.gameId}/>)} />
+          <Route path="/Game" render={() => (<Game
+            alert={this.alert}
+            renderGameSummary={this.renderGameSummary}
+            handleFinishGame={this.handleFinishGame}
+            gameId={this.state.gameId} 
+            admin={this.state.admin}
+            showFinishedGameCover={this.state.showFinishedGameCover}
+            language={this.state.language} 
+            players={this.state.players}
+            timer={this.state.timer ? this.state.timer : null}
+            time={this.state.timer ? this.state.time : null}
+            endTime={this.state.timer ? this.state.initialEndTime : null}/>)} />
+          <Route path="/SubtractPoints" render={() => (<SubtractPoints
+            renderGameSummary={this.renderGameSummary}
+            alert={this.alert}
+            players={this.state.players}
+            gameId={this.state.gameId} />)} />
+          <Route path="/GameSummary" render={() => (<GameSummary
+            playAgain={this.playAgain}
+            joinGame={this.joinGame}
+            playAgainSettings={this.playAgainSettings}
+            exitGame={this.exitGame}
+            players={this.state.players}
+            admin={this.state.admin}
+            gameId={this.state.gameId}
+            timer={this.state.timer}/>)} />
+        </Switch>
       </div>
     );
   }
