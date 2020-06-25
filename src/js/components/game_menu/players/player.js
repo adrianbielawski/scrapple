@@ -3,7 +3,7 @@ import { Trans } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-export class Player extends Component {
+class Player extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -183,3 +183,4 @@ export class Player extends Component {
         );
     }
 }
+export default Player;

@@ -11,13 +11,13 @@ const audio = {
     longBeep: new Audio('../../../../src/assets/audio/long-beep.mp3')
 }
 
-export class CurrentPlayer extends Component {
+class CurrentPlayer extends Component {
     constructor(props) {
         super(props);
         this.state = {
             timeLeft: null
         }
-        this.startTimer = this.props.timer ? setInterval(this.updateTimer, 1000) : '';
+        this.startTimer = this.props.timer ? setInterval(this.updateTimer, 1000) : null;
     }
 
     componentWillUnmount = () => {
@@ -47,20 +47,19 @@ export class CurrentPlayer extends Component {
         const time = moment(timeLeft, 'mm:ss');
         const time0 = moment('00:00', 'mm:ss');
         const shortTime = moment('00:10', 'mm:ss');
-        if(time.isSameOrBefore(shortTime) && time.isAfter(time0)) {
+        if(time.isSameOrBefore(shortTime) && time.isAfter(time0) && this.props.admin) {
             audio.beep.play();
         }
         if(time.isSame(time0)){
+            if(this.props.admin) {
+                audio.longBeep.play();
+                setTimeout(this.props.timeOut, 1000);
+            }
             timeLeft = '00:00'
-            audio.longBeep.play();
             clearInterval(this.startTimer);
-            setTimeout(this.timeOut, 1000);
+            this.startTimer = null;
         }
         this.setState(state => ({ ...state, timeLeft}));
-    }
-
-    timeOut = () => {
-        this.props.timeOut();
     }
 
     getTimerClass = () => {
@@ -96,3 +95,4 @@ export class CurrentPlayer extends Component {
         );
     }
 }
+export default CurrentPlayer;

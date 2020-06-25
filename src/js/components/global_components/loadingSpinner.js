@@ -1,4 +1,6 @@
 import React from 'react';
 import '../../../styles/loadingSpinner.scss'
 
-export const LoadingSpinner = () => <div className="loader">Loading...</div>;
+const LoadingSpinner = () => <div className="loader">Loading...</div>;
+
+export default LoadingSpinner;

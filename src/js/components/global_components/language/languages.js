@@ -9,6 +9,6 @@ const languages = {
         symbol: 'pl-PL',
         flag: 'pl-PL-flag.png'
     }
-}
+};
 
-export default languages
+export default languages;

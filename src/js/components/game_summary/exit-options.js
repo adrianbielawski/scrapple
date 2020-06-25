@@ -1,6 +1,7 @@
 import React from 'react';
-import Dropdown from '../global_components/dropdown';
 import { Trans } from 'react-i18next';
+//Custom Components
+import Dropdown from '../global_components/dropdown';
 
 const ExitOptions = (props) => {
     return ( 

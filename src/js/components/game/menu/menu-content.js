@@ -1,4 +1,5 @@
 import React from 'react';
+//Custom Components
 import GameId from './game-id';
 
 const MenuContent = (props) => {

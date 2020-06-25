@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Player } from './player';
+//Custom Components
+import Player from './player';
 
-export class Players extends Component {
+class Players extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -97,3 +98,4 @@ export class Players extends Component {
         );
     }
 }
+export default Players;

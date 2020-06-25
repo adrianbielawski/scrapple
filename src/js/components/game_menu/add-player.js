@@ -3,13 +3,13 @@ import { Trans } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
-export const AddPlayer = (props) => {
-    const inputEl = useRef(null)
+const AddPlayer = (props) => {
+    const inputEl = useRef(null);
 
     const handleAddPlayer = () => {
         const player = inputEl.current.value;
         props.validatePlayerName(player);
-    }
+    };
 
     return (
         <div className="add-player">
@@ -23,3 +23,4 @@ export const AddPlayer = (props) => {
         </div>
     );
 }
+export default AddPlayer;

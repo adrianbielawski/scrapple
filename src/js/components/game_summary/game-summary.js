@@ -3,15 +3,14 @@ import { Trans } from 'react-i18next';
 import db from '../../../firebase';
 import '../../../styles/game-summary.scss';
 //Components
-import { PlayerSummary } from './player-summary';
-import { Header } from '../global_components/header';
+import PlayerSummary from './player-summary';
+import Header from '../global_components/header';
 import ExitOptions from './exit-options';
 import WaitingCover from './waiting-cover';
 
-export const GameSummary = (props) => {
+const GameSummary = (props) => {
     const [showExitOptions, setShowExitOptions] = useState(false);
     const [exitOption, setExitOption] = useState(null);
-    const [gameCreated, setGameCreated] = useState(false);
 
     useEffect(() => {
         const unsubscribe = db.collection('games').doc(props.gameId).onSnapshot(doc => {
@@ -23,7 +22,6 @@ export const GameSummary = (props) => {
                 };
             }
             if(data.joinedPlayers.length > 0 && data.exitOption === 'playAgainWithSettings') {
-                setGameCreated(true);
                 props.playAgainSettings()
             }
         })
@@ -74,15 +72,15 @@ export const GameSummary = (props) => {
             return <PlayerSummary player={player} placeText={placeText} place={place} key={index}/>
         });
         return playersSummary
-    }
+    };
 
     const handleExit = () => {
         setShowExitOptions(true)
-    }
+    };
 
     return (
         <div className="game-summary">
-            {exitOption === 'playAgainWithSettings' || (exitOption === 'playAgain' && props.timer) ? <WaitingCover gameCreated={gameCreated} exitOption={exitOption} /> : null}
+            {exitOption === 'playAgainWithSettings' || (exitOption === 'playAgain' && props.timer) ? <WaitingCover exitOption={exitOption} /> : null}
             {showExitOptions ? <ExitOptions 
                 playAgain={props.playAgain}
                 playAgainSettings={props.playAgainSettings}
@@ -97,3 +95,4 @@ export const GameSummary = (props) => {
         </div>
     );
 }
+export default GameSummary

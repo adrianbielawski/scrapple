@@ -3,14 +3,14 @@ import { Trans } from 'react-i18next';
 import Moment from 'react-moment';//important
 import moment from 'moment';
 import '../../../styles/game.scss';
-//Components
-import {WordChecker} from './word-checker';
-import {Stats} from './stats/stats';
-import { TwoLetterWords } from './two-letter-words';
+//Custom Components
+import WordChecker from './word-checker';
+import Stats from './stats/stats';
+import TwoLetterWords from './two-letter-words';
 import db from '../../../firebase';
 import FinishedGameCover from './finished-game-cover';
 
-export class Game extends React.Component {
+class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,9 +18,10 @@ export class Game extends React.Component {
       admin: this.props.admin,
       showWords: false,
       currentPlayer: 0,
-      time: this.props.time,
-      endTime: this.props.endTime,
-      players: this.props.players,
+      timer: this.props.data.timer,
+      time: this.props.data.time,
+      endTime: this.props.data.endTime,
+      players: this.props.data.players,
       mounted: false
     };
     this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
@@ -68,15 +69,15 @@ export class Game extends React.Component {
       currentPlayer = 0;
     };
 
-    const endTime = this.props.timer ? this.getEndTime() : null;
+    const endTime = this.state.timer ? this.getEndTime() : null;
 
-    this.scrollPlayersStats(currentPlayer);
-      
     db.collection('games').doc(this.props.gameId).update({
       players: players,
       currentPlayer: currentPlayer,
       endTime: endTime
     });
+
+    this.scrollPlayersStats(currentPlayer);      
   }
 
   scrollPlayersStats = (currentPlayer) => {
@@ -86,22 +87,22 @@ export class Game extends React.Component {
 
   getEndTime = () => {
     const endTime = moment().add({
-        'hours': this.props.time.hours,
-        'minutes': this.props.time.minutes,
-        'seconds': this.props.time.seconds
+        'hours': this.state.time.hours,
+        'minutes': this.state.time.minutes,
+        'seconds': this.state.time.seconds
     });
     return endTime.toJSON();
   }
 
   timeOut = () => {
-    let currentPlayer = this.state.currentPlayer ;
+    let currentPlayer = this.state.currentPlayer;
     let players = [ ...this.state.players ];
     if (currentPlayer < players.length -1) {
       currentPlayer++;
     } else {
       currentPlayer = 0;
     }
-    const endTime = this.props.timer ? this.getEndTime() : null;
+    const endTime = this.getEndTime();
     db.collection('games').doc(this.props.gameId).update({
       players: players,
       currentPlayer: currentPlayer,
@@ -134,10 +135,11 @@ export class Game extends React.Component {
         <WordChecker language={this.props.language} gameId={this.props.gameId} />
         <TwoLetterWords toggleShowWords={this.toggleShowWords} showWords={this.state.showWords} language={this.props.language}/>
         <Stats
+          admin={this.state.admin}
           timeOut={this.timeOut}
           addPoints={this.addPoints}
           endTime={this.state.endTime}
-          timer={this.props.timer}
+          timer={this.state.timer}
           time={this.state.time}
           currentPlayer={currentPlayer}
           players={players} />
@@ -149,3 +151,4 @@ export class Game extends React.Component {
     );
   }
 }
+export default Game

@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Trans } from 'react-i18next';
-//Components
-import { RoundPoints } from './round-points';
+//Custom Components
+import RoundPoints from './round-points';
 import Card from '../../global_components/card';
 
-export const PlayerStats = (props) => {
-    const [displayAllPoints, setDisplayAllPoints] = useState(false)
+const PlayerStats = (props) => {
+    const [displayAllPoints, setDisplayAllPoints] = useState(false);
 
     const toggleDisplayAllPoints = () => {
         setDisplayAllPoints(!displayAllPoints);
-    }
+    };
 
     const getRoundPoints = () => {
         const allPoints = [ ...props.player.allPoints ]
@@ -18,8 +18,8 @@ export const PlayerStats = (props) => {
                 <RoundPoints round={index + 1} points={points} key={index}/>
             )
         });
-        return roundPoints
-    }
+        return roundPoints;
+    };
     
     const allPointsStyle = displayAllPoints ? props.player.allPoints.length * 24 + 50 : 0;
 
@@ -39,3 +39,4 @@ export const PlayerStats = (props) => {
         </Card>
     );
 }
+export default PlayerStats;

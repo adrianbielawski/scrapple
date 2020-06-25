@@ -1,14 +1,15 @@
 import React, { useRef } from 'react';
 import i18Next from 'i18next';
-import '../../../styles/main-menu.scss'
 import { Trans } from 'react-i18next';
-import { Header } from '../global_components/header';
+import '../../../styles/main-menu.scss'
+//Custom Components
+import Header from '../global_components/header';
 import Confirmation from './confirmation';
 import Card from '../global_components/card';
-import { Language } from '../global_components/language/language';
+import Language from '../global_components/language/language';
 
-export const MainMenu = (props) => {
-    const gameIdInput = useRef(null)
+const MainMenu = (props) => {
+    const gameIdInput = useRef(null);
 
     const validateUserInput = () => {
         const gameId = gameIdInput.current.value;
@@ -20,7 +21,7 @@ export const MainMenu = (props) => {
         };
 
         props.joinGame(gameId, 'Something went wrong, please check game ID');
-    }
+    };
 
     return ( 
         <div className="main-menu">
@@ -29,7 +30,7 @@ export const MainMenu = (props) => {
             <div className="content">
                 <Language changeLanguage={props.changeLanguage} currentLanguage={props.currentLanguage} showName={false} />
                 <Card >
-                    <button onClick={() => props.showGameMenu()}><Trans>Create new game</Trans></button>
+                    <button onClick={() => props.renderGameMenu()}><Trans>Create new game</Trans></button>
                 </Card>
                 <Card className="join-game">
                     <input placeholder={i18Next.t("Game ID")} ref={gameIdInput}></input>
@@ -39,3 +40,4 @@ export const MainMenu = (props) => {
         </div>
      );
 }
+export default MainMenu

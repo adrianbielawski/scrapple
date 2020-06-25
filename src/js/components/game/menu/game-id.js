@@ -6,11 +6,11 @@ import { faCopy as faCopyBold } from '@fortawesome/free-solid-svg-icons';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const GameId = (props) => {
-    const [copy, setCopy] = useState(false)
+    const [copy, setCopy] = useState(false);
 
     const toggleCopy = () => {
         setCopy(!copy)
-    }
+    };
 
     return (
         <div className="game-id">

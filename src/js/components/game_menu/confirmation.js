@@ -1,13 +1,14 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
+//Custom Components
 import Dropdown from '../global_components/dropdown';
-import { LoadingSpinner } from '../global_components/loadingSpinner';
+import LoadingSpinner from '../global_components/loadingSpinner';
 
 const Confirmation = (props) => {
-    let title = props.gameId ? 'Game created succesfully' : 'Creating new game'
+    let title = props.gameId ? 'Game created succesfully' : 'Creating new game';
     let message = 'Please wait';
     if(props.gameId) {
-        message = 'Waiting for other players to join the game'
+        message = 'Waiting for other players to join the game';
     }
     if(props.allPlayersJoined) {
         message = 'All players has joined the game, press start game to begin';
@@ -17,8 +18,8 @@ const Confirmation = (props) => {
             <h2><Trans>{title}</Trans></h2>
             {props.gameId ? <p className="game-id"><Trans>Game ID</Trans>: {props.gameId}</p> : null}
             <p className="message"><Trans>{message}</Trans></p>
-            {!props.allPlayersJoined && <LoadingSpinner></LoadingSpinner>}
-            {props.allPlayersJoined && <button onClick={props.handleGameStart}><Trans>Start game</Trans></button>}
+            {!props.allPlayersJoined && <LoadingSpinner />}
+            {props.allPlayersJoined && <button onClick={props.handleStartAdminGame}><Trans>Start game</Trans></button>}
         </Dropdown>
     );
 }

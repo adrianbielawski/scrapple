@@ -1,15 +1,16 @@
 import React from 'react';
 import '../../../../styles/stats.scss';
-//Components
-import { CurrentPlayer } from './current-player';
-import { AllPlayers } from './all-players';
+//Custom Components
+import CurrentPlayer from './current-player';
+import AllPlayers from './all-players';
 
-export const Stats = (props) => {    
+const Stats = (props) => {    
     const players = props.players;
     const currentPlayer = props.currentPlayer;
     return (
         <div className="stats">
             <CurrentPlayer
+                admin={props.admin}
                 timeOut={props.timeOut}
                 timer={props.timer}
                 time={props.time}
@@ -23,3 +24,4 @@ export const Stats = (props) => {
         </div>
     );        
 }
+export default Stats;

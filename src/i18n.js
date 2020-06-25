@@ -10,10 +10,11 @@ const resources = {
       "Creating new game" : "Creating new game",
       "Please wait" : "Please wait...",
       "Join the game" : "Join the game",
-      "You has joined the game!" : "You has joined the game!",
+      "You has joined the game" : "You has joined the game!",
       "Please wait until game started" : "Please wait until game started",
       "Please type in game ID" : "Please type in game ID",
       "Something went wrong, please check game ID" : "Something went wrong, please check game ID",
+      'Something went wrong, please check your internet connection and try again' : 'Something went wrong, please check your internet connection and try again',
       //GameMenu
       "Language" : "Language",
       "Player's time limit" : "Player's time limit",
@@ -88,6 +89,7 @@ const resources = {
       "Please wait until game started" : "Poczekaj, aż gra się rozpocznie",
       "Please type in game ID" : "Proszę podać numer gry",
       "Something went wrong, please check game ID" : "Coś nie zadziałało, sprawdź numer gry",
+      'Something went wrong, please check your internet connection and try again' : 'Coś nie zadziałało, sprawdź połączenie z internetem i spróbuj ponownie',
       //GameMenu
       "Language" : 'Język',
       "Player's time limit" : 'Limit czasu',

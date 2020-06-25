@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import i18next from 'i18next';
 import '../../../styles/word-checker.scss'
-import { LoadingSpinner } from '../global_components/loadingSpinner'
+//Custom Components
+import LoadingSpinner from '../global_components/loadingSpinner'
 import Menu from './menu/menu';
 
 const IMAGES = {
@@ -9,7 +10,7 @@ const IMAGES = {
     thumbDown: '../src/assets/img/thumb-down.png'
 }
 
-export class WordChecker extends Component {
+class WordChecker extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -94,3 +95,4 @@ export class WordChecker extends Component {
         );
     }
 }
+export default WordChecker;

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
+//Custom Components
 import Card from '../global_components/card';
 
-export const PlayerSummary = (props) => {
+const PlayerSummary = (props) => {
     const getImg = () => {
         let place = '';
         switch(props.place) {
@@ -20,7 +21,7 @@ export const PlayerSummary = (props) => {
         }
         let img = <img src={`../src/assets/img/${place}-place.png`}></img>;
         return img
-    }
+    };
 
     const img = getImg()
     const player = props.player;
@@ -41,3 +42,4 @@ export const PlayerSummary = (props) => {
         </li>
     );
 }
+export default PlayerSummary;

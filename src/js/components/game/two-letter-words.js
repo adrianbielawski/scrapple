@@ -2,7 +2,7 @@ import React from 'react';
 import { Trans } from 'react-i18next';
 import '../../../styles/two-letter-words.scss';
 
-export const TwoLetterWords = (props) => {
+const TwoLetterWords = (props) => {
     let buttonName = props.showWords ? 'Hide two-letter words' : 'Show two-letter words';
     let wordsClass = props.showWords ? 'active' : '';
     return (
@@ -16,3 +16,4 @@ export const TwoLetterWords = (props) => {
         </div>
     );
 }
+export default TwoLetterWords;

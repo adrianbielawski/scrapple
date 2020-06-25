@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
+//Custom Components
 import MenuContent from './menu-content';
 import MenuHeader from './menu-header';
 
 const Menu = (props) => {
-    const [showMenu, setShowMenu] = useState(false)
+    const [showMenu, setShowMenu] = useState(false);
 
     const toggleMenu = () => {
         setShowMenu(!showMenu)
-    }
+    };
 
     return ( 
         <div className="menu-wrapper">

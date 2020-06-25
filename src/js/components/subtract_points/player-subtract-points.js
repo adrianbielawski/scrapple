@@ -1,7 +1,8 @@
 import React from 'react';
+//Custom Components
 import Card from '../global_components/card';
 
-export const PlayerSubPoints = (props) => {
+const PlayerSubPoints = (props) => {
     return (
         <li className="sub">
             <Card>
@@ -11,3 +12,4 @@ export const PlayerSubPoints = (props) => {
         </li>
     );
 }
+export default PlayerSubPoints;
