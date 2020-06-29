@@ -12,11 +12,11 @@ const MainMenu = (props) => {
     const gameIdInput = useRef(null);
 
     const validateUserInput = () => {
-        const gameId = gameIdInput.current.value;
+        const gameId = gameIdInput.current.value.trim();
 
         if (!gameId) {
-            const alertMessage = 'Please type in game ID';
-            props.alert('alert', alertMessage);
+            const messageKey = 'Please type in game ID';
+            props.alert('alert', messageKey);
             return
         };
 

@@ -15,8 +15,8 @@ const SubtractPoints = (props) => {
                 inputVal = 0
             }
             if (inputVal < 0 || !Number.isInteger(inputVal)) {
-                const alertMessage = 'Points value must be positive integer';
-                props.alert('alert', alertMessage);
+                const messageKey = 'Points value must be positive integer';
+                props.alert('alert', messageKey);
                 return
             };
         };

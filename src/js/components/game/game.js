@@ -116,8 +116,8 @@ class Game extends React.Component {
     e.preventDefault();
     const action = e.target.id;
     const type = e.target.value;
-    const alertMessage = 'Are you sure you want to finish this game?';
-    this.props.alert(type, alertMessage, action)
+    const messageKey = 'Are you sure you want to finish this game?';
+    this.props.alert(type, messageKey, null, action)
   }
 
   toggleShowWords = () => {

@@ -140,19 +140,19 @@ class GameMenu extends Component {
         const isPlayerExists = this.isPlayerExists(player);
         
         if(isPlayerExists) {
-            const alertMessage = 'Player exists';
+            const messageKey = 'Player exists';
             const messageValue = {'player': player};
-            this.props.alert('alert', alertMessage, null, messageValue);
+            this.props.alert('alert', messageKey, messageValue, null);
             return
         }
         if(player.length < 1) {
-            const alertMessage = "Please type in player's name";
-            this.props.alert('alert', alertMessage);
+            const messageKey = "Please type in player's name";
+            this.props.alert('alert', messageKey);
             return
         }
         if(this.state.playersNames.length >= 4) {
-            const alertMessage = 'Max 4 players';
-            this.props.alert('alert', alertMessage);
+            const messageKey = 'Max 4 players';
+            this.props.alert('alert', messageKey);
             return
         }
         const input = document.getElementById('player-name');
@@ -193,16 +193,16 @@ class GameMenu extends Component {
     validateSettings = (e) => {
         e.preventDefault();
         if(this.state.playersNames.length < 2) {
-            const alert = 'Please add at least 2 players';
-            this.props.alert('alert', alert)
+            const messageKey = 'Please add at least 2 players';
+            this.props.alert('alert', messageKey)
             return 
         }
 
         if(this.state.timer) {
             const time = this.state.time;
             if(time.hours == 0 && time.minutes == 0) {
-                const alert = "Minimum player's time limit is 1 min";
-                this.props.alert('alert', alert)
+                const messageKey = "Minimum player's time limit is 1 min";
+                this.props.alert('alert', messageKey)
                 return
             }
         }

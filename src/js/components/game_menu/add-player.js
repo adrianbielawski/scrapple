@@ -7,7 +7,7 @@ const AddPlayer = (props) => {
     const inputEl = useRef(null);
 
     const handleAddPlayer = () => {
-        const player = inputEl.current.value;
+        const player = inputEl.current.value.trim();
         props.validatePlayerName(player);
     };
 

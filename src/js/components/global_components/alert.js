@@ -35,7 +35,7 @@ const Alert = (props) => {
     return (
         <div className="alert-cover">
             <div className="alert">
-                <p>{i18next.t(props.alert.alertMessage, props.alert.messageValue)}</p>
+                <p>{i18next.t(props.alert.messageKey, props.alert.messageValue)}</p>
                 {alertButtons}
             </div>
         </div>
