@@ -9,6 +9,7 @@ import Stats from './stats/stats';
 import TwoLetterWords from './two-letter-words';
 import db from '../../../firebase';
 import FinishedGameCover from './finished-game-cover';
+import LoadingSpinner from '../global_components/loadingSpinner';
 
 class Game extends React.Component {
   constructor(props) {
@@ -18,27 +19,52 @@ class Game extends React.Component {
       admin: this.props.admin,
       showWords: false,
       currentPlayer: 0,
-      timer: this.props.data.timer,
-      time: this.props.data.time,
-      endTime: this.props.data.endTime,
-      players: this.props.data.players,
+      timer: null,
+      time: null,
+      endTime: null,
+      players: null,
       mounted: false
     };
     this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
   }
 
   componentDidMount() {
-    this.unsubscribe = db.collection('games').doc(this.props.gameId).onSnapshot(doc => {
-      const data = doc.data();
-      const endTime = data.endTime
-      if(!data.pointsSubtracted && !data.gameFinished) {
-        this.setState(state => ({ ...state, players: data.players, currentPlayer: data.currentPlayer, endTime: endTime }))
-      } else if(!data.pointsSubtracted && data.gameFinished){
-        this.props.handleFinishGame()
-      } else if(data.pointsSubtracted && data.gameFinished){
-        this.props.renderGameSummary(data.players)
+    const gameId = window.location.pathname.slice(6);
+
+    db.collection('games').doc(gameId).get()
+    .then(response => {
+      const data = response.data();
+      const nextState = { ...this.state };
+      nextState.players = data.players;
+      nextState.timer = data.timer;
+      nextState.time = data.time;
+      this.setState(state => ({ ...state, ...nextState}));
+    })
+    .then(() => {
+      this.unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
+        const data = doc.data();
+        const endTime = data.endTime
+        if(!data.pointsSubtracted && !data.gameFinished) {
+          console.log('aaa' + endTime)
+          this.setState(state => ({ ...state, players: data.players, currentPlayer: data.currentPlayer, endTime: endTime }))
+        } else if(!data.pointsSubtracted && data.gameFinished){
+          this.props.handleFinishGame()
+        } else if(data.pointsSubtracted && data.gameFinished){
+          this.props.renderGameSummary(data.players)
+        }
+      });
+    })
+    .then(() => {
+      if(this.props.admin) {
+        console.log('bbb')
+        const endTime = this.state.timer ? this.getEndTime() : null;
+        db.collection('games').doc(gameId).update({endTime: endTime})
       }
+    })
+    .catch(() => {
+      this.alert('alert', 'Something went wrong, please check your internet connection and try again');
     });
+
     this.setState((state) => ({ ...state, mounted: true}));
   }
 
@@ -130,23 +156,28 @@ class Game extends React.Component {
     const gameClass = this.state.showWords ? 'show-words' : '';
       
     return (
-      <div className={`game ${gameClass}`}>
-        {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
-        <WordChecker language={this.props.language} gameId={this.props.gameId} />
-        <TwoLetterWords toggleShowWords={this.toggleShowWords} showWords={this.state.showWords} language={this.props.language}/>
-        <Stats
-          admin={this.state.admin}
-          timeOut={this.timeOut}
-          addPoints={this.addPoints}
-          endTime={this.state.endTime}
-          timer={this.state.timer}
-          time={this.state.time}
-          currentPlayer={currentPlayer}
-          players={players} />
-        {this.props.admin ? <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm">
-          <Trans>Finish the game</Trans>
-        </button> : null }
-        <div style={{flex: 1000}}></div>
+      <div>
+        {players ? ( 
+          <div className={`game ${gameClass}`}>
+            {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
+            <WordChecker language={this.props.language} gameId={this.props.gameId} />
+            <TwoLetterWords toggleShowWords={this.toggleShowWords} showWords={this.state.showWords} language={this.props.language}/>
+            <Stats
+              admin={this.state.admin}
+              timeOut={this.timeOut}
+              addPoints={this.addPoints}
+              endTime={this.state.endTime}
+              timer={this.state.timer}
+              time={this.state.time}
+              currentPlayer={currentPlayer}
+              players={players} />
+            {this.props.admin ? <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm">
+              <Trans>Finish the game</Trans>
+            </button> : null }
+            <div style={{flex: 1000}}></div>
+          </div>
+        ) :
+        <LoadingSpinner /> }
       </div>
     );
   }

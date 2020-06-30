@@ -17,7 +17,7 @@ class GameMenu extends Component {
         this.state = {
             gameId: this.props.gameId,
             playersNames: ['sd', 'sdf'],
-            timer: false,
+            timer: true,
             time: {
               hours: '00',
               minutes: '05',
@@ -61,7 +61,7 @@ class GameMenu extends Component {
     createNewGame = (players, gameId) => {
       let game = {
         language: this.props.language,
-        players: players,
+        players,
         currentPlayer: 0,
         gameStarted: true,
         joinedPlayers: [1],
@@ -86,18 +86,14 @@ class GameMenu extends Component {
                 exitOption: false,
                 playedAgainWithSettings: false
             }
+
             this.setState(state => ({ ...state, ...newState}));
             
             if(this.state.timer) {
                 this.serverChangeListener(gameId);
             }
-            const data = {
-                players,
-                timer: this.state.timer,
-                time: this.state.time,
-                endTime: null,
-            }
-            this.props.gameCreated(gameId, data, this.state.playersNames);
+
+            this.props.gameCreated(gameId, this.state.timer);
         })
         .catch((error) => {
             console.log(error)

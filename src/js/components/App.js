@@ -9,10 +9,9 @@ import moment from 'moment';
 //Custom Components
 import Alert from './global_components/alert';
 import MainMenu from './main_Menu/MainMenu';
-import Game from './game/game';
 import LoadingSpinner from './global_components/loadingSpinner';
 const GameMenu = React.lazy(() => import('./game_menu/game-menu'));
-//const Game = React.lazy(() => import('./game/game'));
+const Game = React.lazy(() => import('./game/game'));
 const GameSummary = React.lazy(() => import('./game_summary/game-summary'));
 const SubtractPoints = React.lazy(() => import('./subtract_points/subtract_points'));
 
@@ -21,8 +20,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       screenHeight: window.innerHeight,
+      screen: window.location.pathname.slice(1) || 'MainMenu',
       language: 'en-GB',
-      screen: 'MainMenu',
       playersNames: [],
       gameId: null,
       admin: false,
@@ -76,45 +75,25 @@ class App extends React.Component {
     this.setState(state => ({ ...state, screen: 'GameMenu' }));
   }
 
-  gameCreated = (gameId, data, playersNames) => {
-    const newState = {
-      playersNames,
-      gameId,
-      admin: true,
-      playedAgainWithSettings: false
-    };
-
-    if(data.timer) {
-      this.setState(state => ({ ...state, ...newState, data }));
+  gameCreated = (gameId, timer) => {
+    if(timer) {
+      this.setState(state => ({ ...state, admin: true, gameId }));
     } else {
-      this.setState(state => ({ ...state, ...newState, data, screen: `Game/${gameId}` }));
+      this.setState(state => ({ ...state, admin: true, gameId, screen: `Game/${gameId}` }));
     }
   }
 
   startAdminGame = () => {
-    const endTime = this.state.data.timer ? this.getInitialEndTime(this.state.data.time) : null;
-    const data = { ...this.state.data };
-    data.endTime = endTime;
-
-    db.collection('games').doc(this.state.gameId).update({gameStarted: true, endTime: endTime})
+    db.collection('games').doc(this.state.gameId).update({gameStarted: true})
     .then(() => {
-      this.setState(state => ({ ...state, screen: `Game/${this.state.gameId}`, data }));
+      this.setState(state => ({ ...state, screen: `Game/${this.state.gameId}`}));
     })
     .catch(() => {
       this.alert('alert', messageKey);
     });    
   }
 
-  getInitialEndTime = (time) => {
-    const t = moment().add({
-      'hours': time.hours,
-      'minutes': time.minutes,
-      'seconds': time.seconds
-    }).toJSON()
-    return t
-  }
-
-  joinGame = (gameId, messageKey) => {
+  joinGame = (gameId) => {
     db.collection('games').doc(gameId).get()
     .then((response) => {
       const data = response.data();
@@ -133,32 +112,31 @@ class App extends React.Component {
           this.unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
             const data = doc.data();
             if(data.gameStarted == true) {
-              this.startJoinedPlayerGame(data, gameId);
+              this.startJoinedPlayerGame(data.timer, gameId);
             }
           });
         })
         .catch(() => {
-          this.alert('alert', messageKey);
+          this.alert('alert', 'Something went wrong, please check game ID');
         });
       } else {
-        this.startJoinedPlayerGame(data, gameId)
+        this.startJoinedPlayerGame(data.timer, gameId)
       }
     })
     .catch(() => {
-      this.alert('alert', messageKey);
+      this.alert('alert', 'Something went wrong, please check game ID');
       return
     });
   }
 
-  startJoinedPlayerGame = (data, gameId) => {
-    if(data.timer) {
+  startJoinedPlayerGame = (timer, gameId) => {
+    if(timer) {
       this.unsubscribe();
     }
     this.setState(state => ({
       ...state,
       admin: false,
       gameId,
-      data,
       showFinishedGameCover: false,
       screen: `Game/${gameId}`,
     }));

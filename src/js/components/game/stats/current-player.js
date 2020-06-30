@@ -5,6 +5,7 @@ import Moment from 'react-moment';//important
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import LoadingSpinner from '../../global_components/loadingSpinner';
 
 const audio = {
     beep: new Audio('../../../../src/assets/audio/beep.mp3'),
@@ -17,16 +18,17 @@ class CurrentPlayer extends Component {
         this.state = {
             timeLeft: null
         }
-        this.startTimer = this.props.timer ? setInterval(this.updateTimer, 1000) : null;
     }
 
     componentWillUnmount = () => {
         clearInterval(this.startTimer);
     }
     
-    componentDidMount() {
-        if(this.props.timer) {
+    componentDidUpdate() {
+        if(this.props.endTime && this.props.endTime !== this.state.endTime) {
+            this.setState(state => ({ ...state, endTime: this.props.endTime}));
             this.updateTimer();
+            this.startTimer = this.props.timer ? setInterval(this.updateTimer, 1000) : null;
         }
     }
 
@@ -83,7 +85,7 @@ class CurrentPlayer extends Component {
                     </Trans>!
                 </p>
                 <div className={`timer ${shortTimeClass} ${timerDisplay}`}>
-                    {this.state.timeLeft}
+                    {this.state.timeLeft ? this.state.timeLeft : <LoadingSpinner />}
                 </div>
                 <form className="add-points" onSubmit={this.handleSubmit}>
                     <input type="number" placeholder={i18next.t("Add points")} ref="points" required min="0" max="999" />

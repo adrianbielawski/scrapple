@@ -16,8 +16,7 @@ const Stats = (props) => {
                 time={props.time}
                 endTime={props.endTime}
                 addPoints={props.addPoints}
-                player={players[currentPlayer]}
-                key={players[currentPlayer].playerId} />
+                player={players[currentPlayer]} />
             <AllPlayers
                 players={players}
                 currentPlayer={currentPlayer}/>

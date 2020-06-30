@@ -20,7 +20,7 @@ const MainMenu = (props) => {
             return
         };
 
-        props.joinGame(gameId, 'Something went wrong, please check game ID');
+        props.joinGame(gameId);
     };
 
     return ( 
