@@ -39,7 +39,6 @@ class GameMenu extends Component {
 
     handleCreateNewGame = () => {
         const gameId = this.state.gameId ? this.state.gameId : Math.floor(Math.random() * 1000000).toString();
-        this.props.setPlayersNames(this.state.playersNames);
         const players = this.getPlayers();
         this.createNewGame(players, gameId);
     }

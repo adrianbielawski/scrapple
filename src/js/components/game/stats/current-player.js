@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import { Trans } from 'react-i18next';
 import  i18next  from 'i18next';
-import Moment from 'react-moment';//important
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -24,8 +23,13 @@ class CurrentPlayer extends Component {
         clearInterval(this.startTimer);
     }
     
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
+        if(prevProps.endTime !== this.state.endTime) {
+            clearInterval(this.startTimer);
+        }
+
         if(this.props.endTime && this.props.endTime !== this.state.endTime) {
+            clearInterval(this.startTimer);
             this.setState(state => ({ ...state, endTime: this.props.endTime}));
             this.updateTimer();
             this.startTimer = this.props.timer ? setInterval(this.updateTimer, 1000) : null;

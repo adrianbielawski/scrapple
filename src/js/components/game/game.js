@@ -23,25 +23,36 @@ class Game extends React.Component {
       time: null,
       endTime: null,
       players: null,
-      mounted: false,
       fetching: true,
     };
     this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.admin !== state.admin) {
+      return {
+        admin: props.admin,
+      };
+    }
+    return null;
+  }
+
   componentDidMount() {
     const gameId = window.location.pathname.slice(6);
+    let isEndTimeValid = null;
 
     db.collection('games').doc(gameId).get()
     .then(response => {
       const data = response.data();
+      isEndTimeValid = this.checkEndTime(data, gameId)
       const nextState = { ...this.state };
       nextState.gameId = gameId,
       nextState.players = data.players;
       nextState.timer = data.timer;
       nextState.time = data.time;
+      nextState.endTime = isEndTimeValid ? data.endTime : null;
       this.setState(state => ({ ...state, ...nextState, fetching: false}));
-      this.props.setGameId(gameId);
+      this.props.setGameState(gameId, data.players);
     })
     .then(() => {
       this.unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
@@ -57,20 +68,36 @@ class Game extends React.Component {
       });
     })
     .then(() => {
-      if(this.props.admin) {
+      if(this.props.admin && !isEndTimeValid) {
         const endTime = this.state.timer ? this.getEndTime() : null;
         db.collection('games').doc(gameId).update({endTime: endTime})
       }
     })
     .catch(() => {
-      this.alert('alert', 'Something went wrong, please check your internet connection and try again');
+      this.props.alert('alert', 'Something went wrong, please check your internet connection and try again');
     });
-
-    this.setState((state) => ({ ...state, mounted: true}));
   }
 
   componentWillUnmount(){
       this.unsubscribe();
+  }
+
+  checkEndTime = (data, gameId) => {
+    const now = moment();
+    const stateT = moment(data.endTime);
+    const valid = stateT.diff(now) > 5000
+    if(!valid) {
+      let currentPlayer = data.currentPlayer;
+      let players = [ ...data.players];
+      
+      if (currentPlayer < players.length -1) {
+        currentPlayer++;
+      } else {
+        currentPlayer = 0;
+      };
+      db.collection('games').doc(gameId).update({currentPlayer})
+    }
+    return valid;
   }
 
   setInnerHeight = () => {

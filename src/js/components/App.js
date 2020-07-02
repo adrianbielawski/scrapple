@@ -43,8 +43,14 @@ class App extends React.Component {
     this.setState(state => ({ ...state, screenHeight}));
   }
 
-  setGameId = (gameId) => {
-    this.setState((state) => ({ ...state, gameId}));
+  setGameState = (gameId, players) => {
+    const playersNames = players.map(player => {
+      return player.playerName;
+    });
+    let localData = localStorage.getItem('admin');
+    const admin = localData ? JSON.parse(localData) : false;
+
+    this.setState((state) => ({ ...state, gameId, admin, playersNames}));
   }
 
   changeLanguage = (language) => {
@@ -72,11 +78,8 @@ class App extends React.Component {
     this.setState(state => ({ ...state, screen: 'GameMenu' }));
   }
 
-  setPlayersNames = (playersNames) => {
-    this.setState((state) => ({ ...state, playersNames}));
-  }
-
   gameCreated = (gameId, timer) => {
+    localStorage.setItem('admin', JSON.stringify(true));
     if(timer) {
       this.setState(state => ({ ...state, admin: true, gameId }));
     } else {
@@ -319,7 +322,7 @@ class App extends React.Component {
             <Suspense fallback={<LoadingSpinner />}>
               <Game
                 alert={this.alert}
-                setGameId={this.setGameId}
+                setGameState={this.setGameState}
                 renderGameSummary={this.renderGameSummary}
                 handleFinishGame={this.handleFinishGame}
                 gameId={this.state.gameId} 
