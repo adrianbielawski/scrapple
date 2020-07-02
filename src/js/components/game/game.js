@@ -41,6 +41,7 @@ class Game extends React.Component {
       nextState.timer = data.timer;
       nextState.time = data.time;
       this.setState(state => ({ ...state, ...nextState, fetching: false}));
+      this.props.setGameId(gameId);
     })
     .then(() => {
       this.unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {

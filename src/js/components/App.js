@@ -43,6 +43,10 @@ class App extends React.Component {
     this.setState(state => ({ ...state, screenHeight}));
   }
 
+  setGameId = (gameId) => {
+    this.setState((state) => ({ ...state, gameId}));
+  }
+
   changeLanguage = (language) => {
       const html = document.getElementsByTagName('html');
       html[0].lang = language;
@@ -315,6 +319,7 @@ class App extends React.Component {
             <Suspense fallback={<LoadingSpinner />}>
               <Game
                 alert={this.alert}
+                setGameId={this.setGameId}
                 renderGameSummary={this.renderGameSummary}
                 handleFinishGame={this.handleFinishGame}
                 gameId={this.state.gameId} 

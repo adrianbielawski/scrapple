@@ -18,8 +18,14 @@ const Confirmation = (props) => {
             <h2><Trans>{title}</Trans></h2>
             {props.gameId ? <p className="game-id"><Trans>Game ID</Trans>: {props.gameId}</p> : null}
             <p className="message"><Trans>{message}</Trans></p>
-            {!props.allPlayersJoined && <LoadingSpinner />}
-            {props.allPlayersJoined && <button onClick={props.handleStartAdminGame}><Trans>Start game</Trans></button>}
+            {!props.allPlayersJoined ? 
+                <div>
+                    <LoadingSpinner />
+                    <p className="or"><Trans>Or</Trans></p>
+                    <button onClick={props.handleStartAdminGame}><Trans>Start anyway</Trans></button>
+                </div> :
+                <button onClick={props.handleStartAdminGame}><Trans>Start game</Trans></button>
+            }
         </Dropdown>
     );
 }

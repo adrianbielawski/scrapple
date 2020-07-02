@@ -30,6 +30,7 @@ const resources = {
       "Game created succesfully" : "Game created succesfully!",
       "Waiting for other players to join the game" : "Waiting for other players to join the game",
       "All players has joined the game, press start game to begin" : "All players has joined the game, press start game to begin",
+      "Or" : "Or",
       //Game
       "Finish the game" : "Finish the game",
       "Are you sure you want to finish this game?" : "Are you sure you want to finish this game?",
@@ -105,6 +106,7 @@ const resources = {
       "Game created succesfully" : "Gra utworzona!",
       "Waiting for other players to join the game" : "Poczekaj, aż pozostali gracze dołączą do gry",
       "All players has joined the game, press start game to begin" : "Wszyscy gracze dołączyli do gry, wciśnij start aby rozpocząć grę",
+      "Or" : "Albo",
       //Game
       "Finish the game" : "Zakończ grę",
       "Are you sure you want to finish this game?" : "Jesteś pewien, że chcesz zakończyć grę?",

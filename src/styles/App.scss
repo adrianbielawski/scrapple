@@ -160,6 +160,11 @@ html, body, div, span, h1, h2, p, a, ul, li {
     .loader:after {
       background-color: $offWhite;
     }
+    .or {
+      margin: 15px 0;
+      text-align: center;
+      font-size: 22px;
+    }
   }
 }
 
