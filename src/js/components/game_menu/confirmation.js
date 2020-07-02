@@ -8,7 +8,7 @@ const Confirmation = (props) => {
     let title = props.gameId ? 'Game created succesfully' : 'Creating new game';
     let message = 'Please wait';
     if(props.gameId) {
-        message = 'Waiting for other players to join the game';
+        message = 'Please wait for other players to join the game';
     }
     if(props.allPlayersJoined) {
         message = 'All players has joined the game, press start game to begin';
@@ -21,7 +21,7 @@ const Confirmation = (props) => {
             {!props.allPlayersJoined ? 
                 <div>
                     <LoadingSpinner />
-                    <p className="or"><Trans>Or</Trans></p>
+                    <p className="or"><Trans>or</Trans></p>
                     <button onClick={props.handleStartAdminGame}><Trans>Start anyway</Trans></button>
                 </div> :
                 <button onClick={props.handleStartAdminGame}><Trans>Start game</Trans></button>

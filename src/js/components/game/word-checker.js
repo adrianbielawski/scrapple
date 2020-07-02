@@ -6,6 +6,7 @@ import LoadingSpinner from '../global_components/loadingSpinner'
 import Menu from './menu/menu';
 
 const IMAGES = {
+    fist: '../src/assets/img/fist.png',
     thumbUp: '../src/assets/img/thumb-up.png',
     thumbDown: '../src/assets/img/thumb-down.png'
 }
@@ -27,6 +28,7 @@ class WordChecker extends Component {
 
     handleInputChange = () => {
         let word = this.refs.word.value;
+        this.setState(state => ({ ...state, word }));
         
         if (this.timeout) {
           clearTimeout(this.timeout);
@@ -71,8 +73,11 @@ class WordChecker extends Component {
     }
 
     render() {
-        const thumb = this.state.valid ? IMAGES.thumbUp : IMAGES.thumbDown ;
-        let image = <img className="thumb" src={thumb}></img>;
+        let img = this.state.valid ? IMAGES.thumbUp : IMAGES.thumbDown ;
+        if(this.state.word.length === 0) {
+            img = IMAGES.fist;
+        }
+        let image = <img className="thumb" src={img}></img>;
         if(this.state.fetching) {
             image = <LoadingSpinner />
         }
