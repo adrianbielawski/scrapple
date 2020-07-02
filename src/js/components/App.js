@@ -4,8 +4,6 @@ import db from '../../firebase';
 import * as firebase from 'firebase';
 import i18n from '../../i18n';
 import '../../styles/App.scss';
-import Moment from 'react-moment';//important
-import moment from 'moment';
 //Custom Components
 import Alert from './global_components/alert';
 import MainMenu from './main_Menu/MainMenu';
@@ -25,12 +23,6 @@ class App extends React.Component {
       playersNames: [],
       gameId: null,
       admin: false,
-      data: {
-        players: [],
-        timer: null,
-        time: null,
-        endTime: null
-      },
       playedAgain: false,
       showFinishedGameCover: false,
       playedAgainWithSettings: false,
@@ -39,7 +31,8 @@ class App extends React.Component {
         type: '',
         messageKey: '',
         messageValue: '',
-        action: ''
+        action: '',
+        props: '',
       },
     }
     this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
@@ -57,8 +50,8 @@ class App extends React.Component {
       this.setState(state => ({ ...state, language}));
   }
 
-  alert = (type, messageKey, messageValue, action) => {
-    this.setState(state => ({ ...state, showAlert: true, alert: {type, messageKey, messageValue, action}}));
+  alert = (type, messageKey, messageValue, action, props) => {
+    this.setState(state => ({ ...state, showAlert: true, alert: {type, messageKey, messageValue, action, props}}));
   }
 
   removeAlert = () => {
@@ -73,6 +66,10 @@ class App extends React.Component {
 
   renderGameMenu = () => {
     this.setState(state => ({ ...state, screen: 'GameMenu' }));
+  }
+
+  setPlayersNames = (playersNames) => {
+    this.setState((state) => ({ ...state, playersNames}));
   }
 
   gameCreated = (gameId, timer) => {
@@ -142,8 +139,8 @@ class App extends React.Component {
     }));
   }
 
-  handleFinishGame = () => {
-    db.collection('games').doc(this.state.gameId).get()
+  handleFinishGame = (gameId) => {
+    db.collection('games').doc(gameId).get()
     .then(response => {
       const data = response.data();
       const players = data.players;
@@ -152,11 +149,11 @@ class App extends React.Component {
       const newState = {data: nextData, showAlert: false, alert: {type: '', action: '', messageKey: ''}}
 
       if(this.state.admin) {
-        db.collection('games').doc(this.state.gameId).update({
+        db.collection('games').doc(gameId).update({
           gameFinished: true,
           exitOption: null,
         });
-        this.setState(state => ({ ...state, screen: 'SubtractPoints', ...newState}));
+        this.setState(state => ({ ...state, screen: 'SubtractPoints', playedAgain: false, playedAgainWithSettings: false, ...newState}));
       } else {
         this.setState(state => ({ ...state, showFinishedGameCover: true, ...newState}));
       }
@@ -182,7 +179,6 @@ class App extends React.Component {
           ...state,
           screen: 'GameMenu',
           showFinishedGameCover: false,
-          playedAgain: true,
           playedAgainWithSettings: true,
         }));
       })
@@ -208,6 +204,13 @@ class App extends React.Component {
 
   playAgain = () => {
     if(this.state.admin) {
+      let timer = false;
+      db.collection('games').doc(this.state.gameId).get()
+      .then(response => {
+        const data = response.data();
+        timer = data.timer;
+      })
+
       const players = this.getPlayers();
 
       db.collection('games').doc(this.state.gameId).update({
@@ -220,14 +223,11 @@ class App extends React.Component {
         exitOption: 'playAgain'
       })
       .then(() => {
-        const nextData = { ...this.state.data };
-        nextData.players = players
         this.setState(state => ({
           ...state,
-          screen: state.data.timer ? 'GameMenu' : `Game/${this.state.gameId}`,
+          screen: timer ? 'GameMenu' : `Game/${this.state.gameId}`,
           showFinishedGameCover: false,
           playedAgain: true,
-          data: nextData
         }));
       })
       .catch(() => {
@@ -271,12 +271,6 @@ class App extends React.Component {
       playersNames: [],
       gameId: null,
       admin: false,
-      data: {
-        players: [],
-        timer: null,
-        time: null,
-        endTime: null
-      },
       playedAgain: false,
       showFinishedGameCover: false,
       playedAgainWithSettings: false,
@@ -306,6 +300,7 @@ class App extends React.Component {
             <Suspense fallback={<LoadingSpinner />}>
               <GameMenu
                 alert={this.alert}
+                setPlayersNames={this.setPlayersNames}
                 gameCreated={this.gameCreated}
                 startAdminGame={this.startAdminGame}
                 changeLanguage={this.changeLanguage}
@@ -324,7 +319,6 @@ class App extends React.Component {
                 handleFinishGame={this.handleFinishGame}
                 gameId={this.state.gameId} 
                 admin={this.state.admin}
-                data={this.state.data}
                 showFinishedGameCover={this.state.showFinishedGameCover}
                 language={this.state.language} />
             </Suspense>)} 

@@ -23,7 +23,8 @@ class Game extends React.Component {
       time: null,
       endTime: null,
       players: null,
-      mounted: false
+      mounted: false,
+      fetching: true,
     };
     this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
   }
@@ -35,20 +36,20 @@ class Game extends React.Component {
     .then(response => {
       const data = response.data();
       const nextState = { ...this.state };
+      nextState.gameId = gameId,
       nextState.players = data.players;
       nextState.timer = data.timer;
       nextState.time = data.time;
-      this.setState(state => ({ ...state, ...nextState}));
+      this.setState(state => ({ ...state, ...nextState, fetching: false}));
     })
     .then(() => {
       this.unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
         const data = doc.data();
         const endTime = data.endTime
         if(!data.pointsSubtracted && !data.gameFinished) {
-          console.log('aaa' + endTime)
           this.setState(state => ({ ...state, players: data.players, currentPlayer: data.currentPlayer, endTime: endTime }))
         } else if(!data.pointsSubtracted && data.gameFinished){
-          this.props.handleFinishGame()
+          this.props.handleFinishGame(gameId)
         } else if(data.pointsSubtracted && data.gameFinished){
           this.props.renderGameSummary(data.players)
         }
@@ -56,7 +57,6 @@ class Game extends React.Component {
     })
     .then(() => {
       if(this.props.admin) {
-        console.log('bbb')
         const endTime = this.state.timer ? this.getEndTime() : null;
         db.collection('games').doc(gameId).update({endTime: endTime})
       }
@@ -69,9 +69,7 @@ class Game extends React.Component {
   }
 
   componentWillUnmount(){
-    if(this.state.mounted) {
       this.unsubscribe();
-    }
   }
 
   setInnerHeight = () => {
@@ -143,7 +141,7 @@ class Game extends React.Component {
     const action = e.target.id;
     const type = e.target.value;
     const messageKey = 'Are you sure you want to finish this game?';
-    this.props.alert(type, messageKey, null, action)
+    this.props.alert(type, messageKey, null, action, this.props.gameId)
   }
 
   toggleShowWords = () => {
@@ -157,7 +155,7 @@ class Game extends React.Component {
       
     return (
       <div>
-        {players ? ( 
+        {this.state.fetching ? <LoadingSpinner /> : ( 
           <div className={`game ${gameClass}`}>
             {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
             <WordChecker language={this.props.language} gameId={this.props.gameId} />
@@ -176,8 +174,7 @@ class Game extends React.Component {
             </button> : null }
             <div style={{flex: 1000}}></div>
           </div>
-        ) :
-        <LoadingSpinner /> }
+        )}
       </div>
     );
   }

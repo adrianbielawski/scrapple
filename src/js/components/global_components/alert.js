@@ -10,7 +10,7 @@ const Alert = (props) => {
             if(response === 'true') {
                 switch(props.alert.action) {
                     case 'game-finish-button':
-                    props.handleFinishGame();
+                    props.handleFinishGame(props.alert.props);
                 }
             } else {
                 props.removeAlert(); 

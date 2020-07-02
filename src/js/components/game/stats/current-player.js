@@ -59,7 +59,6 @@ class CurrentPlayer extends Component {
             }
             timeLeft = '00:00'
             clearInterval(this.startTimer);
-            this.startTimer = null;
         }
         this.setState(state => ({ ...state, timeLeft}));
     }

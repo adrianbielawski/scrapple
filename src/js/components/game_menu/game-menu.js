@@ -39,6 +39,7 @@ class GameMenu extends Component {
 
     handleCreateNewGame = () => {
         const gameId = this.state.gameId ? this.state.gameId : Math.floor(Math.random() * 1000000).toString();
+        this.props.setPlayersNames(this.state.playersNames);
         const players = this.getPlayers();
         this.createNewGame(players, gameId);
     }
@@ -194,14 +195,14 @@ class GameMenu extends Component {
             return 
         }
 
-        if(this.state.timer) {
-            const time = this.state.time;
-            if(time.hours == 0 && time.minutes == 0) {
-                const messageKey = "Minimum player's time limit is 1 min";
-                this.props.alert('alert', messageKey)
-                return
-            }
-        }
+        // if(this.state.timer) {
+        //     const time = this.state.time;
+        //     if(time.hours == 0 && time.minutes == 0) {
+        //         const messageKey = "Minimum player's time limit is 1 min";
+        //         this.props.alert('alert', messageKey)
+        //         return
+        //     }
+        // }
         this.handleCreateNewGame();
         
         this.setState(state => ({ ...state, showConfirmation: !state.showConfirmation}))
