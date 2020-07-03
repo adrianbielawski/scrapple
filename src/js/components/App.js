@@ -47,7 +47,7 @@ class App extends React.Component {
     const playersNames = players.map(player => {
       return player.playerName;
     });
-    let localData = localStorage.getItem('admin');
+    let localData = sessionStorage.getItem('admin');
     const admin = localData ? JSON.parse(localData) : false;
 
     this.setState((state) => ({ ...state, gameId, admin, playersNames}));
@@ -78,8 +78,8 @@ class App extends React.Component {
     this.setState(state => ({ ...state, screen: 'GameMenu' }));
   }
 
-  gameCreated = (gameId, timer) => {
-    localStorage.setItem('admin', JSON.stringify(true));
+  gameCreated = (gameId, timer) => {    
+    sessionStorage.setItem('admin', JSON.stringify(true));
     if(timer) {
       this.setState(state => ({ ...state, admin: true, gameId }));
     } else {

@@ -72,7 +72,7 @@ class WordChecker extends Component {
         );
     }
 
-    render() {
+    getImage = () => {
         let img = this.state.valid ? IMAGES.thumbUp : IMAGES.thumbDown ;
         if(this.state.word.length === 0) {
             img = IMAGES.fist;
@@ -81,6 +81,11 @@ class WordChecker extends Component {
         if(this.state.fetching) {
             image = <LoadingSpinner />
         }
+        return image
+    }
+
+    render() {
+        const image = this.getImage()
         
         return (
             <div className="word-checker">

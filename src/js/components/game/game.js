@@ -44,20 +44,26 @@ class Game extends React.Component {
     db.collection('games').doc(gameId).get()
     .then(response => {
       const data = response.data();
-      isEndTimeValid = this.checkEndTime(data, gameId)
+      const gameStarted = sessionStorage.getItem('gameStarded');
+      isEndTimeValid = data.timer && gameStarted ? this.checkEndTime(data, gameId) : false;
+      !gameStarted ? sessionStorage.setItem('gameStarded', JSON.stringify(true)) : null;
+
       const nextState = { ...this.state };
       nextState.gameId = gameId,
       nextState.players = data.players;
       nextState.timer = data.timer;
       nextState.time = data.time;
       nextState.endTime = isEndTimeValid ? data.endTime : null;
+
       this.setState(state => ({ ...state, ...nextState, fetching: false}));
+
       this.props.setGameState(gameId, data.players);
     })
     .then(() => {
       this.unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
         const data = doc.data();
         const endTime = data.endTime
+
         if(!data.pointsSubtracted && !data.gameFinished) {
           this.setState(state => ({ ...state, players: data.players, currentPlayer: data.currentPlayer, endTime: endTime }))
         } else if(!data.pointsSubtracted && data.gameFinished){

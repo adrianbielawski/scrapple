@@ -9,6 +9,7 @@ import Card from '../global_components/card';
 import Language from '../global_components/language/language';
 
 const MainMenu = (props) => {
+    sessionStorage.clear();
     const gameIdInput = useRef(null);
 
     const validateUserInput = () => {
