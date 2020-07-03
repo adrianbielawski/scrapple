@@ -85,6 +85,7 @@ class App extends React.Component {
     } else {
       this.setState(state => ({ ...state, admin: true, gameId, screen: `Game/${gameId}` }));
     }
+    sessionStorage.setItem('aaa', 'aaa')
   }
 
   startAdminGame = () => {
@@ -177,6 +178,7 @@ class App extends React.Component {
         gameStarted: false,
         gameFinished: false,
         pointsSubtracted: false,
+        currentPlayer: 0,
         joinedPlayers: [],
         players: [],
         exitOption: 'playAgainWithSettings'
@@ -210,6 +212,7 @@ class App extends React.Component {
   }
 
   playAgain = () => {
+    sessionStorage.setItem('gameStarted', JSON.stringify(false));
     if(this.state.admin) {
       let timer = false;
       db.collection('games').doc(this.state.gameId).get()
@@ -225,6 +228,7 @@ class App extends React.Component {
         gameStarted: false,
         gameFinished: false,
         pointsSubtracted: false,
+        currentPlayer: 0,
         joinedPlayers: [1],
         players,
         exitOption: 'playAgain'

@@ -47,9 +47,10 @@ class Game extends React.Component {
     db.collection('games').doc(gameId).get()
     .then(response => {
       const data = response.data();
-      const gameStarted = sessionStorage.getItem('gameStarded');
+      const gameStarted = JSON.parse(sessionStorage.getItem('gameStarted'));
+
       isEndTimeValid = data.timer && gameStarted ? this.checkEndTime(data, gameId) : false;
-      !gameStarted ? sessionStorage.setItem('gameStarded', JSON.stringify(true)) : null;
+      gameStarted !== true ? sessionStorage.setItem('gameStarted', JSON.stringify(true)) : null;
 
       const nextState = { ...this.state };
       nextState.gameId = gameId,
@@ -65,14 +66,14 @@ class Game extends React.Component {
     .then(() => {
       this.unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
         const data = doc.data();
-        const endTime = data.endTime
+        const endTime = data.endTime;
 
         if(!data.pointsSubtracted && !data.gameFinished) {
-          this.setState(state => ({ ...state, players: data.players, currentPlayer: data.currentPlayer, endTime: endTime }))
+          this.setState(state => ({ ...state, players: data.players, currentPlayer: data.currentPlayer, endTime: endTime }));
         } else if(!data.pointsSubtracted && data.gameFinished){
-          this.props.handleFinishGame(gameId)
+          this.props.handleFinishGame(gameId);
         } else if(data.pointsSubtracted && data.gameFinished){
-          this.props.renderGameSummary(data.players)
+          this.props.renderGameSummary(data.players);
         }
       });
     })
