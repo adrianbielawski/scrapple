@@ -3,7 +3,6 @@ import i18next from 'i18next';
 import '../../../styles/word-checker.scss'
 //Custom Components
 import LoadingSpinner from '../global_components/loadingSpinner'
-import Menu from './menu/menu';
 
 const IMAGES = {
     fist: '../src/assets/img/fist.png',
@@ -89,15 +88,12 @@ class WordChecker extends Component {
         
         return (
             <div className="word-checker">
-                <div className="wrapper">
-                    <Menu gameId={this.props.gameId}/>
-                    <input type="text"
-                        onClick={this.clearInput}
-                        onChange={this.handleInputChange}
-                        ref="word"
-                        placeholder={i18next.t("Check your word")}
-                        spellCheck="false" />
-                </div>
+                <input type="text"
+                    onClick={this.clearInput}
+                    onChange={this.handleInputChange}
+                    ref="word"
+                    placeholder={i18next.t("Check your word")}
+                    spellCheck="false" />
                 <div className="resoult-img">
                     {image}
                 </div>

@@ -10,6 +10,8 @@ import TwoLetterWords from './two-letter-words';
 import db from '../../../firebase';
 import FinishedGameCover from './finished-game-cover';
 import LoadingSpinner from '../global_components/loadingSpinner';
+import AudioController from './audio-controller';
+import Menu from './menu/menu';
 
 class Game extends React.Component {
   constructor(props) {
@@ -18,6 +20,7 @@ class Game extends React.Component {
       screenHeight: window.innerHeight,
       admin: this.props.admin,
       showWords: false,
+      isAudioEnabled: false,
       currentPlayer: 0,
       timer: null,
       time: null,
@@ -91,7 +94,7 @@ class Game extends React.Component {
   checkEndTime = (data, gameId) => {
     const now = moment();
     const stateT = moment(data.endTime);
-    const valid = stateT.diff(now) > 5000
+    const valid = stateT.diff(now) > 3000
     if(!valid) {
       let currentPlayer = data.currentPlayer;
       let players = [ ...data.players];
@@ -109,6 +112,10 @@ class Game extends React.Component {
   setInnerHeight = () => {
     const screenHeight = window.innerHeight;
     this.setState(state => ({ ...state, screenHeight}));
+  }
+
+  toggleAudio = () => {
+    this.setState(state => ({ ...state, isAudioEnabled: !state.isAudioEnabled}));
   }
 
   addPoints = (points) => {
@@ -192,12 +199,17 @@ class Game extends React.Component {
         {this.state.fetching ? <LoadingSpinner /> : ( 
           <div className={`game ${gameClass}`}>
             {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
-            <WordChecker language={this.props.language} gameId={this.props.gameId} />
+            <div className="top-wrapper">
+              <Menu gameId={this.props.gameId}/>
+              <WordChecker language={this.props.language} gameId={this.props.gameId} />
+              <AudioController toggleAudio={this.toggleAudio} isAudioEnabled={this.state.isAudioEnabled} />
+            </div>
             <TwoLetterWords toggleShowWords={this.toggleShowWords} showWords={this.state.showWords} language={this.props.language}/>
             <Stats
               admin={this.state.admin}
               timeOut={this.timeOut}
               addPoints={this.addPoints}
+              isAudioEnabled={this.state.isAudioEnabled}
               endTime={this.state.endTime}
               timer={this.state.timer}
               time={this.state.time}

@@ -53,12 +53,12 @@ class CurrentPlayer extends Component {
         const time = moment(timeLeft, 'mm:ss');
         const time0 = moment('00:00', 'mm:ss');
         const shortTime = moment('00:10', 'mm:ss');
-        if(time.isSameOrBefore(shortTime) && time.isAfter(time0) && this.props.admin) {
+        if(time.isSameOrBefore(shortTime) && time.isAfter(time0) && this.props.admin && this.props.isAudioEnabled) {
             audio.beep.play();
         }
         if(time.isSame(time0)){
             if(this.props.admin) {
-                audio.longBeep.play();
+                this.props.isAudioEnabled && audio.longBeep.play();
                 setTimeout(this.props.timeOut, 1000);
             }
             timeLeft = '00:00'

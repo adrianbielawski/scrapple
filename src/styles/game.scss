@@ -5,9 +5,14 @@
     flex-flow: column;
     flex-grow: 1;
     height: 100%;
+    .top-wrapper {
+        display: inline-flex;
+        justify-content: center;
+    }
     .menu-wrapper {
         .menu-icon {
             flex: 1;
+            margin: 10px 5px;
         }
         img {
             width: 35px;

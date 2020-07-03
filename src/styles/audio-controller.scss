@@ -1,0 +1,14 @@
+@import "variables";
+
+.audio-controller {
+  height: 35px;
+  width: 35px;
+  font-size: 30px;
+  color: $darkText;
+  margin: 10px 5px;
+  display: inline-flex;
+  align-items: center;
+  &.on {
+    color: $mainGreen;
+  }
+}

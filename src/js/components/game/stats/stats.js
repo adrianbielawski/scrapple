@@ -11,6 +11,7 @@ const Stats = (props) => {
         <div className="stats">
             <CurrentPlayer
                 admin={props.admin}
+                isAudioEnabled={props.isAudioEnabled}
                 timeOut={props.timeOut}
                 timer={props.timer}
                 time={props.time}
