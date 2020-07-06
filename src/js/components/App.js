@@ -68,24 +68,21 @@ class App extends React.Component {
     this.setState(state => ({ ...state, showAlert: false, alert: {type: '', action: '', messageKey: '', messageValue: ''}}));
   }
   
-  renderGameSummary = (players) => {
-    const nextData = { ...this.state.data };
-    nextData.players = players;
-    this.setState(state => ({ ...state, screen: 'GameSummary', data: nextData }));
+  renderGameSummary = (gameId) => {
+    this.setState(state => ({ ...state, screen: `Game/${gameId}/GameSummary` }));
   }
 
   renderGameMenu = () => {
     this.setState(state => ({ ...state, screen: 'GameMenu' }));
   }
 
-  gameCreated = (gameId, timer) => {    
+  gameCreated = (gameId, timer) => {
     sessionStorage.setItem('admin', JSON.stringify(true));
     if(timer) {
       this.setState(state => ({ ...state, admin: true, gameId }));
     } else {
       this.setState(state => ({ ...state, admin: true, gameId, screen: `Game/${gameId}` }));
     }
-    sessionStorage.setItem('aaa', 'aaa')
   }
 
   startAdminGame = () => {
@@ -161,7 +158,7 @@ class App extends React.Component {
           gameFinished: true,
           exitOption: null,
         });
-        this.setState(state => ({ ...state, screen: 'SubtractPoints', playedAgain: false, playedAgainWithSettings: false, ...newState}));
+        this.setState(state => ({ ...state, screen: `Game/${gameId}/SubtractPoints`, playedAgain: false, playedAgainWithSettings: false, ...newState}));
       } else {
         this.setState(state => ({ ...state, showFinishedGameCover: true, ...newState}));
       }
@@ -171,9 +168,12 @@ class App extends React.Component {
     });
   }
 
-  playAgainSettings = () => {
-    if(this.state.admin) {
-      db.collection('games').doc(this.state.gameId).update({
+  playAgainSettings = (gameId) => {
+    sessionStorage.setItem('gameStarted', JSON.stringify(false));
+    const localData = sessionStorage.getItem('admin');
+    const isAdmin = JSON.parse(localData);
+    if(isAdmin) {
+      db.collection('games').doc(gameId).update({
         showFinishedGameCover: false,
         gameStarted: false,
         gameFinished: false,
@@ -187,6 +187,7 @@ class App extends React.Component {
         this.setState(state => ({
           ...state,
           screen: 'GameMenu',
+          gameId,
           showFinishedGameCover: false,
           playedAgainWithSettings: true,
         }));
@@ -195,7 +196,7 @@ class App extends React.Component {
         this.alert('alert', 'Something went wrong, please check your internet connection and try again');
       });
     } else {
-      db.collection('games').doc(this.state.gameId).get()
+      db.collection('games').doc(gameId).get()
       .then((response) => {
         const data = response.data();
         this.setState(state => ({
@@ -203,7 +204,7 @@ class App extends React.Component {
           screen: 'MainMenu',
           showFinishedGameCover: false,
         }));
-        this.joinGame(this.state.gameId);
+        this.joinGame(gameId);
       })
       .catch(() => {
         this.alert('alert', 'Something went wrong, please check your internet connection and try again');
@@ -211,35 +212,44 @@ class App extends React.Component {
     };
   }
 
-  playAgain = () => {
+  playAgain = (gameId) => {
     sessionStorage.setItem('gameStarted', JSON.stringify(false));
-    if(this.state.admin) {
+    const localData = sessionStorage.getItem('admin');
+    const isAdmin = JSON.parse(localData);
+    if(isAdmin) {
       let timer = false;
-      db.collection('games').doc(this.state.gameId).get()
+      let playersNames = [];
+      let players = [];
+      db.collection('games').doc(gameId).get()
       .then(response => {
         const data = response.data();
         timer = data.timer;
-      })
-
-      const players = this.getPlayers();
-
-      db.collection('games').doc(this.state.gameId).update({
-        showFinishedGameCover: false,
-        gameStarted: false,
-        gameFinished: false,
-        pointsSubtracted: false,
-        currentPlayer: 0,
-        joinedPlayers: [1],
-        players,
-        exitOption: 'playAgain'
+        playersNames = data.players.map(player => {
+          return player.playerName
+        });
+        players = this.getPlayers(playersNames);
       })
       .then(() => {
-        this.setState(state => ({
-          ...state,
-          screen: timer ? 'GameMenu' : `Game/${this.state.gameId}`,
+        db.collection('games').doc(gameId).update({
           showFinishedGameCover: false,
-          playedAgain: true,
-        }));
+          gameStarted: false,
+          gameFinished: false,
+          pointsSubtracted: false,
+          currentPlayer: 0,
+          joinedPlayers: [1],
+          players,
+          exitOption: 'playAgain'
+        })
+        .then(() => {
+          this.setState(state => ({
+            ...state,
+            gameId,
+            admin: isAdmin,
+            screen: timer ? 'GameMenu' : `Game/${gameId}`,
+            showFinishedGameCover: false,
+            playedAgain: true,
+          }));
+        });
       })
       .catch(() => {
         this.alert('alert', 'Something went wrong, please check your internet connection and try again');
@@ -250,12 +260,12 @@ class App extends React.Component {
         screen: 'MainMenu',
         showFinishedGameCover: false,
       }));
-      this.joinGame(this.state.gameId);
+      this.joinGame(gameId);
     };
   }
   
-  getPlayers = () => {
-    let players = [ ...this.state.playersNames];
+  getPlayers = (playersNames) => {
+    let players = [...playersNames];
     players = players.map((player, index) => {
       return {
         playerName: player,
@@ -269,9 +279,9 @@ class App extends React.Component {
     return players
   }
 
-  exitGame = () => {
+  exitGame = (gameId) => {
     if(this.state.admin) {
-      db.collection('games').doc(this.state.gameId).set({
+      db.collection('games').doc(gameId).set({
         exitOption: 'exitGame',
       });
     }
@@ -311,18 +321,16 @@ class App extends React.Component {
             <Suspense fallback={<LoadingSpinner />}>
               <GameMenu
                 alert={this.alert}
-                setPlayersNames={this.setPlayersNames}
                 gameCreated={this.gameCreated}
                 startAdminGame={this.startAdminGame}
                 changeLanguage={this.changeLanguage}
-                startGame={this.startGame}
                 gameId={this.state.gameId}
                 playedAgain={this.state.playedAgain}
                 playedAgainWithSettings={this.state.playedAgainWithSettings}
                 language={this.state.language} />
             </Suspense>)}
           />
-          <Route path="/Game/:gameId" render={() => (
+          <Route exact path="/Game/:gameId" render={() => (
             <Suspense fallback={<LoadingSpinner />}>
               <Game
                 alert={this.alert}
@@ -335,26 +343,21 @@ class App extends React.Component {
                 language={this.state.language} />
             </Suspense>)} 
           />
-          <Route path="/SubtractPoints" render={() => (
+          <Route exact path="/Game/:gameId/SubtractPoints" render={() => (
             <Suspense fallback={<LoadingSpinner />}>
               <SubtractPoints
                 renderGameSummary={this.renderGameSummary}
-                alert={this.alert}
-                players={this.state.data.players}
-                gameId={this.state.gameId} />
+                alert={this.alert} />
             </Suspense>)}
           />
-          <Route path="/GameSummary" render={() => (
+          <Route exact path="/Game/:gameId/GameSummary" render={() => (
             <Suspense fallback={<LoadingSpinner />}>
               <GameSummary
                 playAgain={this.playAgain}
                 joinGame={this.joinGame}
                 playAgainSettings={this.playAgainSettings}
                 exitGame={this.exitGame}
-                players={this.state.data.players}
-                admin={this.state.admin}
-                gameId={this.state.gameId}
-                timer={this.state.data.timer}/>
+                admin={this.state.admin}/>
             </Suspense>)} 
           />
         </Switch>

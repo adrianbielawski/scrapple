@@ -13,7 +13,7 @@ const Menu = (props) => {
     return ( 
         <div className="menu-wrapper">
             <div className="menu-icon">
-                <img src="../src/assets/img/burger-menu-icon.png" onClick={toggleMenu}></img>
+                <img src="../../src/assets/img/burger-menu-icon.png" onClick={toggleMenu}></img>
             </div>
             <div className={showMenu ? "content show" : "content"}>
                 <div className="menu">

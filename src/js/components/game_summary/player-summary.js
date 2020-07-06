@@ -19,7 +19,7 @@ const PlayerSummary = (props) => {
             default:
                 return
         }
-        let img = <img src={`../src/assets/img/${place}-place.png`}></img>;
+        let img = <img src={`../../src/assets/img/${place}-place.png`}></img>;
         return img
     };
 

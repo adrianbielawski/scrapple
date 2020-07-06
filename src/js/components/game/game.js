@@ -41,7 +41,8 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
-    const gameId = window.location.pathname.slice(6);
+    const pathArray = window.location.pathname.split('/');
+    const gameId = pathArray[2];
     let isEndTimeValid = null;
 
     db.collection('games').doc(gameId).get()
@@ -73,7 +74,7 @@ class Game extends React.Component {
         } else if(!data.pointsSubtracted && data.gameFinished){
           this.props.handleFinishGame(gameId);
         } else if(data.pointsSubtracted && data.gameFinished){
-          this.props.renderGameSummary(data.players);
+          this.props.renderGameSummary(gameId);
         }
       });
     })

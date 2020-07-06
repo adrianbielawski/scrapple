@@ -7,22 +7,45 @@ import PlayerSummary from './player-summary';
 import Header from '../global_components/header';
 import ExitOptions from './exit-options';
 import WaitingCover from './waiting-cover';
+import LoadingSpinner from '../global_components/loadingSpinner';
 
 const GameSummary = (props) => {
     const [showExitOptions, setShowExitOptions] = useState(false);
     const [exitOption, setExitOption] = useState(null);
+    const [admin, setAdmin] = useState(false)
+    const [gameId, setGameId] = useState(false)
+    const [players, setPlayers] = useState(null);
+    const [fetching, setFetching] = useState(true)
 
     useEffect(() => {
-        const unsubscribe = db.collection('games').doc(props.gameId).onSnapshot(doc => {
+        const localData = sessionStorage.getItem('admin');
+        const isAdmin = localData ? JSON.parse(localData) : false;
+        setAdmin(isAdmin);
+
+        const pathArray = window.location.pathname.split('/');
+        const id = pathArray[2];
+        setGameId(id)
+
+        db.collection('games').doc(id).get()
+        .then((response) => {
+            const data = response.data();
+            setPlayers(data.players);
+            setFetching(false)
+        })
+        .catch(() => {
+            this.alert('alert', 'Something went wrong, please check your internet connection and try again');
+        });;
+
+        const unsubscribe = db.collection('games').doc(id).onSnapshot(doc => {
             const data = doc.data();
             if(data.exitOption !== exitOption) {
                 setExitOption(data.exitOption)
                 if(data.exitOption === 'playAgain') {
-                    props.playAgain();
+                    props.playAgain(id);
                 };
             }
             if(data.joinedPlayers.length > 0 && data.exitOption === 'playAgainWithSettings') {
-                props.playAgainSettings()
+                props.playAgainSettings(id)
             }
         })
         return () => {
@@ -31,35 +54,19 @@ const GameSummary = (props) => {
     }, []);
 
     const getPlayersPositions = () => {
-        let players = [ ...props.players];
-        players.sort((a, b) => {
+        let p = [ ...players];
+        p.sort((a, b) => {
             return b.currentScore - a.currentScore
         });
 
         let previousPlayerScore = '';
         let previousPlayerPlaceText = '';
         let previousPlace = '';
-        let playersSummary = players.map((player, index) => {
-            let placeText = '';
-            let place = '';
-            switch(index) {
-                case 0:
-                    placeText = "1st";
-                    place = 1;
-                    break
-                case 1:
-                    placeText = "2nd";
-                    place = 2;
-                    break
-                case 2:
-                    placeText = "3rd";
-                    place = 3;
-                    break
-                case 3:
-                    placeText = "4th";
-                    place = 4;
-                    break
-            };
+        let playersSummary = p.map((player, index) => {
+            const placeTexts = ['1st', '2nd', '3rd', '4th'];
+            let place = index + 1 ;
+            let placeText = placeTexts[index];
+
             if(player.currentScore === previousPlayerScore) {
                 placeText = previousPlayerPlaceText
                 place = previousPlace
@@ -79,19 +86,25 @@ const GameSummary = (props) => {
     };
 
     return (
-        <div className="game-summary">
-            {exitOption === 'playAgainWithSettings' || (exitOption === 'playAgain' && props.timer) ? <WaitingCover exitOption={exitOption} /> : null}
-            {showExitOptions ? <ExitOptions 
-                playAgain={props.playAgain}
-                playAgainSettings={props.playAgainSettings}
-                exitGame={props.exitGame} /> : null}
-            <Header />
-            <h2><Trans>Game results</Trans></h2>
-            <ul className="results">
-                {getPlayersPositions()}
-            </ul>
-            {props.admin ? <button onClick={handleExit}><Trans>Exit</Trans></button> : null}
-            {exitOption === 'exitGame' ? <button onClick={props.exitGame}><Trans>Exit</Trans></button> : null}
+        <div>
+            {fetching ? <LoadingSpinner /> : (
+                <div className="game-summary">
+                        {exitOption === 'playAgainWithSettings' || (exitOption === 'playAgain' && props.timer) ? <WaitingCover exitOption={exitOption} /> : null}
+                        {showExitOptions ? <ExitOptions 
+                            playAgain={props.playAgain}
+                            playAgainSettings={props.playAgainSettings}
+                            exitGame={props.exitGame}
+                            gameId={gameId} /> : null}
+                        <Header />
+                        <h2><Trans>Game results</Trans></h2>
+                        <ul className="results">
+                            {getPlayersPositions()}
+                        </ul>
+                        {admin ? <button onClick={handleExit}><Trans>Exit</Trans></button> : null}
+                        {exitOption === 'exitGame' ? <button onClick={props.exitGame}><Trans>Exit</Trans></button> : null}
+                    
+                </div>
+            )}
         </div>
     );
 }

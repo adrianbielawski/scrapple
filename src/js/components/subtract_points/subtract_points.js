@@ -1,14 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Trans } from 'react-i18next';
 import db from '../../../firebase';
 import '../../../styles/game-summary.scss';
 //Custom Components
 import PlayerSubPoints from '../subtract_points/player-subtract-points';
 import Header from '../global_components/header';
+import LoadingSpinner from '../global_components/loadingSpinner';
 
 const SubtractPoints = (props) => {
+    const [gameId, setGameId] = useState(null);
+    const [players, setPlayers] = useState(null);
+    const [fetching, setFetching] = useState(true);
+    
+
+    useEffect(() => {
+        const pathArray = window.location.pathname.split('/');
+        const id = pathArray[2];
+        setGameId(id);
+
+        db.collection('games').doc(id).get()
+        .then((response) => {
+            const data = response.data();
+            setPlayers(data.players);
+            setFetching(false)
+        })
+        .catch(() => {
+            this.alert('alert', 'Something went wrong, please check your internet connection and try again');
+        });;
+    }, []);
+
     const validateUserInputs = (e) => {
-        for (let i = 0; i < props.players.length; i++) {
+        for (let i = 0; i < players.length; i++) {
             const inputVal = document.getElementById(`sub-points${i}`).value;
             inputVal = parseFloat(inputVal);
             if(!inputVal) {
@@ -25,36 +47,42 @@ const SubtractPoints = (props) => {
 
     const subPoints = (e) => {
         e.preventDefault();
-        const players = [ ...props.players ];
-        players.map((player, index) => {
+        const p = [ ...players ];
+        p.map((player, index) => {
             const inputVal = document.getElementById(`sub-points${index}`).value;
-            let newPlayer = player.currentScore -= inputVal;
+            let newPlayer = player;
+            newPlayer.currentScore -= inputVal;
+            newPlayer.subtractedPoints = inputVal;
             return newPlayer;
         });
-        db.collection('games').doc(props.gameId).update({
-          players: players,
+        db.collection('games').doc(gameId).update({
+          players: p,
           pointsSubtracted: true
         });
-        props.renderGameSummary(players);
+        props.renderGameSummary(gameId);
     };
 
     const getPlayers = () => {
-        let players = [ ...props.players ];
-        let playersContent = players.map((player, index) => {
+        const p = [ ...players ];
+        let playersContent = p.map((player, index) => {
             return <PlayerSubPoints playerName={player.playerName} key={index} index={index}/>
         });
         return playersContent;
     };
 
     return (
-        <div className="game-summary">
-            <Header />
-            <h2><Trans>Subtract points of unused letters</Trans></h2>
-            <ul className="results">
-                {getPlayers()}
-            </ul>
-            <button onClick={validateUserInputs}><Trans>Continue</Trans></button>
+        <div>
+            {fetching ? <LoadingSpinner /> : (
+                <div className="game-summary">
+                    <Header />
+                    <h2><Trans>Subtract points of unused letters</Trans></h2>
+                    <ul className="results">
+                        {getPlayers()}
+                    </ul>
+                    <button onClick={validateUserInputs}><Trans>Continue</Trans></button>
+                </div>
+            )}
         </div>
     );
 }
-export default SubtractPoints
+export default SubtractPoints;
