@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 //Custom Components
 import Player from './player';
+//Redux Actions
+import { reorderPlayers } from '../../../actions/gameMenuActions';
 
 class Players extends Component {
     constructor(props) {
@@ -32,17 +35,17 @@ class Players extends Component {
         if(this.state.grabbedElement <= listSpace) {
             listSpace +=1;
         };
-        if(listSpace >= this.props.players.length) {
-            listSpace = this.props.players.length -1;
+        if(listSpace >= this.props.playersNames.length) {
+            listSpace = this.props.playersNames.length -1;
         };
-        if(this.state.grabbedElement === this.props.players.length -1 && listSpace >= this.props.players.length -2) {
-            listSpace = this.props.players.length -2;
+        if(this.state.grabbedElement === this.props.playersNames.length -1 && listSpace >= this.props.playersNames.length -2) {
+            listSpace = this.props.playersNames.length -2;
         };
         this.setState(state => ({ ...state, listSpace}));
     }
 
     drop = (index, distance, eType) => {
-        let players = [ ...this.props.players];
+        let players = [ ...this.props.playersNames];
         let newIndex = index + distance
         if(newIndex < 1) {
             newIndex = 0;
@@ -53,12 +56,13 @@ class Players extends Component {
         if (eType === 'touchend') {
             touches = this.state.touches - 1;
         }
-        this.props.reorderPlayers(index, newIndex)
+        
+        this.props.reorderPlayers(index, newIndex);
         this.setState(state => ({ ...state, grabbedElement: null, initialListSpace: null, listSpace: null, touches}));
     }
 
     getPlayers = () => {
-        const propsPlayers = [ ...this.props.players ]
+        const propsPlayers = [ ...this.props.playersNames ];
         const players = propsPlayers.map((player, index) => {
             let bottomSpace = index === this.state.listSpace ? true : false;
             
@@ -88,13 +92,24 @@ class Players extends Component {
     }
 
     render() {
-        const players = this.getPlayers();
-
         return (
             <ul className="players">
-                {players}
+                {this.getPlayers()}
             </ul>
         );
     }
 }
-export default Players;
+
+const mapStateToProps = (state) => {
+    return {
+        playersNames: state.playersNames,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        reorderPlayers: (index, newIndex) => { dispatch(reorderPlayers(index, newIndex)) },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Players);

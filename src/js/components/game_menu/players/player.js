@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
+import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+//Redux Actions
+import { removePlayer } from '../../../actions/gameMenuActions';
 
 class Player extends Component {
     constructor(props) {
@@ -100,7 +103,7 @@ class Player extends Component {
         this.setState(state => ({ ...state, isGrabbed: false, top: 0, left: 0, distance: 0, startX: 0}));
     }
 
-    removePlayer = (e) => {
+    removePlayerHandler = (e) => {
         e.preventDefault();
         this.removedPlayerTransition();
         setTimeout(this.remove, 500);
@@ -118,7 +121,7 @@ class Player extends Component {
 
     remove = () => {
         this.element.style = {};
-        this.props.removePlayer(this.state.index);
+        this.props.removePlayer(this.props.index)
     }
 
     getStyles = () => {
@@ -174,7 +177,7 @@ class Player extends Component {
                     >
                         <p><Trans>Player</Trans> {this.props.index + 1}: <span> {this.props.player}</span></p>
                     </div>
-                    <button onClick={this.removePlayer} className="remove">
+                    <button onClick={this.removePlayerHandler} className="remove">
                         <FontAwesomeIcon icon={faTimes} onClick={this.handleClick}/>
                     </button>
                 </div>
@@ -183,4 +186,17 @@ class Player extends Component {
         );
     }
 }
-export default Player;
+
+const mapStateToProps = (state) => {
+    return {
+        playersNames: state.playersNames,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        removePlayer: (playerId) => { dispatch(removePlayer(playerId)) },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Player);
