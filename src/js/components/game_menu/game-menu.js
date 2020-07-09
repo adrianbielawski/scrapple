@@ -12,7 +12,7 @@ import Header from '../global_components/header';
 import Confirmation from './confirmation';
 import Card from '../global_components/card';
 //Redux Actions
-import { setGameId } from '../../actions/appActions';
+import { setGameId, setAlert } from '../../actions/appActions';
 
 class GameMenu extends Component {
     constructor(props) {
@@ -45,7 +45,7 @@ class GameMenu extends Component {
         e.preventDefault();
         if(this.props.playersNames.length < 2) {
             const messageKey = 'Please add at least 2 players';
-            this.props.alert('alert', messageKey)
+            this.props.setAlert('alert', messageKey)
             return 
         }
 
@@ -53,7 +53,7 @@ class GameMenu extends Component {
         //     const time = this.props.time;
         //     if(time.hours == 0 && time.minutes == 0) {
         //         const messageKey = "Minimum player's time limit is 1 min";
-        //         this.props.alert('alert', messageKey)
+        //         this.props.setAlert('alert', messageKey)
         //         return
         //     }
         // }
@@ -114,7 +114,6 @@ class GameMenu extends Component {
             const newState = {
                 showConfirmation: true,
                 exitOption: false,
-                playedAgainWithSettings: false
             }
 
             this.setState(state => ({ ...state, ...newState}));
@@ -140,8 +139,7 @@ class GameMenu extends Component {
         return (
             <div className="game-menu">
                 {this.state.showConfirmation ? 
-                    <Confirmation 
-                        gameId={this.props.gameId} 
+                    <Confirmation
                         handleStartAdminGame={this.handleStartAdminGame} 
                         allPlayersJoined={this.state.allPlayersJoined}
                     /> : null
@@ -155,7 +153,7 @@ class GameMenu extends Component {
                         <Timer />
                     </Card>
                     <Card>
-                        <AddPlayer alert={this.props.alert} />
+                        <AddPlayer />
                         <Players />
                     </Card>
                     <button onClick={this.validateSettings} type="submit">{this.props.t(buttonText)}</button>
@@ -172,12 +170,15 @@ const mapStateToProps = (state) => {
         playersNames: state.playersNames,
         timer: state.timeLimit.timer,
         time: state.timeLimit.time,
+        playedAgain: state.app.playedAgain,
+        playedAgainWithSettings: state.app.playedAgainWithSettings,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         setGameId: (gameId) => { dispatch(setGameId(gameId)) },
+        setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
     }
 }
 

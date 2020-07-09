@@ -13,26 +13,12 @@ const Game = React.lazy(() => import('./game/game'));
 const GameSummary = React.lazy(() => import('./game_summary/game-summary'));
 const SubtractPoints = React.lazy(() => import('./subtract_points/subtract_points'));
 //Redux Actions
-import { setInnerHeight, clearAppState, changeLanguage } from '../actions/appActions';
+import { setInnerHeight, clearAppState, changeLanguage, setGameId, setScreen, setAdmin,
+  setPlayedAgain, setPlayedAgainWithSettings, setShowFinishedGameCover, setAlert, removeAlert } from '../actions/appActions';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      screen: window.location.pathname.slice(1) || 'MainMenu',
-      admin: false,
-      playedAgain: false,
-      showFinishedGameCover: false,
-      playedAgainWithSettings: false,
-      showAlert: false,
-      alert: {
-        type: '',
-        messageKey: '',
-        messageValue: '',
-        action: '',
-        props: '',
-      },
-    }
     this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
   }
 
@@ -45,41 +31,34 @@ class App extends React.Component {
     let localData = sessionStorage.getItem('admin');
     const admin = localData ? JSON.parse(localData) : false;
 
-    this.setState((state) => ({ ...state, admin}));
-  }
-
-  alert = (type, messageKey, messageValue, action, props) => {
-    this.setState(state => ({ ...state, showAlert: true, alert: {type, messageKey, messageValue, action, props}}));
-  }
-
-  removeAlert = () => {
-    this.setState(state => ({ ...state, showAlert: false, alert: {type: '', action: '', messageKey: '', messageValue: ''}}));
+    this.props.setAdmin(admin)
   }
   
   renderGameSummary = () => {
-    this.setState(state => ({ ...state, screen: `Game/${this.props.gameId}/GameSummary` }));
+    this.props.setScreen(`Game/${this.props.gameId}/GameSummary`)
   }
 
   renderGameMenu = () => {
-    this.setState(state => ({ ...state, screen: 'GameMenu' }));
+    this.props.setScreen(`GameMenu`)
   }
 
   gameCreated = (timer) => {
     sessionStorage.setItem('admin', JSON.stringify(true));
     if(timer) {
-      this.setState(state => ({ ...state, admin: true}));
+      this.props.setAdmin(true)
     } else {
-      this.setState(state => ({ ...state, admin: true, screen: `Game/${this.props.gameId}` }));
+      this.props.setScreen(`Game/${this.props.gameId}`)
+      this.props.setAdmin(true)
     }
   }
 
   startAdminGame = () => {
     db.collection('games').doc(this.props.gameId).update({gameStarted: true})
     .then(() => {
-      this.setState(state => ({ ...state, screen: `Game/${this.props.gameId}`}));
+      this.props.setScreen(`Game/${this.props.gameId}`)
     })
     .catch(() => {
-      this.alert('alert', messageKey);
+      this.props.setAlert('alert', messageKey);
     });    
   }
 
@@ -88,7 +67,7 @@ class App extends React.Component {
     .then((response) => {
       const data = response.data();
       
-      if(this.state.language !== data.language) {
+      if(this.props.language !== data.language) {
         this.props.changeLanguage(data.language);
       }
 
@@ -97,7 +76,7 @@ class App extends React.Component {
         
         db.collection('games').doc(gameId).update({'joinedPlayers': firebase.firestore.FieldValue.arrayUnion(random)})
         .then(() => {
-          this.setState(state => ({ ...state, gameId }));
+          this.props.setGameId(gameId);
         
           this.unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
             const data = doc.data();
@@ -107,14 +86,14 @@ class App extends React.Component {
           });
         })
         .catch(() => {
-          this.alert('alert', 'Something went wrong, please check game ID');
+          this.props.setAlert('alert', 'Something went wrong, please check game ID');
         });
       } else {
         this.startJoinedPlayerGame(data.timer, gameId)
       }
     })
     .catch(() => {
-      this.alert('alert', 'Something went wrong, please check game ID');
+      this.props.setAlert('alert', 'Something went wrong, please check game ID');
       return
     });
   }
@@ -123,37 +102,27 @@ class App extends React.Component {
     if(timer) {
       this.unsubscribe();
     }
-    this.setState(state => ({
-      ...state,
-      admin: false,
-      showFinishedGameCover: false,
-      screen: `Game/${this.props.gameId}`,
-    }));
+    this.props.setScreen(`Game/${this.props.gameId}`);
+    this.props.setAdmin(false);
+    this.props.setShowFinishedGameCover(false);
   }
 
   handleFinishGame = () => {
     const gameId = this.props.gameId;
-    db.collection('games').doc(gameId).get()
-    .then(response => {
-      const data = response.data();
-      const players = data.players;
-      const nextData = { ...this.state.data };
-      nextData.players = players;
-      const newState = {data: nextData, showAlert: false, alert: {type: '', action: '', messageKey: ''}}
 
-      if(this.state.admin) {
+      if(this.props.admin) {
         db.collection('games').doc(gameId).update({
           gameFinished: true,
           exitOption: null,
         });
-        this.setState(state => ({ ...state, screen: `Game/${gameId}/SubtractPoints`, playedAgain: false, playedAgainWithSettings: false, ...newState}));
+        this.props.setScreen(`Game/${gameId}/SubtractPoints`);
+        this.props.setPlayedAgain(false);
+        this.props.setPlayedAgainWithSettings(false);
+        this.props.clearAlert();
       } else {
-        this.setState(state => ({ ...state, showFinishedGameCover: true, ...newState}));
+        this.props.setShowFinishedGameCover(true);
+        this.props.clearAlert();
       }
-    })
-    .catch(() => {
-      this.alert('alert', 'Something went wrong, please check your internet connection and try again');
-    });
   }
 
   playAgainSettings = () => {
@@ -173,30 +142,17 @@ class App extends React.Component {
         exitOption: 'playAgainWithSettings'
       })
       .then(() => {
-        this.setState(state => ({
-          ...state,
-          screen: 'GameMenu',
-          showFinishedGameCover: false,
-          playedAgainWithSettings: true,
-        }));
+        this.props.setScreen(`GameMenu`)
+        this.props.setPlayedAgainWithSettings(true);
+        this.props.setShowFinishedGameCover(false);
       })
       .catch(() => {
-        this.alert('alert', 'Something went wrong, please check your internet connection and try again');
+        this.props.setAlert('alert', 'Something went wrong, please check your internet connection and try again');
       });
     } else {
-      db.collection('games').doc(gameId).get()
-      .then((response) => {
-        const data = response.data();
-        this.setState(state => ({
-          ...state,
-          screen: 'MainMenu',
-          showFinishedGameCover: false,
-        }));
+        this.props.setShowFinishedGameCover(false);
+        this.props.setScreen(`MainMenu`);
         this.joinGame(gameId);
-      })
-      .catch(() => {
-        this.alert('alert', 'Something went wrong, please check your internet connection and try again');
-      });;
     };
   }
 
@@ -208,7 +164,6 @@ class App extends React.Component {
     if(isAdmin) {
       let timer = false;
       let players = [];
-      console.log(players)
       db.collection('games').doc(gameId).get()
       .then(response => {
         const data = response.data();
@@ -227,24 +182,18 @@ class App extends React.Component {
           exitOption: 'playAgain'
         })
         .then(() => {
-          this.setState(state => ({
-            ...state,
-            admin: isAdmin,
-            screen: timer ? 'GameMenu' : `Game/${gameId}`,
-            showFinishedGameCover: false,
-            playedAgain: true,
-          }));
+          this.props.setShowFinishedGameCover(false);
+          this.props.setAdmin(isAdmin)
+          this.props.setPlayedAgain(true);
+          this.props.setScreen(timer ? 'GameMenu' : `Game/${gameId}`)
         });
       })
       .catch(() => {
-        this.alert('alert', 'Something went wrong, please check your internet connection and try again');
+        this.props.setAlert('alert', 'Something went wrong, please check your internet connection and try again');
       });
     } else {
-      this.setState(state => ({
-        ...state,
-        screen: 'MainMenu',
-        showFinishedGameCover: false,
-      }));
+      this.props.setShowFinishedGameCover(false);
+      this.props.setScreen('MainMenu')
       this.joinGame(gameId);
     };
   }
@@ -265,48 +214,33 @@ class App extends React.Component {
   }
 
   exitGame = () => {
-    if(this.state.admin) {
+    if(this.props.admin) {
       db.collection('games').doc(this.props.gameId).set({
         exitOption: 'exitGame',
       });
     }
-
+    
     this.props.clearAppState();
-
-    this.setState(state => ({
-      ...state,
-      screen: 'MainMenu',
-      admin: false,
-      playedAgain: false,
-      showFinishedGameCover: false,
-      playedAgainWithSettings: false,
-    }));
   }
 
   render() {
     return (
       <div className="App" style={{height: this.props.screenHeight}}>
-        {this.state.showAlert ?
+        {this.props.alert.show ?
           <Alert
-            removeAlert={this.removeAlert}
-            handleFinishGame={this.handleFinishGame}
-            alert={this.state.alert} />
+            handleFinishGame={this.handleFinishGame} />
         : null}
-        <Redirect to={`/${this.state.screen}`} />
+        <Redirect to={`/${this.props.screen}`} />
         <Switch>
           <Route path="/MainMenu" render={() => (<MainMenu
-            alert={this.alert}
             renderGameMenu={this.renderGameMenu}
             joinGame={this.joinGame}/>)} 
           />
           <Route path="/GameMenu" render={() => (
             <Suspense fallback={<LoadingSpinner />}>
               <GameMenu
-                alert={this.alert}
                 gameCreated={this.gameCreated}
-                startAdminGame={this.startAdminGame}
-                playedAgain={this.state.playedAgain}
-                playedAgainWithSettings={this.state.playedAgainWithSettings} />
+                startAdminGame={this.startAdminGame} />
             </Suspense>)}
           />
           <Route exact path="/Game/:gameId" render={() => (
@@ -315,9 +249,7 @@ class App extends React.Component {
                 alert={this.alert}
                 setGameState={this.setGameState}
                 renderGameSummary={this.renderGameSummary}
-                handleFinishGame={this.handleFinishGame}
-                admin={this.state.admin}
-                showFinishedGameCover={this.state.showFinishedGameCover} />
+                handleFinishGame={this.handleFinishGame} />
             </Suspense>)} 
           />
           <Route exact path="/Game/:gameId/SubtractPoints" render={() => (
@@ -333,8 +265,7 @@ class App extends React.Component {
                 playAgain={this.playAgain}
                 joinGame={this.joinGame}
                 playAgainSettings={this.playAgainSettings}
-                exitGame={this.exitGame}
-                admin={this.state.admin}/>
+                exitGame={this.exitGame}/>
             </Suspense>)} 
           />
         </Switch>
@@ -346,9 +277,15 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
     return {
       screenHeight: state.app.screenHeight,
+      screen: state.app.screen,
       gameId: state.app.gameId,
+      admin: state.app.admin,
       language: state.app.language,
       playersNames: state.playersNames,
+      playedAgain: state.app.playedAgain,
+      playedAgainWithSettings: state.app.playedAgainWithSettings,
+      showFinishedGameCover: state.app.showFinishedGameCover,
+      alert: state.app.alert,
     }
 }
 
@@ -357,6 +294,14 @@ const mapDispatchToProps = (dispatch) => {
     setInnerHeight: (height) => { dispatch(setInnerHeight(height)) },
     clearAppState: () => { dispatch(clearAppState()) },
     changeLanguage: (language) => { dispatch(changeLanguage(language)) },
+    setScreen: (screen) => { dispatch(setScreen(screen)) },
+    setAdmin: (admin) => { dispatch(setAdmin(admin)) },
+    setGameId: (gameId) => { dispatch(setGameId(gameId)) },
+    setPlayedAgain: (playedAgain) => { dispatch(setPlayedAgain(playedAgain)) },
+    setPlayedAgainWithSettings: (playedAgainWithSettings) => { dispatch(setPlayedAgainWithSettings(playedAgainWithSettings)) },
+    setShowFinishedGameCover: (showFinishedGameCover) => { dispatch(setShowFinishedGameCover(showFinishedGameCover)) },
+    setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
+    removeAlert: () => { dispatch(removeAlert()) },
   }
 }
 

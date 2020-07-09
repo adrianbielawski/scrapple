@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Trans } from 'react-i18next';
-import  i18next  from 'i18next';
+import { withTranslation } from 'react-i18next';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -91,7 +92,7 @@ class CurrentPlayer extends Component {
                     {this.state.timeLeft ? this.state.timeLeft : <LoadingSpinner />}
                 </div>
                 <form className="add-points" onSubmit={this.handleSubmit}>
-                    <input type="number" placeholder={i18next.t("Add points")} ref="points" required min="0" max="999" />
+                    <input type="number" placeholder={this.props.t("Add points")} ref="points" required min="0" max="999" />
                     <button type="submit" className="confirm">
                         <FontAwesomeIcon icon={faCheck}/>
                     </button>
@@ -100,4 +101,11 @@ class CurrentPlayer extends Component {
         );
     }
 }
-export default CurrentPlayer;
+
+const mapStateToProps = (state) => {
+    return {
+      admin: state.app.admin,
+    }
+}
+
+export default connect(mapStateToProps)(withTranslation()(CurrentPlayer));

@@ -6,15 +6,15 @@ import Dropdown from '../global_components/dropdown';
 const ExitOptions = (props) => {
     const { t } = useTranslation();
     const handlePlayAgain = () => {
-        props.playAgain(props.gameId)
+        props.playAgain()
     };
 
     const handlePlayAgainSettings = () => {
-        props.playAgainSettings(props.gameId)
+        props.playAgainSettings()
     };
 
     const handleExitGame = () => {
-        props.exitGame(props.gameId)
+        props.exitGame()
     }
     return ( 
         <Dropdown className="confirmation">

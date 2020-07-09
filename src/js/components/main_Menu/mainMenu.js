@@ -7,6 +7,8 @@ import Header from '../global_components/header';
 import Confirmation from './confirmation';
 import Card from '../global_components/card';
 import Language from '../global_components/language/language';
+//Redux Actions
+import { setAlert } from '../../actions/appActions';
 
 const MainMenu = (props) => {
     sessionStorage.clear();
@@ -18,7 +20,7 @@ const MainMenu = (props) => {
 
         if (!gameId) {
             const messageKey = 'Please type in game ID';
-            props.alert('alert', messageKey);
+            props.setAlert('alert', messageKey);
             return
         };
 
@@ -49,4 +51,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(MainMenu);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainMenu);

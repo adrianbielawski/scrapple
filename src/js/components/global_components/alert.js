@@ -1,6 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import '../../../styles/alert.scss';
+//Redux Actions
+import { setAlert, removeAlert } from '../../actions/appActions';
 
 const Alert = (props) => {
     const { t } = useTranslation();
@@ -42,4 +45,18 @@ const Alert = (props) => {
         </div>
     );
 }
-export default Alert;
+
+const mapStateToProps = (state) => {
+    return {
+      alert: state.app.alert,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
+    removeAlert: () => { dispatch(removeAlert()) },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Alert);

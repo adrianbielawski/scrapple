@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import db from '../../../firebase';
 import '../../../styles/game-summary.scss';
@@ -6,20 +7,19 @@ import '../../../styles/game-summary.scss';
 import PlayerSubPoints from '../subtract_points/player-subtract-points';
 import Header from '../global_components/header';
 import LoadingSpinner from '../global_components/loadingSpinner';
+//Redux Actions
+import { setGameId } from '../../actions/appActions';
 
 const SubtractPoints = (props) => {
     const { t } = useTranslation();
-    const [gameId, setGameId] = useState(null);
     const [players, setPlayers] = useState(null);
     const [fetching, setFetching] = useState(true);
     
 
     useEffect(() => {
-        const pathArray = window.location.pathname.split('/');
-        const id = pathArray[2];
-        setGameId(id);
+        const gameId =  props.gameId || getGameId();
 
-        db.collection('games').doc(id).get()
+        db.collection('games').doc(gameId).get()
         .then((response) => {
             const data = response.data();
             setPlayers(data.players);
@@ -30,6 +30,13 @@ const SubtractPoints = (props) => {
         });;
     }, []);
 
+    const getGameId = () => {
+        const pathArray = window.location.pathname.split('/');
+        const gameId = pathArray[2];
+        props.setGameId(gameId);
+        return gameId;
+    }
+
     const validateUserInputs = (e) => {
         for (let i = 0; i < players.length; i++) {
             const inputVal = document.getElementById(`sub-points${i}`).value;
@@ -38,8 +45,7 @@ const SubtractPoints = (props) => {
                 inputVal = 0
             }
             if (inputVal < 0 || !Number.isInteger(inputVal)) {
-                const messageKey = 'Points value must be positive integer';
-                props.alert('alert', messageKey);
+                props.alert('alert', 'Points value must be positive integer');
                 return
             };
         };
@@ -56,11 +62,11 @@ const SubtractPoints = (props) => {
             newPlayer.subtractedPoints = inputVal;
             return newPlayer;
         });
-        db.collection('games').doc(gameId).update({
+        db.collection('games').doc(props.gameId).update({
           players: p,
           pointsSubtracted: true
         });
-        props.renderGameSummary(gameId);
+        props.renderGameSummary();
     };
 
     const getPlayers = () => {
@@ -86,4 +92,17 @@ const SubtractPoints = (props) => {
         </div>
     );
 }
-export default SubtractPoints;
+
+const mapStateToProps = (state) => {
+    return {
+        gameId: state.app.gameId,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setGameId: (gameId) => { dispatch(setGameId(gameId)) },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SubtractPoints);

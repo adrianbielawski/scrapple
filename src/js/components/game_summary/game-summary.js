@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import db from '../../../firebase';
 import '../../../styles/game-summary.scss';
@@ -8,26 +9,24 @@ import Header from '../global_components/header';
 import ExitOptions from './exit-options';
 import WaitingCover from './waiting-cover';
 import LoadingSpinner from '../global_components/loadingSpinner';
+//Redux Actions
+import { setAdmin, setGameId } from '../../actions/appActions';
 
 const GameSummary = (props) => {
     const { t } = useTranslation();
     const [showExitOptions, setShowExitOptions] = useState(false);
     const [exitOption, setExitOption] = useState(null);
-    const [admin, setAdmin] = useState(false)
-    const [gameId, setGameId] = useState(false)
     const [players, setPlayers] = useState(null);
     const [fetching, setFetching] = useState(true)
 
     useEffect(() => {
         const localData = sessionStorage.getItem('admin');
         const isAdmin = localData ? JSON.parse(localData) : false;
-        setAdmin(isAdmin);
+        props.setAdmin(isAdmin);
 
-        const pathArray = window.location.pathname.split('/');
-        const id = pathArray[2];
-        setGameId(id)
+        const gameId =  props.gameId || getGameId();
 
-        db.collection('games').doc(id).get()
+        db.collection('games').doc(gameId).get()
         .then((response) => {
             const data = response.data();
             setPlayers(data.players);
@@ -37,22 +36,29 @@ const GameSummary = (props) => {
             this.alert('alert', 'Something went wrong, please check your internet connection and try again');
         });;
 
-        const unsubscribe = db.collection('games').doc(id).onSnapshot(doc => {
+        const unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
             const data = doc.data();
             if(data.exitOption !== exitOption) {
                 setExitOption(data.exitOption)
                 if(data.exitOption === 'playAgain') {
-                    props.playAgain(id);
+                    props.playAgain();
                 };
             }
             if(data.joinedPlayers.length > 0 && data.exitOption === 'playAgainWithSettings') {
-                props.playAgainSettings(id)
+                props.playAgainSettings()
             }
         })
         return () => {
             unsubscribe();
         };
     }, []);
+
+    const getGameId = () => {
+        const pathArray = window.location.pathname.split('/');
+        const gameId = pathArray[2];
+        props.setGameId(gameId);
+        return gameId;
+    }
 
     const getPlayersPositions = () => {
         let p = [ ...players];
@@ -94,14 +100,13 @@ const GameSummary = (props) => {
                         {showExitOptions ? <ExitOptions 
                             playAgain={props.playAgain}
                             playAgainSettings={props.playAgainSettings}
-                            exitGame={props.exitGame}
-                            gameId={gameId} /> : null}
+                            exitGame={props.exitGame} /> : null}
                         <Header />
                         <h2>{t("Game results")}</h2>
                         <ul className="results">
                             {getPlayersPositions()}
                         </ul>
-                        {admin ? <button onClick={handleExit}>{t("Exit")}</button> : null}
+                        {props.admin ? <button onClick={handleExit}>{t("Exit")}</button> : null}
                         {exitOption === 'exitGame' ? <button onClick={props.exitGame}>{t("Exit")}</button> : null}
                     
                 </div>
@@ -109,4 +114,19 @@ const GameSummary = (props) => {
         </div>
     );
 }
-export default GameSummary
+
+const mapStateToProps = (state) => {
+    return {
+      admin: state.app.admin,
+      gameId: state.app.gameId,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setAdmin: (admin) => { dispatch(setAdmin(admin)) },
+    setGameId: (gameId) => { dispatch(setGameId(gameId)) },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameSummary);

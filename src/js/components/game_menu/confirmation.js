@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 //Custom Components
 import Dropdown from '../global_components/dropdown';
@@ -31,5 +32,11 @@ const Confirmation = (props) => {
         </Dropdown>
     );
 }
- 
-export default Confirmation;
+
+const mapStateToProps = (state) => {
+    return {
+        gameId: state.app.gameId,
+    }
+}
+
+export default connect(mapStateToProps)(Confirmation);

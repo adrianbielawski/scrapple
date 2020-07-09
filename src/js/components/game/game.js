@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Trans } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import Moment from 'react-moment';//important
 import moment from 'moment';
 import '../../../styles/game.scss';
@@ -21,7 +21,6 @@ class Game extends React.Component {
     super(props);
     this.state = {
       screenHeight: window.innerHeight,
-      admin: this.props.admin,
       showWords: false,
       isAudioEnabled: false,
       currentPlayer: 0,
@@ -213,7 +212,6 @@ class Game extends React.Component {
             </div>
             <TwoLetterWords toggleShowWords={this.toggleShowWords} showWords={this.state.showWords} language={this.props.language}/>
             <Stats
-              admin={this.state.admin}
               timeOut={this.timeOut}
               addPoints={this.addPoints}
               isAudioEnabled={this.state.isAudioEnabled}
@@ -223,7 +221,7 @@ class Game extends React.Component {
               currentPlayer={currentPlayer}
               players={players} />
             {this.props.admin ? <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm">
-              <Trans>Finish the game</Trans>
+              {this.props.t("Finish the game")}
             </button> : null }
             <div style={{flex: 1000}}></div>
           </div>
@@ -236,6 +234,8 @@ class Game extends React.Component {
 const mapStateToProps = (state) => {
     return {
       gameId: state.app.gameId,
+      admin: state.app.admin,
+      showFinishedGameCover: state.app.showFinishedGameCover,
     }
 }
 
@@ -245,4 +245,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Game));

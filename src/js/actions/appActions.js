@@ -24,3 +24,55 @@ export const setInnerHeight = (height) => {
     height
   }
 }
+
+export const setScreen = (screen) => {
+  return {
+    type: 'APP/SET_SCREEN',
+    screen
+  }
+}
+
+export const setAdmin = (admin) => {
+  return {
+    type: 'APP/SET_ADMIN',
+    admin
+  }
+}
+
+export const setPlayedAgain = (playedAgain) => {
+  return {
+    type: 'APP/SET_PLAYED_AGAIN',
+    playedAgain
+  }
+}
+
+export const setPlayedAgainWithSettings = (playedAgainWithSettings) => {
+  return {
+    type: 'APP/SET_PLAYED_AGAIN_WITH_SETTINGS',
+    playedAgainWithSettings
+  }
+}
+
+export const setShowFinishedGameCover = (showFinishedGameCover) => {
+  return {
+    type: 'APP/SHOW_FINISHED_GAME_COVER',
+    showFinishedGameCover
+  }
+}
+
+export const setAlert = (alertType, messageKey, messageValue, action, props) => {
+  return {
+    type: 'APP/SET_ALERT',
+    alertType,
+    messageKey,
+    messageValue,
+    action,
+    props,
+  }
+}
+
+export const removeAlert = () => {
+  return {
+    type: 'APP/REMOVE_ALERT',
+  }
+}

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 //Redux Actions
 import { addPlayer } from '../../actions/gameMenuActions';
+import { setAlert } from '../../actions/appActions';
 
 const AddPlayer = (props) => {
     const inputEl = useRef(null);
@@ -20,18 +21,18 @@ const AddPlayer = (props) => {
         
         if(props.playersNames.length >= 4) {
             const messageKey = 'Max 4 players';
-            props.alert('alert', messageKey);
+            props.setAlert('alert', messageKey);
             return
         }
         if(isPlayerExists) {
             const messageKey = 'Player exists';
             const messageValue = {'player': player};
-            props.alert('alert', messageKey, messageValue, null);
+            props.setAlert('alert', messageKey, messageValue, null);
             return
         }
         if(player.length < 1) {
             const messageKey = "Please type in player's name";
-            props.alert('alert', messageKey);
+            props.setAlert('alert', messageKey);
             return
         }
         const input = document.getElementById('player-name');
@@ -71,6 +72,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         addPlayer: (playerName) => { dispatch(addPlayer(playerName)) },
+        setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
     }
 }
 
