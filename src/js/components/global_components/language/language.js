@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { Trans } from 'react-i18next';
+import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import languages from './languages';
+//Redux Actions
+import { changeLanguage } from '../../../actions/appActions';
 
 const Language = (props) => {
+    const { t } = useTranslation();
     const [showLanguages, setShowLanguages] = useState(false);
 
     const toggleShowLanguages = () => {
@@ -23,12 +27,12 @@ const Language = (props) => {
     return (
         <div className="choose-language" onClick={toggleShowLanguages}>
             <div className="current-lang">
-                <img src={`../src/assets/img/${languages[props.currentLanguage].flag}`}></img>
-                {props.showName && <p><Trans>Language</Trans></p>}
+                <img src={`../src/assets/img/${languages[props.language].flag}`}></img>
+                {props.showName && <p>{t("Language")}</p>}
             </div>
             <div className={`languages ${getClass()}`}>
             {Object.entries(languages).map((lang, i) => {
-                if(lang[0] === props.currentLanguage) { return }
+                if(lang[0] === props.language) { return }
                 return (
                     <div className={`language ${getClass()}`} onClick={(e) => handleLanguageChange(e)} lang={lang[1].symbol} key={i}>
                         <img src={`../src/assets/img/${lang[1].flag}`}></img>
@@ -40,4 +44,17 @@ const Language = (props) => {
         </div>
     );
 }
-export default Language;
+
+const mapStateToProps = (state) => {
+    return {
+      language: state.app.language
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeLanguage: (language) => { dispatch(changeLanguage(language)) },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Language);

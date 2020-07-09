@@ -1,9 +1,11 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 //Custom Components
 import Card from '../global_components/card';
 
 const PlayerSummary = (props) => {
+    const { t } = useTranslation();
+    
     const getImg = () => {
         let place = '';
         switch(props.place) {
@@ -30,13 +32,13 @@ const PlayerSummary = (props) => {
             <Card>
                 <div className="player-name">
                     <div className="place">
-                        <p>{<Trans>{props.placeText}</Trans>} {<Trans>place</Trans>}</p>
+                        <p>{t(props.placeText)} {t("place")}</p>
                         {img}
                     </div>
                     <p>{player.playerName}</p>
                 </div>
                 <p className="player-result">
-                    {<Trans>Total</Trans>}: {player.currentScore} {<Trans>Best score</Trans>}: {player.bestScore}
+                    {t("Total")}: {player.currentScore} {t("Best score")}: {player.bestScore}
                 </p>
             </Card>
         </li>

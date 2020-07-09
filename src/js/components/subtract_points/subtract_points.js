@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import db from '../../../firebase';
 import '../../../styles/game-summary.scss';
 //Custom Components
@@ -8,6 +8,7 @@ import Header from '../global_components/header';
 import LoadingSpinner from '../global_components/loadingSpinner';
 
 const SubtractPoints = (props) => {
+    const { t } = useTranslation();
     const [gameId, setGameId] = useState(null);
     const [players, setPlayers] = useState(null);
     const [fetching, setFetching] = useState(true);
@@ -75,11 +76,11 @@ const SubtractPoints = (props) => {
             {fetching ? <LoadingSpinner /> : (
                 <div className="game-summary">
                     <Header />
-                    <h2><Trans>Subtract points of unused letters</Trans></h2>
+                    <h2>{t("Subtract points of unused letters")}</h2>
                     <ul className="results">
                         {getPlayers()}
                     </ul>
-                    <button onClick={validateUserInputs}><Trans>Continue</Trans></button>
+                    <button onClick={validateUserInputs}>{t("Continue")}</button>
                 </div>
             )}
         </div>

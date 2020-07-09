@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
 import  i18next  from 'i18next';
 import moment from 'moment';

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import { Trans } from 'react-i18next';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 //Redux Actions
@@ -8,6 +8,7 @@ import { addPlayer } from '../../actions/gameMenuActions';
 
 const AddPlayer = (props) => {
     const inputEl = useRef(null);
+    const { t } = useTranslation();
 
     const handleAddPlayer = () => {
         const player = inputEl.current.value.trim();
@@ -50,7 +51,7 @@ const AddPlayer = (props) => {
 
     return (
         <div className="add-player">
-            <p><Trans>Add player</Trans></p>                    
+            <p>{t("Add player")}</p>                    
             <div className="form">
                 <input id="player-name" type="text" autoComplete="false" spellCheck="false" ref={inputEl}></input>
                 <button className="add" onClick={handleAddPlayer}>

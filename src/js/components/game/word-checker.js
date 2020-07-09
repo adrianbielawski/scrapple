@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import i18next from 'i18next';
+import { connect } from 'react-redux';
+import { withTranslation } from 'react-i18next';
 import '../../../styles/word-checker.scss'
 //Custom Components
 import LoadingSpinner from '../global_components/loadingSpinner'
@@ -92,7 +93,7 @@ class WordChecker extends Component {
                     onClick={this.clearInput}
                     onChange={this.handleInputChange}
                     ref="word"
-                    placeholder={i18next.t("Check your word")}
+                    placeholder={this.props.t("Check your word")}
                     spellCheck="false" />
                 <div className="resoult-img">
                     {image}
@@ -101,4 +102,10 @@ class WordChecker extends Component {
         );
     }
 }
-export default WordChecker;
+
+const mapStateToProps = (state) => {
+    return {
+      language: state.app.language,
+    }
+}
+export default connect(mapStateToProps)(withTranslation()(WordChecker));

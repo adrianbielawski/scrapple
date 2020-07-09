@@ -3,7 +3,6 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import db from '../../firebase';
 import * as firebase from 'firebase';
-import i18n from '../../i18n';
 import '../../styles/App.scss';
 //Custom Components
 import Alert from './global_components/alert';
@@ -14,15 +13,13 @@ const Game = React.lazy(() => import('./game/game'));
 const GameSummary = React.lazy(() => import('./game_summary/game-summary'));
 const SubtractPoints = React.lazy(() => import('./subtract_points/subtract_points'));
 //Redux Actions
-import { clearAppState } from '../actions/appActions';
+import { setInnerHeight, clearAppState, changeLanguage } from '../actions/appActions';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      screenHeight: window.innerHeight,
       screen: window.location.pathname.slice(1) || 'MainMenu',
-      language: 'en-GB',
       admin: false,
       playedAgain: false,
       showFinishedGameCover: false,
@@ -41,7 +38,7 @@ class App extends React.Component {
 
   setInnerHeight = () => {
     const screenHeight = window.innerHeight;
-    this.setState(state => ({ ...state, screenHeight}));
+    this.props.setInnerHeight(screenHeight);
   }
 
   setGameState = () => {
@@ -49,13 +46,6 @@ class App extends React.Component {
     const admin = localData ? JSON.parse(localData) : false;
 
     this.setState((state) => ({ ...state, admin}));
-  }
-
-  changeLanguage = (language) => {
-      const html = document.getElementsByTagName('html');
-      html[0].lang = language;
-      i18n.changeLanguage(`${language}`);
-      this.setState(state => ({ ...state, language}));
   }
 
   alert = (type, messageKey, messageValue, action, props) => {
@@ -93,14 +83,13 @@ class App extends React.Component {
     });    
   }
 
-  joinGame = () => {
-    const gameId = this.props.gameId;
+  joinGame = (gameId) => {
     db.collection('games').doc(gameId).get()
     .then((response) => {
       const data = response.data();
       
       if(this.state.language !== data.language) {
-        this.changeLanguage(data.language)
+        this.props.changeLanguage(data.language);
       }
 
       if(data.timer) {
@@ -296,7 +285,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App" style={{height: this.state.screenHeight}}>
+      <div className="App" style={{height: this.props.screenHeight}}>
         {this.state.showAlert ?
           <Alert
             removeAlert={this.removeAlert}
@@ -308,9 +297,7 @@ class App extends React.Component {
           <Route path="/MainMenu" render={() => (<MainMenu
             alert={this.alert}
             renderGameMenu={this.renderGameMenu}
-            joinGame={this.joinGame}
-            changeLanguage={this.changeLanguage}
-            currentLanguage={this.state.language}/>)} 
+            joinGame={this.joinGame}/>)} 
           />
           <Route path="/GameMenu" render={() => (
             <Suspense fallback={<LoadingSpinner />}>
@@ -318,10 +305,8 @@ class App extends React.Component {
                 alert={this.alert}
                 gameCreated={this.gameCreated}
                 startAdminGame={this.startAdminGame}
-                changeLanguage={this.changeLanguage}
                 playedAgain={this.state.playedAgain}
-                playedAgainWithSettings={this.state.playedAgainWithSettings}
-                language={this.state.language} />
+                playedAgainWithSettings={this.state.playedAgainWithSettings} />
             </Suspense>)}
           />
           <Route exact path="/Game/:gameId" render={() => (
@@ -332,8 +317,7 @@ class App extends React.Component {
                 renderGameSummary={this.renderGameSummary}
                 handleFinishGame={this.handleFinishGame}
                 admin={this.state.admin}
-                showFinishedGameCover={this.state.showFinishedGameCover}
-                language={this.state.language} />
+                showFinishedGameCover={this.state.showFinishedGameCover} />
             </Suspense>)} 
           />
           <Route exact path="/Game/:gameId/SubtractPoints" render={() => (
@@ -361,14 +345,18 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+      screenHeight: state.app.screenHeight,
       gameId: state.app.gameId,
+      language: state.app.language,
       playersNames: state.playersNames,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    setInnerHeight: (height) => { dispatch(setInnerHeight(height)) },
     clearAppState: () => { dispatch(clearAppState()) },
+    changeLanguage: (language) => { dispatch(changeLanguage(language)) },
   }
 }
 

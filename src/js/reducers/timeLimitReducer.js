@@ -8,16 +8,17 @@ const timeLimit = {
 };
 
 const timeLimitReducer = (state = timeLimit, action) => {
-  const timeLimit = { ...state };
+  let newState = { ...state };
   switch(action.type) {
     case 'GAME_MENU/TOGGLE_TIMER':
-      timeLimit.timer = !state.timer;
-      return timeLimit;
+      newState.timer = !state.timer;
+      return newState;
     case 'GAME_MENU/SET_TIME':
-      timeLimit.time = action.time;
-      return timeLimit;
+      newState.time = action.time;
+      return newState;
+    default:
+      return state;
   }
-  return state;
 }
 
 export default timeLimitReducer;

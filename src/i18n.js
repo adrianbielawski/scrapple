@@ -35,7 +35,7 @@ const resources = {
       //Game
       "Finish the game" : "Finish the game",
       "Are you sure you want to finish this game?" : "Are you sure you want to finish this game?",
-      "Game finished!" : "Game finished!",
+      "Game finished" : "Game finished",
       "Please wait until points of unused letters will be substracted" : "Please wait until points of unused letters will be substracted",
       //Game/Menu
       "Menu" : "Menu",
@@ -112,7 +112,7 @@ const resources = {
       //Game
       "Finish the game" : "Zakończ grę",
       "Are you sure you want to finish this game?" : "Jesteś pewien, że chcesz zakończyć grę?",
-      "Game finished!" : "Gra zakończona!",
+      "Game finished" : "Gra zakończona",
       "Please wait until points of unused letters will be substracted" : "Poczekaj, aż wartość pozostałych liter zostanie odjęta",
       //Game/Menu
       "Menu" : "Menu",

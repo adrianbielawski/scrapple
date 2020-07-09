@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Trans } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import db from '../../../firebase';
 import '../../../styles/game-menu.scss';
 //Custom Components
@@ -149,7 +149,7 @@ class GameMenu extends Component {
                 <Header />
                 <div className="menu">
                     <Card>
-                        <Language changeLanguage={this.props.changeLanguage} currentLanguage={this.props.language} showName={true}/>
+                        <Language showName={true}/>
                     </Card>
                     <Card>
                         <Timer />
@@ -158,7 +158,7 @@ class GameMenu extends Component {
                         <AddPlayer alert={this.props.alert} />
                         <Players />
                     </Card>
-                    <button onClick={this.validateSettings} type="submit"><Trans>{buttonText}</Trans></button>
+                    <button onClick={this.validateSettings} type="submit">{this.props.t(buttonText)}</button>
                 </div>
             </div>
         );
@@ -168,6 +168,7 @@ class GameMenu extends Component {
 const mapStateToProps = (state) => {
     return {
         gameId: state.app.gameId,
+        language: state.app.language,
         playersNames: state.playersNames,
         timer: state.timeLimit.timer,
         time: state.timeLimit.time,
@@ -180,4 +181,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(GameMenu));

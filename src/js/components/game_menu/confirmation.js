@@ -1,10 +1,12 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 //Custom Components
 import Dropdown from '../global_components/dropdown';
 import LoadingSpinner from '../global_components/loadingSpinner';
 
 const Confirmation = (props) => {
+    const { t } = useTranslation();
+
     let title = props.gameId ? 'Game created succesfully' : 'Creating new game';
     let message = 'Please wait';
     if(props.gameId) {
@@ -15,16 +17,16 @@ const Confirmation = (props) => {
     }
     return ( 
         <Dropdown className="confirmation">
-            <h2><Trans>{title}</Trans></h2>
-            {props.gameId ? <p className="game-id"><Trans>Game ID</Trans>: {props.gameId}</p> : null}
-            <p className="message"><Trans>{message}</Trans></p>
+            <h2>{t(title)}</h2>
+            {props.gameId ? <p className="game-id">{t("Game ID")}: {props.gameId}</p> : null}
+            <p className="message">{t(message)}</p>
             {!props.allPlayersJoined ? 
                 <div>
                     <LoadingSpinner />
-                    <p className="or"><Trans>or</Trans></p>
-                    <button onClick={props.handleStartAdminGame}><Trans>Start anyway</Trans></button>
+                    <p className="or">{t("or")}</p>
+                    <button onClick={props.handleStartAdminGame}>{t("Start anyway")}</button>
                 </div> :
-                <button onClick={props.handleStartAdminGame}><Trans>Start game</Trans></button>
+                <button onClick={props.handleStartAdminGame}>{t("Start game")}</button>
             }
         </Dropdown>
     );

@@ -13,6 +13,8 @@ import FinishedGameCover from './finished-game-cover';
 import LoadingSpinner from '../global_components/loadingSpinner';
 import AudioController from './audio-controller';
 import Menu from './menu/menu';
+//Redux Actions
+import { setGameId } from '../../actions/appActions';
 
 class Game extends React.Component {
   constructor(props) {
@@ -44,6 +46,8 @@ class Game extends React.Component {
   componentDidMount() {
     const pathArray = window.location.pathname.split('/');
     const gameId = pathArray[2];
+    this.props.setGameId(gameId)
+
     let isEndTimeValid = null;
 
     db.collection('games').doc(gameId).get()
@@ -235,4 +239,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(Game);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setGameId: (gameId) => { dispatch(setGameId(gameId)) },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

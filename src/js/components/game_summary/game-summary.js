@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import db from '../../../firebase';
 import '../../../styles/game-summary.scss';
 //Components
@@ -10,6 +10,7 @@ import WaitingCover from './waiting-cover';
 import LoadingSpinner from '../global_components/loadingSpinner';
 
 const GameSummary = (props) => {
+    const { t } = useTranslation();
     const [showExitOptions, setShowExitOptions] = useState(false);
     const [exitOption, setExitOption] = useState(null);
     const [admin, setAdmin] = useState(false)
@@ -96,12 +97,12 @@ const GameSummary = (props) => {
                             exitGame={props.exitGame}
                             gameId={gameId} /> : null}
                         <Header />
-                        <h2><Trans>Game results</Trans></h2>
+                        <h2>{t("Game results")}</h2>
                         <ul className="results">
                             {getPlayersPositions()}
                         </ul>
-                        {admin ? <button onClick={handleExit}><Trans>Exit</Trans></button> : null}
-                        {exitOption === 'exitGame' ? <button onClick={props.exitGame}><Trans>Exit</Trans></button> : null}
+                        {admin ? <button onClick={handleExit}>{t("Exit")}</button> : null}
+                        {exitOption === 'exitGame' ? <button onClick={props.exitGame}>{t("Exit")}</button> : null}
                     
                 </div>
             )}

@@ -1,4 +1,4 @@
-const playersNamesReducer = (state = ['aaa', 'bbb', 'ccc'], action) => {
+const playersNamesReducer = (state = ['aaa', 'bbb'], action) => {
   let playersNames = [ ...state ];
   switch(action.type) {
     case 'GAME_MENU/ADD_PLAYER':
@@ -13,10 +13,11 @@ const playersNamesReducer = (state = ['aaa', 'bbb', 'ccc'], action) => {
       playersNames.splice(action.newIndex, 0, playersNames.splice(action.index, 1)[0]);
       return playersNames;
     case 'APP/CLEAR_APP_STATE':
-      playersNames = []
+      playersNames = [];
       return playersNames;
+    default:
+      return state;
   }
-  return state;
 }
 
 

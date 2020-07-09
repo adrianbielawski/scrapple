@@ -1,9 +1,10 @@
 import React from 'react';
-import i18next from 'i18next';
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import '../../../styles/alert.scss';
 
 const Alert = (props) => {
+    const { t } = useTranslation();
+
     const handleAlertResponse = (e) => {
         const response = e.target.value;
         if(props.alert.type === 'confirm') {
@@ -25,8 +26,8 @@ const Alert = (props) => {
     if(props.alert.type === 'confirm') {
         alertButtons =
             <div className="wraper">
-                <button className="yes" value="true" onClick={handleAlertResponse}>{<Trans>Yes</Trans>}</button>
-                <button className="no" value="false" onClick={handleAlertResponse}>{<Trans>No</Trans>}</button>
+                <button className="yes" value="true" onClick={handleAlertResponse}>{t("Yes")}</button>
+                <button className="no" value="false" onClick={handleAlertResponse}>{t("No")}</button>
             </div>
     } else if(props.alert.type === 'alert') {
         alertButtons = <button className="ok" value="false" onClick={handleAlertResponse}>OK</button>
@@ -35,7 +36,7 @@ const Alert = (props) => {
     return (
         <div className="alert-cover">
             <div className="alert">
-                <p>{i18next.t(props.alert.messageKey, props.alert.messageValue)}</p>
+                <p>{t(props.alert.messageKey, props.alert.messageValue)}</p>
                 {alertButtons}
             </div>
         </div>

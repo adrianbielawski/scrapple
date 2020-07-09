@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'react-redux';
-import i18Next from 'i18next';
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import '../../../styles/main-menu.scss';
 //Custom Components
 import Header from '../global_components/header';
@@ -12,6 +11,7 @@ import Language from '../global_components/language/language';
 const MainMenu = (props) => {
     sessionStorage.clear();
     const gameIdInput = useRef(null);
+    const { t } = useTranslation();
 
     const validateUserInput = () => {
         const gameId = gameIdInput.current.value.trim();
@@ -30,13 +30,13 @@ const MainMenu = (props) => {
             {props.gameId ? <Confirmation gameId={props.gameId}/> : null}
             <Header />
             <div className="content">
-                <Language changeLanguage={props.changeLanguage} currentLanguage={props.currentLanguage} showName={false} />
+                <Language showName={false} />
                 <Card >
-                    <button onClick={() => props.renderGameMenu()}><Trans>Create new game</Trans></button>
+                    <button onClick={() => props.renderGameMenu()}>{t("Create new game")}</button>
                 </Card>
                 <Card className="join-game">
-                    <input placeholder={i18Next.t("Game ID")} ref={gameIdInput}></input>
-                    <button onClick={validateUserInput}><Trans>Join the game</Trans></button>
+                    <input placeholder={t("Game ID")} ref={gameIdInput}></input>
+                    <button onClick={validateUserInput}>{t("Join the game")}</button>
                 </Card>
             </div>
         </div>

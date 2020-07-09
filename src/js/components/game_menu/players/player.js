@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Trans } from 'react-i18next';
 import { connect } from 'react-redux';
+import { withTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 //Redux Actions
@@ -175,7 +175,7 @@ class Player extends Component {
                         onTouchEnd={this.handleDrop}
                         className="player-name"
                     >
-                        <p><Trans>Player</Trans> {this.props.index + 1}: <span> {this.props.player}</span></p>
+                        <p>{this.props.t("Player")} {this.props.index + 1}: <span> {this.props.player}</span></p>
                     </div>
                     <button onClick={this.removePlayerHandler} className="remove">
                         <FontAwesomeIcon icon={faTimes} onClick={this.handleClick}/>
@@ -199,4 +199,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Player);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Player));

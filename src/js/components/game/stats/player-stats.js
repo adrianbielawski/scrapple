@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 //Custom Components
 import RoundPoints from './round-points';
 import Card from '../../global_components/card';
 
 const PlayerStats = (props) => {
+    const { t } = useTranslation();
     const [displayAllPoints, setDisplayAllPoints] = useState(false);
 
     const toggleDisplayAllPoints = () => {
@@ -27,11 +28,11 @@ const PlayerStats = (props) => {
         <Card className={`player-stats ${props.className}`}>
             <div className="player-name"><span>{props.player.playerName}</span></div>
             <div className="wraper">
-                <div>{<Trans>Current score</Trans>} {props.player.currentScore}</div>
-                <button onClick={toggleDisplayAllPoints}>{<Trans>All points</Trans>}</button>
+                <div>{t("Current score")} {props.player.currentScore}</div>
+                <button onClick={toggleDisplayAllPoints}>{t("All points")}</button>
             </div>
             <div className="all-points" style={{maxHeight: `${allPointsStyle}px`}}>
-                <p>{<Trans>Best score</Trans>}: {props.player.bestScore}</p>
+                <p>{t("Best score")}: {props.player.bestScore}</p>
                 <ul>
                     {getRoundPoints()}
                 </ul>

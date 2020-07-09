@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 //Custom Components
 import Switch from '@material-ui/core/Switch';
 //Redux Actions
 import { toggleTimer, setTime } from '../../actions/gameMenuActions';
 
 const timer = (props) => {
+    const { t } = useTranslation();
     const inputClass = props.timer ? 'active' : null;
     const defaultTime = `${props.time.hours}:${props.time.minutes}:${props.time.seconds}`;
 
@@ -26,7 +27,7 @@ const timer = (props) => {
         <div>
             <div className="time-option">
                 <Switch onClick={props.toggleTimer} checked={props.timer}></Switch>
-                <p><Trans>Player's time limit</Trans></p>
+                <p>{t("Player's time limit")}</p>
             </div>
             <input type="time" className={inputClass} onChange={timeChangeHandler} defaultValue={defaultTime} step="1"></input>
         </div>

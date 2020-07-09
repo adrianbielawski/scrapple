@@ -1,10 +1,12 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 //Custom Components
 import Dropdown from '../global_components/dropdown';
 import LoadingSpinner from '../global_components/loadingSpinner';
 
 const WaitingCover = (props) => {
+    const { t } = useTranslation();
+
     let title = 'Game continues!';
     let message = 'Please wait until settings will be changed';
     if(props.exitOption === 'playAgain') {
@@ -12,8 +14,8 @@ const WaitingCover = (props) => {
     }
     return ( 
         <Dropdown className="confirmation">
-            <h2><Trans>{title}</Trans></h2>
-            <p className="message"><Trans>{message}</Trans></p>
+            <h2>{t(title)}</h2>
+            <p className="message">{t(message)}</p>
             <LoadingSpinner />        
         </Dropdown>
     );
