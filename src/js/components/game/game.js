@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Trans } from 'react-i18next';
 import Moment from 'react-moment';//important
 import moment from 'moment';
@@ -202,8 +203,8 @@ class Game extends React.Component {
           <div className={`game ${gameClass}`}>
             {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
             <div className="top-wrapper">
-              <Menu gameId={this.props.gameId}/>
-              <WordChecker language={this.props.language} gameId={this.props.gameId} />
+              <Menu />
+              <WordChecker language={this.props.language} />
               <AudioController toggleAudio={this.toggleAudio} isAudioEnabled={this.state.isAudioEnabled} />
             </div>
             <TwoLetterWords toggleShowWords={this.toggleShowWords} showWords={this.state.showWords} language={this.props.language}/>
@@ -227,4 +228,11 @@ class Game extends React.Component {
     );
   }
 }
-export default Game
+
+const mapStateToProps = (state) => {
+    return {
+      gameId: state.app.gameId,
+    }
+}
+
+export default connect(mapStateToProps)(Game);

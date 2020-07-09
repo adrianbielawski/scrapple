@@ -10,10 +10,10 @@ const timeLimit = {
 const timeLimitReducer = (state = timeLimit, action) => {
   const timeLimit = { ...state };
   switch(action.type) {
-    case 'TOGGLE_TIMER':
+    case 'GAME_MENU/TOGGLE_TIMER':
       timeLimit.timer = !state.timer;
       return timeLimit;
-    case 'SET_TIME':
+    case 'GAME_MENU/SET_TIME':
       timeLimit.time = action.time;
       return timeLimit;
   }

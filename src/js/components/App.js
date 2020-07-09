@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import db from '../../firebase';
 import * as firebase from 'firebase';
 import i18n from '../../i18n';
@@ -12,6 +13,8 @@ const GameMenu = React.lazy(() => import('./game_menu/game-menu'));
 const Game = React.lazy(() => import('./game/game'));
 const GameSummary = React.lazy(() => import('./game_summary/game-summary'));
 const SubtractPoints = React.lazy(() => import('./subtract_points/subtract_points'));
+//Redux Actions
+import { clearAppState } from '../actions/appActions';
 
 class App extends React.Component {
   constructor(props) {
@@ -20,8 +23,6 @@ class App extends React.Component {
       screenHeight: window.innerHeight,
       screen: window.location.pathname.slice(1) || 'MainMenu',
       language: 'en-GB',
-      playersNames: [],
-      gameId: null,
       admin: false,
       playedAgain: false,
       showFinishedGameCover: false,
@@ -43,14 +44,11 @@ class App extends React.Component {
     this.setState(state => ({ ...state, screenHeight}));
   }
 
-  setGameState = (gameId, players) => {
-    const playersNames = players.map(player => {
-      return player.playerName;
-    });
+  setGameState = () => {
     let localData = sessionStorage.getItem('admin');
     const admin = localData ? JSON.parse(localData) : false;
 
-    this.setState((state) => ({ ...state, gameId, admin, playersNames}));
+    this.setState((state) => ({ ...state, admin}));
   }
 
   changeLanguage = (language) => {
@@ -68,34 +66,35 @@ class App extends React.Component {
     this.setState(state => ({ ...state, showAlert: false, alert: {type: '', action: '', messageKey: '', messageValue: ''}}));
   }
   
-  renderGameSummary = (gameId) => {
-    this.setState(state => ({ ...state, screen: `Game/${gameId}/GameSummary` }));
+  renderGameSummary = () => {
+    this.setState(state => ({ ...state, screen: `Game/${this.props.gameId}/GameSummary` }));
   }
 
   renderGameMenu = () => {
     this.setState(state => ({ ...state, screen: 'GameMenu' }));
   }
 
-  gameCreated = (gameId, timer) => {
+  gameCreated = (timer) => {
     sessionStorage.setItem('admin', JSON.stringify(true));
     if(timer) {
-      this.setState(state => ({ ...state, admin: true, gameId }));
+      this.setState(state => ({ ...state, admin: true}));
     } else {
-      this.setState(state => ({ ...state, admin: true, gameId, screen: `Game/${gameId}` }));
+      this.setState(state => ({ ...state, admin: true, screen: `Game/${this.props.gameId}` }));
     }
   }
 
   startAdminGame = () => {
-    db.collection('games').doc(this.state.gameId).update({gameStarted: true})
+    db.collection('games').doc(this.props.gameId).update({gameStarted: true})
     .then(() => {
-      this.setState(state => ({ ...state, screen: `Game/${this.state.gameId}`}));
+      this.setState(state => ({ ...state, screen: `Game/${this.props.gameId}`}));
     })
     .catch(() => {
       this.alert('alert', messageKey);
     });    
   }
 
-  joinGame = (gameId) => {
+  joinGame = () => {
+    const gameId = this.props.gameId;
     db.collection('games').doc(gameId).get()
     .then((response) => {
       const data = response.data();
@@ -131,20 +130,20 @@ class App extends React.Component {
     });
   }
 
-  startJoinedPlayerGame = (timer, gameId) => {
+  startJoinedPlayerGame = (timer) => {
     if(timer) {
       this.unsubscribe();
     }
     this.setState(state => ({
       ...state,
       admin: false,
-      gameId,
       showFinishedGameCover: false,
-      screen: `Game/${gameId}`,
+      screen: `Game/${this.props.gameId}`,
     }));
   }
 
-  handleFinishGame = (gameId) => {
+  handleFinishGame = () => {
+    const gameId = this.props.gameId;
     db.collection('games').doc(gameId).get()
     .then(response => {
       const data = response.data();
@@ -168,7 +167,8 @@ class App extends React.Component {
     });
   }
 
-  playAgainSettings = (gameId) => {
+  playAgainSettings = () => {
+    const gameId = this.props.gameId;
     sessionStorage.setItem('gameStarted', JSON.stringify(false));
     const localData = sessionStorage.getItem('admin');
     const isAdmin = JSON.parse(localData);
@@ -187,7 +187,6 @@ class App extends React.Component {
         this.setState(state => ({
           ...state,
           screen: 'GameMenu',
-          gameId,
           showFinishedGameCover: false,
           playedAgainWithSettings: true,
         }));
@@ -212,22 +211,20 @@ class App extends React.Component {
     };
   }
 
-  playAgain = (gameId) => {
+  playAgain = () => {
+    const gameId = this.props.gameId;
     sessionStorage.setItem('gameStarted', JSON.stringify(false));
     const localData = sessionStorage.getItem('admin');
     const isAdmin = JSON.parse(localData);
     if(isAdmin) {
       let timer = false;
-      let playersNames = [];
       let players = [];
+      console.log(players)
       db.collection('games').doc(gameId).get()
       .then(response => {
         const data = response.data();
         timer = data.timer;
-        playersNames = data.players.map(player => {
-          return player.playerName
-        });
-        players = this.getPlayers(playersNames);
+        players = this.getPlayers();
       })
       .then(() => {
         db.collection('games').doc(gameId).update({
@@ -243,7 +240,6 @@ class App extends React.Component {
         .then(() => {
           this.setState(state => ({
             ...state,
-            gameId,
             admin: isAdmin,
             screen: timer ? 'GameMenu' : `Game/${gameId}`,
             showFinishedGameCover: false,
@@ -264,8 +260,8 @@ class App extends React.Component {
     };
   }
   
-  getPlayers = (playersNames) => {
-    let players = [...playersNames];
+  getPlayers = () => {
+    let players = [...this.props.playersNames];
     players = players.map((player, index) => {
       return {
         playerName: player,
@@ -279,18 +275,18 @@ class App extends React.Component {
     return players
   }
 
-  exitGame = (gameId) => {
+  exitGame = () => {
     if(this.state.admin) {
-      db.collection('games').doc(gameId).set({
+      db.collection('games').doc(this.props.gameId).set({
         exitOption: 'exitGame',
       });
     }
 
+    this.props.clearAppState();
+
     this.setState(state => ({
       ...state,
       screen: 'MainMenu',
-      playersNames: [],
-      gameId: null,
       admin: false,
       playedAgain: false,
       showFinishedGameCover: false,
@@ -314,8 +310,7 @@ class App extends React.Component {
             renderGameMenu={this.renderGameMenu}
             joinGame={this.joinGame}
             changeLanguage={this.changeLanguage}
-            currentLanguage={this.state.language}
-            gameId={this.state.gameId}/>)} 
+            currentLanguage={this.state.language}/>)} 
           />
           <Route path="/GameMenu" render={() => (
             <Suspense fallback={<LoadingSpinner />}>
@@ -324,7 +319,6 @@ class App extends React.Component {
                 gameCreated={this.gameCreated}
                 startAdminGame={this.startAdminGame}
                 changeLanguage={this.changeLanguage}
-                gameId={this.state.gameId}
                 playedAgain={this.state.playedAgain}
                 playedAgainWithSettings={this.state.playedAgainWithSettings}
                 language={this.state.language} />
@@ -337,7 +331,6 @@ class App extends React.Component {
                 setGameState={this.setGameState}
                 renderGameSummary={this.renderGameSummary}
                 handleFinishGame={this.handleFinishGame}
-                gameId={this.state.gameId} 
                 admin={this.state.admin}
                 showFinishedGameCover={this.state.showFinishedGameCover}
                 language={this.state.language} />
@@ -365,4 +358,18 @@ class App extends React.Component {
     );
   }
 }
-export default App
+
+const mapStateToProps = (state) => {
+    return {
+      gameId: state.app.gameId,
+      playersNames: state.playersNames,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearAppState: () => { dispatch(clearAppState()) },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Trans } from 'react-i18next';
 import db from '../../../firebase';
-import { connect } from 'react-redux';
 import '../../../styles/game-menu.scss';
 //Custom Components
 import Players from './players/players';
@@ -11,18 +11,19 @@ import AddPlayer from './add-player';
 import Header from '../global_components/header';
 import Confirmation from './confirmation';
 import Card from '../global_components/card';
+//Redux Actions
+import { setGameId } from '../../actions/appActions';
 
 class GameMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            gameId: this.props.gameId,
             listSpace: null,
             caughtElement: null,
             showConfirmation: this.props.playedAgain && !this.props.playedAgainWithSettings ? true : false,
             allPlayersJoined: false
         };
-        this.listenServerChanges = this.props.playedAgain ? this.serverChangeListener(this.props.gameId) : null
+        this.listenServerChanges = this.props.playedAgain ? this.serverChangeListener() : null
     }
   
     componentWillUnmount() {
@@ -31,8 +32,8 @@ class GameMenu extends Component {
         }
     }
 
-    serverChangeListener = (gameId) => {
-        this.unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
+    serverChangeListener = () => {
+        this.unsubscribe = db.collection('games').doc(this.props.gameId).onSnapshot(doc => {
             const data = doc.data();
             if(data.joinedPlayers.length >= this.props.playersNames.length) {
                 this.setState(state => ({ ...state, allPlayersJoined: true }));
@@ -40,10 +41,37 @@ class GameMenu extends Component {
         });
     }
 
+    validateSettings = (e) => {
+        e.preventDefault();
+        if(this.props.playersNames.length < 2) {
+            const messageKey = 'Please add at least 2 players';
+            this.props.alert('alert', messageKey)
+            return 
+        }
+
+        // if(this.props.timer) {
+        //     const time = this.props.time;
+        //     if(time.hours == 0 && time.minutes == 0) {
+        //         const messageKey = "Minimum player's time limit is 1 min";
+        //         this.props.alert('alert', messageKey)
+        //         return
+        //     }
+        // }
+        this.handleCreateNewGame();
+        
+        this.setState(state => ({ ...state, showConfirmation: !state.showConfirmation}))
+    }
+
     handleCreateNewGame = () => {
-        const gameId = this.state.gameId ? this.state.gameId : Math.floor(Math.random() * 1000000).toString();
+        const gameId = this.props.gameId ? this.props.gameId : this.setGameId();
         const players = this.getPlayers();
         this.createNewGame(players, gameId);
+    }
+
+    setGameId = () => {
+        const gameId = Math.floor(Math.random() * 1000000).toString();
+        this.props.setGameId(gameId);
+        return gameId
     }
   
     getPlayers = () => {
@@ -80,11 +108,10 @@ class GameMenu extends Component {
           endTime: null,
         }
       }
-  
+      
       db.collection('games').doc(gameId).set(game)
         .then(() => {
             const newState = {
-                gameId,
                 showConfirmation: true,
                 exitOption: false,
                 playedAgainWithSettings: false
@@ -93,10 +120,10 @@ class GameMenu extends Component {
             this.setState(state => ({ ...state, ...newState}));
             
             if(this.props.timer) {
-                this.serverChangeListener(gameId);
+                this.serverChangeListener();
             }
 
-            this.props.gameCreated(gameId, this.props.timer);
+            this.props.gameCreated(this.props.timer);
         })
         .catch((error) => {
             console.log(error)
@@ -107,27 +134,6 @@ class GameMenu extends Component {
         this.props.startAdminGame();
     }
 
-    validateSettings = (e) => {
-        e.preventDefault();
-        if(this.props.playersNames.length < 2) {
-            const messageKey = 'Please add at least 2 players';
-            this.props.alert('alert', messageKey)
-            return 
-        }
-
-        if(this.props.timer) {
-            const time = this.props.time;
-            if(time.hours == 0 && time.minutes == 0) {
-                const messageKey = "Minimum player's time limit is 1 min";
-                this.props.alert('alert', messageKey)
-                return
-            }
-        }
-        this.handleCreateNewGame();
-        
-        this.setState(state => ({ ...state, showConfirmation: !state.showConfirmation}))
-    }
-
     render() {
         const buttonText = this.props.playedAgainWithSettings ? 'Play again' : 'Create game';
         
@@ -135,7 +141,7 @@ class GameMenu extends Component {
             <div className="game-menu">
                 {this.state.showConfirmation ? 
                     <Confirmation 
-                        gameId={this.state.gameId} 
+                        gameId={this.props.gameId} 
                         handleStartAdminGame={this.handleStartAdminGame} 
                         allPlayersJoined={this.state.allPlayersJoined}
                     /> : null
@@ -161,10 +167,17 @@ class GameMenu extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        gameId: state.app.gameId,
         playersNames: state.playersNames,
         timer: state.timeLimit.timer,
         time: state.timeLimit.time,
     }
 }
 
-export default connect(mapStateToProps)(GameMenu);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setGameId: (gameId) => { dispatch(setGameId(gameId)) },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameMenu);

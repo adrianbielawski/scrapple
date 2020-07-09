@@ -1,6 +1,6 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
 import { connect } from 'react-redux'
+import { Trans } from 'react-i18next';
 //Custom Components
 import Switch from '@material-ui/core/Switch';
 //Redux Actions

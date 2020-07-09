@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 //Custom Components
 import MenuContent from './menu-content';
 import MenuHeader from './menu-header';
@@ -25,5 +26,11 @@ const Menu = (props) => {
         </div>
     );
 }
- 
-export default Menu;
+
+const mapStateToProps = (state) => {
+    return {
+      gameId: state.app.gameId,
+    }
+}
+
+export default connect(mapStateToProps)(Menu);

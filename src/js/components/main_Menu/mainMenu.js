@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
+import { connect } from 'react-redux';
 import i18Next from 'i18next';
 import { Trans } from 'react-i18next';
-import '../../../styles/main-menu.scss'
+import '../../../styles/main-menu.scss';
 //Custom Components
 import Header from '../global_components/header';
 import Confirmation from './confirmation';
@@ -41,4 +42,11 @@ const MainMenu = (props) => {
         </div>
      );
 }
-export default MainMenu
+
+const mapStateToProps = (state) => {
+    return {
+      gameId: state.app.gameId,
+    }
+}
+
+export default connect(mapStateToProps)(MainMenu);

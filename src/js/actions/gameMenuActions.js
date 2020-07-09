@@ -1,20 +1,20 @@
 export const addPlayer = (playerName) => {
   return {
-    type: 'ADD_PLAYER',
+    type: 'GAME_MENU/ADD_PLAYER',
     playerName
   }
 }
 
 export const removePlayer = (playerId) => {
   return {
-    type: 'REMOVE_PLAYER',
+    type: 'GAME_MENU/REMOVE_PLAYER',
     playerId
   }
 }
 
 export const reorderPlayers = (index, newIndex) => {
   return {
-    type: 'REORDER_PLAYERS',
+    type: 'GAME_MENU/REORDER_PLAYERS',
     index,
     newIndex
   }
@@ -22,13 +22,13 @@ export const reorderPlayers = (index, newIndex) => {
 
 export const toggleTimer = () => {
   return {
-    type: 'TOGGLE_TIMER'
+    type: 'GAME_MENU/TOGGLE_TIMER'
   }
 }
 
 export const setTime = (time) => {
   return {
-    type: 'SET_TIME',
+    type: 'GAME_MENU/SET_TIME',
     time
   }
 }
