@@ -13,18 +13,19 @@ const Game = React.lazy(() => import('./game/game'));
 const GameSummary = React.lazy(() => import('./game_summary/game-summary'));
 const SubtractPoints = React.lazy(() => import('./subtract_points/subtract_points'));
 //Redux Actions
-import { setInnerHeight, clearAppState, changeLanguage, setGameId, setScreen, setAdmin,
+import { setScreenHeight, clearAppState, changeLanguage, setGameId, setScreen, setAdmin,
   setPlayedAgain, setPlayedAgainWithSettings, setShowFinishedGameCover, setAlert, removeAlert } from '../actions/appActions';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
+    this.changeInnerHeight = window.addEventListener('resize', this.setScreenHeight);
   }
 
-  setInnerHeight = () => {
+  setScreenHeight = () => {
     const screenHeight = window.innerHeight;
-    this.props.setInnerHeight(screenHeight);
+    console.log(screenHeight)
+    this.props.setScreenHeight(screenHeight);
   }
 
   setGameState = () => {
@@ -102,9 +103,9 @@ class App extends React.Component {
     if(timer) {
       this.unsubscribe();
     }
-    this.props.setScreen(`Game/${this.props.gameId}`);
     this.props.setAdmin(false);
     this.props.setShowFinishedGameCover(false);
+    this.props.setScreen(`Game/${this.props.gameId}`);
   }
 
   handleFinishGame = () => {
@@ -115,13 +116,13 @@ class App extends React.Component {
           gameFinished: true,
           exitOption: null,
         });
-        this.props.setScreen(`Game/${gameId}/SubtractPoints`);
         this.props.setPlayedAgain(false);
         this.props.setPlayedAgainWithSettings(false);
-        this.props.clearAlert();
+        this.props.setScreen(`Game/${gameId}/SubtractPoints`);
+        this.props.removeAlert();
       } else {
         this.props.setShowFinishedGameCover(true);
-        this.props.clearAlert();
+        this.props.removeAlert();
       }
   }
 
@@ -246,7 +247,6 @@ class App extends React.Component {
           <Route exact path="/Game/:gameId" render={() => (
             <Suspense fallback={<LoadingSpinner />}>
               <Game
-                alert={this.alert}
                 setGameState={this.setGameState}
                 renderGameSummary={this.renderGameSummary}
                 handleFinishGame={this.handleFinishGame} />
@@ -255,8 +255,7 @@ class App extends React.Component {
           <Route exact path="/Game/:gameId/SubtractPoints" render={() => (
             <Suspense fallback={<LoadingSpinner />}>
               <SubtractPoints
-                renderGameSummary={this.renderGameSummary}
-                alert={this.alert} />
+                renderGameSummary={this.renderGameSummary} />
             </Suspense>)}
           />
           <Route exact path="/Game/:gameId/GameSummary" render={() => (
@@ -291,7 +290,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setInnerHeight: (height) => { dispatch(setInnerHeight(height)) },
+    setScreenHeight: (height) => { dispatch(setScreenHeight(height)) },
     clearAppState: () => { dispatch(clearAppState()) },
     changeLanguage: (language) => { dispatch(changeLanguage(language)) },
     setScreen: (screen) => { dispatch(setScreen(screen)) },

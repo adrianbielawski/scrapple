@@ -18,9 +18,9 @@ export const changeLanguage = (language) => {
   }
 }
 
-export const setInnerHeight = (height) => {
+export const setScreenHeight = (height) => {
   return {
-    type: 'APP/SET_INNER_HEIGHT',
+    type: 'APP/SET_SCREEN_HEIGHT',
     height
   }
 }

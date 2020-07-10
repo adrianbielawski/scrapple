@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import db from '../../../firebase';
 import '../../../styles/game-menu.scss';
 //Custom Components
@@ -13,69 +13,68 @@ import Confirmation from './confirmation';
 import Card from '../global_components/card';
 //Redux Actions
 import { setGameId, setAlert } from '../../actions/appActions';
+import { setAllPlayersJoined, setShowConfirmation } from '../../actions/gameMenuActions';
 
-class GameMenu extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            listSpace: null,
-            caughtElement: null,
-            showConfirmation: this.props.playedAgain && !this.props.playedAgainWithSettings ? true : false,
-            allPlayersJoined: false
-        };
-        this.listenServerChanges = this.props.playedAgain ? this.serverChangeListener() : null
-    }
+const GameMenu = (props) => {
+    const { t } = useTranslation();
   
-    componentWillUnmount() {
-        if(this.props.timer) {
-            this.unsubscribe();
+    useEffect(() => {
+        props.playedAgain && !props.playedAgainWithSettings ? props.setShowConfirmation(true) : null;
+        if(props.timer && props.playAgain) {
+            unsubscribe(gameId)
+        }        
+        
+        return () => {
+            props.setShowConfirmation(false);
+            if(props.playAgain) {
+                unsubscribe()
+            }
         }
-    }
+    }, []);
 
-    serverChangeListener = () => {
-        this.unsubscribe = db.collection('games').doc(this.props.gameId).onSnapshot(doc => {
+    const unsubscribe = (gameId) => {
+         db.collection('games').doc(gameId).onSnapshot(doc => {
             const data = doc.data();
-            if(data.joinedPlayers.length >= this.props.playersNames.length) {
-                this.setState(state => ({ ...state, allPlayersJoined: true }));
+            if(data.joinedPlayers.length >= props.playersNames.length) {
+                props.setAllPlayersJoined(true);
             };
         });
     }
 
-    validateSettings = (e) => {
+    const validateSettings = (e) => {
         e.preventDefault();
-        if(this.props.playersNames.length < 2) {
+        if(props.playersNames.length < 2) {
             const messageKey = 'Please add at least 2 players';
-            this.props.setAlert('alert', messageKey)
+            props.setAlert('alert', messageKey)
             return 
         }
 
-        // if(this.props.timer) {
-        //     const time = this.props.time;
+        // if(props.timer) {
+        //     const time = props.time;
         //     if(time.hours == 0 && time.minutes == 0) {
         //         const messageKey = "Minimum player's time limit is 1 min";
-        //         this.props.setAlert('alert', messageKey)
+        //         props.setAlert('alert', messageKey)
         //         return
         //     }
         // }
-        this.handleCreateNewGame();
-        
-        this.setState(state => ({ ...state, showConfirmation: !state.showConfirmation}))
+        handleCreateNewGame();
+        props.setShowConfirmation(!props.showConfirmation)
     }
 
-    handleCreateNewGame = () => {
-        const gameId = this.props.gameId ? this.props.gameId : this.setGameId();
-        const players = this.getPlayers();
-        this.createNewGame(players, gameId);
+    const handleCreateNewGame = () => {
+        const gameId = props.gameId ? props.gameId : setGameId();
+        const players = getPlayers();
+        createNewGame(players, gameId);
     }
 
-    setGameId = () => {
+    const setGameId = () => {
         const gameId = Math.floor(Math.random() * 1000000).toString();
-        this.props.setGameId(gameId);
+        props.setGameId(gameId);
         return gameId
     }
   
-    getPlayers = () => {
-      let players = [ ...this.props.playersNames];
+    const getPlayers = () => {
+      let players = [ ...props.playersNames];
       players = players.map((player, index) => {
         return {
           playerName: player,
@@ -89,78 +88,70 @@ class GameMenu extends Component {
       return players
     }
 
-    createNewGame = (players, gameId) => {
+    const createNewGame = (players, gameId) => {
       let game = {
-        language: this.props.language,
+        language: props.language,
         players,
         currentPlayer: 0,
         gameStarted: true,
         joinedPlayers: [1],
-        exitOption: this.props.playedAgainWithSettings ? 'playAgainWithSettings' : null
+        exitOption: props.playedAgainWithSettings ? 'playAgainWithSettings' : null
       }
   
-      if(this.props.timer) {
+      if(props.timer) {
         game = {
           ...game,
           gameStarted: false,
-          timer: this.props.timer,
-          time: this.props.time,
+          timer: props.timer,
+          time: props.time,
           endTime: null,
         }
       }
       
       db.collection('games').doc(gameId).set(game)
         .then(() => {
-            const newState = {
-                showConfirmation: true,
-                exitOption: false,
-            }
-
-            this.setState(state => ({ ...state, ...newState}));
+            props.setShowConfirmation(true)
             
-            if(this.props.timer) {
-                this.serverChangeListener();
+            if(props.timer) {
+                unsubscribe(gameId)
             }
 
-            this.props.gameCreated(this.props.timer);
+            props.gameCreated(props.timer);
         })
         .catch((error) => {
             console.log(error)
         });
     }
 
-    handleStartAdminGame = () => {
-        this.props.startAdminGame();
+    const handleStartAdminGame = () => {
+        props.startAdminGame();
     }
 
-    render() {
-        const buttonText = this.props.playedAgainWithSettings ? 'Play again' : 'Create game';
-        
-        return (
-            <div className="game-menu">
-                {this.state.showConfirmation ? 
-                    <Confirmation
-                        handleStartAdminGame={this.handleStartAdminGame} 
-                        allPlayersJoined={this.state.allPlayersJoined}
-                    /> : null
-                }
-                <Header />
-                <div className="menu">
-                    <Card>
-                        <Language showName={true}/>
-                    </Card>
-                    <Card>
-                        <Timer />
-                    </Card>
-                    <Card>
-                        <AddPlayer />
-                        <Players />
-                    </Card>
-                    <button onClick={this.validateSettings} type="submit">{this.props.t(buttonText)}</button>
-                </div>
+    const buttonText =  props.playedAgainWithSettings ? 'Play again' : 'Create game';
+    
+    return (
+        <div className="game-menu">
+            {props.showConfirmation ? 
+                <Confirmation
+                    handleStartAdminGame={handleStartAdminGame}
+                /> : null
+            }
+            <Header />
+            <div className="menu">
+                <Card>
+                    <Language showName={true}/>
+                </Card>
+                <Card>
+                    <Timer />
+                </Card>
+                <Card>
+                    <AddPlayer />
+                    <Players />
+                </Card>
+                <button onClick={validateSettings} type="submit">{t(buttonText)}</button>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 const mapStateToProps = (state) => {
@@ -172,6 +163,7 @@ const mapStateToProps = (state) => {
         time: state.timeLimit.time,
         playedAgain: state.app.playedAgain,
         playedAgainWithSettings: state.app.playedAgainWithSettings,
+        showConfirmation: state.gameMenu.showConfirmation,
     }
 }
 
@@ -179,7 +171,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setGameId: (gameId) => { dispatch(setGameId(gameId)) },
         setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
+        setAllPlayersJoined: (allPlayersJoined) => { dispatch(setAllPlayersJoined(allPlayersJoined)) },
+        setShowConfirmation: (showConfirmation) => { dispatch(setShowConfirmation(showConfirmation)) },
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(GameMenu));
+export default connect(mapStateToProps, mapDispatchToProps)(GameMenu);

@@ -14,7 +14,7 @@ import LoadingSpinner from '../global_components/loadingSpinner';
 import AudioController from './audio-controller';
 import Menu from './menu/menu';
 //Redux Actions
-import { setGameId } from '../../actions/appActions';
+import { setGameId, setAlert } from '../../actions/appActions';
 
 class Game extends React.Component {
   constructor(props) {
@@ -40,6 +40,10 @@ class Game extends React.Component {
       };
     }
     return null;
+  }
+
+  componentWillUnmount(){
+      this.unsubscribe();
   }
 
   componentDidMount() {
@@ -89,12 +93,8 @@ class Game extends React.Component {
       }
     })
     .catch(() => {
-      this.props.alert('alert', 'Something went wrong, please check your internet connection and try again');
+      this.props.setAlert('alert', 'Something went wrong, please check your internet connection and try again');
     });
-  }
-
-  componentWillUnmount(){
-      this.unsubscribe();
   }
 
   checkEndTime = (data, gameId) => {
@@ -179,7 +179,7 @@ class Game extends React.Component {
       currentPlayer: currentPlayer,
       endTime: endTime
     }).catch(() => {
-      this.alert('alert', 'Something went wrong, please check your internet connection and try again');
+      this.setAlert('alert', 'Something went wrong, please check your internet connection and try again');
     });;
   }
 
@@ -188,7 +188,7 @@ class Game extends React.Component {
     const action = e.target.id;
     const type = e.target.value;
     const messageKey = 'Are you sure you want to finish this game?';
-    this.props.alert(type, messageKey, null, action, this.props.gameId)
+    this.props.setAlert(type, messageKey, null, action, this.props.gameId)
   }
 
   toggleShowWords = () => {
@@ -242,6 +242,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setGameId: (gameId) => { dispatch(setGameId(gameId)) },
+    setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
   }
 }
 

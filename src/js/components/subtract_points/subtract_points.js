@@ -8,7 +8,7 @@ import PlayerSubPoints from '../subtract_points/player-subtract-points';
 import Header from '../global_components/header';
 import LoadingSpinner from '../global_components/loadingSpinner';
 //Redux Actions
-import { setGameId } from '../../actions/appActions';
+import { setGameId, setAlert } from '../../actions/appActions';
 
 const SubtractPoints = (props) => {
     const { t } = useTranslation();
@@ -26,7 +26,7 @@ const SubtractPoints = (props) => {
             setFetching(false)
         })
         .catch(() => {
-            this.alert('alert', 'Something went wrong, please check your internet connection and try again');
+            this.setAlert('alert', 'Something went wrong, please check your internet connection and try again');
         });;
     }, []);
 
@@ -45,7 +45,7 @@ const SubtractPoints = (props) => {
                 inputVal = 0
             }
             if (inputVal < 0 || !Number.isInteger(inputVal)) {
-                props.alert('alert', 'Points value must be positive integer');
+                props.setAlert('alert', 'Points value must be positive integer');
                 return
             };
         };
@@ -102,6 +102,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setGameId: (gameId) => { dispatch(setGameId(gameId)) },
+        setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
     }
 }
 

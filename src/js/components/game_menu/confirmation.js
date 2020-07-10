@@ -36,6 +36,7 @@ const Confirmation = (props) => {
 const mapStateToProps = (state) => {
     return {
         gameId: state.app.gameId,
+        allPlayersJoined: state.gameMenu.allPlayersJoined,
     }
 }
 

@@ -4,13 +4,12 @@ import { withTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 //Redux Actions
-import { removePlayer } from '../../../actions/gameMenuActions';
+import { removePlayer, reorderPlayers, setGrabbedElement, setIsTransitionEnabled, setInitialListSpace, setListSpace, setTouches } from '../../../actions/gameMenuActions';
 
 class Player extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            index: this.props.index,
             isGrabbed: false,
             isTouchDevice: false,
             top: 0,
@@ -18,8 +17,6 @@ class Player extends Component {
             startX: 0,
             elementH: 0,
             distance: 0,
-            topSpace: this.props.topSpace,
-            bottomSpace: this.props.bottomSpace
         }
     }
 
@@ -30,13 +27,13 @@ class Player extends Component {
 
     handleGrab = (e) => {
         if(e.type === 'touchstart') {
-            if(this.props.isOtherGrabbed) {
-                this.props.setTouches(1);
+            if(this.props.touches > 0 && this.props.index !== this.props.grabbedElement) {
+                this.props.setTouches(this.props.touches + 1)
                 return
             }
             this.setState(state => ({ ...state, isTouchDevice: true}));
         };
-        this.props.setGrabbedElement(this.state.index, e.type);
+        this.setGrabbedElement(this.props.index, e.type);
         
         const parent = document.getElementsByClassName('players')[0];
         const parentD = parent.getBoundingClientRect();
@@ -63,8 +60,16 @@ class Player extends Component {
         }
     }
 
+    setGrabbedElement = (index, eType) => {
+        eType === 'touchstart' && this.props.setTouches(this.props.touches + 1);
+        this.props.setInitialListSpace(index -1);
+        this.props.setListSpace(index -1);
+        this.props.setGrabbedElement(index);
+        
+    }
+
     move = (e, startX, startY, topStart) => {
-        this.props.setTransition(true);
+        this.props.setIsTransitionEnabled(true);
         let x = e.clientX;
         let y = e.clientY;
         if(e.type == 'touchmove') {
@@ -79,14 +84,28 @@ class Player extends Component {
             distance = 0;
         };
         if(distance !== this.state.distance) {
-            this.props.addSpace(distance);
+            this.addSpace(distance);
         };
         this.setState(state => ({ ...state, top, left, startX, distance}));
     }
 
+    addSpace = (distance) => {
+        let listSpace = this.props.initialListSpace + distance;
+        if(this.props.grabbedElement <= listSpace) {
+            listSpace +=1;
+        };
+        if(listSpace >= this.props.playersNames.length) {
+            listSpace = this.props.playersNames.length -1;
+        };
+        if(this.props.grabbedElement === this.props.playersNames.length -1 && listSpace >= this.props.playersNames.length -2) {
+            listSpace = this.props.playersNames.length -2;
+        };
+        this.props.setListSpace(listSpace);
+    }
+
     handleDrop = (e) => {
-        this.props.setTransition(false);
-        if(this.props.isOtherGrabbed) {
+        this.props.setIsTransitionEnabled(false);
+        if(this.props.touches > 0 && this.props.index !== this.props.grabbedElement) {
             this.props.setTouches(-1)
             return
         };
@@ -97,10 +116,30 @@ class Player extends Component {
         let parent = document.getElementsByClassName('players')[0];
         parent.style.height = `auto`;
         
-        this.props.addSpace(0);
+        this.addSpace(0);
         const event = e.type;
-        this.props.drop(this.state.index, this.state.distance, event);
+        this.drop(event);
         this.setState(state => ({ ...state, isGrabbed: false, top: 0, left: 0, distance: 0, startX: 0}));
+    }
+
+    drop = (eType) => {
+        let players = [ ...this.props.playersNames];
+        let newIndex = this.props.index + this.state.distance
+        if(newIndex < 1) {
+            newIndex = 0;
+        } else if(newIndex >= players.length) {
+            newIndex = players.length -1;
+        }
+        let touches = 0;
+        if (eType === 'touchend') {
+            touches = this.props.touches - 1;
+        }
+        
+        this.props.reorderPlayers(this.props.index, newIndex);
+        this.props.setInitialListSpace(null);
+        this.props.setListSpace(null);
+        this.props.setGrabbedElement(null);
+        this.props.setTouches(touches);
     }
 
     removePlayerHandler = (e) => {
@@ -135,15 +174,17 @@ class Player extends Component {
             hover: 'no-touch-device'
         }
 
-        if(this.props.topSpace && !this.state.isGrabbed) {
-            styles.topSpaceStyle = {height: this.elementH};
-            styles.topSpaceClass = 'visible';
-        } else if(this.props.bottomSpace && !this.state.isGrabbed) {
+        if(this.props.grabbedElement != 0 && this.props.listSpace < 0 && this.props.index === 0
+            || this.props.grabbedElement === 0 && this.props.listSpace < 0 && this.props.index === 1
+            && !this.state.isGrabbed) {
+                styles.topSpaceStyle = {height: this.elementH};
+                styles.topSpaceClass = 'visible';
+        } else if(this.props.index === this.props.listSpace && !this.state.isGrabbed) {
             styles.bottomSpaceStyle = {height: this.elementH}
             styles.bottomSpaceClass = 'visible';
         };
 
-        if(!this.props.isTransitionEnableed && !this.state.isGrabbed) {
+        if(!this.props.isTransitionEnabled && !this.state.isGrabbed) {
             styles.bottomSpaceStyle.transition = 'none';
             styles.topSpaceStyle.transition = 'none';
         };
@@ -173,8 +214,7 @@ class Player extends Component {
                         onMouseUp={this.handleDrop}
                         onTouchStart={this.handleGrab}
                         onTouchEnd={this.handleDrop}
-                        className="player-name"
-                    >
+                        className="player-name">
                         <p>{this.props.t("Player")} {this.props.index + 1}: <span> {this.props.player}</span></p>
                     </div>
                     <button onClick={this.removePlayerHandler} className="remove">
@@ -190,12 +230,23 @@ class Player extends Component {
 const mapStateToProps = (state) => {
     return {
         playersNames: state.playersNames,
+        initialListSpace: state.gameMenu.players.initialListSpace,
+        listSpace: state.gameMenu.players.listSpace,
+        grabbedElement: state.gameMenu.players.grabbedElement,
+        isTransitionEnabled: state.gameMenu.players.isTransitionEnabled,
+        touches: state.gameMenu.players.touches,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        reorderPlayers: (index, newIndex) => { dispatch(reorderPlayers(index, newIndex)) },
         removePlayer: (playerId) => { dispatch(removePlayer(playerId)) },
+        setIsTransitionEnabled: (isTransitionEnabled) => { dispatch(setIsTransitionEnabled(isTransitionEnabled)) },
+        setInitialListSpace: (initialListSpace) => { dispatch(setInitialListSpace(initialListSpace)) },
+        setGrabbedElement: (grabbedElement) => { dispatch(setGrabbedElement(grabbedElement)) },
+        setListSpace: (listSpace) => { dispatch(setListSpace(listSpace)) },
+        setTouches: (touches) => { dispatch(setTouches(touches)) },
     }
 }
 
