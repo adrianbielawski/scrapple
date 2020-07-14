@@ -88,6 +88,9 @@ const appReducer = (state = app, action) => {
         props: '',
       }
       return newState;
+    
+    case 'GAME_MENU/GAME_CREATED':
+      return 
       
     default:
       return state;

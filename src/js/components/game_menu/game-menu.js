@@ -13,7 +13,7 @@ import Confirmation from './confirmation';
 import Card from '../global_components/card';
 //Redux Actions
 import { setGameId, setAlert } from '../../actions/appActions';
-import { setAllPlayersJoined, setShowConfirmation } from '../../actions/gameMenuActions';
+import { setAllPlayersJoined, setShowConfirmation, createNewGame } from '../../actions/gameMenuActions';
 
 const GameMenu = (props) => {
     const { t } = useTranslation();
@@ -58,16 +58,19 @@ const GameMenu = (props) => {
         //     }
         // }
         handleCreateNewGame();
-        props.setShowConfirmation(!props.showConfirmation)
     }
 
     const handleCreateNewGame = () => {
-        const gameId = props.gameId ? props.gameId : setGameId();
+        const gameId = props.gameId ? props.gameId : getGameId();
         const players = getPlayers();
-        createNewGame(players, gameId);
+        props.createNewGame(players, gameId, props.language, props.playedAgainWithSettings, props.timer, props.time);
+
+        if(props.timer) {
+            unsubscribe(gameId)
+        }
     }
 
-    const setGameId = () => {
+    const getGameId = () => {
         const gameId = Math.floor(Math.random() * 1000000).toString();
         props.setGameId(gameId);
         return gameId
@@ -88,41 +91,6 @@ const GameMenu = (props) => {
       return players
     }
 
-    const createNewGame = (players, gameId) => {
-      let game = {
-        language: props.language,
-        players,
-        currentPlayer: 0,
-        gameStarted: true,
-        joinedPlayers: [1],
-        exitOption: props.playedAgainWithSettings ? 'playAgainWithSettings' : null
-      }
-  
-      if(props.timer) {
-        game = {
-          ...game,
-          gameStarted: false,
-          timer: props.timer,
-          time: props.time,
-          endTime: null,
-        }
-      }
-      
-      db.collection('games').doc(gameId).set(game)
-        .then(() => {
-            props.setShowConfirmation(true)
-            
-            if(props.timer) {
-                unsubscribe(gameId)
-            }
-
-            props.gameCreated(props.timer);
-        })
-        .catch((error) => {
-            console.log(error)
-        });
-    }
-
     const handleStartAdminGame = () => {
         props.startAdminGame();
     }
@@ -131,11 +99,7 @@ const GameMenu = (props) => {
     
     return (
         <div className="game-menu">
-            {props.showConfirmation ? 
-                <Confirmation
-                    handleStartAdminGame={handleStartAdminGame}
-                /> : null
-            }
+            {props.showConfirmation ? <Confirmation handleStartAdminGame={handleStartAdminGame} /> : null}
             <Header />
             <div className="menu">
                 <Card>
@@ -173,6 +137,7 @@ const mapDispatchToProps = (dispatch) => {
         setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
         setAllPlayersJoined: (allPlayersJoined) => { dispatch(setAllPlayersJoined(allPlayersJoined)) },
         setShowConfirmation: (showConfirmation) => { dispatch(setShowConfirmation(showConfirmation)) },
+        createNewGame: (players, gameId, language, playedAgainWithSettings, timer, time) => { dispatch(createNewGame(players, gameId, language, playedAgainWithSettings, timer, time)) },
     }
 }
 

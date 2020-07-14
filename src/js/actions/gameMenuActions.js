@@ -1,3 +1,7 @@
+import db from '../../firebase';
+//Redux Actions
+import { setScreen, setAdmin, setAlert } from '../actions/appActions';
+
 export const addPlayer = (playerName) => {
   return {
     type: 'GAME_MENU/ADD_PLAYER',
@@ -80,4 +84,42 @@ export const setShowConfirmation = (showConfirmation) => {
     type: 'GAME_MENU/SET_SHOW_CONFIRMATION',
     showConfirmation
   }
+}
+
+export const createNewGame = (players, gameId, language, playedAgainWithSettings, timer, time) => {
+  return (dispatch) => {
+    let game = {
+      language,
+      players,
+      currentPlayer: 0,
+      gameStarted: true,
+      joinedPlayers: [1],
+      exitOption: playedAgainWithSettings ? 'playAgainWithSettings' : null
+    }
+  
+    if(timer) {
+      game = {
+        ...game,
+        gameStarted: false,
+        timer,
+        time,
+        endTime: null,
+      }
+    }
+    
+    db.collection('games').doc(gameId).set(game)
+      .then(() => {
+        sessionStorage.setItem('admin', JSON.stringify(true));
+        dispatch(setShowConfirmation(true));
+        if(timer) {
+          dispatch(setAdmin(true));
+        } else {
+          dispatch(setScreen(`Game/${gameId}`));
+          dispatch(setAdmin(true));
+        }
+      })
+      .catch(() => {
+        dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+      });
+    }
 }

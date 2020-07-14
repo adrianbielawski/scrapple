@@ -24,7 +24,6 @@ class App extends React.Component {
 
   setScreenHeight = () => {
     const screenHeight = window.innerHeight;
-    console.log(screenHeight)
     this.props.setScreenHeight(screenHeight);
   }
 
@@ -41,16 +40,6 @@ class App extends React.Component {
 
   renderGameMenu = () => {
     this.props.setScreen(`GameMenu`)
-  }
-
-  gameCreated = (timer) => {
-    sessionStorage.setItem('admin', JSON.stringify(true));
-    if(timer) {
-      this.props.setAdmin(true)
-    } else {
-      this.props.setScreen(`Game/${this.props.gameId}`)
-      this.props.setAdmin(true)
-    }
   }
 
   startAdminGame = () => {
@@ -99,13 +88,13 @@ class App extends React.Component {
     });
   }
 
-  startJoinedPlayerGame = (timer) => {
+  startJoinedPlayerGame = (timer, gameId) => {
     if(timer) {
       this.unsubscribe();
     }
     this.props.setAdmin(false);
     this.props.setShowFinishedGameCover(false);
-    this.props.setScreen(`Game/${this.props.gameId}`);
+    this.props.setScreen(`Game/${gameId}`);
   }
 
   handleFinishGame = () => {
