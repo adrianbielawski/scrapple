@@ -8,16 +8,16 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import rootReducer from './js/reducers/';
 
+const initialState = {}
 let composeEnhancers = compose;
  
 if (process.env.NODE_ENV === 'development') {
-  composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION__ || compose;
+  composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 }
 
 const store = createStore(
   rootReducer,
-  applyMiddleware(thunk),
-  //composeEnhancers(applyMiddleware(thunk))
+  composeEnhancers(applyMiddleware(thunk))
 );
 
 const app = (
