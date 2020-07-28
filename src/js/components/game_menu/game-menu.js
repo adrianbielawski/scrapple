@@ -93,15 +93,11 @@ const GameMenu = (props) => {
       return players
     }
 
-    const handleStartAdminGame = () => {
-        props.startAdminGame();
-    }
-
     const buttonText =  props.playedAgainWithSettings ? 'Play again' : 'Create game';
     
     return (
         <div className="game-menu">
-            {props.showConfirmation ? <Confirmation handleStartAdminGame={handleStartAdminGame} /> : null}
+            {props.showConfirmation ? <Confirmation /> : null}
             <Header />
             <div className="menu">
                 <Card>

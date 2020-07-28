@@ -37,16 +37,6 @@ class App extends React.Component {
     this.props.setScreen(`Game/${this.props.gameId}/GameSummary`)
   }
 
-  startAdminGame = () => {
-    db.collection('games').doc(this.props.gameId).update({gameStarted: true})
-    .then(() => {
-      this.props.setScreen(`Game/${this.props.gameId}`)
-    })
-    .catch(() => {
-      this.props.setAlert('alert', messageKey);
-    });    
-  }
-
   handleFinishGame = () => {
     const gameId = this.props.gameId;
 
@@ -172,12 +162,10 @@ class App extends React.Component {
         : null}
         <Redirect to={`/${this.props.screen}`} />
         <Switch>
-          <Route path="/MainMenu" render={() => (<MainMenu />)} 
-          />
+          <Route path="/MainMenu" render={() => (<MainMenu />)} />
           <Route path="/GameMenu" render={() => (
             <Suspense fallback={<LoadingSpinner />}>
-              <GameMenu
-                startAdminGame={this.startAdminGame} />
+              <GameMenu />
             </Suspense>)}
           />
           <Route exact path="/Game/:gameId" render={() => (

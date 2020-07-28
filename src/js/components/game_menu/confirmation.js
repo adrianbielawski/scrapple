@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 //Custom Components
 import Dropdown from '../global_components/dropdown';
 import LoadingSpinner from '../global_components/loadingSpinner';
+//Redux Actions
+import { startAdminGame } from '../../actions/gameMenuActions';
 
 const Confirmation = (props) => {
     const { t } = useTranslation();
@@ -16,6 +18,11 @@ const Confirmation = (props) => {
     if(props.allPlayersJoined) {
         message = 'All players have joined the game, press start game to begin';
     }
+
+    const handleStartAdminGame = () => {
+        props.startAdminGame(props.gameId)
+    }
+
     return ( 
         <Dropdown className="confirmation">
             <h2>{t(title)}</h2>
@@ -25,9 +32,9 @@ const Confirmation = (props) => {
                 <div>
                     <LoadingSpinner />
                     <p className="or">{t("or")}</p>
-                    <button onClick={props.handleStartAdminGame}>{t("Start anyway")}</button>
+                    <button onClick={handleStartAdminGame}>{t("Start anyway")}</button>
                 </div> :
-                <button onClick={props.handleStartAdminGame}>{t("Start game")}</button>
+                <button onClick={handleStartAdminGame}>{t("Start game")}</button>
             }
         </Dropdown>
     );
@@ -40,4 +47,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(Confirmation);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        startAdminGame: (gameId) => { dispatch(startAdminGame(gameId)) },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Confirmation);

@@ -123,3 +123,15 @@ export const createNewGame = (players, gameId, language, playedAgainWithSettings
       });
     }
 }
+
+export const startAdminGame = (gameId) => {
+  return dispatch => {
+    db.collection('games').doc(gameId).update({gameStarted: true})
+    .then(() => {
+    dispatch(setScreen(`Game/${gameId}`));
+    })
+    .catch(() => {
+    dispatch(setAlert('alert', messageKey));
+    });
+  }
+}
