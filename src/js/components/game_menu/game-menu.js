@@ -17,28 +17,30 @@ import { setAllPlayersJoined, setShowConfirmation, createNewGame } from '../../a
 
 const GameMenu = (props) => {
     const { t } = useTranslation();
+    let unsubscribeJoinedPlayers;
   
     useEffect(() => {
         props.playedAgain && !props.playedAgainWithSettings ? props.setShowConfirmation(true) : null;
         if(props.timer && props.playAgain) {
-            unsubscribe(gameId)
+            subscribeJoinedPlayers(gameId)
         }        
         
         return () => {
             props.setShowConfirmation(false);
             if(props.playAgain) {
-                unsubscribe()
+                unsubscribeJoinedPlayers()
             }
         }
     }, []);
 
-    const unsubscribe = (gameId) => {
-         db.collection('games').doc(gameId).onSnapshot(doc => {
+    const subscribeJoinedPlayers = (gameId) => {
+        const unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
             const data = doc.data();
             if(data.joinedPlayers.length >= props.playersNames.length) {
                 props.setAllPlayersJoined(true);
             };
         });
+        unsubscribeJoinedPlayers = unsubscribe;
     }
 
     const validateSettings = (e) => {
@@ -66,7 +68,7 @@ const GameMenu = (props) => {
         props.createNewGame(players, gameId, props.language, props.playedAgainWithSettings, props.timer, props.time);
 
         if(props.timer) {
-            unsubscribe(gameId)
+            subscribeJoinedPlayers(gameId)
         }
     }
 

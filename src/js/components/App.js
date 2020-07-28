@@ -37,10 +37,6 @@ class App extends React.Component {
     this.props.setScreen(`Game/${this.props.gameId}/GameSummary`)
   }
 
-  renderGameMenu = () => {
-    this.props.setScreen(`GameMenu`)
-  }
-
   startAdminGame = () => {
     db.collection('games').doc(this.props.gameId).update({gameStarted: true})
     .then(() => {
@@ -176,13 +172,11 @@ class App extends React.Component {
         : null}
         <Redirect to={`/${this.props.screen}`} />
         <Switch>
-          <Route path="/MainMenu" render={() => (<MainMenu
-            renderGameMenu={this.renderGameMenu} />)} 
+          <Route path="/MainMenu" render={() => (<MainMenu />)} 
           />
           <Route path="/GameMenu" render={() => (
             <Suspense fallback={<LoadingSpinner />}>
               <GameMenu
-                gameCreated={this.gameCreated}
                 startAdminGame={this.startAdminGame} />
             </Suspense>)}
           />

@@ -8,7 +8,7 @@ import Confirmation from './confirmation';
 import Card from '../global_components/card';
 import Language from '../global_components/language/language';
 //Redux Actions
-import { setAlert } from '../../actions/appActions';
+import { setAlert, setScreen } from '../../actions/appActions';
 import { joinGame } from '../../actions/mainMenuActions';
 
 const MainMenu = (props) => {
@@ -37,6 +37,10 @@ const MainMenu = (props) => {
         unsubscribeGameStart = props.joinGame(gameId, props.language);
     };
 
+    const renderGameMenu = () => {
+        props.setScreen(`GameMenu`)
+    }
+
     return ( 
         <div className="main-menu">
             {props.gameId ? <Confirmation gameId={props.gameId}/> : null}
@@ -44,7 +48,7 @@ const MainMenu = (props) => {
             <div className="content">
                 <Language showName={false} />
                 <Card >
-                    <button onClick={() => props.renderGameMenu()}>{t("Create new game")}</button>
+                    <button onClick={renderGameMenu}>{t("Create new game")}</button>
                 </Card>
                 <Card className="join-game">
                     <input placeholder={t("Game ID")} ref={gameIdInput}></input>
@@ -66,6 +70,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
     joinGame: (gameId, language) => dispatch(joinGame(gameId, language)),
+    setScreen: (screen) => { dispatch(setScreen(screen)) },
   }
 }
 
