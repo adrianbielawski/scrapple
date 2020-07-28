@@ -10,7 +10,7 @@ const gameMenu = {
   showConfirmation: false,
 };
 
-const timeLimitReducer = (state = gameMenu, action) => {
+const gameMenuReducer = (state = gameMenu, action) => {
   let newState = { ...state };
   switch(action.type) {
     case 'GAME_MENU/SET_LIST_SPACE':
@@ -46,4 +46,4 @@ const timeLimitReducer = (state = gameMenu, action) => {
   }
 }
 
-export default timeLimitReducer;
+export default gameMenuReducer;

@@ -29,7 +29,7 @@ const resources = {
       "Minimum player's time limit is 1 min" : "Minimum player's time limit is 1 min",
       "Game created succesfully" : "Game created succesfully!",
       "Please wait for other players to join the game" : "Please wait for other players to join the game",
-      "All players has joined the game, press start game to begin" : "All players has joined the game, press start game to begin",
+      "All players have joined the game, press start game to begin" : "All players have joined the game, press start game to begin",
       "or" : "or",
       "Start anyway" : "Start anyway",
       //Game
@@ -106,7 +106,7 @@ const resources = {
       "Create game" : "Utwórz grę",
       "Game created succesfully" : "Gra utworzona!",
       "Please wait for other players to join the game" : "Poczekaj, aż pozostali gracze dołączą do gry",
-      "All players has joined the game, press start game to begin" : "Wszyscy gracze dołączyli do gry, wciśnij start aby rozpocząć grę",
+      "All players have joined the game, press start game to begin" : "Wszyscy gracze dołączyli do gry, wciśnij start aby rozpocząć grę",
       "or" : "albo",
       "Start anyway" : "Rozpocznij grę mimo to",
       //Game

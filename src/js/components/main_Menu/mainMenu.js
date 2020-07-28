@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import '../../../styles/main-menu.scss';
@@ -9,22 +9,32 @@ import Card from '../global_components/card';
 import Language from '../global_components/language/language';
 //Redux Actions
 import { setAlert } from '../../actions/appActions';
+import { joinGame } from '../../actions/mainMenuActions';
 
 const MainMenu = (props) => {
     sessionStorage.clear();
     const gameIdInput = useRef(null);
     const { t } = useTranslation();
 
+    let unsubscribeGameStart = null;
+
+    useEffect(() => {
+        return () => {
+            if (unsubscribeGameStart !== null) {
+                unsubscribeGameStart()
+            }
+        }
+    }, []);
+
     const validateUserInput = () => {
         const gameId = gameIdInput.current.value.trim();
 
         if (!gameId) {
-            const messageKey = 'Please type in game ID';
-            props.setAlert('alert', messageKey);
+            props.setAlert('alert', 'Please type in game ID');
             return
         };
 
-        props.joinGame(gameId);
+        unsubscribeGameStart = props.joinGame(gameId, props.language);
     };
 
     return ( 
@@ -48,12 +58,14 @@ const MainMenu = (props) => {
 const mapStateToProps = (state) => {
     return {
       gameId: state.app.gameId,
+      language: state.app.language,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
+    joinGame: (gameId, language) => dispatch(joinGame(gameId, language)),
   }
 }
 

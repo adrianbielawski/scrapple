@@ -87,7 +87,7 @@ export const setShowConfirmation = (showConfirmation) => {
 }
 
 export const createNewGame = (players, gameId, language, playedAgainWithSettings, timer, time) => {
-  return (dispatch) => {
+  return dispatch => {
     let game = {
       language,
       players,

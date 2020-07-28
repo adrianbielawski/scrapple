@@ -1,13 +1,16 @@
 import db from '../../firebase';
+import * as firebase from 'firebase';
+//Redux Actions
+import { changeLanguage, setGameId, setAlert, setAdmin, setShowFinishedGameCover, setScreen } from '../actions/appActions';
 
-export const joinGame = (gameId) => {
-  return (() => {
+export const joinGame = (gameId, language) => {
+  return dispatch => {
     db.collection('games').doc(gameId).get()
     .then((response) => {
       const data = response.data();
       
-      if(this.props.language !== data.language) {
-        this.props.changeLanguage(data.language);
+      if(language !== data.language) {
+        dispatch(changeLanguage(data.language));
       }
 
       if(data.timer) {
@@ -15,25 +18,35 @@ export const joinGame = (gameId) => {
         
         db.collection('games').doc(gameId).update({'joinedPlayers': firebase.firestore.FieldValue.arrayUnion(random)})
         .then(() => {
-          this.props.setGameId(gameId);
-        
-          this.unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
-            const data = doc.data();
-            if(data.gameStarted == true) {
-              this.startJoinedPlayerGame(data.timer, gameId);
-            }
-          });
+          dispatch(setGameId(gameId));
         })
         .catch(() => {
-          this.props.setAlert('alert', 'Something went wrong, please check game ID');
+          dispatch(setAlert('alert', 'Something went wrong, please check game ID'));
         });
       } else {
-        this.startJoinedPlayerGame(data.timer, gameId)
+        dispatch(startJoinedPlayerGame(gameId));
       }
     })
     .catch(() => {
-      this.props.setAlert('alert', 'Something went wrong, please check game ID');
+      dispatch(setAlert('alert', 'Something went wrong, please check game ID'));
       return
     });
-  });
+
+    const unsubscribeGameStart = db.collection('games').doc(gameId).onSnapshot(doc => {
+      const data = doc.data();
+      if(data.gameStarted == true) {
+        dispatch(startJoinedPlayerGame(gameId));
+      }
+    });
+
+    return unsubscribeGameStart;
+  }
+}
+
+export const startJoinedPlayerGame = (gameId) => {
+  return dispatch => {
+    dispatch(setAdmin(false));
+    dispatch(setShowFinishedGameCover(false));
+    dispatch(setScreen(`Game/${gameId}`));
+  }
 }

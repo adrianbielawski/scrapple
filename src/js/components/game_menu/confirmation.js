@@ -14,7 +14,7 @@ const Confirmation = (props) => {
         message = 'Please wait for other players to join the game';
     }
     if(props.allPlayersJoined) {
-        message = 'All players has joined the game, press start game to begin';
+        message = 'All players have joined the game, press start game to begin';
     }
     return ( 
         <Dropdown className="confirmation">
