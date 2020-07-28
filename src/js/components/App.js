@@ -25,13 +25,6 @@ class App extends React.Component {
     const screenHeight = window.innerHeight;
     this.props.setScreenHeight(screenHeight);
   }
-
-  setGameState = () => {
-    let localData = sessionStorage.getItem('admin');
-    const admin = localData ? JSON.parse(localData) : false;
-
-    this.props.setAdmin(admin)
-  }
   
   renderGameSummary = () => {
     this.props.setScreen(`Game/${this.props.gameId}/GameSummary`)
@@ -171,7 +164,6 @@ class App extends React.Component {
           <Route exact path="/Game/:gameId" render={() => (
             <Suspense fallback={<LoadingSpinner />}>
               <Game
-                setGameState={this.setGameState}
                 renderGameSummary={this.renderGameSummary}
                 handleFinishGame={this.handleFinishGame} />
             </Suspense>)} 
@@ -186,7 +178,6 @@ class App extends React.Component {
             <Suspense fallback={<LoadingSpinner />}>
               <GameSummary
                 playAgain={this.playAgain}
-                joinGame={this.joinGame}
                 playAgainSettings={this.playAgainSettings}
                 exitGame={this.exitGame}/>
             </Suspense>)} 

@@ -131,7 +131,7 @@ export const startAdminGame = (gameId) => {
     dispatch(setScreen(`Game/${gameId}`));
     })
     .catch(() => {
-    dispatch(setAlert('alert', messageKey));
+    dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
     });
   }
 }

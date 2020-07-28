@@ -14,7 +14,7 @@ import LoadingSpinner from '../global_components/loadingSpinner';
 import AudioController from './audio-controller';
 import Menu from './menu/menu';
 //Redux Actions
-import { setGameId, setAlert } from '../../actions/appActions';
+import { setGameId, setAlert, setAdmin } from '../../actions/appActions';
 
 class Game extends React.Component {
   constructor(props) {
@@ -68,9 +68,9 @@ class Game extends React.Component {
       nextState.time = data.time;
       nextState.endTime = isEndTimeValid ? data.endTime : null;
 
-      this.setState(state => ({ ...state, ...nextState, fetching: false}));
+      this.checkAdmin();
 
-      this.props.setGameState(gameId, data.players);
+      this.setState(state => ({ ...state, ...nextState, fetching: false}));
     })
     .then(() => {
       this.unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
@@ -95,6 +95,13 @@ class Game extends React.Component {
     .catch(() => {
       this.props.setAlert('alert', 'Something went wrong, please check your internet connection and try again');
     });
+  }
+
+  checkAdmin = () => {
+    let localData = sessionStorage.getItem('admin');
+    const admin = localData ? JSON.parse(localData) : false;
+
+    this.props.setAdmin(admin);
   }
 
   checkEndTime = (data, gameId) => {
@@ -243,6 +250,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setGameId: (gameId) => { dispatch(setGameId(gameId)) },
     setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
+    setAdmin: (admin) => { dispatch(setAdmin(admin)) },
   }
 }
 
