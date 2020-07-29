@@ -7,7 +7,6 @@ const Players = (props) => {
     const getPlayers = () => {
         const propsPlayers = [ ...props.playersNames ];
         const players = propsPlayers.map((player, index) => {
-
             return <Player
                 key={index}
                 index={index}

@@ -4,23 +4,13 @@ import '../../../../styles/stats.scss';
 import CurrentPlayer from './current-player';
 import AllPlayers from './all-players';
 
-const Stats = (props) => {    
-    const players = props.players;
-    const currentPlayer = props.currentPlayer;
+const Stats = () => {
     return (
         <div className="stats">
-            <CurrentPlayer
-                isAudioEnabled={props.isAudioEnabled}
-                timeOut={props.timeOut}
-                timer={props.timer}
-                time={props.time}
-                endTime={props.endTime}
-                addPoints={props.addPoints}
-                player={players[currentPlayer]} />
-            <AllPlayers
-                players={players}
-                currentPlayer={currentPlayer}/>
+            <CurrentPlayer />
+            <AllPlayers />
         </div>
     );        
 }
+
 export default Stats;

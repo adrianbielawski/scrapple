@@ -1,46 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import Moment from 'react-moment';//important
-import moment from 'moment';
 import '../../../styles/game.scss';
 //Custom Components
 import WordChecker from './word-checker';
 import Stats from './stats/stats';
 import TwoLetterWords from './two-letter-words';
-import db from '../../../firebase';
 import FinishedGameCover from './finished-game-cover';
 import LoadingSpinner from '../global_components/loadingSpinner';
 import AudioController from './audio-controller';
 import Menu from './menu/menu';
 //Redux Actions
-import { setGameId, setAlert, setAdmin } from '../../actions/appActions';
+import { setGameId, setAlert } from '../../actions/appActions';
+import { setCurrentPlayer, setEndTime, setPlayers, checkAdmin, checkEndTime, fetchGameData } from '../../actions/gameActions';
 
 class Game extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      screenHeight: window.innerHeight,
-      showWords: false,
-      isAudioEnabled: false,
-      currentPlayer: 0,
-      timer: null,
-      time: null,
-      endTime: null,
-      players: null,
-      fetching: true,
-    };
-    this.changeInnerHeight = window.addEventListener('resize', this.setInnerHeight);
-  }
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.admin !== state.admin) {
-      return {
-        admin: props.admin,
-      };
-    }
-    return null;
-  }
+  // static getDerivedStateFromProps(props, state) {
+  //   if (props.admin !== state.admin) {
+  //     return {
+  //       admin: props.admin,
+  //     };
+  //   }
+  //   return null;
+  // }
 
   componentWillUnmount(){
       this.unsubscribe();
@@ -49,145 +32,10 @@ class Game extends React.Component {
   componentDidMount() {
     const pathArray = window.location.pathname.split('/');
     const gameId = pathArray[2];
-    this.props.setGameId(gameId)
-
-    let isEndTimeValid = null;
-
-    db.collection('games').doc(gameId).get()
-    .then(response => {
-      const data = response.data();
-      const gameStarted = JSON.parse(sessionStorage.getItem('gameStarted'));
-
-      isEndTimeValid = data.timer && gameStarted ? this.checkEndTime(data, gameId) : false;
-      gameStarted !== true ? sessionStorage.setItem('gameStarted', JSON.stringify(true)) : null;
-
-      const nextState = { ...this.state };
-      nextState.gameId = gameId,
-      nextState.players = data.players;
-      nextState.timer = data.timer;
-      nextState.time = data.time;
-      nextState.endTime = isEndTimeValid ? data.endTime : null;
-
-      this.checkAdmin();
-
-      this.setState(state => ({ ...state, ...nextState, fetching: false}));
-    })
-    .then(() => {
-      this.unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
-        const data = doc.data();
-        const endTime = data.endTime;
-
-        if(!data.pointsSubtracted && !data.gameFinished) {
-          this.setState(state => ({ ...state, players: data.players, currentPlayer: data.currentPlayer, endTime: endTime }));
-        } else if(!data.pointsSubtracted && data.gameFinished){
-          this.props.handleFinishGame(gameId);
-        } else if(data.pointsSubtracted && data.gameFinished){
-          this.props.renderGameSummary(gameId);
-        }
-      });
-    })
-    .then(() => {
-      if(this.props.admin && !isEndTimeValid) {
-        const endTime = this.state.timer ? this.getEndTime() : null;
-        db.collection('games').doc(gameId).update({endTime: endTime})
-      }
-    })
-    .catch(() => {
-      this.props.setAlert('alert', 'Something went wrong, please check your internet connection and try again');
-    });
-  }
-
-  checkAdmin = () => {
-    let localData = sessionStorage.getItem('admin');
-    const admin = localData ? JSON.parse(localData) : false;
-
-    this.props.setAdmin(admin);
-  }
-
-  checkEndTime = (data, gameId) => {
-    const now = moment();
-    const stateT = moment(data.endTime);
-    const valid = stateT.diff(now) > 3000
-    if(!valid) {
-      let currentPlayer = data.currentPlayer;
-      let players = [ ...data.players];
-      
-      if (currentPlayer < players.length -1) {
-        currentPlayer++;
-      } else {
-        currentPlayer = 0;
-      };
-      db.collection('games').doc(gameId).update({currentPlayer})
-    }
-    return valid;
-  }
-
-  setInnerHeight = () => {
-    const screenHeight = window.innerHeight;
-    this.setState(state => ({ ...state, screenHeight}));
-  }
-
-  toggleAudio = () => {
-    this.setState(state => ({ ...state, isAudioEnabled: !state.isAudioEnabled}));
-  }
-
-  addPoints = (points) => {
-    let currentPlayer = this.state.currentPlayer;
-    let players = [ ...this.state.players];
-    players[currentPlayer].currentScore += points;
-    players[currentPlayer].allPoints.push(points);
-
-    if(points > players[currentPlayer].bestScore) {
-      players[currentPlayer].bestScore = points;
-    };
-
-    if (currentPlayer < players.length -1) {
-      currentPlayer++;
-    } else {
-      currentPlayer = 0;
-    };
-
-    const endTime = this.state.timer ? this.getEndTime() : null;
-
-    db.collection('games').doc(this.props.gameId).update({
-      players: players,
-      currentPlayer: currentPlayer,
-      endTime: endTime
-    });
-
-    this.scrollPlayersStats(currentPlayer);      
-  }
-
-  scrollPlayersStats = (currentPlayer) => {
-    const playerStats = document.getElementsByClassName('player-stats');
-    playerStats[currentPlayer].scrollIntoView();
-  }
-
-  getEndTime = () => {
-    const endTime = moment().add({
-        'hours': this.state.time.hours,
-        'minutes': this.state.time.minutes,
-        'seconds': this.state.time.seconds
-    });
-    return endTime.toJSON();
-  }
-
-  timeOut = () => {
-    let currentPlayer = this.state.currentPlayer;
-    let players = [ ...this.state.players ];
-    if (currentPlayer < players.length -1) {
-      currentPlayer++;
-    } else {
-      currentPlayer = 0;
-    }
-    const endTime = this.getEndTime();
-    db.collection('games').doc(this.props.gameId).update({
-      players: players,
-      currentPlayer: currentPlayer,
-      endTime: endTime
-    }).catch(() => {
-      this.setAlert('alert', 'Something went wrong, please check your internet connection and try again');
-    });;
+    this.props.setGameId(gameId);
+    
+    const promise = this.props.fetchGameData(gameId);
+    promise.then((unsubscribe) => this.unsubscribe = unsubscribe);
   }
 
   handleGameFinish = (e) => {
@@ -198,35 +46,21 @@ class Game extends React.Component {
     this.props.setAlert(type, messageKey, null, action, this.props.gameId)
   }
 
-  toggleShowWords = () => {
-    this.setState(state => ({ ...state, showWords: !state.showWords}));
-  }
-
   render() {
-    const currentPlayer = this.state.currentPlayer;
-    const players = this.state.players;
-    const gameClass = this.state.showWords ? 'show-words' : '';
+    const gameClass = this.props.showWords ? 'show-words' : '';
       
     return (
       <div>
-        {this.state.fetching ? <LoadingSpinner /> : ( 
+        {this.props.fetching ? <LoadingSpinner /> : ( 
           <div className={`game ${gameClass}`}>
             {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
             <div className="top-wrapper">
               <Menu />
-              <WordChecker language={this.props.language} />
-              <AudioController toggleAudio={this.toggleAudio} isAudioEnabled={this.state.isAudioEnabled} />
+              <WordChecker />
+              {this.props.admin ? <AudioController /> : null}
             </div>
-            <TwoLetterWords toggleShowWords={this.toggleShowWords} showWords={this.state.showWords} language={this.props.language}/>
-            <Stats
-              timeOut={this.timeOut}
-              addPoints={this.addPoints}
-              isAudioEnabled={this.state.isAudioEnabled}
-              endTime={this.state.endTime}
-              timer={this.state.timer}
-              time={this.state.time}
-              currentPlayer={currentPlayer}
-              players={players} />
+            <TwoLetterWords />
+            <Stats />
             {this.props.admin ? <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm">
               {this.props.t("Finish the game")}
             </button> : null }
@@ -243,6 +77,12 @@ const mapStateToProps = (state) => {
       gameId: state.app.gameId,
       admin: state.app.admin,
       showFinishedGameCover: state.app.showFinishedGameCover,
+      showWords: state.game.showWords,
+      currentPlayer: state.game.currentPlayer,
+      timer: state.timeLimit.timer,
+      time: state.timeLimit.time,
+      players: state.game.players,
+      fetching: state.game.fetching,
     }
 }
 
@@ -250,7 +90,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setGameId: (gameId) => { dispatch(setGameId(gameId)) },
     setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
-    setAdmin: (admin) => { dispatch(setAdmin(admin)) },
+    checkAdmin: () => { dispatch(checkAdmin()) },
+    checkEndTime: (data, gameId) => dispatch(checkEndTime(data, gameId)),
+    setCurrentPlayer: (currentPlayer) => { dispatch(setCurrentPlayer(currentPlayer)) },
+    setEndTime: (endTime) => { dispatch(setEndTime(endTime)) },
+    setPlayers: (players) => { dispatch(setPlayers(players)) },
+    fetchGameData: (gameId) => dispatch(fetchGameData(gameId)),
   }
 }
 

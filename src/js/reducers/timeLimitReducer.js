@@ -2,8 +2,8 @@ const timeLimit = {
   timer: true,
   time: {
     hours: '00',
-    minutes: '05',
-    seconds: '00'
+    minutes: '00',
+    seconds: '10'
   }
 };
 

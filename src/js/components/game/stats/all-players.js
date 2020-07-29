@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 // Custom Components
 import PlayerStats from './player-stats';
 
@@ -12,10 +13,19 @@ const AllPlayers = (props) => {
             <PlayerStats className={className} player={player} key={index}/>
         );
     });
+
     return (
         <div className="all-players">
             {playerStats}
         </div>
     );
 }
-export default AllPlayers;
+
+const mapStateToProps = (state) => {
+    return {
+      currentPlayer: state.game.currentPlayer,
+      players: state.game.players,
+    }
+}
+
+export default connect(mapStateToProps)(AllPlayers);
