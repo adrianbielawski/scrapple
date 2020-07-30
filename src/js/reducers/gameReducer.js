@@ -11,17 +11,17 @@ const game = {
 const gameReducer = (state = game, action) => {
     let newState = { ...state };
     switch(action.type) {                
-        case 'GAME/SET_FETCHING':
+        case 'GAME/SET_FETCHING_GAME_DATA':
             newState.fetching = action.fetching;
             return newState;
 
         case 'GAME/TOGGLE_SHOW_WORDS':
             newState.showWords = !newState.showWords;
-        return newState;
+            return newState;
                 
         case 'GAME/TOGGLE_AUDIO':
             newState.isAudioEnabled = !newState.isAudioEnabled;
-        return newState;
+            return newState;
                 
         case 'GAME/SET_CURRENT_PLAYER':
             newState.currentPlayer = action.currentPlayer;

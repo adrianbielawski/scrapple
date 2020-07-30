@@ -10,13 +10,13 @@ import ExitOptions from './exit-options';
 import WaitingCover from './waiting-cover';
 import LoadingSpinner from '../global_components/loadingSpinner';
 //Redux Actions
-import { setAdmin, setGameId } from '../../actions/appActions';
+import { setAdmin, setGameId, exitGame, playAgain, playAgainSettings } from '../../actions/appActions';
+import { setPlayers } from '../../actions/gameActions';
 
 const GameSummary = (props) => {
     const { t } = useTranslation();
     const [showExitOptions, setShowExitOptions] = useState(false);
     const [exitOption, setExitOption] = useState(null);
-    const [players, setPlayers] = useState(null);
     const [fetching, setFetching] = useState(true)
 
     useEffect(() => {
@@ -29,7 +29,7 @@ const GameSummary = (props) => {
         db.collection('games').doc(gameId).get()
         .then((response) => {
             const data = response.data();
-            setPlayers(data.players);
+            props.setPlayers(data.players);
             setFetching(false)
         })
         .catch(() => {
@@ -41,11 +41,11 @@ const GameSummary = (props) => {
             if(data.exitOption !== exitOption) {
                 setExitOption(data.exitOption)
                 if(data.exitOption === 'playAgain') {
-                    props.playAgain();
+                    props.playAgain(props.gameId);
                 };
             }
             if(data.joinedPlayers.length > 0 && data.exitOption === 'playAgainWithSettings') {
-                props.playAgainSettings()
+                props.playAgainSettings(props.gameId)
             }
         })
         return () => {
@@ -61,15 +61,15 @@ const GameSummary = (props) => {
     }
 
     const getPlayersPositions = () => {
-        let p = [ ...players];
-        p.sort((a, b) => {
+        let players = [ ...props.players];
+        players.sort((a, b) => {
             return b.currentScore - a.currentScore
         });
 
         let previousPlayerScore = '';
         let previousPlayerPlaceText = '';
         let previousPlace = '';
-        let playersSummary = p.map((player, index) => {
+        let playersSummary = players.map((player, index) => {
             const placeTexts = ['1st', '2nd', '3rd', '4th'];
             let place = index + 1 ;
             let placeText = placeTexts[index];
@@ -96,19 +96,17 @@ const GameSummary = (props) => {
         <div>
             {fetching ? <LoadingSpinner /> : (
                 <div className="game-summary">
-                        {exitOption === 'playAgainWithSettings' || (exitOption === 'playAgain' && props.timer) ? <WaitingCover exitOption={exitOption} /> : null}
-                        {showExitOptions ? <ExitOptions 
-                            playAgain={props.playAgain}
-                            playAgainSettings={props.playAgainSettings}
-                            exitGame={props.exitGame} /> : null}
-                        <Header />
-                        <h2>{t("Game results")}</h2>
-                        <ul className="results">
-                            {getPlayersPositions()}
-                        </ul>
-                        {props.admin ? <button onClick={handleExit}>{t("Exit")}</button> : null}
-                        {exitOption === 'exitGame' ? <button onClick={props.exitGame}>{t("Exit")}</button> : null}
-                    
+                    {exitOption === 'playAgainWithSettings' || (exitOption === 'playAgain' && props.timer) ?
+                        <WaitingCover exitOption={exitOption} />
+                    : null}
+                    {showExitOptions && <ExitOptions />}
+                    <Header />
+                    <h2>{t("Game results")}</h2>
+                    <ul className="results">
+                        {getPlayersPositions()}
+                    </ul>
+                    {props.admin ? <button onClick={handleExit}>{t("Exit")}</button> : null}
+                    {exitOption === 'exitGame' ? <button onClick={props.exitGame}>{t("Exit")}</button> : null}                    
                 </div>
             )}
         </div>
@@ -119,6 +117,7 @@ const mapStateToProps = (state) => {
     return {
       admin: state.app.admin,
       gameId: state.app.gameId,
+      players: state.game.players,
     }
 }
 
@@ -126,6 +125,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setAdmin: (admin) => { dispatch(setAdmin(admin)) },
     setGameId: (gameId) => { dispatch(setGameId(gameId)) },
+    setPlayers: (players) => { dispatch(setPlayers(players)) },
+    exitGame: (gameId, admin) => { dispatch(exitGame(gameId, admin)) },
+    playAgain: (gameId) => { dispatch(playAgain(gameId)) },
+    playAgainSettings: (gameId) => { dispatch(playAgainSettings(gameId)) },
   }
 }
 

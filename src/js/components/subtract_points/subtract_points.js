@@ -8,11 +8,11 @@ import PlayerSubPoints from '../subtract_points/player-subtract-points';
 import Header from '../global_components/header';
 import LoadingSpinner from '../global_components/loadingSpinner';
 //Redux Actions
-import { setGameId, setAlert } from '../../actions/appActions';
+import { setGameId, setAlert, setScreen } from '../../actions/appActions';
+import { setPlayers } from '../../actions/gameActions';
 
 const SubtractPoints = (props) => {
     const { t } = useTranslation();
-    const [players, setPlayers] = useState(null);
     const [fetching, setFetching] = useState(true);
     
 
@@ -22,7 +22,7 @@ const SubtractPoints = (props) => {
         db.collection('games').doc(gameId).get()
         .then((response) => {
             const data = response.data();
-            setPlayers(data.players);
+            props.setPlayers(data.players);
             setFetching(false)
         })
         .catch(() => {
@@ -38,7 +38,7 @@ const SubtractPoints = (props) => {
     }
 
     const validateUserInputs = (e) => {
-        for (let i = 0; i < players.length; i++) {
+        for (let i = 0; i < props.players.length; i++) {
             const inputVal = document.getElementById(`sub-points${i}`).value;
             inputVal = parseFloat(inputVal);
             if(!inputVal) {
@@ -54,8 +54,8 @@ const SubtractPoints = (props) => {
 
     const subPoints = (e) => {
         e.preventDefault();
-        const p = [ ...players ];
-        p.map((player, index) => {
+        const players = [ ...props.players ];
+        players.map((player, index) => {
             const inputVal = document.getElementById(`sub-points${index}`).value;
             let newPlayer = player;
             newPlayer.currentScore -= inputVal;
@@ -63,15 +63,15 @@ const SubtractPoints = (props) => {
             return newPlayer;
         });
         db.collection('games').doc(props.gameId).update({
-          players: p,
+          players,
           pointsSubtracted: true
         });
-        props.renderGameSummary();
+        props.setScreen(`Game/${props.gameId}/GameSummary`);
     };
 
     const getPlayers = () => {
-        const p = [ ...players ];
-        let playersContent = p.map((player, index) => {
+        const players = [ ...props.players ];
+        let playersContent = players.map((player, index) => {
             return <PlayerSubPoints playerName={player.playerName} key={index} index={index}/>
         });
         return playersContent;
@@ -96,13 +96,16 @@ const SubtractPoints = (props) => {
 const mapStateToProps = (state) => {
     return {
         gameId: state.app.gameId,
+        players: state.game.players,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         setGameId: (gameId) => { dispatch(setGameId(gameId)) },
+        setPlayers: (players) => { dispatch(setPlayers(players)) },
         setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
+        setScreen: (gameId) => { dispatch(setScreen(gameId)) },
     }
 }
 

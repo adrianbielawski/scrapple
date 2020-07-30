@@ -16,7 +16,7 @@ const app = {
     messageKey: '',
     messageValue: '',
     action: '',
-    props: '',
+    alertProps: '',
   },
 };
 
@@ -74,7 +74,7 @@ const appReducer = (state = app, action) => {
         messageKey: action.messageKey,
         messageValue: action.messageValue,
         action: action.action,
-        props: action.props,
+        alertProps: action.alertProps,
       }
       return newState;
 

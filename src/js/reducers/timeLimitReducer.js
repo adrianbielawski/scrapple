@@ -2,22 +2,22 @@ const timeLimit = {
   timer: true,
   time: {
     hours: '00',
-    minutes: '00',
-    seconds: '10'
+    minutes: '05',
+    seconds: '00'
   }
 };
 
 const timeLimitReducer = (state = timeLimit, action) => {
   let newState = { ...state };
   switch(action.type) {
-    case 'GAME_MENU/TOGGLE_TIMER':
-      newState.timer = !state.timer;
+    case 'GAME_MENU/SET_TIMER':
+      newState.timer = action.timer;
       return newState;
 
     case 'GAME_MENU/SET_TIME':
       newState.time = action.time;
       return newState;
-      
+    
     default:
       return state;
   }

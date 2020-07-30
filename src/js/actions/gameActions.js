@@ -2,7 +2,8 @@ import db from '../../firebase';
 import Moment from 'react-moment';//important
 import moment from 'moment';
 //Redux Actions
-import { setAdmin, setAlert } from '../actions/appActions';
+import { setAdmin, setAlert, setScreen, handleFinishGame, changeLanguage } from '../actions/appActions';
+import { setTimer, setTime } from './gameMenuActions';
 export const toggleShowWords = () => {
     return {
         type: 'GAME/TOGGLE_SHOW_WORDS',
@@ -36,9 +37,9 @@ export const setPlayers = (players) => {
     }
 }
 
-export const setFetching = (fetching) => {
+export const setFetchingGameData = (fetching) => {
     return {
-        type: 'GAME/SET_FETCHING',
+        type: 'GAME/SET_FETCHING_GAME_DATA',
         fetching
     }
 }
@@ -90,14 +91,13 @@ export const fetchGameData = (gameId) => dispatch => {
                 isEndTimeValid = dispatch(checkEndTime(data, gameId));
             };
 
+            const endTime = isEndTimeValid ? data.endTime : null;
+
+            dispatch(setGameState(data, endTime));
+
             gameStarted !== true ? sessionStorage.setItem('gameStarted', JSON.stringify(true)) : null;
 
-            const endTime = isEndTimeValid ? data.endTime : null;
-            dispatch(setEndTime(endTime));
-
             const isAdmin = dispatch(checkAdmin());
-            dispatch(setPlayers(data.players));
-            dispatch(setFetching(false));
 
             const unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
                 const data = doc.data();
@@ -108,9 +108,9 @@ export const fetchGameData = (gameId) => dispatch => {
                     dispatch(setEndTime(endTime));
                     dispatch(setPlayers(data.players));
                 } else if (!data.pointsSubtracted && data.gameFinished) {
-                    //this.props.handleFinishGame(gameId);
+                    dispatch(handleFinishGame(gameId, isAdmin));
                 } else if (data.pointsSubtracted && data.gameFinished) {
-                    //this.props.renderGameSummary(gameId);
+                    dispatch(setScreen(`Game/${gameId}/GameSummary`));
                 }
             });
 
@@ -124,6 +124,22 @@ export const fetchGameData = (gameId) => dispatch => {
         .catch(() => {
             dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
         });
+}
+
+const setGameState = (data, endTime) => {
+    return dispatch => {
+        if (!data.timer) {
+            dispatch(setTimer(false));
+        } else {
+            dispatch(setTimer(true));
+            dispatch(setTime(data.time));
+        };
+
+        dispatch(setEndTime(endTime));
+        dispatch(changeLanguage(data.language));
+        dispatch(setPlayers(data.players));
+        dispatch(setFetchingGameData(false));
+    }
 }
 
 export const addPoints = (points, players, currentPlayer, timer, time, gameId) => () => {
@@ -150,24 +166,18 @@ export const addPoints = (points, players, currentPlayer, timer, time, gameId) =
   scrollPlayersStats(currentPlayer);
 }
 
-export const timeOut = (players, currentPlayer, time, gameId) => () => {
-  const nextPlayer = getNextPlayer(players, currentPlayer);
-  const endTime = getEndTime(time);
+export const timeOut = (players, currentPlayer, time, gameId) => {
+    return dispatch => {
+        const nextPlayer = getNextPlayer(players, currentPlayer);
+        const endTime = getEndTime(time);
 
-  db.collection('games').doc(gameId).update({
-    currentPlayer: nextPlayer,
-    endTime
-  }).catch(() => {
-    this.setAlert('alert', 'Something went wrong, please check your internet connection and try again');
-  });;
-}
-
-export const handleGameFinish = (e) => {
-  e.preventDefault();
-  const action = e.target.id;
-  const type = e.target.value;
-  const messageKey = 'Are you sure you want to finish this game?';
-  this.props.setAlert(type, messageKey, null, action, this.props.gameId)
+        db.collection('games').doc(gameId).update({
+            currentPlayer: nextPlayer,
+            endTime
+        }).catch(() => {
+            dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+        });;
+    }
 }
 
 const scrollPlayersStats = (currentPlayer) => {

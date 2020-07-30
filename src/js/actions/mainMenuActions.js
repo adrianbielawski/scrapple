@@ -11,7 +11,7 @@ export const joinGame = (gameId, language) => {
       
       if(language !== data.language) {
         dispatch(changeLanguage(data.language));
-      }
+      };
 
       if(data.timer) {
         const random = Math.floor(Math.random() * 100000).toString();

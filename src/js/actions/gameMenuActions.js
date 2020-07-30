@@ -24,9 +24,10 @@ export const reorderPlayers = (index, newIndex) => {
   }
 }
 
-export const toggleTimer = () => {
+export const setTimer = (timer) => {
   return {
-    type: 'GAME_MENU/TOGGLE_TIMER'
+    type: 'GAME_MENU/SET_TIMER',
+    timer
   }
 }
 

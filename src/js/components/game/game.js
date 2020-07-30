@@ -12,23 +12,9 @@ import AudioController from './audio-controller';
 import Menu from './menu/menu';
 //Redux Actions
 import { setGameId, setAlert } from '../../actions/appActions';
-import { setCurrentPlayer, setEndTime, setPlayers, checkAdmin, checkEndTime, fetchGameData } from '../../actions/gameActions';
+import { setEndTime, checkAdmin, checkEndTime, fetchGameData } from '../../actions/gameActions';
 
 class Game extends React.Component {
-
-  // static getDerivedStateFromProps(props, state) {
-  //   if (props.admin !== state.admin) {
-  //     return {
-  //       admin: props.admin,
-  //     };
-  //   }
-  //   return null;
-  // }
-
-  componentWillUnmount(){
-      this.unsubscribe();
-  }
-
   componentDidMount() {
     const pathArray = window.location.pathname.split('/');
     const gameId = pathArray[2];
@@ -38,12 +24,20 @@ class Game extends React.Component {
     promise.then((unsubscribe) => this.unsubscribe = unsubscribe);
   }
 
+  componentWillUnmount(){
+      this.unsubscribe();
+  }
+
   handleGameFinish = (e) => {
     e.preventDefault();
     const action = e.target.id;
     const type = e.target.value;
     const messageKey = 'Are you sure you want to finish this game?';
-    this.props.setAlert(type, messageKey, null, action, this.props.gameId)
+    const alertProps = {
+      gameId: this.props.gameId,
+      admin: this.props.admin,
+    };
+    this.props.setAlert(type, messageKey, null, action, alertProps)
   }
 
   render() {
@@ -78,10 +72,6 @@ const mapStateToProps = (state) => {
       admin: state.app.admin,
       showFinishedGameCover: state.app.showFinishedGameCover,
       showWords: state.game.showWords,
-      currentPlayer: state.game.currentPlayer,
-      timer: state.timeLimit.timer,
-      time: state.timeLimit.time,
-      players: state.game.players,
       fetching: state.game.fetching,
     }
 }
@@ -92,9 +82,7 @@ const mapDispatchToProps = (dispatch) => {
     setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
     checkAdmin: () => { dispatch(checkAdmin()) },
     checkEndTime: (data, gameId) => dispatch(checkEndTime(data, gameId)),
-    setCurrentPlayer: (currentPlayer) => { dispatch(setCurrentPlayer(currentPlayer)) },
     setEndTime: (endTime) => { dispatch(setEndTime(endTime)) },
-    setPlayers: (players) => { dispatch(setPlayers(players)) },
     fetchGameData: (gameId) => dispatch(fetchGameData(gameId)),
   }
 }

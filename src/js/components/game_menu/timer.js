@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 //Custom Components
 import Switch from '@material-ui/core/Switch';
 //Redux Actions
-import { toggleTimer, setTime } from '../../actions/gameMenuActions';
+import { setTimer, setTime } from '../../actions/gameMenuActions';
 
 const timer = (props) => {
     const { t } = useTranslation();
@@ -23,10 +23,14 @@ const timer = (props) => {
         props.setTime(time);
     }
 
+    const toggleTimer = () => {
+        props.setTimer(!props.timer)
+    }
+
     return (
         <div>
             <div className="time-option">
-                <Switch onClick={props.toggleTimer} checked={props.timer}></Switch>
+                <Switch onClick={toggleTimer} checked={props.timer}></Switch>
                 <p>{t("Player's time limit")}</p>
             </div>
             <input type="time" className={inputClass} onChange={timeChangeHandler} defaultValue={defaultTime} step="1"></input>
@@ -43,7 +47,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        toggleTimer: () => { dispatch(toggleTimer()) },
+        setTimer: (timer) => { dispatch(setTimer(timer)) },
         setTime: (time) => { dispatch(setTime(time)) },
     }
 }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import '../../../styles/alert.scss';
 //Redux Actions
-import { setAlert, removeAlert } from '../../actions/appActions';
+import { setAlert, removeAlert, handleFinishGame } from '../../actions/appActions';
 
 const Alert = (props) => {
     const { t } = useTranslation();
@@ -14,7 +14,7 @@ const Alert = (props) => {
             if(response === 'true') {
                 switch(props.alert.action) {
                     case 'game-finish-button':
-                    props.handleFinishGame(props.alert.props);
+                    props.handleFinishGame(props.alert.alertProps.gameId, props.alert.alertProps.admin);
                 }
             } else {
                 props.removeAlert(); 
@@ -22,8 +22,7 @@ const Alert = (props) => {
         } else if(props.alert.type === 'alert') {
             props.removeAlert();
         }
-    };
-    
+    };    
 
     let alertButtons = '';
     if(props.alert.type === 'confirm') {
@@ -54,8 +53,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
+    setAlert: (type, messageKey, messageValue, action, alertProps) => { dispatch(setAlert(type, messageKey, messageValue, action, alertProps)) },
     removeAlert: () => { dispatch(removeAlert()) },
+    handleFinishGame: (gameId, admin) => { dispatch(handleFinishGame(gameId, admin)) },
   }
 }
 

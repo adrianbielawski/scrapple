@@ -10,7 +10,7 @@ import LoadingSpinner from '../../global_components/loadingSpinner';
 //Redux Actions
 import { setEndTime, addPoints, timeOut, setTimeLeft } from '../../../actions/gameActions';
 
-const audio = {
+const AUDIO = {
     beep: new Audio('../../../../src/assets/audio/beep.mp3'),
     longBeep: new Audio('../../../../src/assets/audio/long-beep.mp3')
 }
@@ -32,11 +32,11 @@ class CurrentPlayer extends Component {
 
         const timeLeft = this.props.timeLeft;
         if(timeLeft <= 10 && this.props.admin && this.props.isAudioEnabled) {
-            audio.beep.play();
+            AUDIO.beep.play();
         }
 
         if(timeLeft === 0 && this.props.admin){
-            this.props.isAudioEnabled && audio.longBeep.play();
+            this.props.isAudioEnabled && AUDIO.longBeep.play();
             setTimeout(this.handleTimeOut, 1000);
         }
     }
