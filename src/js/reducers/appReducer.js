@@ -1,5 +1,3 @@
-import i18n from '../../i18n';
-
 const app = {
   screenHeight: window.innerHeight,
   fetchingGameData: true,
@@ -45,10 +43,7 @@ const appReducer = (state = app, action) => {
       newState.screen = 'MainMenu';
       return newState;
 
-    case 'APP/CHANGE_LANGUAGE':
-      const html = document.getElementsByTagName('html');
-      html[0].lang = action.language;
-      i18n.changeLanguage(action.language);
+    case 'APP/SET_LANGUAGE':
       newState.language = action.language;
       return newState;
 

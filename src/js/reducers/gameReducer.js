@@ -6,6 +6,7 @@ const game = {
     endTime: null,
     players: null,
     timeLeft: null,
+    showMenu: false,
 };
   
 const gameReducer = (state = game, action) => {
@@ -37,6 +38,10 @@ const gameReducer = (state = game, action) => {
                 
         case 'GAME/SET_TIME_LEFT':
             newState.timeLeft = action.timeLeft;
+            return newState;
+
+        case 'GAME/TOGGLE_SHOW_MENU':
+            newState.showMenu = !state.showMenu;
             return newState;
         
         default:

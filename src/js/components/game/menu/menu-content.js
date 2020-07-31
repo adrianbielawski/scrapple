@@ -5,7 +5,7 @@ import GameId from './game-id';
 const MenuContent = (props) => {
     return (
         <div className="menu-content">
-            <GameId gameId={props.gameId} />
+            <GameId />
         </div>
     );
 }

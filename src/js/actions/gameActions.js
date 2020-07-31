@@ -50,6 +50,11 @@ export const setTimeLeft = (timeLeft) => {
         timeLeft
     }
 }
+export const toggleShowMenu = () => {
+    return {
+        type: 'GAME/TOGGLE_SHOW_MENU',
+    }
+}
 
 export const checkEndTime = (data, gameId) => {
     return () => {

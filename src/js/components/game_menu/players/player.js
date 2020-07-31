@@ -218,7 +218,7 @@ class Player extends Component {
                         <p>{this.props.t("Player")} {this.props.index + 1}: <span> {this.props.player}</span></p>
                     </div>
                     <button onClick={this.removePlayerHandler} className="remove">
-                        <FontAwesomeIcon icon={faTimes} onClick={this.handleClick}/>
+                        <FontAwesomeIcon icon={faTimes} />
                     </button>
                 </div>
                 <div className={`bottom-list-space ${styles.bottomSpaceClass}`} style={styles.bottomSpaceStyle}></div>

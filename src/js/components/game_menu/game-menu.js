@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import db from '../../../firebase';
 import '../../../styles/game-menu.scss';
 //Custom Components
 import Players from './players/players';
-import Language from '../global_components/language/language';
+import Language from '../global_components/language/changeLanguage';
 import Timer from './timer';
 import AddPlayer from './add-player';
 import Header from '../global_components/header';
@@ -13,66 +12,63 @@ import Confirmation from './confirmation';
 import Card from '../global_components/card';
 //Redux Actions
 import { setGameId, setAlert } from '../../actions/appActions';
-import { setAllPlayersJoined, setShowConfirmation, createNewGame } from '../../actions/gameMenuActions';
+import { setAllPlayersJoined, setShowConfirmation, createNewGame, subscribeJoinedPlayers } from '../../actions/gameMenuActions';
 
 const GameMenu = (props) => {
     const { t } = useTranslation();
-    let unsubscribeJoinedPlayers;
+    let unsubscribeJoinedPlayers = null;
   
     useEffect(() => {
         props.playedAgain && !props.playedAgainWithSettings ? props.setShowConfirmation(true) : null;
         if(props.timer && props.playAgain) {
-            subscribeJoinedPlayers(gameId)
+            unsubscribeJoinedPlayers = props.subscribeJoinedPlayers(gameId, props.playersNames)
         }        
         
         return () => {
             props.setShowConfirmation(false);
-            if(props.playAgain) {
+            if(unsubscribeJoinedPlayers !== null) {
                 unsubscribeJoinedPlayers()
             }
         }
     }, []);
 
-    const subscribeJoinedPlayers = (gameId) => {
-        const unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
-            const data = doc.data();
-            if(data.joinedPlayers.length >= props.playersNames.length) {
-                props.setAllPlayersJoined(true);
-            };
-        });
-        unsubscribeJoinedPlayers = unsubscribe;
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const isValid = validateSettings();
+        if (isValid) {
+            handleCreateNewGame();
+        }
     }
 
-    const validateSettings = (e) => {
-        e.preventDefault();
+    const validateSettings = () => {
         if(props.playersNames.length < 2) {
             const messageKey = 'Please add at least 2 players';
-            props.setAlert('alert', messageKey)
-            return 
+            props.setAlert('alert', messageKey);
+            return false;
         }
 
         // if(props.timer) {
         //     const time = props.time;
         //     if(time.hours == 0 && time.minutes == 0) {
         //         const messageKey = "Minimum player's time limit is 1 min";
-        //         props.setAlert('alert', messageKey)
-        //         return
+        //         props.setAlert('alert', messageKey);
+        //         return false;
         //     }
         // }
-        handleCreateNewGame();
+        return true;
     }
 
     const handleCreateNewGame = () => {
-        const gameId = props.gameId ? props.gameId : getGameId();
+        const gameId = props.gameId ? props.gameId : createGameId();
         const players = getPlayers();
         props.createNewGame(players, gameId, props.language, props.playedAgainWithSettings, props.timer, props.time);
 
         if(props.timer) {
-            subscribeJoinedPlayers(gameId)
+            unsubscribeJoinedPlayers = props.subscribeJoinedPlayers(gameId, props.playersNames);
         }
     }
 
-    const getGameId = () => {
+    const createGameId = () => {
         const gameId = Math.floor(Math.random() * 1000000).toString();
         props.setGameId(gameId);
         return gameId
@@ -110,7 +106,7 @@ const GameMenu = (props) => {
                     <AddPlayer />
                     <Players />
                 </Card>
-                <button onClick={validateSettings} type="submit">{t(buttonText)}</button>
+                <button onClick={handleSubmit} type="submit">{t(buttonText)}</button>
             </div>
         </div>
     );
@@ -134,6 +130,7 @@ const mapDispatchToProps = (dispatch) => {
         setGameId: (gameId) => { dispatch(setGameId(gameId)) },
         setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
         setAllPlayersJoined: (allPlayersJoined) => { dispatch(setAllPlayersJoined(allPlayersJoined)) },
+        subscribeJoinedPlayers: (gameId, playersNames) => dispatch(subscribeJoinedPlayers(gameId, playersNames)),
         setShowConfirmation: (showConfirmation) => { dispatch(setShowConfirmation(showConfirmation)) },
         createNewGame: (players, gameId, language, playedAgainWithSettings, timer, time) => { dispatch(createNewGame(players, gameId, language, playedAgainWithSettings, timer, time)) },
     }

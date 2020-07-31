@@ -125,6 +125,15 @@ export const createNewGame = (players, gameId, language, playedAgainWithSettings
     }
 }
 
+export const subscribeJoinedPlayers = (gameId, playersNames) => dispatch => {
+  return db.collection('games').doc(gameId).onSnapshot(doc => {
+    const data = doc.data();
+    if(data.joinedPlayers.length >= playersNames.length) {
+      dispatch(setAllPlayersJoined(true));
+    };
+  });
+}
+
 export const startAdminGame = (gameId) => {
   return dispatch => {
     db.collection('games').doc(gameId).update({gameStarted: true})

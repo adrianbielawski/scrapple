@@ -1,4 +1,5 @@
 import db from '../../firebase';
+import i18n from '../../i18n';
 //Redux Actions
 import { joinGame } from '../actions/mainMenuActions';
 
@@ -22,9 +23,9 @@ export const clearAppState = () => {
   }
 }
 
-export const changeLanguage = (language) => {
+export const setLanguage = language => {
   return {
-    type: 'APP/CHANGE_LANGUAGE',
+    type: 'APP/SET_LANGUAGE',
     language
   }
 }
@@ -85,6 +86,15 @@ export const setAlert = (alertType, messageKey, messageValue, action, alertProps
 export const removeAlert = () => {
   return {
     type: 'APP/REMOVE_ALERT',
+  }
+}
+
+export const changeLanguage = (language) => {
+  return dispatch => {
+    const html = document.getElementsByTagName('html');
+    html[0].lang = language;
+    i18n.changeLanguage(language);
+    dispatch(setLanguage(language))
   }
 }
 

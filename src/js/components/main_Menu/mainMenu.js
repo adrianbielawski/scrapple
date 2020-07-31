@@ -6,7 +6,7 @@ import '../../../styles/main-menu.scss';
 import Header from '../global_components/header';
 import Confirmation from './confirmation';
 import Card from '../global_components/card';
-import Language from '../global_components/language/language';
+import Language from '../global_components/language/changeLanguage';
 //Redux Actions
 import { setAlert, setScreen } from '../../actions/appActions';
 import { joinGame } from '../../actions/mainMenuActions';

@@ -11,33 +11,34 @@ const AddPlayer = (props) => {
     const inputEl = useRef(null);
     const { t } = useTranslation();
 
-    const handleAddPlayer = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         const player = inputEl.current.value.trim();
-        validatePlayerName(player);
+        const isValid = validatePlayerName(player);
+
+        if (isValid) {
+            const input = document.getElementById('player-name');
+            input.value = '';
+            props.addPlayer(player)
+        }
     };
 
     const validatePlayerName = (player) => {
         const isPlayerExists = checkPlayers(player);
         
         if(props.playersNames.length >= 4) {
-            const messageKey = 'Max 4 players';
-            props.setAlert('alert', messageKey);
+            props.setAlert('alert', 'Max 4 players');
             return
         }
         if(isPlayerExists) {
-            const messageKey = 'Player exists';
-            const messageValue = {'player': player};
-            props.setAlert('alert', messageKey, messageValue, null);
+            props.setAlert('alert', 'Player exists', {'player': player}, null);
             return
         }
         if(player.length < 1) {
-            const messageKey = "Please type in player's name";
-            props.setAlert('alert', messageKey);
+            props.setAlert('alert', "Please type in player's name");
             return
         }
-        const input = document.getElementById('player-name');
-        input.value = '';
-        props.addPlayer(player)
+        return true;
     }
     
     const checkPlayers = (player) => {
@@ -55,7 +56,7 @@ const AddPlayer = (props) => {
             <p>{t("Add player")}</p>                    
             <div className="form">
                 <input id="player-name" type="text" autoComplete="false" spellCheck="false" ref={inputEl}></input>
-                <button className="add" onClick={handleAddPlayer}>
+                <button className="add" onClick={handleSubmit}>
                     <FontAwesomeIcon icon={faPlus} className="plus"/>
                 </button>
             </div>

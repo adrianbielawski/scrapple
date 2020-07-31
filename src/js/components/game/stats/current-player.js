@@ -40,25 +40,10 @@ class CurrentPlayer extends Component {
             setTimeout(this.handleTimeOut, 1000);
         }
     }
-    
-    // componentDidUpdate(prevProps) {
-    //     console.log(prevProps.endTime, this.props.endTime)
-    //     if(prevProps.endTime !== this.props.endTime) {
-    //         clearInterval(this.startTimer);
-    //     }
-
-    //     if(this.props.endTime && (prevProps.endTime !== this.props.endTime || this.state.timeLeft === null)) {
-    //         clearInterval(this.startTimer);
-    //         this.props.setEndTime(this.props.endTime);
-    //         this.updateTimer();
-    //         this.startTimer = this.props.timer ? setInterval(this.updateTimer, 1000) : null;
-    //     }
-    // }
 
     handleTimeOut = () => {
         this.props.timeOut(this.props.players, this.props.currentPlayer, this.props.time, this.props.gameId)
     }
-
 
     handleSubmit = (e) => {
         e.preventDefault();

@@ -11,7 +11,7 @@ const timer = (props) => {
     const inputClass = props.timer ? 'active' : null;
     const defaultTime = `${props.time.hours}:${props.time.minutes}:${props.time.seconds}`;
 
-    const timeChangeHandler = (e) => {
+    const handleTimeChange = (e) => {
         let val = e.target.value
         let time = {};
         time.hours = val.slice(0, 2);
@@ -33,7 +33,7 @@ const timer = (props) => {
                 <Switch onClick={toggleTimer} checked={props.timer}></Switch>
                 <p>{t("Player's time limit")}</p>
             </div>
-            <input type="time" className={inputClass} onChange={timeChangeHandler} defaultValue={defaultTime} step="1"></input>
+            <input type="time" className={inputClass} onChange={handleTimeChange} defaultValue={defaultTime} step="1"></input>
         </div>
     );
 }

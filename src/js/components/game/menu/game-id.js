@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-regular-svg-icons';
@@ -31,5 +32,11 @@ const GameId = (props) => {
         </div>
     );
 }
- 
-export default GameId;
+
+const mapStateToProps = (state) => {
+    return {
+      gameId: state.app.gameId,
+    }
+}
+
+export default connect(mapStateToProps)(GameId);
