@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import db from '../../../firebase';
 import '../../../styles/game-summary.scss';
 //Components
 import PlayerSummary from './player-summary';
@@ -10,55 +9,28 @@ import ExitOptions from './exit-options';
 import WaitingCover from './waiting-cover';
 import LoadingSpinner from '../global_components/loadingSpinner';
 //Redux Actions
-import { setAdmin, setGameId, exitGame, playAgain, playAgainSettings } from '../../actions/appActions';
+import { checkAdmin, getGameId, getGameData, exitGame, playAgain, playAgainSettings, setFetchingGameData } from '../../actions/appActions';
 import { setPlayers } from '../../actions/gameActions';
+import { subscribeExitOption, setShowExitOptions } from '../../actions/gameSummaryActions';
 
 const GameSummary = (props) => {
     const { t } = useTranslation();
-    const [showExitOptions, setShowExitOptions] = useState(false);
-    const [exitOption, setExitOption] = useState(null);
-    const [fetching, setFetching] = useState(true)
 
     useEffect(() => {
-        const localData = sessionStorage.getItem('admin');
-        const isAdmin = localData ? JSON.parse(localData) : false;
-        props.setAdmin(isAdmin);
+        props.checkAdmin();
 
-        const gameId =  props.gameId || getGameId();
+        const gameId =  props.gameId || props.getGameId();
 
-        db.collection('games').doc(gameId).get()
-        .then((response) => {
-            const data = response.data();
+        const promise = props.getGameData(gameId);
+        promise.then(data => {
             props.setPlayers(data.players);
-            setFetching(false)
-        })
-        .catch(() => {
-            this.alert('alert', 'Something went wrong, please check your internet connection and try again');
-        });;
+            props.setFetchingGameData(false);
+        });
 
-        const unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
-            const data = doc.data();
-            if(data.exitOption !== exitOption) {
-                setExitOption(data.exitOption)
-                if(data.exitOption === 'playAgain') {
-                    props.playAgain(props.gameId);
-                };
-            }
-            if(data.joinedPlayers.length > 0 && data.exitOption === 'playAgainWithSettings') {
-                props.playAgainSettings(props.gameId)
-            }
-        })
-        return () => {
-            unsubscribe();
-        };
+        const unsubscribe = props.subscribeExitOption(gameId, props.exitOption);
+
+        return unsubscribe;
     }, []);
-
-    const getGameId = () => {
-        const pathArray = window.location.pathname.split('/');
-        const gameId = pathArray[2];
-        props.setGameId(gameId);
-        return gameId;
-    }
 
     const getPlayersPositions = () => {
         let players = [ ...props.players];
@@ -89,24 +61,24 @@ const GameSummary = (props) => {
     };
 
     const handleExit = () => {
-        setShowExitOptions(true)
+        props.setShowExitOptions(true)
     };
 
     return (
         <div>
-            {fetching ? <LoadingSpinner /> : (
+            {props.fetchingGameData ? <LoadingSpinner /> : (
                 <div className="game-summary">
-                    {exitOption === 'playAgainWithSettings' || (exitOption === 'playAgain' && props.timer) ?
-                        <WaitingCover exitOption={exitOption} />
+                    {props.exitOption === 'playAgainWithSettings' || (props.exitOption === 'playAgain' && props.timer) ?
+                        <WaitingCover exitOption={props.exitOption} />
                     : null}
-                    {showExitOptions && <ExitOptions />}
+                    {props.showExitOptions && <ExitOptions />}
                     <Header />
                     <h2>{t("Game results")}</h2>
                     <ul className="results">
                         {getPlayersPositions()}
                     </ul>
                     {props.admin ? <button onClick={handleExit}>{t("Exit")}</button> : null}
-                    {exitOption === 'exitGame' ? <button onClick={props.exitGame}>{t("Exit")}</button> : null}                    
+                    {props.exitOption === 'exitGame' ? <button onClick={props.exitGame}>{t("Exit")}</button> : null}                    
                 </div>
             )}
         </div>
@@ -118,17 +90,24 @@ const mapStateToProps = (state) => {
       admin: state.app.admin,
       gameId: state.app.gameId,
       players: state.game.players,
+      fetchingGameData: state.app.fetchingGameData,
+      showExitOptions: state.gameSummary.showExitOptions,
+      exitOption: state.gameSummary.exitOption,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setAdmin: (admin) => { dispatch(setAdmin(admin)) },
-    setGameId: (gameId) => { dispatch(setGameId(gameId)) },
+    checkAdmin: () => { dispatch(checkAdmin()) },
+    getGameId: () => dispatch(getGameId()),
+    getGameData: (gameId) => dispatch(getGameData(gameId)),
     setPlayers: (players) => { dispatch(setPlayers(players)) },
     exitGame: (gameId, admin) => { dispatch(exitGame(gameId, admin)) },
     playAgain: (gameId) => { dispatch(playAgain(gameId)) },
     playAgainSettings: (gameId) => { dispatch(playAgainSettings(gameId)) },
+    setFetchingGameData: (fetching) => { dispatch(setFetchingGameData(fetching)) },
+    subscribeExitOption: (gameId, exitOption) => dispatch(subscribeExitOption(gameId, exitOption)),
+    setShowExitOptions: (show) => dispatch(setShowExitOptions(show)),
   }
 }
 

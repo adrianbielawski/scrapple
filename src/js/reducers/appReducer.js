@@ -2,6 +2,7 @@ import i18n from '../../i18n';
 
 const app = {
   screenHeight: window.innerHeight,
+  fetchingGameData: true,
   screen: window.location.pathname.slice(1) || 'MainMenu',
   gameId: null,
   language: 'en-GB',
@@ -26,7 +27,11 @@ const appReducer = (state = app, action) => {
     case 'APP/SET_SCREEN_HEIGHT':
       newState.screenHeight = action.height;
       return newState;
-
+      
+    case 'APP/SET_FETCHING_GAME_DATA':
+      newState.fetchingGameData = action.fetching;
+      return newState;
+      
     case 'APP/SET_GAME_ID':
       newState.gameId = action.gameId;
       return newState;

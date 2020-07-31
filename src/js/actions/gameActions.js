@@ -2,7 +2,7 @@ import db from '../../firebase';
 import Moment from 'react-moment';//important
 import moment from 'moment';
 //Redux Actions
-import { setAdmin, setAlert, setScreen, handleFinishGame, changeLanguage } from '../actions/appActions';
+import { checkAdmin, setAlert, setScreen, handleFinishGame, changeLanguage } from '../actions/appActions';
 import { setTimer, setTime } from './gameMenuActions';
 export const toggleShowWords = () => {
     return {
@@ -48,17 +48,6 @@ export const setTimeLeft = (timeLeft) => {
     return {
         type: 'GAME/SET_TIME_LEFT',
         timeLeft
-    }
-}
-
-export const checkAdmin = () => {
-    return dispatch => {
-        let localData = sessionStorage.getItem('admin');
-        const admin = localData ? JSON.parse(localData) : false;
-
-        dispatch(setAdmin(admin));
-
-        return admin;
     }
 }
 

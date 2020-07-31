@@ -9,6 +9,13 @@ export const setGameId = (gameId) => {
   }
 }
 
+export const setFetchingGameData = (fetching) => {
+  return {
+    type: 'APP/SET_FETCHING_GAME_DATA',
+    fetching
+  }
+}
+
 export const clearAppState = () => {
   return {
     type: 'APP/CLEAR_APP_STATE',
@@ -81,8 +88,37 @@ export const removeAlert = () => {
   }
 }
 
+export const checkAdmin = () => {
+  return dispatch => {
+    let localData = sessionStorage.getItem('admin');
+    const admin = localData ? JSON.parse(localData) : false;
+
+    dispatch(setAdmin(admin));
+
+    return admin;
+  }
+}
+
+export const getGameId = () => {
+  return dispatch => {
+    const pathArray = window.location.pathname.split('/');
+    const gameId = pathArray[2];
+    dispatch(setGameId(gameId));
+    return gameId;
+  }
+}
+
+export const getGameData = (gameId) => {
+  return dispatch => {
+    return db.collection('games').doc(gameId).get()
+    .then(response => response.data())
+    .catch(() => {
+      dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+    });
+  }
+}
+
 export const handleFinishGame = (gameId, admin) => {
-  console.log(gameId, admin)
   return dispatch => {
     if(admin) {
       db.collection('games').doc(gameId).update({

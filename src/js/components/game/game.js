@@ -11,8 +11,8 @@ import LoadingSpinner from '../global_components/loadingSpinner';
 import AudioController from './audio-controller';
 import Menu from './menu/menu';
 //Redux Actions
-import { setGameId, setAlert } from '../../actions/appActions';
-import { setEndTime, checkAdmin, checkEndTime, fetchGameData } from '../../actions/gameActions';
+import { setGameId, checkAdmin, setAlert } from '../../actions/appActions';
+import { setEndTime, checkEndTime, fetchGameData } from '../../actions/gameActions';
 
 class Game extends React.Component {
   componentDidMount() {
