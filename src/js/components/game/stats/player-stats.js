@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { cloneDeep } from 'lodash';
 //Custom Components
 import RoundPoints from './round-points';
 import Card from '../../global_components/card';
@@ -13,7 +14,7 @@ const PlayerStats = (props) => {
     };
 
     const getRoundPoints = () => {
-        const allPoints = [ ...props.player.allPoints ]
+        const allPoints = cloneDeep(props.player.allPoints);
         const roundPoints = allPoints.map((points, index) => {
             return (
                 <RoundPoints round={index + 1} points={points} key={index}/>

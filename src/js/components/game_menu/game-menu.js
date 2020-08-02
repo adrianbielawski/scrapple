@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { cloneDeep } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import '../../../styles/game-menu.scss';
 //Custom Components
@@ -75,7 +76,7 @@ const GameMenu = (props) => {
     }
   
     const getPlayers = () => {
-      let players = [ ...props.playersNames];
+      let players = cloneDeep(props.playersNames);
       players = players.map((player, index) => {
         return {
           playerName: player,

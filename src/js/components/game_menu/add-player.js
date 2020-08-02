@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'react-redux';
+import { cloneDeep } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -43,11 +44,11 @@ const AddPlayer = (props) => {
     
     const checkPlayers = (player) => {
         const lowNewPlayer = player.toLowerCase();
-        const players = [ ...props.playersNames ]
+        const players = cloneDeep(props.playersNames);
         const lowPlayers = players.map((player) => {
             const lowPlayer = player.toLowerCase();
             return lowPlayer
-        })
+        });
         return lowPlayers.includes(lowNewPlayer);
     }
 

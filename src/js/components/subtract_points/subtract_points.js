@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { cloneDeep } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import '../../../styles/game-summary.scss';
 //Custom Components
@@ -50,7 +51,7 @@ const SubtractPoints = (props) => {
     };
 
     const getPlayers = () => {
-        const players = [ ...props.players ];
+        const players = cloneDeep(props.players);
         let playersContent = players.map((player, index) => {
             return <PlayerSubPoints playerName={player.playerName} key={index} index={index}/>
         });

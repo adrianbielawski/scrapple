@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { cloneDeep } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import '../../../styles/game-summary.scss';
 //Components
@@ -33,7 +34,7 @@ const GameSummary = (props) => {
     }, []);
 
     const getPlayersPositions = () => {
-        let players = [ ...props.players];
+        let players = cloneDeep(props.players);
         players.sort((a, b) => {
             return b.currentScore - a.currentScore
         });

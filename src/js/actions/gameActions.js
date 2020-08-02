@@ -1,6 +1,7 @@
 import db from '../../firebase';
 import Moment from 'react-moment';//important
 import moment from 'moment';
+import { cloneDeep } from 'lodash';
 //Redux Actions
 import { checkAdmin, setAlert, setScreen, handleFinishGame, changeLanguage } from '../actions/appActions';
 import { setTimer, setTime } from './gameMenuActions';
@@ -63,7 +64,7 @@ export const checkEndTime = (data, gameId) => {
         const valid = stateT.diff(now, 'seconds') > 2;
         if (!valid) {
             let currentPlayer = data.currentPlayer;
-            let players = [...data.players];
+            let players = cloneDeep(data.players);
 
             currentPlayer = getNextPlayer(players, currentPlayer);
 
@@ -137,7 +138,7 @@ const setGameState = (data, endTime) => {
 }
 
 export const addPoints = (points, players, currentPlayer, timer, time, gameId) => () => {
-  let updatedPlayers = [ ...players];
+  let updatedPlayers = cloneDeep(players);
   let player = updatedPlayers[currentPlayer];
   player.currentScore += points;
   player.allPoints.push(points);
