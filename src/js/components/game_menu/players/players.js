@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { cloneDeep } from 'lodash';
 //Custom Components
 import Player from './player';
 
 const Players = (props) => {
+
     const getPlayers = () => {
-        const propsPlayers = cloneDeep(props.playersNames);
+        const propsPlayers = [ ...props.playersNames];
         const players = propsPlayers.map((player, index) => {
             return <Player key={index} index={index} player={player} />
         })

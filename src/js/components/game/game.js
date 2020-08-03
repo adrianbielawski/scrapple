@@ -44,24 +44,21 @@ class Game extends React.Component {
     const gameClass = this.props.showWords ? 'show-words' : '';
       
     return (
-      <div>
-        {this.props.fetching ? <LoadingSpinner /> : ( 
-          <div className={`game ${gameClass}`}>
-            {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
-            <div className="top-wrapper">
-              <Menu />
-              <WordChecker />
-              {this.props.admin ? <AudioController /> : null}
-            </div>
-            <TwoLetterWords />
-            <Stats />
-            {this.props.admin ? <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm">
-              {this.props.t("Finish the game")}
-            </button> : null }
-            <div style={{flex: 1000}}></div>
+      this.props.fetching ? <LoadingSpinner /> : ( 
+        <div className={`game ${gameClass}`}>
+          {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
+          <div className="top-wrapper">
+            <Menu />
+            <WordChecker />
+            {this.props.admin ? <AudioController /> : null}
           </div>
-        )}
-      </div>
+          <TwoLetterWords />
+          <Stats />
+          {this.props.admin && <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm">
+            {this.props.t("Finish the game")}
+          </button>}
+        </div>
+      )
     );
   }
 }

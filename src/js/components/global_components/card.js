@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Card = (props) => {
+const Card = (props, ref) => {
     return (
-        <div className={`card ${props.className}`}>
+        <div className={`card ${props.className}`} ref={ref}>
             {props.children}
         </div>
     );
 }
  
-export default Card;
+export default React.forwardRef(Card);

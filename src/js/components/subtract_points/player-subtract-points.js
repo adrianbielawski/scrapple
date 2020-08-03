@@ -7,7 +7,7 @@ const PlayerSubPoints = (props) => {
         <li className="sub">
             <Card>
                 <div className="player-name">{props.playerName}</div>
-                <input id={`sub-points${props.index}`} type="number" placeholder="0"></input>
+                <input type="number" placeholder="0" onChange={props.onChange} />
             </Card>
         </li>
     );

@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import { cloneDeep } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import '../../../styles/game-menu.scss';
 //Custom Components
@@ -76,7 +75,7 @@ const GameMenu = (props) => {
     }
   
     const getPlayers = () => {
-      let players = cloneDeep(props.playersNames);
+      let players = [ ...props.playersNames];
       players = players.map((player, index) => {
         return {
           playerName: player,
@@ -91,7 +90,6 @@ const GameMenu = (props) => {
     }
 
     const buttonText =  props.playedAgainWithSettings ? 'Play again' : 'Create game';
-    
     return (
         <div className="game-menu">
             {props.showConfirmation ? <Confirmation /> : null}

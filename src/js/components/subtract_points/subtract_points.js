@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { cloneDeep } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import '../../../styles/game-summary.scss';
 //Custom Components
@@ -11,9 +10,11 @@ import LoadingSpinner from '../global_components/loadingSpinner';
 import { getGameId, setAlert, getGameData, setFetchingGameData } from '../../actions/appActions';
 import { setPlayers } from '../../actions/gameActions';
 import { subPoints } from '../../actions/subtractPointsActions';
+import { every } from 'lodash';
 
 const SubtractPoints = (props) => {
-    const { t } = useTranslation();    
+    const { t } = useTranslation();
+    const [points, setPoints] = useState({});
 
     useEffect(() => {
         const gameId = props.gameId || props.getGameId();
@@ -30,32 +31,27 @@ const SubtractPoints = (props) => {
         const isValid = validateUserInputs();
 
         if (isValid) {
-            props.subPoints(props.gameId, props.players);
+            props.subPoints(props.gameId, props.players, points);
         } else {
             props.setAlert('alert', 'Points value must be positive integer');
         }
     }
 
     const validateUserInputs = () => {
-        for (let i = 0; i < props.players.length; i++) {
-            const inputVal = document.getElementById(`sub-points${i}`).value;
-            inputVal = parseFloat(inputVal);
-            if(!inputVal) {
-                inputVal = 0
-            }
-            if (inputVal < 0 || !Number.isInteger(inputVal)) {
-                return false
-            };
-        };
-        return true;
+        return every(points, point => {
+            const p = parseFloat(point);
+            return Number.isInteger(p) && p >= 0;
+        });
     };
 
     const getPlayers = () => {
-        const players = cloneDeep(props.players);
-        let playersContent = players.map((player, index) => {
-            return <PlayerSubPoints playerName={player.playerName} key={index} index={index}/>
+        return props.players.map((player, index) => {
+            const onChange = e => setPoints({
+                ...points,
+                [index]: e.target.value,
+            });
+            return <PlayerSubPoints playerName={player.playerName} key={index} onChange={onChange} />
         });
-        return playersContent;
     };
 
     return (
@@ -87,7 +83,7 @@ const mapDispatchToProps = (dispatch) => {
         getGameId: () => dispatch(getGameId()),
         setPlayers: (players) => { dispatch(setPlayers(players)) },
         setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
-        subPoints: (gameId, players) => { dispatch(subPoints(gameId, players)) },
+        subPoints: (gameId, players, points) => { dispatch(subPoints(gameId, players, points)) },
         getGameData: (gameId) => dispatch(getGameData(gameId)),
         setFetchingGameData: (fetching) => { dispatch(setFetchingGameData(fetching)) },
     }

@@ -14,15 +14,13 @@ class Player extends Component {
             isTouchDevice: false,
             top: 0,
             left: 0,
-            startX: 0,
-            elementH: 0,
             distance: 0,
-        }
+        },
+        this.element = React.createRef();
     }
 
     componentDidMount () {
-        this.element = document.getElementsByClassName('player')[this.props.index];
-        this.elementH = this.element.getBoundingClientRect().height;
+        this.elementH = this.element.current.getBoundingClientRect().height;
     }
 
     handleGrab = (e) => {
@@ -35,13 +33,7 @@ class Player extends Component {
         };
         this.setGrabbedElement(this.props.index, e.type);
         
-        const parent = document.getElementsByClassName('players')[0];
-        const parentD = parent.getBoundingClientRect();
-        parent.style.height = `${parentD.height}px`;
-        
-        const elementD = this.element.getBoundingClientRect();
-        
-        const topStart =  elementD.y - parentD.y;
+        const topStart =  this.props.index * this.elementH;
         
         let startX = e.clientX;
         let startY = e.clientY;
@@ -50,7 +42,7 @@ class Player extends Component {
             startY = e.touches[0].clientY;
         }
 
-        this.setState(state => ({ ...state, isGrabbed: true, top: topStart, topStart, startX}));
+        this.setState(state => ({ ...state, isGrabbed: true, top: topStart}));
         this.handleMove = () => {this.move(event, startX, startY, topStart)}
         if(e.type === 'mousedown') {
             window.addEventListener('mousemove', this.handleMove);
@@ -64,8 +56,7 @@ class Player extends Component {
         eType === 'touchstart' && this.props.setTouches(this.props.touches + 1);
         this.props.setInitialListSpace(index -1);
         this.props.setListSpace(index -1);
-        this.props.setGrabbedElement(index);
-        
+        this.props.setGrabbedElement(index);        
     }
 
     move = (e, startX, startY, topStart) => {
@@ -86,7 +77,7 @@ class Player extends Component {
         if(distance !== this.state.distance) {
             this.addSpace(distance);
         };
-        this.setState(state => ({ ...state, top, left, startX, distance}));
+        this.setState(state => ({ ...state, top, left, distance}));
     }
 
     addSpace = (distance) => {
@@ -113,13 +104,10 @@ class Player extends Component {
         window.removeEventListener('mousemove', this.handleMove);
         window.removeEventListener('touchmove', this.handleMove);
         
-        let parent = document.getElementsByClassName('players')[0];
-        parent.style.height = `auto`;
-        
         this.addSpace(0);
         const event = e.type;
         this.drop(event);
-        this.setState(state => ({ ...state, isGrabbed: false, top: 0, left: 0, distance: 0, startX: 0}));
+        this.setState(state => ({ ...state, isGrabbed: false, top: 0, left: 0, distance: 0 }));
     }
 
     drop = (eType) => {
@@ -207,7 +195,7 @@ class Player extends Component {
         const styles = this.getStyles();
         
         return (
-            <li className={`player ${styles.grabbed} ${styles.hover}`} style={styles.position}>
+            <li className={`player ${styles.grabbed} ${styles.hover}`} style={styles.position} ref={this.element}>
                 <div className={`top-list-space ${styles.topSpaceClass}`} style={styles.topSpaceStyle}></div>
                 <div className="wrapper">
                     <div onMouseDown={this.handleGrab}

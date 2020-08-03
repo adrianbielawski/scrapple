@@ -64,7 +64,7 @@ export const checkEndTime = (data, gameId) => {
         const valid = stateT.diff(now, 'seconds') > 2;
         if (!valid) {
             let currentPlayer = data.currentPlayer;
-            let players = cloneDeep(data.players);
+            let players = [ ...data.players];
 
             currentPlayer = getNextPlayer(players, currentPlayer);
 
@@ -157,8 +157,6 @@ export const addPoints = (points, players, currentPlayer, timer, time, gameId) =
     currentPlayer: nextPlayer,
     endTime
   });
-
-  scrollPlayersStats(currentPlayer);
 }
 
 export const timeOut = (players, currentPlayer, time, gameId) => {
@@ -173,11 +171,6 @@ export const timeOut = (players, currentPlayer, time, gameId) => {
             dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
         });;
     }
-}
-
-const scrollPlayersStats = (currentPlayer) => {
-  const playerStats = document.getElementsByClassName('player-stats');
-  playerStats[currentPlayer].scrollIntoView();
 }
 
 const getNextPlayer = (players, currentPlayer) => {

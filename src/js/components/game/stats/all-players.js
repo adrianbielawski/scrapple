@@ -1,17 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { cloneDeep } from 'lodash';
 // Custom Components
 import PlayerStats from './player-stats';
 
 const AllPlayers = (props) => {
-    const players = cloneDeep(props.players);
+    const players = [ ...props.players];
     const currentPlayer = props.currentPlayer;
 
     const playerStats = players.map((player, index) => {
-        let className = currentPlayer === index ? 'current' : '';
+        const isCurrent = currentPlayer === index;
         return (
-            <PlayerStats className={className} player={player} key={index}/>
+            <PlayerStats player={player} key={index} isCurrent={isCurrent}/>
         );
     });
 
