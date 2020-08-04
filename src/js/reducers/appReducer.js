@@ -1,4 +1,4 @@
-const app = {
+const initialState = {
   screenHeight: window.innerHeight,
   fetchingGameData: true,
   screen: window.location.pathname.slice(1) || 'MainMenu',
@@ -19,7 +19,7 @@ const app = {
   },
 };
 
-const appReducer = (state = app, action) => {
+const appReducer = (state = initialState, action) => {
   let newState = { ...state };
   switch(action.type) {
     case 'APP/SET_SCREEN_HEIGHT':
@@ -88,9 +88,6 @@ const appReducer = (state = app, action) => {
         props: '',
       }
       return newState;
-    
-    case 'GAME_MENU/GAME_CREATED':
-      return 
       
     default:
       return state;

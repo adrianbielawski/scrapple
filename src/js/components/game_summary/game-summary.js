@@ -65,15 +65,15 @@ const GameSummary = (props) => {
     };
 
     return (
-        <div>
+        <div className="game-summary">
+            {props.exitOption === 'playAgainWithSettings' || (props.exitOption === 'playAgain' && props.timer) ?
+                <WaitingCover exitOption={props.exitOption} />
+            : null}
+            {props.showExitOptions && <ExitOptions />}
+            <Header />
+            <h2>{t("Game results")}</h2>
             {props.fetchingGameData ? <LoadingSpinner /> : (
-                <div className="game-summary">
-                    {props.exitOption === 'playAgainWithSettings' || (props.exitOption === 'playAgain' && props.timer) ?
-                        <WaitingCover exitOption={props.exitOption} />
-                    : null}
-                    {props.showExitOptions && <ExitOptions />}
-                    <Header />
-                    <h2>{t("Game results")}</h2>
+                <div>
                     <ul className="results">
                         {getPlayersPositions()}
                     </ul>

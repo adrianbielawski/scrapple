@@ -1,6 +1,6 @@
-const names = ['aaa', 'bbb'];
+const initialState = ['aaa', 'bbb'];
 
-const playersNamesReducer = (state = names, action) => {
+const playersNamesReducer = (state = initialState, action) => {
   let playersNames = [ ...state ];
   switch(action.type) {
     case 'GAME_MENU/ADD_PLAYER':
@@ -18,7 +18,7 @@ const playersNamesReducer = (state = names, action) => {
       return playersNames;
 
     case 'APP/CLEAR_APP_STATE':
-      playersNames = [];
+      playersNames = { ...initialState };
       return playersNames;
 
     default:

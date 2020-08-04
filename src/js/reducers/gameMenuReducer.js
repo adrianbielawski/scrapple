@@ -1,4 +1,4 @@
-const gameMenu = {
+const initialState = {
   players: {
     initialListSpace: null,
     listSpace: null,
@@ -10,7 +10,7 @@ const gameMenu = {
   showConfirmation: false,
 };
 
-const gameMenuReducer = (state = gameMenu, action) => {
+const gameMenuReducer = (state = initialState, action) => {
   let newState = { ...state };
   switch(action.type) {
     case 'GAME_MENU/SET_LIST_SPACE':

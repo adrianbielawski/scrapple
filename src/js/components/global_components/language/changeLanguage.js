@@ -14,15 +14,15 @@ const ChangeLanguage = (props) => {
     };
 
     const getLanguages = () => {
-        const langs = Object.entries(languages).map((lang, i) => {
+        return Object.entries(languages).map((lang, i) => {
             if(lang[0] === props.language) { return }
             return (
                 <Language showName={props.showName} lang={lang[1]} key={i} />
             )
         })
-        return langs;
     }
-    const langClass = showLanguages ? 'active' : null;
+
+    const langClass = showLanguages && 'active';
     
     return (
         <div className="choose-language" onClick={toggleShowLanguages}>

@@ -1,4 +1,4 @@
-const game = {
+const initialState = {
     fetching: true,
     showWords: false,
     isAudioEnabled: false,
@@ -9,7 +9,7 @@ const game = {
     showMenu: false,
 };
   
-const gameReducer = (state = game, action) => {
+const gameReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch(action.type) {                
         case 'GAME/SET_FETCHING_GAME_DATA':
@@ -42,6 +42,10 @@ const gameReducer = (state = game, action) => {
 
         case 'GAME/TOGGLE_SHOW_MENU':
             newState.showMenu = !state.showMenu;
+            return newState;
+
+        case 'APP/CLEAR_APP_STATE':
+            newState = { ...initialState };
             return newState;
         
         default:

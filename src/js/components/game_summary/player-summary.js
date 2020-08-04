@@ -21,11 +21,10 @@ const PlayerSummary = (props) => {
             default:
                 return
         }
-        let img = <img src={`../../src/assets/img/${place}-place.png`}></img>;
-        return img
+
+        return <img src={`../../src/assets/img/${place}-place.png`}></img>;
     };
 
-    const img = getImg()
     const player = props.player;
     return (
         <li>
@@ -33,7 +32,7 @@ const PlayerSummary = (props) => {
                 <div className="player-name">
                     <div className="place">
                         <p>{t(props.placeText)} {t("place")}</p>
-                        {img}
+                        {getImg()}
                     </div>
                     <p>{player.playerName}</p>
                 </div>

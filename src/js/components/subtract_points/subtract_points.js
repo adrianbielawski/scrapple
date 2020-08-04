@@ -55,11 +55,11 @@ const SubtractPoints = (props) => {
     };
 
     return (
-        <div>
+        <div className="game-summary">
+            <Header />
+            <h2>{t("Subtract points of unused letters")}</h2>
             {props.fetchingGameData ? <LoadingSpinner /> : (
-                <div className="game-summary">
-                    <Header />
-                    <h2>{t("Subtract points of unused letters")}</h2>
+                <div>
                     <ul className="results">
                         {getPlayers()}
                     </ul>

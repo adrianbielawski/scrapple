@@ -1,4 +1,4 @@
-const timeLimit = {
+const initialState = {
   timer: true,
   time: {
     hours: '00',
@@ -7,7 +7,7 @@ const timeLimit = {
   }
 };
 
-const timeLimitReducer = (state = timeLimit, action) => {
+const timeLimitReducer = (state = initialState, action) => {
   let newState = { ...state };
   switch(action.type) {
     case 'GAME_MENU/SET_TIMER':

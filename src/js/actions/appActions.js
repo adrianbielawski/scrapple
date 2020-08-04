@@ -2,6 +2,8 @@ import db from '../../firebase';
 import i18n from '../../i18n';
 //Redux Actions
 import { joinGame } from '../actions/mainMenuActions';
+import { clearGameSummaryState } from '../actions/gameSummaryActions';
+import { clearGameState } from '../actions/gameActions';
 
 export const setGameId = (gameId) => {
   return {
@@ -188,6 +190,7 @@ export const playAgain = (gameId) => {
       dispatch(setScreen('MainMenu'));
       dispatch(joinGame(gameId));
     };
+    dispatch(clearGameSummaryState());
   }
 }
 
@@ -220,6 +223,7 @@ export const playAgainSettings = (gameId) => {
         dispatch(setScreen(`MainMenu`));
         dispatch(joinGame(gameId));
     };
+    dispatch(clearGameSummaryState());
   }
 }
 
@@ -232,6 +236,7 @@ export const exitGame = (gameId, admin) => {
     }
     
     dispatch(clearAppState());
+    dispatch(clearGameSummaryState());
   }
 }
   

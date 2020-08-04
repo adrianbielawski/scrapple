@@ -28,6 +28,12 @@ export const setShowExitOptions = (show) => {
     }
 }
 
+export const clearGameSummaryState = () => {
+    return {
+        type: 'GAME_SUMMARY/CLEAR_STATE',
+    }
+}
+
 const setExitOption = (exitOption) => {
     return {
         type: 'GAME_SUMMARY/SET_EXIT_OPTION',

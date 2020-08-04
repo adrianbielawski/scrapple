@@ -75,8 +75,7 @@ const GameMenu = (props) => {
     }
   
     const getPlayers = () => {
-      let players = [ ...props.playersNames];
-      players = players.map((player, index) => {
+      return props.playersNames.map((player, index) => {
         return {
           playerName: player,
           playerId: index,
@@ -85,8 +84,6 @@ const GameMenu = (props) => {
           allPoints: [],
         }
       });
-  
-      return players
     }
 
     const buttonText =  props.playedAgainWithSettings ? 'Play again' : 'Create game';
