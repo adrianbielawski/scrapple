@@ -6,7 +6,8 @@ import '../../../styles/main-menu.scss';
 import Header from '../global_components/header';
 import Confirmation from './confirmation';
 import Card from '../global_components/card';
-import Language from '../global_components/language/changeLanguage';
+import LogOut from '../global_components/logOut';
+import UserName from '../global_components/userName';
 //Redux Actions
 import { setAlert, setScreen } from '../../actions/appActions';
 import { joinGame } from '../../actions/mainMenuActions';
@@ -46,6 +47,10 @@ const MainMenu = (props) => {
             {props.gameId && <Confirmation gameId={props.gameId}/>}
             <Header />
             <div className="content">
+                <div className="account-info">
+                    <UserName />
+                    <LogOut />
+                </div>
                 <Card>
                     <button onClick={renderGameMenu}>{t("Create new game")}</button>
                 </Card>

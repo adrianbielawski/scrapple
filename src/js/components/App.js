@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { auth } from '../../firebase';
 import '../../styles/App.scss';
 //Custom Components
 import Main from './main/main';
@@ -12,7 +13,7 @@ const SubtractPoints = React.lazy(() => import('./subtract_points/subtract_point
 import LoadingSpinner from './global_components/loadingSpinner';
 import Alert from './global_components/alert';
 //Redux Actions
-import { setScreenHeight } from '../actions/appActions';
+import { setScreenHeight, setUser, clearUser } from '../actions/appActions';
 
 class App extends React.Component {
   constructor(props) {
@@ -22,6 +23,18 @@ class App extends React.Component {
 
   componentWillUnmount = () => {
     removeEventListener(this.listenScreenHeight)
+  }
+
+  componentDidMount = () => {
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        console.log(user)
+        const email = user.email;
+        this.props.setUser(email)
+      } else {
+        this.props.clearUser()
+      }
+    });
   }
 
   setScreenHeight = () => {
@@ -74,6 +87,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setScreenHeight: (height) => { dispatch(setScreenHeight(height)) },
+    setUser: (email) => { dispatch(setUser(email)) },
+    clearUser: () => { dispatch(clearUser()) },
   }
 }
 

@@ -88,7 +88,17 @@ const appReducer = (state = initialState, action) => {
         props: '',
       }
       return newState;
+
+    case 'APP/SET_USER':
+      newState.user = {
+        email: action.email
+      }
+      return newState;
       
+    case 'APP/CLEAR_USER':
+      newState.user = {}
+      return newState;
+     
     default:
       return state;
   }

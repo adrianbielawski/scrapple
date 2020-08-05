@@ -49,6 +49,12 @@ html, body, div, span, h1, h2, p, a, ul, li {
     color: $darkText;
   }
 
+  .log-out {
+    font-size: 1.2em;
+    font-weight: 700;
+    padding: 5px;
+  }
+
   button {
     display: flex;
     justify-content: center;

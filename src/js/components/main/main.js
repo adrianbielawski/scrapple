@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import '../../../styles/login.scss';
+import '../../../styles/main.scss';
 //Custom Components
 import Header from '../global_components/header';
 import Language from '../global_components/language/changeLanguage';
@@ -10,7 +10,7 @@ import Signup from './Signup';
 
 const Main = (props) => {
     return ( 
-        <div className="login">
+        <div className="main">
             <Header />
             <div className="content">
                 <Language showName={false} />

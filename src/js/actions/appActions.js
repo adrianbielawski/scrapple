@@ -3,12 +3,24 @@ import i18n from '../../i18n';
 //Redux Actions
 import { joinGame } from '../actions/mainMenuActions';
 import { clearGameSummaryState } from '../actions/gameSummaryActions';
-import { clearGameState } from '../actions/gameActions';
 
 export const setGameId = (gameId) => {
   return {
     type: 'APP/SET_GAME_ID',
     gameId
+  }
+}
+
+export const setUser = (email) => {
+  return {
+    type: 'APP/SET_USER',
+    email,
+  }
+}
+
+export const clearUser = () => {
+  return {
+    type: 'APP/CLEAR_USER',
   }
 }
 
