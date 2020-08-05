@@ -3,7 +3,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import '../../styles/App.scss';
 //Custom Components
-import Login from './login/login';
+import Main from './main/main';
 import MainMenu from './main_Menu/MainMenu';
 const GameMenu = React.lazy(() => import('./game_menu/game-menu'));
 const Game = React.lazy(() => import('./game/game'));
@@ -35,7 +35,7 @@ class App extends React.Component {
         {this.props.alert.show && <Alert />}
         <Redirect to={`/${this.props.screen}`} />
         <Switch>
-          <Route path="/Login" render={() => (<Login />)} />
+          <Route path={["/login", "/signup"]} render={() => (<Main />)} />
           <Route path="/MainMenu" render={() => (<MainMenu />)} />
           <Route path="/GameMenu" render={() => (
             <Suspense fallback={<LoadingSpinner />}>
