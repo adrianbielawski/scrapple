@@ -4,6 +4,11 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   en: {
     translation: {
+      //Login
+      "e-mail" : "e-mail",
+      "password" : "password",
+      "Login" : "Login",
+      "Don't have an account" : "Don't have an account. <1>Create new account here!</1>",
       //MainMenu
       "Game ID" : "Game ID",
       "Create new game" : "Create new game",
@@ -81,6 +86,11 @@ const resources = {
   },
   pl: {
     translation: {
+      //Login
+      "e-mail" : "e-mail",
+      "password" : "hasło",
+      "Login" : "Zaloguj",
+      "Don't have an account" : "Nie masz konta. <1>Zarejestruj się tutaj!</1>",
       //MainMenu
       "Game ID" : "Numer gry",
       "Create new game" : "Utwórz nową grę",

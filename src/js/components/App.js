@@ -3,13 +3,14 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import '../../styles/App.scss';
 //Custom Components
-import Alert from './global_components/alert';
+import Login from './login/login';
 import MainMenu from './main_Menu/MainMenu';
-import LoadingSpinner from './global_components/loadingSpinner';
 const GameMenu = React.lazy(() => import('./game_menu/game-menu'));
 const Game = React.lazy(() => import('./game/game'));
 const GameSummary = React.lazy(() => import('./game_summary/game-summary'));
 const SubtractPoints = React.lazy(() => import('./subtract_points/subtract_points'));
+import LoadingSpinner from './global_components/loadingSpinner';
+import Alert from './global_components/alert';
 //Redux Actions
 import { setScreenHeight } from '../actions/appActions';
 
@@ -34,6 +35,7 @@ class App extends React.Component {
         {this.props.alert.show && <Alert />}
         <Redirect to={`/${this.props.screen}`} />
         <Switch>
+          <Route path="/Login" render={() => (<Login />)} />
           <Route path="/MainMenu" render={() => (<MainMenu />)} />
           <Route path="/GameMenu" render={() => (
             <Suspense fallback={<LoadingSpinner />}>

@@ -43,14 +43,13 @@ const MainMenu = (props) => {
 
     return ( 
         <div className="main-menu">
-            {props.gameId ? <Confirmation gameId={props.gameId}/> : null}
+            {props.gameId && <Confirmation gameId={props.gameId}/>}
             <Header />
             <div className="content">
-                <Language showName={false} />
-                <Card >
+                <Card>
                     <button onClick={renderGameMenu}>{t("Create new game")}</button>
                 </Card>
-                <Card className="join-game">
+                <Card>
                     <input placeholder={t("Game ID")} ref={gameIdInput}></input>
                     <button onClick={validateUserInput}>{t("Join the game")}</button>
                 </Card>

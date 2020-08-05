@@ -2,7 +2,7 @@ import React from 'react';
 
 const Card = (props, ref) => {
     return (
-        <div className={`card ${props.className}`} ref={ref}>
+        <div className={`card ${props.className || ''}`} ref={ref}>
             {props.children}
         </div>
     );

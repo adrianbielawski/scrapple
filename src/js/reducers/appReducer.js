@@ -1,7 +1,7 @@
 const initialState = {
   screenHeight: window.innerHeight,
   fetchingGameData: true,
-  screen: window.location.pathname.slice(1) || 'MainMenu',
+  screen: window.location.pathname.slice(1) || 'Login',
   gameId: null,
   language: 'en-GB',
   admin: false,

@@ -4,10 +4,9 @@ import { connect } from 'react-redux';
 import PlayerStats from './player-stats';
 
 const AllPlayers = (props) => {
-    const players = [ ...props.players];
     const currentPlayer = props.currentPlayer;
 
-    const playerStats = players.map((player, index) => {
+    const playerStats = props.players.map((player, index) => {
         const isCurrent = currentPlayer === index;
         return (
             <PlayerStats player={player} key={index} isCurrent={isCurrent}/>
