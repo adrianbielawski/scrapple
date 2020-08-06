@@ -6,12 +6,12 @@ import { useTranslation } from 'react-i18next';
 const UserName = (props) => {
     const { t } = useTranslation();
 
-    return ( <p>{t("Logged in as", {'name': props.email})}</p> );
+    return <p>{t("Logged in as", {'name': props.userName})}</p>;
 }
 
 const mapStateToProps = (state) => {
     return {
-      email: state.app.user.email
+      userName: state.app.user.displayName
     }
 }
 

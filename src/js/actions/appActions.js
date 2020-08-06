@@ -1,4 +1,4 @@
-import db from '../../firebase';
+import { db, auth } from '../../firebase';
 import i18n from '../../i18n';
 //Redux Actions
 import { joinGame } from '../actions/mainMenuActions';
@@ -11,10 +11,10 @@ export const setGameId = (gameId) => {
   }
 }
 
-export const setUser = (email) => {
+export const setUser = (user) => {
   return {
     type: 'APP/SET_USER',
-    email,
+    user
   }
 }
 
@@ -108,6 +108,7 @@ export const changeLanguage = (language) => {
     const html = document.getElementsByTagName('html');
     html[0].lang = language;
     i18n.changeLanguage(language);
+    auth.languageCode = language;
     dispatch(setLanguage(language))
   }
 }

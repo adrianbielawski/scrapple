@@ -5,6 +5,7 @@ import gameMenuReducer from './gameMenuReducer';
 import gameReducer from './gameReducer';
 import appReducer from './appReducer';
 import gameSummaryReducer from './gameSummaryReducer';
+import authReducer from './authReducer';
 
 const rootReducer = combineReducers({
   playersNames: playersNamesReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   game: gameReducer,
   app: appReducer,
   gameSummary: gameSummaryReducer, 
+  auth: authReducer,
 });
 
 export default rootReducer;

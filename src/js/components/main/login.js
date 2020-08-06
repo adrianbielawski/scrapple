@@ -4,8 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 //Custom Components
 import Card from '../global_components/card';
+import LoadingSpinner from '../global_components/loadingSpinner';
 //Redux Actions
 import { setScreen } from '../../actions/appActions';
+import { logIn, setIsLoggingIn } from '../../actions/authActions';
 
 const Login = (props) => {
     const { t } = useTranslation();
@@ -13,21 +15,23 @@ const Login = (props) => {
     const passwordInput = useRef(null);
 
     const handleSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         const email = emailInput.current.value;
         const password = passwordInput.current.value;
 
-        const isValid = validateUserInput(email, password);
+        props.setIsLoggingIn(true);
+        
+        const promise = props.logIn(email, password);
+        promise.then(user => {
+            props.setIsLoggingIn(false);
 
-        if(isValid) {
-            props.logIn(email, password)
-        };
-        emailInput.current.value = '';
-        passwordInput.current.value = '';
-    }
+            if (user === undefined) {
+                return;
+            };
 
-    const validateUserInput = (email, password) => {
-        return true;
+            emailInput.current.value = '';
+            passwordInput.current.value = '';
+        });
     }
 
     const handleSignUp = () => {
@@ -36,25 +40,36 @@ const Login = (props) => {
 
     return (
         <Card>
-            <form onSubmit={handleSubmit}>
-                <input type="email" placeholder={t("e-mail")} ref={emailInput}></input>
-                <input type="password" placeholder={t("password")} ref={passwordInput} min="6"></input>
-                <button type="submit">{t("Login")}</button>
-            </form>
-            <p>
-                <Trans i18nKey="Don't have an account">
-                    Don't have an account? <span onClick={handleSignUp}>Create new account here!</span>
-                </Trans>
-            </p>
+            <div>
+                <form onSubmit={handleSubmit}>
+                    <input type="email" placeholder={t("e-mail")} ref={emailInput} required />
+                    <input type="password" placeholder={t("password")} ref={passwordInput} minLength="6" required />
+                    {props.isLoggingIn ? <LoadingSpinner background={false} /> : <button type="submit">{t("Login")}</button>}
+                </form>
+                {!props.isLoggingIn &&
+                    <p>
+                        <Trans i18nKey="Don't have an account">
+                            Don't have an account? <span onClick={handleSignUp}>Create new account here!</span>
+                        </Trans>
+                    </p>
+                }
+            </div>
         </Card>
-     );
+    );
+}
+
+const mapStateToProps = (state) => {
+    return {
+      isLoggingIn: state.auth.isLoggingIn,
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setScreen: (screen) => { dispatch(setScreen(screen)) },
-    logIn: (email, password) => { dispatch(logIn(email, password)) },
+    setScreen: (screen) => dispatch(setScreen(screen)),
+    logIn: (email, password) => dispatch(logIn(email, password)),
+    setIsLoggingIn: (isLoggingIn) => dispatch(setIsLoggingIn(isLoggingIn)),
   }
 }
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

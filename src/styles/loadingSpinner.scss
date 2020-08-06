@@ -1,3 +1,5 @@
+@import "variables";
+
 .loader {
     font-size: 20px;
     text-indent: -9999em;
@@ -40,6 +42,9 @@
     left: 0;
     bottom: 0;
     right: 0;
+  }
+  .no-background:after {
+    background: $offWhite;
   }
   @-webkit-keyframes load3 {
     0% {

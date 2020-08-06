@@ -30,7 +30,7 @@ const Confirmation = (props) => {
             <p className="message">{t(message)}</p>
             {!props.allPlayersJoined ? 
                 <div>
-                    <LoadingSpinner />
+                    <LoadingSpinner background={false} />
                     <p className="or">{t("or")}</p>
                     <button onClick={handleStartAdminGame}>{t("Start anyway")}</button>
                 </div> :

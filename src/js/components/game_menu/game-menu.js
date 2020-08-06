@@ -10,6 +10,7 @@ import AddPlayer from './add-player';
 import Header from '../global_components/header';
 import Confirmation from './confirmation';
 import Card from '../global_components/card';
+import AccountInfo from '../global_components/accountInfo/accountInfo';
 //Redux Actions
 import { setGameId, setAlert } from '../../actions/appActions';
 import { setAllPlayersJoined, setShowConfirmation, createNewGame, subscribeJoinedPlayers } from '../../actions/gameMenuActions';
@@ -89,9 +90,10 @@ const GameMenu = (props) => {
     const buttonText =  props.playedAgainWithSettings ? 'Play again' : 'Create game';
     return (
         <div className="game-menu">
-            {props.showConfirmation ? <Confirmation /> : null}
+            {props.showConfirmation && <Confirmation />}
             <Header />
             <div className="menu">
+                <AccountInfo />
                 <Card>
                     <Language showName={true}/>
                 </Card>

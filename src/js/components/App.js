@@ -13,7 +13,7 @@ const SubtractPoints = React.lazy(() => import('./subtract_points/subtract_point
 import LoadingSpinner from './global_components/loadingSpinner';
 import Alert from './global_components/alert';
 //Redux Actions
-import { setScreenHeight, setUser, clearUser } from '../actions/appActions';
+import { setScreenHeight, setScreen, setUser, clearUser } from '../actions/appActions';
 
 class App extends React.Component {
   constructor(props) {
@@ -28,10 +28,9 @@ class App extends React.Component {
   componentDidMount = () => {
     auth.onAuthStateChanged(user => {
       if (user) {
-        console.log(user)
-        const email = user.email;
-        this.props.setUser(email)
+        this.props.setUser(user)
       } else {
+        this.props.setScreen('login')
         this.props.clearUser()
       }
     });
@@ -87,7 +86,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setScreenHeight: (height) => { dispatch(setScreenHeight(height)) },
-    setUser: (email) => { dispatch(setUser(email)) },
+    setScreen: (screen) => { dispatch(setScreen(screen)) },
+    setUser: (user) => { dispatch(setUser(user)) },
     clearUser: () => { dispatch(clearUser()) },
   }
 }

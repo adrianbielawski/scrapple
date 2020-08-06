@@ -12,7 +12,7 @@ const Confirmation = (props) => {
             <h2>{t("You have joined the game")}</h2>
             <p className="game-id">{t("Game ID")}: {props.gameId}</p>
             <p className="message">{t("Please wait until game started")}</p>
-            <LoadingSpinner />            
+            <LoadingSpinner background={false} />            
         </Dropdown>
     );
 }

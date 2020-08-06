@@ -6,8 +6,8 @@ import '../../../styles/main-menu.scss';
 import Header from '../global_components/header';
 import Confirmation from './confirmation';
 import Card from '../global_components/card';
-import LogOut from '../global_components/logOut';
-import UserName from '../global_components/userName';
+import AccountInfo from '../global_components/accountInfo/accountInfo';
+import LoadingSpinner from '../global_components/loadingSpinner';
 //Redux Actions
 import { setAlert, setScreen } from '../../actions/appActions';
 import { joinGame } from '../../actions/mainMenuActions';
@@ -42,24 +42,23 @@ const MainMenu = (props) => {
         props.setScreen(`GameMenu`)
     }
 
-    return ( 
-        <div className="main-menu">
-            {props.gameId && <Confirmation gameId={props.gameId}/>}
-            <Header />
-            <div className="content">
-                <div className="account-info">
-                    <UserName />
-                    <LogOut />
+    return (
+        props.user === {} ? <LoadingSpinner /> : (
+            <div className="main-menu">
+                {props.gameId && <Confirmation gameId={props.gameId}/>}
+                <Header />
+                <div className="content">
+                    <AccountInfo />
+                    <Card>
+                        <button onClick={renderGameMenu}>{t("Create new game")}</button>
+                    </Card>
+                    <Card>
+                        <input placeholder={t("Game ID")} ref={gameIdInput}></input>
+                        <button onClick={validateUserInput}>{t("Join the game")}</button>
+                    </Card>
                 </div>
-                <Card>
-                    <button onClick={renderGameMenu}>{t("Create new game")}</button>
-                </Card>
-                <Card>
-                    <input placeholder={t("Game ID")} ref={gameIdInput}></input>
-                    <button onClick={validateUserInput}>{t("Join the game")}</button>
-                </Card>
             </div>
-        </div>
+        )
      );
 }
 
@@ -67,6 +66,7 @@ const mapStateToProps = (state) => {
     return {
       gameId: state.app.gameId,
       language: state.app.language,
+      user: state.app.user,
     }
 }
 

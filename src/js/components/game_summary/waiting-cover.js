@@ -16,7 +16,7 @@ const WaitingCover = (props) => {
         <Dropdown className="confirmation">
             <h2>{t(title)}</h2>
             <p className="message">{t(message)}</p>
-            <LoadingSpinner />        
+            <LoadingSpinner background={false} />        
         </Dropdown>
     );
 }

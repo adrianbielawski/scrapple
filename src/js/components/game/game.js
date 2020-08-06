@@ -44,7 +44,7 @@ class Game extends React.Component {
     const gameClass = this.props.showWords ? 'show-words' : '';
       
     return (
-      this.props.fetching ? <LoadingSpinner /> : ( 
+      this.props.fetching ? <LoadingSpinner background={true} /> : ( 
         <div className={`game ${gameClass}`}>
           {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
           <div className="top-wrapper">

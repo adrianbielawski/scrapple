@@ -1,5 +1,6 @@
 const initialState = {
   screenHeight: window.innerHeight,
+  user: {},
   fetchingGameData: true,
   screen: window.location.pathname.slice(1) || 'login',
   gameId: null,
@@ -90,9 +91,7 @@ const appReducer = (state = initialState, action) => {
       return newState;
 
     case 'APP/SET_USER':
-      newState.user = {
-        email: action.email
-      }
+      newState.user = action.user
       return newState;
       
     case 'APP/CLEAR_USER':
