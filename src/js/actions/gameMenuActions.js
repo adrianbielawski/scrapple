@@ -1,18 +1,26 @@
 import db from '../../firebase';
 //Redux Actions
-import { setScreen, setAdmin, setAlert } from '../actions/appActions';
+import { setScreen, setAlert } from '../actions/appActions';
 
-export const addPlayer = (playerName) => {
+export const setFetchingGameData = (fetching) => {
   return {
-    type: 'GAME_MENU/ADD_PLAYER',
-    playerName
+    type: 'GAME_MENU/SET_FETCHING_GAME_DATA',
+    fetching
   }
 }
 
-export const removePlayer = (playerId) => {
+export const addPlayer = (playerName, uid) => {
+  return {
+    type: 'GAME_MENU/ADD_PLAYER',
+    playerName,
+    uid
+  }
+}
+
+export const removePlayer = (index) => {
   return {
     type: 'GAME_MENU/REMOVE_PLAYER',
-    playerId
+    index
   }
 }
 
@@ -22,6 +30,10 @@ export const reorderPlayers = (index, newIndex) => {
     index,
     newIndex
   }
+}
+
+export const updateGameMenuData = (gameId, dataToUpdate) => () => {
+  db.collection('games').doc(gameId).update(dataToUpdate);
 }
 
 export const setTimer = (timer) => {
@@ -87,48 +99,10 @@ export const setShowConfirmation = (showConfirmation) => {
   }
 }
 
-export const createNewGame = (players, gameId, language, playedAgainWithSettings, timer, time) => {
-  return dispatch => {
-    let game = {
-      language,
-      players,
-      currentPlayer: 0,
-      gameStarted: true,
-      joinedPlayers: [1],
-      exitOption: playedAgainWithSettings ? 'playAgainWithSettings' : null
-    }
-  
-    if(timer) {
-      game = {
-        ...game,
-        gameStarted: false,
-        timer,
-        time,
-        endTime: null,
-      }
-    }
-    
-    db.collection('games').doc(gameId).set(game)
-      .then(() => {
-        sessionStorage.setItem('admin', JSON.stringify(true));
-        dispatch(setShowConfirmation(true));
-        if(timer) {
-          dispatch(setAdmin(true));
-        } else {
-          dispatch(setScreen(`Game/${gameId}`));
-          dispatch(setAdmin(true));
-        }
-      })
-      .catch(() => {
-        dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
-      });
-    }
-}
-
-export const subscribeJoinedPlayers = (gameId, playersNames) => dispatch => {
+export const subscribeJoinedPlayers = (gameId, players) => dispatch => {
   return db.collection('games').doc(gameId).onSnapshot(doc => {
     const data = doc.data();
-    if(data.joinedPlayers.length >= playersNames.length) {
+    if(data.joinedPlayers.length >= players.length) {
       dispatch(setAllPlayersJoined(true));
     };
   });
@@ -143,5 +117,16 @@ export const startAdminGame = (gameId) => {
     .catch(() => {
     dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
     });
+  }
+}
+
+export const getUserDataFromDatabase = (uid) => {
+  return dispatch => {
+    return db.collection('users').doc(uid).get()
+    .then(response => response.data())
+    .catch(() => {
+      dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+    });
+
   }
 }
