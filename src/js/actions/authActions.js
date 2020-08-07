@@ -1,4 +1,4 @@
-import { auth } from '../../firebase';
+import { db, auth } from '../../firebase';
 //Redux Actions
 import { setScreen, setAlert } from '../actions/appActions';
 
@@ -8,6 +8,11 @@ export const signUp = (email, password, userName) => dispatch => {
         user.updateProfile({
             displayName: userName,
         }).then(() => {
+            db.collection('users').doc(user.uid).set({
+              email: user.email,
+              currentGame: null,
+              allGames: [],
+            });
             user.sendEmailVerification().then(() => {
                 auth.signOut();
                 dispatch(setAlert('alert', 'Welcome', {'name': userName}));

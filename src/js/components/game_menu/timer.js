@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 //Custom Components
 import Switch from '@material-ui/core/Switch';
 //Redux Actions
-import { setTimer, setTime } from '../../actions/gameMenuActions';
+import { setTimer, setTime, updateGameMenuData } from '../../actions/gameMenuActions';
 
 const timer = (props) => {
     const { t } = useTranslation();
@@ -19,12 +19,14 @@ const timer = (props) => {
         time.seconds = val.slice(6, 8);
         if(time.seconds == '') {
             time.seconds= '00';
-        }        
+        }
+        props.updateGameMenuData(props.gameId, {time})   ;   
         props.setTime(time);
     }
 
     const toggleTimer = () => {
-        props.setTimer(!props.timer)
+        props.updateGameMenuData(props.gameId, {timer: !props.timer}) ;
+        props.setTimer(!props.timer);
     }
 
     return (
@@ -41,14 +43,16 @@ const timer = (props) => {
 const mapStateToProps = (state) => {
     return {
         timer: state.timeLimit.timer,
-        time: state.timeLimit.time
+        time: state.timeLimit.time,
+        gameId: state.app.gameId,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setTimer: (timer) => { dispatch(setTimer(timer)) },
-        setTime: (time) => { dispatch(setTime(time)) },
+        setTimer: (timer) => dispatch(setTimer(timer)),
+        setTime: (time) => dispatch(setTime(time)),
+        updateGameMenuData: (gameId, data) => dispatch(updateGameMenuData(gameId, data)),
     }
 }
 

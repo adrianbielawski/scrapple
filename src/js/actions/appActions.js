@@ -103,7 +103,7 @@ export const removeAlert = () => {
   }
 }
 
-export const changeLanguage = (language) => {
+export const changeLanguage = (language, gameId) => {
   return dispatch => {
     const html = document.getElementsByTagName('html');
     html[0].lang = language;
@@ -111,6 +111,12 @@ export const changeLanguage = (language) => {
     auth.languageCode = language;
     dispatch(setLanguage(language))
   }
+}
+
+export const updateUser = (uid, gameId) => () => {
+  db.collection('users').doc(uid).update({
+    currentGame: gameId,
+  });
 }
 
 export const checkAdmin = () => {

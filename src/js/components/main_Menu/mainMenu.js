@@ -9,8 +9,9 @@ import Card from '../global_components/card';
 import AccountInfo from '../global_components/accountInfo/accountInfo';
 import LoadingSpinner from '../global_components/loadingSpinner';
 //Redux Actions
-import { setAlert, setScreen } from '../../actions/appActions';
-import { joinGame } from '../../actions/mainMenuActions';
+import { setAlert, setScreen, setGameId, updateUser } from '../../actions/appActions';
+import { joinGame, createNewGame } from '../../actions/mainMenuActions';
+import { addPlayer } from '../../actions/gameMenuActions';
 
 const MainMenu = (props) => {
     sessionStorage.clear();
@@ -38,8 +39,20 @@ const MainMenu = (props) => {
         unsubscribeGameStart = props.joinGame(gameId, props.language);
     };
 
-    const renderGameMenu = () => {
+    const createNewGame = () => {
+        const user = props.user;
+        props.addPlayer(user.displayName, user.uid);
+        const gameId = createGameId();
+        props.createNewGame(user, gameId, props.language, props.timer, props.time);
+        props.updateUser(user.uid, gameId);
+
         props.setScreen(`GameMenu`)
+    }
+
+    const createGameId = () => {
+        const gameId = Math.floor(Math.random() * 1000000).toString();
+        props.setGameId(gameId);
+        return gameId
     }
 
     return (
@@ -50,7 +63,7 @@ const MainMenu = (props) => {
                 <div className="content">
                     <AccountInfo />
                     <Card>
-                        <button onClick={renderGameMenu}>{t("Create new game")}</button>
+                        <button onClick={createNewGame}>{t("Create new game")}</button>
                     </Card>
                     <Card>
                         <input placeholder={t("Game ID")} ref={gameIdInput}></input>
@@ -67,14 +80,21 @@ const mapStateToProps = (state) => {
       gameId: state.app.gameId,
       language: state.app.language,
       user: state.app.user,
+      players: state.players,
+      timer: state.timeLimit.timer,
+      time: state.timeLimit.time,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
+    setAlert: (type, messageKey, messageValue, action, props) => dispatch(setAlert(type, messageKey, messageValue, action, props)),
     joinGame: (gameId, language) => dispatch(joinGame(gameId, language)),
-    setScreen: (screen) => { dispatch(setScreen(screen)) },
+    setScreen: (screen) => dispatch(setScreen(screen)),
+    setGameId: (gameId) => dispatch(setGameId(gameId)),
+    addPlayer: (playerName, uid) => dispatch(addPlayer(playerName, uid)),
+    createNewGame: (uid, players, gameId, language, playedAgainWithSettings, timer, time) => dispatch(createNewGame(uid, players, gameId, language, playedAgainWithSettings, timer, time)),
+    updateUser: (uid, gameId) => dispatch(updateUser(uid, gameId)),
   }
 }
 

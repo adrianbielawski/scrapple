@@ -1,4 +1,5 @@
 const initialState = {
+  fetchingGameData: true,
   players: {
     initialListSpace: null,
     listSpace: null,
@@ -13,6 +14,10 @@ const initialState = {
 const gameMenuReducer = (state = initialState, action) => {
   let newState = { ...state };
   switch(action.type) {
+    case 'GAME_MENU/SET_FETCHING_GAME_DATA':
+      newState.fetchingGameData = action.fetching;
+      return newState;
+
     case 'GAME_MENU/SET_LIST_SPACE':
       newState.players.listSpace = action.listSpace;
       return newState;
