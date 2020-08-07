@@ -5,8 +5,8 @@ import Player from './player';
 
 const Players = (props) => {
     const getPlayers = () => {
-        return props.playersNames.map((player, index) => {
-            return <Player key={index} index={index} player={player} />
+        return props.players.map((player, index) => {
+            return <Player key={index} index={index} playerName={player.playerName} />
         });
     }
 
@@ -19,7 +19,7 @@ const Players = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        playersNames: state.playersNames,
+        players: state.game.players,
     }
 }
 

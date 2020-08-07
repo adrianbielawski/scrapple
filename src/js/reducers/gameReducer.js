@@ -1,17 +1,55 @@
+import { cloneDeep } from 'lodash';
+
 const initialState = {
     fetching: true,
     showWords: false,
     isAudioEnabled: false,
     currentPlayer: 0,
     endTime: null,
-    players: null,
+    players: [
+        {
+            playerName: 'aaa',
+            uid: 'sdfsdf234234sf23f',
+            playerIndex: 0,
+            currentScore: 0,
+            bestScore: 0,
+            allPoints: [],
+        },
+    ],
     timeLeft: null,
     showMenu: false,
 };
   
 const gameReducer = (state = initialState, action) => {
     let newState = { ...state };
-    switch(action.type) {                
+    switch(action.type) { 
+        case 'GAME_MENU/ADD_PLAYER':
+          const players = [ ...newState.players];
+          players.push({
+            playerName: action.playerName,
+            uid: action.uid,
+            playerIndex: newState.players.length,
+            currentScore: 0,
+            bestScore: 0,
+            allPoints: [],
+          });
+          
+          newState.players = players;
+          return newState;
+    
+        case 'GAME_MENU/REMOVE_PLAYER':
+          const newPlayers = newState.players.filter((_, index) => {
+              return action.index !== index;
+          });
+          newState.players = newPlayers;
+          return newState;
+    
+        case 'GAME_MENU/REORDER_PLAYERS':
+            const reorderedPlayers = [ ...newState.players];
+            reorderedPlayers.splice(action.newIndex, 0, reorderedPlayers.splice(action.index, 1)[0]);
+            newState.players = reorderedPlayers;
+          return newState;
+                
         case 'GAME/SET_FETCHING_GAME_DATA':
             newState.fetching = action.fetching;
             return newState;

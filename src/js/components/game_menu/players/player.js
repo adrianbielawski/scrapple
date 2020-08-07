@@ -24,6 +24,9 @@ class Player extends Component {
     }
 
     handleGrab = (e) => {
+        if(this.props.players.length === 1) {
+            return;
+        }
         if(e.type === 'touchstart') {
             if(this.props.touches > 0 && this.props.index !== this.props.grabbedElement) {
                 this.props.setTouches(this.props.touches + 1)
@@ -85,11 +88,11 @@ class Player extends Component {
         if(this.props.grabbedElement <= listSpace) {
             listSpace +=1;
         };
-        if(listSpace >= this.props.playersNames.length) {
-            listSpace = this.props.playersNames.length -1;
+        if(listSpace >= this.props.players.length) {
+            listSpace = this.props.players.length -1;
         };
-        if(this.props.grabbedElement === this.props.playersNames.length -1 && listSpace >= this.props.playersNames.length -2) {
-            listSpace = this.props.playersNames.length -2;
+        if(this.props.grabbedElement === this.props.players.length -1 && listSpace >= this.props.players.length -2) {
+            listSpace = this.props.players.length -2;
         };
         this.props.setListSpace(listSpace);
     }
@@ -111,7 +114,7 @@ class Player extends Component {
     }
 
     drop = (eType) => {
-        let players = [ ...this.props.playersNames];
+        let players = [ ...this.props.players];
         let newIndex = this.props.index + this.state.distance
         if(newIndex < 1) {
             newIndex = 0;
@@ -137,7 +140,7 @@ class Player extends Component {
     }
     
     removedPlayerTransition = () => {
-        const element = this.element;
+        const element = this.element.current;
         element.style.transitionProperty = 'width, max-height';
         element.style.transitionDuration = '.4s, .4s';
         element.style.transitionDelay = '0.1s, .4s';
@@ -147,7 +150,7 @@ class Player extends Component {
     }
 
     remove = () => {
-        this.element.style = {};
+        this.element.current.style = {};
         this.props.removePlayer(this.props.index)
     }
 
@@ -203,7 +206,7 @@ class Player extends Component {
                         onTouchStart={this.handleGrab}
                         onTouchEnd={this.handleDrop}
                         className="player-name">
-                        <p>{this.props.t("Player")} {this.props.index + 1}: <span> {this.props.player}</span></p>
+                        <p>{this.props.t("Player")} {this.props.index + 1}: <span> {this.props.playerName}</span></p>
                     </div>
                     <button onClick={this.removePlayerHandler} className="remove">
                         <FontAwesomeIcon icon={faTimes} />
@@ -217,7 +220,7 @@ class Player extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        playersNames: state.playersNames,
+        players: state.game.players,
         initialListSpace: state.gameMenu.players.initialListSpace,
         listSpace: state.gameMenu.players.listSpace,
         grabbedElement: state.gameMenu.players.grabbedElement,
@@ -228,13 +231,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        reorderPlayers: (index, newIndex) => { dispatch(reorderPlayers(index, newIndex)) },
-        removePlayer: (playerId) => { dispatch(removePlayer(playerId)) },
-        setIsTransitionEnabled: (isTransitionEnabled) => { dispatch(setIsTransitionEnabled(isTransitionEnabled)) },
-        setInitialListSpace: (initialListSpace) => { dispatch(setInitialListSpace(initialListSpace)) },
-        setGrabbedElement: (grabbedElement) => { dispatch(setGrabbedElement(grabbedElement)) },
-        setListSpace: (listSpace) => { dispatch(setListSpace(listSpace)) },
-        setTouches: (touches) => { dispatch(setTouches(touches)) },
+        reorderPlayers: (index, newIndex) => dispatch(reorderPlayers(index, newIndex)),
+        removePlayer: (index) => dispatch(removePlayer(index)),
+        setIsTransitionEnabled: (isTransitionEnabled) => dispatch(setIsTransitionEnabled(isTransitionEnabled)),
+        setInitialListSpace: (initialListSpace) => dispatch(setInitialListSpace(initialListSpace)),
+        setGrabbedElement: (grabbedElement) => dispatch(setGrabbedElement(grabbedElement)),
+        setListSpace: (listSpace) => dispatch(setListSpace(listSpace)),
+        setTouches: (touches) => dispatch(setTouches(touches)),
     }
 }
 

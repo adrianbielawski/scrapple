@@ -18,14 +18,14 @@ const AddPlayer = (props) => {
 
         if (isValid) {
             inputEl.current.value = '';
-            props.addPlayer(player)
+            props.addPlayer(player, null)
         }
     };
 
     const validatePlayerName = (player) => {
         const isPlayerExists = checkPlayers(player);
         
-        if(props.playersNames.length >= 4) {
+        if(props.players.length >= 4) {
             props.setAlert('alert', 'Max 4 players');
             return
         }
@@ -42,9 +42,9 @@ const AddPlayer = (props) => {
     
     const checkPlayers = (player) => {
         const lowNewPlayer = player.toLowerCase();
-        const players = [ ...props.playersNames];
+        const players = [ ...props.players];
         const lowPlayers = players.map((player) => {
-            const lowPlayer = player.toLowerCase();
+            const lowPlayer = player.playerName.toLowerCase();
             return lowPlayer
         });
         return lowPlayers.includes(lowNewPlayer);
@@ -65,14 +65,14 @@ const AddPlayer = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        playersNames: state.playersNames,
+        players: state.game.players,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addPlayer: (playerName) => { dispatch(addPlayer(playerName)) },
-        setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
+        addPlayer: (playerName, uid) => dispatch(addPlayer(playerName, uid)),
+        setAlert: (type, messageKey, messageValue, action, props) => dispatch(setAlert(type, messageKey, messageValue, action, props)),
     }
 }
 
