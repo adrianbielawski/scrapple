@@ -65,6 +65,33 @@ html, body, div, span, h1, h2, p, a, ul, li {
       justify-content: space-between;
       align-items: center;
   }
+  
+  .game-id {
+      display: inline-flex;
+      align-items: center;
+      div {
+          position: relative;
+          display: inline-flex;
+      }
+      p.id {
+          margin-left: 5px;
+          font-size: 26px;
+          font-weight: 700;
+      }
+      p.copy-id {
+          position: absolute;
+          &.move {
+              transform: translateX(50px);
+              transition-duration: .3s;
+              opacity: 0;
+          }
+      }
+      span {
+          margin-left: 10px;
+          font-size: 26px;
+          z-index: 10;
+      }
+  }
 
   button {
     display: flex;
