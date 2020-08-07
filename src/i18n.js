@@ -99,7 +99,7 @@ const resources = {
       "Don't have an account" : "Nie masz konta? <1>Zarejestruj się tutaj!</1>",
       "user name" : "imię",
       "Create account" : "Zarejestruj",
-      "Logout" : "Wuloguj",
+      "Logout" : "Wyloguj",
       "Logged in as" : "Zalogowany jako: {{name}}",
       "Welcome" : "Witaj, {{name}}! Sprawdź e-mail aby dokończyć rejestrację.",
       "This account is not verified. Please check your inbox to finish registration." : "Konto nie zostało zweryfikowane. Sprawdź e-mail aby dokończyć rejestrację.",
