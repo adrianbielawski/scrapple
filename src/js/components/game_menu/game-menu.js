@@ -1,7 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { auth } from '../../../firebase';
 import '../../../styles/game-menu.scss';
 //Custom Components
 import LoadingSpinner from '../global_components/loadingSpinner';
@@ -92,7 +91,7 @@ const GameMenu = (props) => {
     const buttonText =  props.playedAgainWithSettings ? 'Play again' : 'Create game';
     return (
         <div className="game-menu">
-            {props.showConfirmation && <Confirmation background={true} />}
+            {props.showConfirmation && <Confirmation />}
             <Header />
             {props.fetchingGameData ? <LoadingSpinner background={true} /> : <div className="menu">
                 <AccountInfo />

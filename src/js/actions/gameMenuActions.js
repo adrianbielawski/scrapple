@@ -9,12 +9,27 @@ export const setFetchingGameData = (fetching) => {
   }
 }
 
-export const addPlayer = (playerName, uid) => {
-  return {
-    type: 'GAME_MENU/ADD_PLAYER',
-    playerName,
-    uid
+export const handleAddPlayer = (gameId, players, playerName, uid) => {
+  return dispatch => {
+    const newPlayers = [ ...players];
+      newPlayers.push({
+          playerName,
+          uid,
+          playerIndex: players.length,
+          currentScore: 0,
+          bestScore: 0,
+          allPoints: [],
+      });
+      dispatch(addPlayer(newPlayers));     
+      dispatch(updateGameMenuData(gameId, {players: newPlayers}));
   }
+}
+
+export const addPlayer = (players) => {
+    return {
+      type: 'GAME_MENU/ADD_PLAYER',
+      players,
+    }
 }
 
 export const removePlayer = (index) => {

@@ -24,31 +24,31 @@ const gameReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch(action.type) { 
         case 'GAME_MENU/ADD_PLAYER':
-          const players = [ ...newState.players];
-          players.push({
-            playerName: action.playerName,
-            uid: action.uid,
-            playerIndex: newState.players.length,
-            currentScore: 0,
-            bestScore: 0,
-            allPoints: [],
-          });
-          
-          newState.players = players;
-          return newState;
+            // const players = [ ...newState.players];
+            // players.push({
+            //     playerName: action.playerName,
+            //     uid: action.uid,
+            //     playerIndex: newState.players.length,
+            //     currentScore: 0,
+            //     bestScore: 0,
+            //     allPoints: [],
+            // });
+            
+            newState.players = action.players;
+            return newState;
     
         case 'GAME_MENU/REMOVE_PLAYER':
-          const newPlayers = newState.players.filter((_, index) => {
-              return action.index !== index;
-          });
-          newState.players = newPlayers;
-          return newState;
+            const newPlayers = newState.players.filter((_, index) => {
+                return action.index !== index;
+            });
+            newState.players = newPlayers;
+            return newState;
     
         case 'GAME_MENU/REORDER_PLAYERS':
             const reorderedPlayers = [ ...newState.players];
             reorderedPlayers.splice(action.newIndex, 0, reorderedPlayers.splice(action.index, 1)[0]);
             newState.players = reorderedPlayers;
-          return newState;
+            return newState;
                 
         case 'GAME/SET_FETCHING_GAME_DATA':
             newState.fetching = action.fetching;
