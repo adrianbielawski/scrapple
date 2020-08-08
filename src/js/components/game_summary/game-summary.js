@@ -72,7 +72,7 @@ const GameSummary = (props) => {
             {props.showExitOptions && <ExitOptions />}
             <Header />
             <h2>{t("Game results")}</h2>
-            {props.fetchingGameData ? <LoadingSpinner /> : (
+            {props.fetchingGameData ? <LoadingSpinner background={true} /> : (
                 <div>
                     <ul className="results">
                         {getPlayersPositions()}

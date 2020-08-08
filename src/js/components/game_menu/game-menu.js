@@ -94,7 +94,7 @@ const GameMenu = (props) => {
     const buttonText =  props.playedAgainWithSettings ? 'Play again' : 'Create game';
     return (
         <div className="game-menu">
-            {props.showConfirmation && <Confirmation />}
+            {props.showConfirmation && <Confirmation background={true} />}
             <Header />
             {props.fetchingGameData ? <LoadingSpinner background={true} /> : <div className="menu">
                 <AccountInfo />

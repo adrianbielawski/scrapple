@@ -56,7 +56,7 @@ const MainMenu = (props) => {
     }
 
     return (
-        props.user === {} ? <LoadingSpinner /> : (
+        props.user === {} ? <LoadingSpinner background={true} /> : (
             <div className="main-menu">
                 {props.gameId && <Confirmation gameId={props.gameId}/>}
                 <Header />

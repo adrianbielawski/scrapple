@@ -79,7 +79,7 @@ class WordChecker extends Component {
         }
         let image = <img className="thumb" src={img}></img>;
         if(this.state.fetching) {
-            image = <LoadingSpinner />
+            image = <LoadingSpinner background={true} />
         }
         return image
     }

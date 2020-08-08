@@ -10,7 +10,7 @@ const FinishedGameCover = () => {
         <Dropdown className="confirmation">
             <h2>{t("Game finished")}!</h2>
             <p className="message">{t("Please wait until points of unused letters will be substracted")}</p>
-            <LoadingSpinner />               
+            <LoadingSpinner background={false} />               
         </Dropdown>
     );
 }
