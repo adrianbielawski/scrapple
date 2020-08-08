@@ -41,7 +41,7 @@ const MainMenu = (props) => {
 
     const createNewGame = () => {
         const user = props.user;
-        props.addPlayer([], user.displayName, user.uid);
+        props.addPlayer(user.displayName, user.uid);
         const gameId = createGameId();
         const createNewGamePromise = props.createNewGame(user, gameId, props.language, props.timer, props.time);
         createNewGamePromise.then(() => {
@@ -94,7 +94,7 @@ const mapDispatchToProps = (dispatch) => {
     joinGame: (gameId, language) => dispatch(joinGame(gameId, language)),
     setScreen: (screen) => dispatch(setScreen(screen)),
     setGameId: (gameId) => dispatch(setGameId(gameId)),
-    addPlayer: (players, playerName, uid) => dispatch(addPlayer(players, playerName, uid)),
+    addPlayer: (playerName, uid) => dispatch(addPlayer(playerName, uid)),
     createNewGame: (user, gameId, language, timer, time) => dispatch(createNewGame(user, gameId, language, timer, time)),
     updateUser: (uid, gameId) => dispatch(updateUser(uid, gameId)),
   }

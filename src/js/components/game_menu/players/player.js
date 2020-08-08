@@ -126,7 +126,7 @@ class Player extends Component {
             touches = this.props.touches - 1;
         }
         
-        this.props.reorderPlayers(this.props.players, this.props.index, newIndex);
+        this.props.reorderPlayers(this.props.index, newIndex);
         this.props.setInitialListSpace(null);
         this.props.setListSpace(null);
         this.props.setGrabbedElement(null);
@@ -151,7 +151,7 @@ class Player extends Component {
 
     remove = () => {
         this.element.current.style = {};
-        this.props.removePlayer(this.props.players, this.props.index)
+        this.props.removePlayer(this.props.index);
     }
 
     getStyles = () => {
@@ -231,8 +231,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        reorderPlayers: (players, playerIndex, newIndex) => dispatch(reorderPlayers(players, playerIndex, newIndex)),
-        removePlayer: (players, playerIndex) => dispatch(removePlayer(players, playerIndex)),
+        reorderPlayers: (playerIndex, newIndex) => dispatch(reorderPlayers(playerIndex, newIndex)),
+        removePlayer: (playerIndex) => dispatch(removePlayer(playerIndex)),
         setIsTransitionEnabled: (isTransitionEnabled) => dispatch(setIsTransitionEnabled(isTransitionEnabled)),
         setInitialListSpace: (initialListSpace) => dispatch(setInitialListSpace(initialListSpace)),
         setGrabbedElement: (grabbedElement) => dispatch(setGrabbedElement(grabbedElement)),

@@ -9,43 +9,27 @@ export const setFetchingGameData = (fetching) => {
   }
 }
 
-export const addPlayer = (players, playerName, uid) => {
-  return dispatch => {
-    const newPlayers = [ ...players];
-      newPlayers.push({
-          playerName,
-          uid,
-          playerIndex: players.length,
-          currentScore: 0,
-          bestScore: 0,
-          allPoints: [],
-      });
-      dispatch(updatePlayers(newPlayers));
+export const addPlayer = (playerName, uid) => {
+  return {
+    type: 'GAME_MENU/ADD_PLAYER',
+    playerName,
+    uid
   }
 }
 
-export const removePlayer = (players, playerIndex) => {
-  return dispatch => {
-    const newPlayers = players.filter((_, index) => {
-        return playerIndex !== index;
-    });
-    dispatch(updatePlayers(newPlayers));
+export const removePlayer = (playerIndex) => {
+  return {
+    type: 'GAME_MENU/REMOVE_PLAYER',
+    playerIndex
   }
 }
 
-export const reorderPlayers = (players, playerIndex, newIndex) => {
-  return dispatch => {
-    const newPlayers = [ ...players];
-    newPlayers.splice(newIndex, 0, newPlayers.splice(playerIndex, 1)[0]);
-    dispatch(updatePlayers(newPlayers));
+export const reorderPlayers = (playerIndex, newIndex) => {
+  return {
+    type: 'GAME_MENU/REORDER_PLAYERS',
+    playerIndex,
+    newIndex
   }
-}
-
-export const updatePlayers = (players) => {
-    return {
-      type: 'GAME_MENU/UPDATE_PLAYERS',
-      players,
-    }
 }
 
 export const updateGameMenuData = (gameId, language, timer, time, players) => () => {

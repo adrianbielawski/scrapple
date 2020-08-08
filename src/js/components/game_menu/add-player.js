@@ -18,7 +18,7 @@ const AddPlayer = (props) => {
 
         if (isValid) {
             inputEl.current.value = '';
-            props.addPlayer(props.players, player, null)
+            props.addPlayer(player, null)
         }
     };
 
@@ -72,7 +72,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addPlayer: (players, playerName, uid) => dispatch(addPlayer(players, playerName, uid)),
+        addPlayer: (playerName, uid) => dispatch(addPlayer(playerName, uid)),
         setAlert: (type, messageKey, messageValue, action, props) => dispatch(setAlert(type, messageKey, messageValue, action, props)),
     }
 }
