@@ -6,7 +6,7 @@ import Switch from '@material-ui/core/Switch';
 //Redux Actions
 import { setTimer, setTime, updateGameMenuData } from '../../actions/gameMenuActions';
 
-const timer = (props) => {
+const timeLimit = (props) => {
     const { t } = useTranslation();
     const inputClass = props.timer ? 'active' : null;
     const defaultTime = `${props.time.hours}:${props.time.minutes}:${props.time.seconds}`;
@@ -20,12 +20,12 @@ const timer = (props) => {
         if(time.seconds == '') {
             time.seconds= '00';
         }
-        props.updateGameMenuData(props.gameId, {time})   ;   
+        props.updateGameMenuData(props.gameId, {time});   
         props.setTime(time);
     }
 
     const toggleTimer = () => {
-        props.updateGameMenuData(props.gameId, {timer: !props.timer}) ;
+        props.updateGameMenuData(props.gameId, {timer: !props.timer});
         props.setTimer(!props.timer);
     }
 
@@ -56,4 +56,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(timer);
+export default connect(mapStateToProps, mapDispatchToProps)(timeLimit);

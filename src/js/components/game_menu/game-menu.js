@@ -7,7 +7,7 @@ import '../../../styles/game-menu.scss';
 import LoadingSpinner from '../global_components/loadingSpinner';
 import Players from './players/players';
 import Language from '../global_components/language/changeLanguage';
-import Timer from './timer';
+import TimeLimit from './timeLimit';
 import AddPlayer from './add-player';
 import Header from '../global_components/header';
 import Confirmation from './confirmation';
@@ -101,7 +101,7 @@ const GameMenu = (props) => {
                     <Language showName={true}/>
                 </Card>
                 <Card>
-                    <Timer />
+                    <TimeLimit />
                 </Card>
                 <Card>
                     <AddPlayer />
