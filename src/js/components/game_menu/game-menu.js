@@ -16,7 +16,7 @@ import GameId from '../global_components/game-id';
 //Redux Actions
 import { setGameId, setAlert, getGameData, changeLanguage } from '../../actions/appActions';
 import { setPlayers } from '../../actions/gameActions';
-import { setFetchingGameData, setAllPlayersJoined, setShowConfirmation, subscribeJoinedPlayers, addPlayer, getUserDataFromDatabase, setTimer, setTime } from '../../actions/gameMenuActions';
+import { updateGameMenuData, setFetchingGameData, setAllPlayersJoined, setShowConfirmation, subscribeJoinedPlayers, addPlayer, getUserDataFromDatabase, setTimer, setTime } from '../../actions/gameMenuActions';
 
 const GameMenu = (props) => {
     const { t } = useTranslation();
@@ -53,6 +53,12 @@ const GameMenu = (props) => {
         }
     }, [props.user.uid]);
 
+    useEffect(() => {
+        if (!props.fetchingGameData) {
+        props.updateGameMenuData(props.gameId, props.language, props.timer, props.time, props.players);
+        }
+    })
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const isValid = validateSettings();
@@ -78,15 +84,6 @@ const GameMenu = (props) => {
         // }
         return true;
     }
-
-    // const handleCreateNewGame = () => {
-    //     const gameId = props.gameId ? props.gameId : createGameId();
-    //     props.createNewGame(props.user.uid, props.players, gameId, props.language, props.playedAgainWithSettings, props.timer, props.time);
-
-    //     if(props.timer) {
-    //         unsubscribeJoinedPlayers = props.subscribeJoinedPlayers(gameId, props.players);
-    //     }
-    // }
 
     const buttonText =  props.playedAgainWithSettings ? 'Play again' : 'Create game';
     return (
@@ -129,6 +126,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        updateGameMenuData: (gameId, language, timer, time, players) => dispatch(updateGameMenuData(gameId, language, timer, time, players)),
         setFetchingGameData: (fetching) => dispatch(setFetchingGameData(fetching)),
         setGameId: (gameId) => dispatch(setGameId(gameId)),
         getGameData: (gameId) => dispatch(getGameData(gameId)),
@@ -142,7 +140,6 @@ const mapDispatchToProps = (dispatch) => {
         subscribeJoinedPlayers: (gameId, players) => dispatch(subscribeJoinedPlayers(gameId, players)),
         setShowConfirmation: (showConfirmation) => dispatch(setShowConfirmation(showConfirmation)),
         getUserDataFromDatabase: (uid) => dispatch(getUserDataFromDatabase(uid)),
-        //createNewGame: (uid, players, gameId, language, playedAgainWithSettings, timer, time) => { dispatch(createNewGame(uid, players, gameId, language, playedAgainWithSettings, timer, time)) },
     }
 }
 

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 //Redux Actions
-import { handleAddPlayer } from '../../actions/gameMenuActions';
+import { addPlayer } from '../../actions/gameMenuActions';
 import { setAlert } from '../../actions/appActions';
 
 const AddPlayer = (props) => {
@@ -18,7 +18,7 @@ const AddPlayer = (props) => {
 
         if (isValid) {
             inputEl.current.value = '';
-            props.handleAddPlayer(props.gameId, props.players, player, null)
+            props.addPlayer(props.gameId, props.players, player, null)
         }
     };
 
@@ -72,7 +72,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleAddPlayer: (gameId, players, playerName, uid) => dispatch(handleAddPlayer(gameId, players, playerName, uid)),
+        addPlayer: (gameId, players, playerName, uid) => dispatch(addPlayer(gameId, players, playerName, uid)),
         setAlert: (type, messageKey, messageValue, action, props) => dispatch(setAlert(type, messageKey, messageValue, action, props)),
     }
 }

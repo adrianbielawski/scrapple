@@ -103,13 +103,13 @@ export const removeAlert = () => {
   }
 }
 
-export const changeLanguage = (language, gameId) => {
+export const changeLanguage = (language) => {
   return dispatch => {
     const html = document.getElementsByTagName('html');
     html[0].lang = language;
     i18n.changeLanguage(language);
     auth.languageCode = language;
-    dispatch(setLanguage(language))
+    dispatch(setLanguage(language));
   }
 }
 
