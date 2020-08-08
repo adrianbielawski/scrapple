@@ -40,6 +40,7 @@ const appReducer = (state = initialState, action) => {
     case 'APP/CLEAR_APP_STATE':
       newState = cloneDeep(initialState);
       newState.screen = 'login';
+      newState.language = action.language;
       return newState;
 
     case 'APP/SET_LANGUAGE':

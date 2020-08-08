@@ -10,17 +10,23 @@ const LogOut = (props) => {
 
     const handleClick = () => {
         auth.signOut();
-        props.clearAppState();
+        props.clearAppState(props.language);
     }
 
     return ( <p className="log-out" onClick={handleClick}>{t("Logout")}</p> );
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
   return {
-    clearUser: () => dispatch(clearUser()),
-    clearAppState: () => dispatch(clearAppState()),
+    language: state.app.language,
   }
 }
 
-export default connect(null, mapDispatchToProps)(LogOut);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearUser: () => dispatch(clearUser()),
+    clearAppState: (language) => dispatch(clearAppState(language)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LogOut);

@@ -1,3 +1,5 @@
+import { cloneDeep } from 'lodash';
+
 const initialState = {
   timer: true,
   time: {
@@ -16,6 +18,10 @@ const timeLimitReducer = (state = initialState, action) => {
 
     case 'GAME_MENU/SET_TIME':
       newState.time = action.time;
+      return newState;
+
+    case 'APP/CLEAR_APP_STATE':
+      newState = cloneDeep(initialState);
       return newState;
     
     default:
