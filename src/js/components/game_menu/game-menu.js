@@ -46,10 +46,8 @@ const GameMenu = (props) => {
                 gameDataPromise.then((gameData) => {
                     props.changeLanguage(gameData.language)
                     props.setPlayers(gameData.players);
-                    if(gameData.timer) {
-                        props.setTimer(true, data.currentGame);
-                        props.setTime(gameData.time, data.currentGame);
-                    }
+                    props.setTimer(gameData.timer, data.currentGame);
+                    props.setTime(gameData.time, data.currentGame);
                     props.setFetchingGameData(false)
                 })
             })
