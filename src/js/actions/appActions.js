@@ -114,7 +114,7 @@ export const changeLanguage = (language) => {
 }
 
 export const updateUser = (uid, gameId) => () => {
-  db.collection('users').doc(uid).update({
+  return db.collection('users').doc(uid).update({
     currentGame: gameId,
   });
 }

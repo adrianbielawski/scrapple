@@ -25,7 +25,7 @@ export const createNewGame = (user, gameId, language, timer, time) => {
       }
     }
     
-    db.collection('games').doc(gameId).set(game)
+    return db.collection('games').doc(gameId).set(game)
       .then(() => {
         //sessionStorage.setItem('admin', JSON.stringify(true));
         //dispatch(setShowConfirmation(true));

@@ -7,7 +7,7 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
+          loader: "babel-loader",
         }
       },
       {
@@ -36,4 +36,5 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
   },
+  devtool: 'cheap-module-eval-source-map',
 };

@@ -1,3 +1,5 @@
+import { cloneDeep } from 'lodash';
+
 const initialState = {
   screenHeight: window.innerHeight,
   user: {},
@@ -36,12 +38,8 @@ const appReducer = (state = initialState, action) => {
       return newState;
 
     case 'APP/CLEAR_APP_STATE':
-      newState.gameId = null;
-      newState.admin = false;
-      newState.playedAgain = false;
-      newState.playedAgainWithSettings = false;
-      newState.showFinishedGameCover = false;
-      newState.screen = 'MainMenu';
+      newState = cloneDeep(initialState);
+      newState.screen = 'login';
       return newState;
 
     case 'APP/SET_LANGUAGE':

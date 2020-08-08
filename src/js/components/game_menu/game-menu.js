@@ -16,25 +16,25 @@ import GameId from '../global_components/game-id';
 //Redux Actions
 import { setGameId, setAlert, getGameData, changeLanguage } from '../../actions/appActions';
 import { setPlayers } from '../../actions/gameActions';
-import { updateGameMenuData, setFetchingGameData, setAllPlayersJoined, setShowConfirmation, subscribeJoinedPlayers, addPlayer, getUserDataFromDatabase, setTimer, setTime } from '../../actions/gameMenuActions';
+import { startAdminGame, updateGameMenuData, setFetchingGameData, setAllPlayersJoined, setShowConfirmation, subscribeJoinedPlayers, addPlayer, getUserDataFromDatabase, setTimer, setTime } from '../../actions/gameMenuActions';
 
 const GameMenu = (props) => {
     const { t } = useTranslation();
-    let unsubscribeJoinedPlayers = null;
+    //let unsubscribeJoinedPlayers = null;
   
-    useEffect(() => {
-        props.playedAgain && !props.playedAgainWithSettings ? props.setShowConfirmation(true) : null;
-        if(props.timer && props.playAgain) {
-            unsubscribeJoinedPlayers = props.subscribeJoinedPlayers(gameId, props.players)
-        }        
+    // useEffect(() => {
+    //     props.playedAgain && !props.playedAgainWithSettings ? props.setShowConfirmation(true) : null;
+    //     if(props.timer && props.playAgain) {
+    //         unsubscribeJoinedPlayers = props.subscribeJoinedPlayers(gameId, props.players)
+    //     }        
         
-        return () => {
-            props.setShowConfirmation(false);
-            if(unsubscribeJoinedPlayers !== null) {
-                unsubscribeJoinedPlayers()
-            }
-        }
-    }, []);
+    //     return () => {
+    //         props.setShowConfirmation(false);
+    //         if(unsubscribeJoinedPlayers !== null) {
+    //             unsubscribeJoinedPlayers()
+    //         }
+    //     }
+    // }, []);
   
     useEffect(() => {
         if (props.user.uid) {
@@ -55,15 +55,15 @@ const GameMenu = (props) => {
 
     useEffect(() => {
         if (!props.fetchingGameData) {
-        props.updateGameMenuData(props.gameId, props.language, props.timer, props.time, props.players);
+            props.updateGameMenuData(props.gameId, props.language, props.timer, props.time, props.players);
         }
-    })
+    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const isValid = validateSettings();
         if (isValid) {
-            handleCreateNewGame();
+            play();
         }
     }
 
@@ -85,7 +85,11 @@ const GameMenu = (props) => {
         return true;
     }
 
-    const buttonText =  props.playedAgainWithSettings ? 'Play again' : 'Create game';
+    const play = () => {
+        props.startAdminGame(props.gameId);
+    }
+
+    const buttonText =  props.playedAgainWithSettings ? 'Play again' : 'Play';
     return (
         <div className="game-menu">
             {props.showConfirmation && <Confirmation />}
@@ -128,6 +132,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         updateGameMenuData: (gameId, language, timer, time, players) => dispatch(updateGameMenuData(gameId, language, timer, time, players)),
         setFetchingGameData: (fetching) => dispatch(setFetchingGameData(fetching)),
+        startAdminGame: (gameId) => dispatch(startAdminGame(gameId)),
         setGameId: (gameId) => dispatch(setGameId(gameId)),
         getGameData: (gameId) => dispatch(getGameData(gameId)),
         setPlayers: (players) => dispatch(setPlayers(players)),

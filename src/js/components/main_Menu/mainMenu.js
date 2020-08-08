@@ -41,12 +41,15 @@ const MainMenu = (props) => {
 
     const createNewGame = () => {
         const user = props.user;
-        props.addPlayer(user.displayName, user.uid);
+        props.addPlayer([], user.displayName, user.uid);
         const gameId = createGameId();
-        props.createNewGame(user, gameId, props.language, props.timer, props.time);
-        props.updateUser(user.uid, gameId);
-
-        props.setScreen(`GameMenu`)
+        const createNewGamePromise = props.createNewGame(user, gameId, props.language, props.timer, props.time);
+        createNewGamePromise.then(() => {
+            const updateUserPromise = props.updateUser(user.uid, gameId);
+            updateUserPromise.then(() => {
+                props.setScreen(`GameMenu`)
+            })
+        })
     }
 
     const createGameId = () => {
@@ -58,7 +61,6 @@ const MainMenu = (props) => {
     return (
         props.user === {} ? <LoadingSpinner background={true} /> : (
             <div className="main-menu">
-                {props.gameId && <Confirmation gameId={props.gameId}/>}
                 <Header />
                 <div className="content">
                     <AccountInfo />
@@ -92,8 +94,8 @@ const mapDispatchToProps = (dispatch) => {
     joinGame: (gameId, language) => dispatch(joinGame(gameId, language)),
     setScreen: (screen) => dispatch(setScreen(screen)),
     setGameId: (gameId) => dispatch(setGameId(gameId)),
-    addPlayer: (playerName, uid) => dispatch(addPlayer(playerName, uid)),
-    createNewGame: (uid, players, gameId, language, playedAgainWithSettings, timer, time) => dispatch(createNewGame(uid, players, gameId, language, playedAgainWithSettings, timer, time)),
+    addPlayer: (players, playerName, uid) => dispatch(addPlayer(players, playerName, uid)),
+    createNewGame: (user, gameId, language, timer, time) => dispatch(createNewGame(user, gameId, language, timer, time)),
     updateUser: (uid, gameId) => dispatch(updateUser(uid, gameId)),
   }
 }
