@@ -6,17 +6,7 @@ const initialState = {
     isAudioEnabled: false,
     currentPlayer: 0,
     endTime: null,
-    players: [
-        {
-            playerName: 'aaa',
-            uid: 'sdfsdf234234sf23f',
-            admin: false,
-            playerIndex: 0,
-            currentScore: 0,
-            bestScore: 0,
-            allPoints: [],
-        },
-    ],
+    players: [],
     timeLeft: null,
     showMenu: false,
 };

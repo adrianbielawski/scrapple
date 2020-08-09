@@ -8,7 +8,17 @@ export const createNewGame = (user, gameId, language, timer, time) => {
     let game = {
       admin: user.uid,
       language,
-      players: [{playerName: user.displayName, uid: user.uid}],
+      players: [
+        {
+            playerName: user.displayName,
+            uid: user.uid,
+            admin: true,
+            playerIndex: 0,
+            currentScore: 0,
+            bestScore: 0,
+            allPoints: [],
+        },
+      ],
       currentPlayer: 0,
       gameStarted: false,
       joinedPlayers: [user.uid],

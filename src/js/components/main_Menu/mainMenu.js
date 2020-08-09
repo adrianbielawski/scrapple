@@ -23,7 +23,7 @@ const MainMenu = (props) => {
     useEffect(() => {
         return () => {
             if (unsubscribeGameStart !== null) {
-                unsubscribeGameStart()
+                unsubscribeGameStart();
             }
         }
     }, []);
@@ -33,7 +33,7 @@ const MainMenu = (props) => {
 
         if (!gameId) {
             props.setAlert('alert', 'Please type in game ID');
-            return
+            return;
         };
 
         unsubscribeGameStart = props.joinGame(gameId, props.language);
@@ -47,15 +47,15 @@ const MainMenu = (props) => {
         createNewGamePromise.then(() => {
             const updateUserPromise = props.updateUser(user.uid, gameId);
             updateUserPromise.then(() => {
-                props.setScreen(`GameMenu`)
-            })
-        })
+                props.setScreen(`GameMenu`);
+            });
+        });
     }
 
     const createGameId = () => {
         const gameId = Math.floor(Math.random() * 1000000).toString();
         props.setGameId(gameId);
-        return gameId
+        return gameId;
     }
 
     return (
@@ -74,30 +74,29 @@ const MainMenu = (props) => {
                 </div>
             </div>
         )
-     );
+    );
 }
 
 const mapStateToProps = (state) => {
     return {
-      gameId: state.app.gameId,
-      language: state.app.language,
-      user: state.app.user,
-      players: state.players,
-      timer: state.timeLimit.timer,
-      time: state.timeLimit.time,
+        gameId: state.app.gameId,
+        language: state.app.language,
+        user: state.app.user,
+        timer: state.timeLimit.timer,
+        time: state.timeLimit.time,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    setAlert: (type, messageKey, messageValue, action, props) => dispatch(setAlert(type, messageKey, messageValue, action, props)),
-    joinGame: (gameId, language) => dispatch(joinGame(gameId, language)),
-    setScreen: (screen) => dispatch(setScreen(screen)),
-    setGameId: (gameId) => dispatch(setGameId(gameId)),
-    addPlayer: (playerName, uid, admin) => dispatch(addPlayer(playerName, uid, admin)),
-    createNewGame: (user, gameId, language, timer, time) => dispatch(createNewGame(user, gameId, language, timer, time)),
-    updateUser: (uid, gameId) => dispatch(updateUser(uid, gameId)),
-  }
+    return {
+        setAlert: (type, messageKey, messageValue, action, props) => dispatch(setAlert(type, messageKey, messageValue, action, props)),
+        joinGame: (gameId, language) => dispatch(joinGame(gameId, language)),
+        setScreen: (screen) => dispatch(setScreen(screen)),
+        setGameId: (gameId) => dispatch(setGameId(gameId)),
+        addPlayer: (playerName, uid, admin) => dispatch(addPlayer(playerName, uid, admin)),
+        createNewGame: (user, gameId, language, timer, time) => dispatch(createNewGame(user, gameId, language, timer, time)),
+        updateUser: (uid, gameId) => dispatch(updateUser(uid, gameId)),
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainMenu);

@@ -9,14 +9,13 @@ import Language from '../global_components/language/changeLanguage';
 import TimeLimit from './timeLimit';
 import AddPlayer from './add-player';
 import Header from '../global_components/header';
-import Confirmation from './confirmation';
 import Card from '../global_components/card';
 import AccountInfo from '../global_components/accountInfo/accountInfo';
 import GameId from '../global_components/game-id';
 //Redux Actions
 import { setGameId, setAlert, getGameData, changeLanguage } from '../../actions/appActions';
 import { setPlayers } from '../../actions/gameActions';
-import { startAdminGame, updateGameMenuData, setFetchingGameData, setAllPlayersJoined, setShowConfirmation, subscribeJoinedPlayers, addPlayer, getUserDataFromDatabase, setTimer, setTime } from '../../actions/gameMenuActions';
+import { startAdminGame, updateGameMenuData, setFetchingGameData, setAllPlayersJoined, setShowConfirmation, subscribeJoinedPlayers, getUserDataFromDatabase, setTimer, setTime } from '../../actions/gameMenuActions';
 
 const GameMenu = (props) => {
     const { t } = useTranslation();
@@ -92,7 +91,6 @@ const GameMenu = (props) => {
     const buttonText =  props.playedAgainWithSettings ? 'Play again' : 'Play';
     return (
         <div className="game-menu">
-            {props.showConfirmation && <Confirmation />}
             <Header />
             {props.fetchingGameData ? <LoadingSpinner background={true} /> : <div className="menu">
                 <AccountInfo />
@@ -139,7 +137,6 @@ const mapDispatchToProps = (dispatch) => {
         setTime: (time, gameId) => dispatch(setTime(time, gameId)),
         setTimer: (timer, gameId) => dispatch(setTimer(timer, gameId)),
         changeLanguage: (language) => dispatch(changeLanguage(language)),
-        addPlayer: (player, uid) => dispatch(addPlayer(player, uid)),
         setAlert: (type, messageKey, messageValue, action, props) => dispatch(setAlert(type, messageKey, messageValue, action, props)),
         setAllPlayersJoined: (allPlayersJoined) => dispatch(setAllPlayersJoined(allPlayersJoined)),
         subscribeJoinedPlayers: (gameId, players) => dispatch(subscribeJoinedPlayers(gameId, players)),
