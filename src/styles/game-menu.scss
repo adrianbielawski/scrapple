@@ -64,7 +64,7 @@
     }
 
     input {
-        width: 80%;
+        width: 85%;
         text-transform: none;
     }
 
@@ -149,7 +149,7 @@
                 justify-content: space-between;
             }
             .player-name {
-                padding: 5px 5px;
+                padding: 5px 0 5px 3px;
                 display: flex;
                 align-items: center;
                 flex-grow: 1;
@@ -160,11 +160,16 @@
                 font-size: 1em;
                 text-align: left;
                 width: 100%;
+                max-width: 295px;
                 margin: 0;
+                overflow: hidden;
+                display: flex;
+                flex-flow: nowrap;
             }
             span {
                 font-weight: 700;
-                font-size: 1.2em;
+                font-size: 1em;
+                padding-left: 3px;
             }
             .top-list-space {
                 height: 0;
@@ -198,10 +203,13 @@
                 width: 100%;
             }
             button {
-                margin-right: 5px;
+                margin-right: 4px;
                 width: 25px;
                 height: 25px;
                 font-size: 1em;
+            }
+            img {
+                padding: 0 3px;
             }
         }
     }

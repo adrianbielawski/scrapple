@@ -218,8 +218,8 @@ class Player extends Component {
                         onTouchEnd={this.handleDrop}
                         className="player-name">
                         <p>{this.props.index + 1}: <span> {this.props.player.playerName}</span></p>
-                        {this.getUserIcon()}
                     </div>
+                        {this.getUserIcon()}
                     <button onClick={this.removePlayerHandler} className="remove">
                         <FontAwesomeIcon icon={faTimes} />
                     </button>

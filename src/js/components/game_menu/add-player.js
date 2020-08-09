@@ -54,7 +54,7 @@ const AddPlayer = (props) => {
         <div className="add-player">
             <p>{t("Add player")}</p>                    
             <div className="form">
-                <input id="player-name" type="text" autoComplete="false" spellCheck="false" ref={inputEl}></input>
+                <input id="player-name" type="text" autoComplete="false" spellCheck="false" maxLength="30" ref={inputEl}></input>
                 <button className="add" onClick={handleSubmit}>
                     <FontAwesomeIcon icon={faPlus} className="plus"/>
                 </button>
