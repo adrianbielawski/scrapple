@@ -3,8 +3,9 @@ import Moment from 'react-moment';//important
 import moment from 'moment';
 import { cloneDeep } from 'lodash';
 //Redux Actions
-import { checkAdmin, setAlert, setScreen, handleFinishGame, changeLanguage } from '../actions/appActions';
+import { setAdmin, setAlert, setScreen, handleFinishGame, changeLanguage } from '../actions/appActions';
 import { setTimer, setTime } from './gameMenuActions';
+import userName from '../components/global_components/accountInfo/userName';
 export const toggleShowWords = () => {
     return {
         type: 'GAME/TOGGLE_SHOW_WORDS',
@@ -38,10 +39,10 @@ export const setPlayers = (players) => {
     }
 }
 
-export const setFetchingGameData = (fetching) => {
+export const setFetchingGameData = (fetchingGameData) => {
     return {
         type: 'GAME/SET_FETCHING_GAME_DATA',
-        fetching
+        fetchingGameData
     }
 }
 
@@ -76,24 +77,22 @@ export const checkEndTime = (data, gameId) => {
     }
 }
 
-export const fetchGameData = (gameId) => dispatch => {
+export const fetchGameData = (gameId, user) => dispatch => {
     return db.collection('games').doc(gameId).get()
         .then(response => {
             const data = response.data();
-            const gameStarted = JSON.parse(sessionStorage.getItem('gameStarted'));
+
             let isEndTimeValid = false;
 
-            if (data.timer && gameStarted) {
+            if (data.timer && data.gameStarted) {
                 isEndTimeValid = dispatch(checkEndTime(data, gameId));
             };
 
             const endTime = isEndTimeValid ? data.endTime : null;
-
             dispatch(setGameState(data, endTime));
 
-            gameStarted !== true ? sessionStorage.setItem('gameStarted', JSON.stringify(true)) : null;
-
-            const isAdmin = dispatch(checkAdmin());
+            const isAdmin = data.admin === user.uid;
+            dispatch(setAdmin(isAdmin));
 
             const unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
                 const data = doc.data();

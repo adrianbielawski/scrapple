@@ -9,7 +9,7 @@ import ExitOptions from './exit-options';
 import WaitingCover from './waiting-cover';
 import LoadingSpinner from '../global_components/loadingSpinner';
 //Redux Actions
-import { checkAdmin, getGameId, getGameData, exitGame, playAgain, playAgainSettings, setFetchingGameData } from '../../actions/appActions';
+import { getGameId, getGameData, exitGame, playAgain, playAgainSettings, setFetchingGameData } from '../../actions/appActions';
 import { setPlayers } from '../../actions/gameActions';
 import { subscribeExitOption, setShowExitOptions } from '../../actions/gameSummaryActions';
 
@@ -17,7 +17,7 @@ const GameSummary = (props) => {
     const { t } = useTranslation();
 
     useEffect(() => {
-        props.checkAdmin();
+        //props.checkAdmin();
 
         const gameId =  props.gameId || props.getGameId();
 
@@ -98,7 +98,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    checkAdmin: () => { dispatch(checkAdmin()) },
     getGameId: () => dispatch(getGameId()),
     getGameData: (gameId) => dispatch(getGameData(gameId)),
     setPlayers: (players) => { dispatch(setPlayers(players)) },

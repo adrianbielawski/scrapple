@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash';
 
 const initialState = {
-    fetching: true,
+    fetchingGameData: true,
     showWords: false,
     isAudioEnabled: false,
     currentPlayer: 0,
@@ -42,7 +42,7 @@ const gameReducer = (state = initialState, action) => {
             return newState;
 
         case 'GAME/SET_FETCHING_GAME_DATA':
-            newState.fetching = action.fetching;
+            newState.fetchingGameData = action.fetchingGameData;
             return newState;
 
         case 'GAME/TOGGLE_SHOW_WORDS':

@@ -120,17 +120,6 @@ export const updateUser = (uid, gameId) => () => {
   });
 }
 
-export const checkAdmin = () => {
-  return dispatch => {
-    let localData = sessionStorage.getItem('admin');
-    const admin = localData ? JSON.parse(localData) : false;
-
-    dispatch(setAdmin(admin));
-
-    return admin;
-  }
-}
-
 export const getGameId = () => {
   return dispatch => {
     const pathArray = window.location.pathname.split('/');

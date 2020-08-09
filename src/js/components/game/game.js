@@ -11,17 +11,19 @@ import LoadingSpinner from '../global_components/loadingSpinner';
 import AudioController from './audio-controller';
 import Menu from './menu/menu';
 //Redux Actions
-import { setGameId, checkAdmin, setAlert } from '../../actions/appActions';
+import { setGameId, setAlert } from '../../actions/appActions';
 import { setEndTime, checkEndTime, fetchGameData } from '../../actions/gameActions';
 
 class Game extends React.Component {
-  componentDidMount() {
-    const pathArray = window.location.pathname.split('/');
-    const gameId = pathArray[2];
-    this.props.setGameId(gameId);
-    
-    const promise = this.props.fetchGameData(gameId);
-    promise.then((unsubscribe) => this.unsubscribe = unsubscribe);
+  componentDidUpdate(prevProps) {
+    if (prevProps.user.uid !== this.props.user.uid) {
+      const pathArray = window.location.pathname.split('/');
+      const gameId = pathArray[2];
+      this.props.setGameId(gameId);
+      
+      const promise = this.props.fetchGameData(gameId, this.props.user);
+      promise.then((unsubscribe) => this.unsubscribe = unsubscribe);
+    }
   }
 
   componentWillUnmount(){
@@ -44,7 +46,7 @@ class Game extends React.Component {
     const gameClass = this.props.showWords ? 'show-words' : '';
       
     return (
-      this.props.fetching ? <LoadingSpinner background={true} /> : ( 
+      this.props.fetchingGameData ? <LoadingSpinner background={true} /> : ( 
         <div className={`game ${gameClass}`}>
           {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
           <div className="top-wrapper">
@@ -66,10 +68,11 @@ class Game extends React.Component {
 const mapStateToProps = (state) => {
     return {
       gameId: state.app.gameId,
+      user: state.app.user,
       admin: state.app.admin,
       showFinishedGameCover: state.app.showFinishedGameCover,
       showWords: state.game.showWords,
-      fetching: state.game.fetching,
+      fetchingGameData: state.game.fetchingGameData,
     }
 }
 
@@ -77,10 +80,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setGameId: (gameId) => { dispatch(setGameId(gameId)) },
     setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
-    checkAdmin: () => { dispatch(checkAdmin()) },
     checkEndTime: (data, gameId) => dispatch(checkEndTime(data, gameId)),
     setEndTime: (endTime) => { dispatch(setEndTime(endTime)) },
-    fetchGameData: (gameId) => dispatch(fetchGameData(gameId)),
+    fetchGameData: (gameId, user) => dispatch(fetchGameData(gameId, user)),
   }
 }
 
