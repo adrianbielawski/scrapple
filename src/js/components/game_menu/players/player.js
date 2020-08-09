@@ -194,9 +194,20 @@ class Player extends Component {
         return styles
     }
 
+    getUserIcon = () => {
+        const player = this.props.player;
+        if (player.admin) {
+            return <img src="../../../../src/assets/img/admin.png" />;
+        } else if (!player.admin && player.uid) {
+            return <img src="../../../../src/assets/img/mobile.png" />;
+        } else if (!player.admin && !player.uid) {
+            return <img src="../../../../src/assets/img/no-mobile.png" />;
+        }
+    }
+
     render() {
         const styles = this.getStyles();
-        
+
         return (
             <li className={`player ${styles.grabbed} ${styles.hover}`} style={styles.position} ref={this.element}>
                 <div className={`top-list-space ${styles.topSpaceClass}`} style={styles.topSpaceStyle}></div>
@@ -206,7 +217,8 @@ class Player extends Component {
                         onTouchStart={this.handleGrab}
                         onTouchEnd={this.handleDrop}
                         className="player-name">
-                        <p>{this.props.t("Player")} {this.props.index + 1}: <span> {this.props.playerName}</span></p>
+                        <p>{this.props.index + 1}: <span> {this.props.player.playerName}</span></p>
+                        {this.getUserIcon()}
                     </div>
                     <button onClick={this.removePlayerHandler} className="remove">
                         <FontAwesomeIcon icon={faTimes} />

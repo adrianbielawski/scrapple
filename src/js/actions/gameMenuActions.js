@@ -9,11 +9,12 @@ export const setFetchingGameData = (fetching) => {
   }
 }
 
-export const addPlayer = (playerName, uid) => {
+export const addPlayer = (playerName, uid, admin) => {
   return {
     type: 'GAME_MENU/ADD_PLAYER',
     playerName,
-    uid
+    uid,
+    admin
   }
 }
 

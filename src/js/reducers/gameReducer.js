@@ -10,6 +10,7 @@ const initialState = {
         {
             playerName: 'aaa',
             uid: 'sdfsdf234234sf23f',
+            admin: false,
             playerIndex: 0,
             currentScore: 0,
             bestScore: 0,
@@ -28,6 +29,7 @@ const gameReducer = (state = initialState, action) => {
             newPlayers.push({
                 playerName: action.playerName,
                 uid: action.uid,
+                admin: action.admin,
                 playerIndex: newState.players.length,
                 currentScore: 0,
                 bestScore: 0,
