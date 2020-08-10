@@ -9,16 +9,24 @@ import ExitOptions from './exit-options';
 import WaitingCover from './waiting-cover';
 import LoadingSpinner from '../global_components/loadingSpinner';
 //Redux Actions
-import { getGameId, getGameData, exitGame, playAgain, playAgainSettings, setFetchingGameData } from '../../actions/appActions';
+import { getGameId, getGameData, exitGame, playAgain, playAgainSettings, setFetchingGameData, setAdmin } from '../../actions/appActions';
 import { setPlayers } from '../../actions/gameActions';
 import { subscribeExitOption, setShowExitOptions } from '../../actions/gameSummaryActions';
 
 const GameSummary = (props) => {
     const { t } = useTranslation();
+  
+    useEffect(() => {
+        if (props.user.uid) {
+            const gameDataPromise = props.getGameData(props.gameId);
+            gameDataPromise.then((data) => {
+                const isAdmin = data.admin === props.user.uid;
+                props.setAdmin(isAdmin);
+            })
+        }
+    }, [props.user.uid]);
 
     useEffect(() => {
-        //props.checkAdmin();
-
         const gameId =  props.gameId || props.getGameId();
 
         const promise = props.getGameData(gameId);
@@ -64,6 +72,10 @@ const GameSummary = (props) => {
         props.setShowExitOptions(true)
     };
 
+    const exitGame = () => {
+        props.exitGame(props.gameId, props.admin)
+    };
+
     return (
         <div className="game-summary">
             {props.exitOption === 'playAgainWithSettings' || (props.exitOption === 'playAgain' && props.timer) ?
@@ -78,7 +90,7 @@ const GameSummary = (props) => {
                         {getPlayersPositions()}
                     </ul>
                     {props.admin ? <button onClick={handleExit}>{t("Exit")}</button> : null}
-                    {props.exitOption === 'exitGame' ? <button onClick={props.exitGame}>{t("Exit")}</button> : null}                    
+                    {props.exitOption === 'exitGame' ? <button onClick={exitGame}>{t("Exit")}</button> : null}                    
                 </div>
             )}
         </div>
@@ -87,27 +99,29 @@ const GameSummary = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-      admin: state.app.admin,
-      gameId: state.app.gameId,
-      players: state.game.players,
-      fetchingGameData: state.app.fetchingGameData,
-      showExitOptions: state.gameSummary.showExitOptions,
-      exitOption: state.gameSummary.exitOption,
+        user: state.app.user,
+        admin: state.app.admin,
+        gameId: state.app.gameId,
+        players: state.game.players,
+        fetchingGameData: state.app.fetchingGameData,
+        showExitOptions: state.gameSummary.showExitOptions,
+        exitOption: state.gameSummary.exitOption,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    getGameId: () => dispatch(getGameId()),
-    getGameData: (gameId) => dispatch(getGameData(gameId)),
-    setPlayers: (players) => { dispatch(setPlayers(players)) },
-    exitGame: (gameId, admin) => { dispatch(exitGame(gameId, admin)) },
-    playAgain: (gameId) => { dispatch(playAgain(gameId)) },
-    playAgainSettings: (gameId) => { dispatch(playAgainSettings(gameId)) },
-    setFetchingGameData: (fetching) => { dispatch(setFetchingGameData(fetching)) },
-    subscribeExitOption: (gameId, exitOption) => dispatch(subscribeExitOption(gameId, exitOption)),
-    setShowExitOptions: (show) => dispatch(setShowExitOptions(show)),
-  }
+    return {
+        getGameId: () => dispatch(getGameId()),
+        setAdmin: (admin) => dispatch(setAdmin(admin)),
+        getGameData: (gameId) => dispatch(getGameData(gameId)),
+        setPlayers: (players) => { dispatch(setPlayers(players)) },
+        exitGame: (gameId, admin) => { dispatch(exitGame(gameId, admin)) },
+        playAgain: (gameId) => { dispatch(playAgain(gameId)) },
+        playAgainSettings: (gameId) => { dispatch(playAgainSettings(gameId)) },
+        setFetchingGameData: (fetching) => { dispatch(setFetchingGameData(fetching)) },
+        subscribeExitOption: (gameId, exitOption) => dispatch(subscribeExitOption(gameId, exitOption)),
+        setShowExitOptions: (show) => dispatch(setShowExitOptions(show)),
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameSummary);

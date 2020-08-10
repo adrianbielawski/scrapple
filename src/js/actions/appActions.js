@@ -244,9 +244,15 @@ export const exitGame = (gameId, admin) => {
       });
     }
     
-    dispatch(clearAppState());
     dispatch(clearGameSummaryState());
+    dispatch(clearAppStateOnExit());
   }
+}
+  
+const clearAppStateOnExit = () => {
+  return {
+    type: 'APP/EXIT_GAME',
+  };
 }
   
 const getPlayers = (players) => {

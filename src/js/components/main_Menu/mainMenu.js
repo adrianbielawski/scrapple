@@ -10,7 +10,7 @@ import AccountInfo from '../global_components/accountInfo/accountInfo';
 import LoadingSpinner from '../global_components/loadingSpinner';
 //Redux Actions
 import { setAlert, setScreen, setGameId, updateUser } from '../../actions/appActions';
-import { joinGame, createNewGame } from '../../actions/mainMenuActions';
+import { joinGame, createNewGame, setShowConfirmation } from '../../actions/mainMenuActions';
 import { addPlayer } from '../../actions/gameMenuActions';
 
 const MainMenu = (props) => {
@@ -22,6 +22,7 @@ const MainMenu = (props) => {
 
     useEffect(() => {
         return () => {
+            props.setShowConfirmation(false);
             if (unsubscribeGameStart !== null) {
                 unsubscribeGameStart();
             }
@@ -104,6 +105,7 @@ const mapDispatchToProps = (dispatch) => {
         joinGame: (gameId, language, user) => dispatch(joinGame(gameId, language, user)),
         setScreen: (screen) => dispatch(setScreen(screen)),
         setGameId: (gameId) => dispatch(setGameId(gameId)),
+        setShowConfirmation: (showConfirmation) => dispatch(setShowConfirmation(showConfirmation)),
         addPlayer: (playerName, uid, admin) => dispatch(addPlayer(playerName, uid, admin)),
         createNewGame: (user, gameId, language, timer, time) => dispatch(createNewGame(user, gameId, language, timer, time)),
         updateUser: (uid, gameId) => dispatch(updateUser(uid, gameId)),

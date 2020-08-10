@@ -14,9 +14,11 @@ const Alert = (props) => {
             switch(props.alert.action) {
                 case 'game-finish-button':
                 props.handleFinishGame(props.gameId, props.admin);
+                break;
 
                 case 'user-registered':
                 props.setScreen('login');
+                break;
             }
         } 
         props.removeAlert(); 

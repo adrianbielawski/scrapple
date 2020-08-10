@@ -14,7 +14,7 @@ export const subscribeExitOption = (gameId, exitOption) => {
                     dispatch(playAgain(gameId));
                 };
             }
-            if(data.joinedPlayers.length > 0 && data.exitOption === 'playAgainWithSettings') {
+            if(data.exitOption === 'playAgainWithSettings') {
                 dispatch(playAgainSettings(gameId));
             }
         });

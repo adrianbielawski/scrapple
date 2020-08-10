@@ -42,6 +42,16 @@ const appReducer = (state = initialState, action) => {
       newState.language = action.language;
       return newState;
 
+    case 'APP/EXIT_GAME':
+      newState.fetchingGameData = true;
+      newState.screen = 'MainMenu';
+      newState.gameId = null;
+      newState.admin = false;
+      newState.playedAgain = false;
+      newState.playedAgainWithSettings = false;
+      newState.showFinishedGameCover = false;
+      return newState;
+
     case 'APP/SET_LANGUAGE':
       newState.language = action.language;
       return newState;

@@ -96,7 +96,7 @@ export const joinGame = (gameId, language, user) => {
   }
 }
 
-const setShowConfirmation = (showConfirmation) => {
+export const setShowConfirmation = (showConfirmation) => {
   return {
     type: 'MAIN_MENU/SET_SHOW_CONFIRMATION',
     showConfirmation,
