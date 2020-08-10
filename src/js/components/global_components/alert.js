@@ -3,26 +3,24 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import '../../../styles/alert.scss';
 //Redux Actions
-import { setAlert, removeAlert, handleFinishGame } from '../../actions/appActions';
+import { setAlert, removeAlert, handleFinishGame, setScreen } from '../../actions/appActions';
 
 const Alert = (props) => {
     const { t } = useTranslation();
 
     const handleAlertResponse = (e) => {
         const response = e.target.value;
-        if(props.alert.type === 'confirm') {
-            if(response === 'true') {
-                switch(props.alert.action) {
-                    case 'game-finish-button':
-                    props.handleFinishGame(props.alert.alertProps.gameId, props.alert.alertProps.admin);
-                }
-            } else {
-                props.removeAlert(); 
+        if(response === 'true') {
+            switch(props.alert.action) {
+                case 'game-finish-button':
+                props.handleFinishGame(props.alert.alertProps.gameId, props.alert.alertProps.admin);
+
+                case 'user-registered':
+                props.setScreen('login');
             }
-        } else if(props.alert.type === 'alert') {
-            props.removeAlert();
-        }
-    };    
+        } 
+        props.removeAlert(); 
+    }   
 
     let alertButtons = '';
     if(props.alert.type === 'confirm') {
@@ -32,7 +30,7 @@ const Alert = (props) => {
                 <button className="no" value="false" onClick={handleAlertResponse}>{t("No")}</button>
             </div>
     } else if(props.alert.type === 'alert') {
-        alertButtons = <button className="ok" value="false" onClick={handleAlertResponse}>OK</button>
+        alertButtons = <button className="ok" value="true" onClick={handleAlertResponse}>OK</button>
     };
 
     return (
@@ -53,9 +51,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setAlert: (type, messageKey, messageValue, action, alertProps) => { dispatch(setAlert(type, messageKey, messageValue, action, alertProps)) },
-    removeAlert: () => { dispatch(removeAlert()) },
-    handleFinishGame: (gameId, admin) => { dispatch(handleFinishGame(gameId, admin)) },
+    setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(setAlert(type, messageKey, messageValue, action, alertProps)),
+    removeAlert: () => dispatch(removeAlert()),
+    handleFinishGame: (gameId, admin) => dispatch(handleFinishGame(gameId, admin)),
+    setScreen: (screen) => dispatch(setScreen(screen)),
   }
 }
 

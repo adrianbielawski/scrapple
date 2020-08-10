@@ -14,8 +14,9 @@ export const signUp = (email, password, userName) => dispatch => {
               allGames: [],
             });
             user.sendEmailVerification().then(() => {
-                auth.signOut();
-                dispatch(setAlert('alert', 'Welcome', {'name': userName}));
+                auth.signOut().then(() => {
+                    dispatch(setAlert('alert', 'Welcome', {'name': userName}, 'user-registered'));
+                })
             });
         })
         return user;

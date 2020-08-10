@@ -28,9 +28,12 @@ class App extends React.Component {
   componentDidMount = () => {
     auth.onAuthStateChanged(user => {
       if (user) {
-        this.props.setUser(user)
+        this.props.setUser(user);
       } else {
-        this.props.clearAppState(this.props.language)
+        if(this.props.screen === 'signup') {
+          return;
+        }
+        this.props.clearAppState(this.props.language);
       }
     });
   }

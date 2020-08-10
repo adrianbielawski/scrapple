@@ -11,7 +11,6 @@ const initialState = {
   playedAgain: false,
   playedAgainWithSettings: false,
   showFinishedGameCover: false,
-  showAlert: false,
   alert: {
     show: false,
     type: '',
