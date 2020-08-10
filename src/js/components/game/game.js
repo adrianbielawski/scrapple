@@ -15,13 +15,17 @@ import { setGameId, setAlert } from '../../actions/appActions';
 import { setEndTime, checkEndTime, fetchGameData } from '../../actions/gameActions';
 
 class Game extends React.Component {
-  componentDidUpdate(prevProps) {
-    if (prevProps.user.uid !== this.props.user.uid) {
+  componentDidMount() {
       const pathArray = window.location.pathname.split('/');
       const gameId = pathArray[2];
       this.props.setGameId(gameId);
       
-      const promise = this.props.fetchGameData(gameId, this.props.user);
+      this.props.fetchGameData(gameId, this.props.user);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.user.uid !== this.props.user.uid) {
+      const promise = this.props.fetchGameData(this.props.gameId, this.props.user);
       promise.then((unsubscribe) => this.unsubscribe = unsubscribe);
     }
   }
@@ -39,7 +43,7 @@ class Game extends React.Component {
       gameId: this.props.gameId,
       admin: this.props.admin,
     };
-    this.props.setAlert(type, messageKey, null, action, alertProps)
+    this.props.setAlert(type, messageKey, null, action, alertProps);
   }
 
   render() {

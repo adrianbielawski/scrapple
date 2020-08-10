@@ -62,18 +62,18 @@ export const toggleShowMenu = () => {
 export const checkEndTime = (data, gameId) => {
     return () => {
         const now = moment();
-        const stateT = moment(data.endTime);
-        const valid = stateT.diff(now, 'seconds') > 2;
-        if (!valid) {
+        const endTime = moment(data.endTime);
+        const isValid = endTime.diff(now, 'seconds') > 2;
+        if (!isValid && data.endTime) {
             let currentPlayer = data.currentPlayer;
             let players = [ ...data.players];
 
             currentPlayer = getNextPlayer(players, currentPlayer);
 
-            db.collection('games').doc(gameId).update({ currentPlayer })
+            db.collection('games').doc(gameId).update({ currentPlayer });
         }
 
-        return valid;
+        return isValid;
     }
 }
 
