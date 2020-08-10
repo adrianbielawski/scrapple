@@ -19,21 +19,20 @@ import { startAdminGame, updateGameMenuData, setFetchingGameData, setAllPlayersJ
 
 const GameMenu = (props) => {
     const { t } = useTranslation();
-    //let unsubscribeJoinedPlayers = null;
+    let unsubscribeJoinedPlayers = null;
   
-    // useEffect(() => {
-    //     props.playedAgain && !props.playedAgainWithSettings ? props.setShowConfirmation(true) : null;
-    //     if(props.timer && props.playAgain) {
-    //         unsubscribeJoinedPlayers = props.subscribeJoinedPlayers(gameId, props.players)
-    //     }        
-        
-    //     return () => {
-    //         props.setShowConfirmation(false);
-    //         if(unsubscribeJoinedPlayers !== null) {
-    //             unsubscribeJoinedPlayers()
-    //         }
-    //     }
-    // }, []);
+    useEffect(() => {
+        //props.playedAgain && !props.playedAgainWithSettings ? props.setShowConfirmation(true) : null;
+        // if(props.timer && props.playAgain) {
+        //     unsubscribeJoinedPlayers = props.subscribeJoinedPlayers(gameId, props.players)
+        // }
+        return () => {
+            //props.setShowConfirmation(false);
+            if(unsubscribeJoinedPlayers !== null) {
+                unsubscribeJoinedPlayers()
+            }
+        }
+    }, []);
   
     useEffect(() => {
         if (props.user.uid) {
@@ -46,7 +45,9 @@ const GameMenu = (props) => {
                     props.setPlayers(gameData.players);
                     props.setTimer(gameData.timer, data.currentGame);
                     props.setTime(gameData.time, data.currentGame);
-                    props.setFetchingGameData(false)
+                    props.setFetchingGameData(false);
+
+                    unsubscribeJoinedPlayers = props.subscribeJoinedPlayers(data.currentGame);
                 })
             })
         }
@@ -139,7 +140,7 @@ const mapDispatchToProps = (dispatch) => {
         changeLanguage: (language) => dispatch(changeLanguage(language)),
         setAlert: (type, messageKey, messageValue, action, props) => dispatch(setAlert(type, messageKey, messageValue, action, props)),
         setAllPlayersJoined: (allPlayersJoined) => dispatch(setAllPlayersJoined(allPlayersJoined)),
-        subscribeJoinedPlayers: (gameId, players) => dispatch(subscribeJoinedPlayers(gameId, players)),
+        subscribeJoinedPlayers: (gameId) => dispatch(subscribeJoinedPlayers(gameId)),
         setShowConfirmation: (showConfirmation) => dispatch(setShowConfirmation(showConfirmation)),
         getUserDataFromDatabase: (uid) => dispatch(getUserDataFromDatabase(uid)),
     }

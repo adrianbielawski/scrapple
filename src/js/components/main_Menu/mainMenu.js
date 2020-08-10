@@ -28,15 +28,23 @@ const MainMenu = (props) => {
         }
     }, []);
 
-    const validateUserInput = () => {
+    const handleJoinGame = () => {
         const gameId = gameIdInput.current.value.trim();
+        const isValid = validateUserInput(gameId);
 
+        if(!isValid) {
+            return;
+        }
+
+        unsubscribeGameStart = props.joinGame(gameId, props.language, props.user);
+    }
+
+    const validateUserInput = (gameId) => {
         if (!gameId) {
             props.setAlert('alert', 'Please type in game ID');
-            return;
+            return false;
         };
-
-        unsubscribeGameStart = props.joinGame(gameId, props.language);
+        return true;
     };
 
     const createNewGame = () => {
@@ -59,9 +67,11 @@ const MainMenu = (props) => {
     }
 
     return (
-        props.user === {} ? <LoadingSpinner background={true} /> : (
+        
             <div className="main-menu">
+                {props.showConfirmation && <Confirmation />}
                 <Header />
+                {props.user === {} ? <LoadingSpinner background={true} /> : (
                 <div className="content">
                     <AccountInfo />
                     <Card>
@@ -69,11 +79,11 @@ const MainMenu = (props) => {
                     </Card>
                     <Card>
                         <input placeholder={t("Game ID")} ref={gameIdInput}></input>
-                        <button onClick={validateUserInput}>{t("Join the game")}</button>
+                        <button onClick={handleJoinGame}>{t("Join the game")}</button>
                     </Card>
                 </div>
+                )}
             </div>
-        )
     );
 }
 
@@ -84,13 +94,14 @@ const mapStateToProps = (state) => {
         user: state.app.user,
         timer: state.timeLimit.timer,
         time: state.timeLimit.time,
+        showConfirmation: state.mainMenu.showConfirmation,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         setAlert: (type, messageKey, messageValue, action, props) => dispatch(setAlert(type, messageKey, messageValue, action, props)),
-        joinGame: (gameId, language) => dispatch(joinGame(gameId, language)),
+        joinGame: (gameId, language, user) => dispatch(joinGame(gameId, language, user)),
         setScreen: (screen) => dispatch(setScreen(screen)),
         setGameId: (gameId) => dispatch(setGameId(gameId)),
         addPlayer: (playerName, uid, admin) => dispatch(addPlayer(playerName, uid, admin)),

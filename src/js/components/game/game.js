@@ -20,13 +20,13 @@ class Game extends React.Component {
       const gameId = pathArray[2];
       this.props.setGameId(gameId);
       
-      this.props.fetchGameData(gameId, this.props.user);
+      const promise = this.props.fetchGameData(gameId, this.props.user);
+      promise.then((unsubscribe) => this.unsubscribe = unsubscribe);
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.user.uid !== this.props.user.uid) {
-      const promise = this.props.fetchGameData(this.props.gameId, this.props.user);
-      promise.then((unsubscribe) => this.unsubscribe = unsubscribe);
+      this.props.fetchGameData(this.props.gameId, this.props.user);
     }
   }
 

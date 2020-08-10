@@ -52,7 +52,7 @@ export const createNewGame = (user, gameId, language, timer, time) => {
   }
 }
 
-export const joinGame = (gameId, language) => {
+export const joinGame = (gameId, language, user) => {
   return dispatch => {
     db.collection('games').doc(gameId).get()
     .then((response) => {
@@ -61,20 +61,25 @@ export const joinGame = (gameId, language) => {
       if(language !== data.language) {
         dispatch(changeLanguage(data.language));
       };
-
-      if(data.timer) {
-        const random = Math.floor(Math.random() * 100000).toString();
-        
-        db.collection('games').doc(gameId).update({'joinedPlayers': firebase.firestore.FieldValue.arrayUnion(random)})
-        .then(() => {
-          dispatch(setGameId(gameId));
-        })
-        .catch(() => {
-          dispatch(setAlert('alert', 'Something went wrong, please check game ID'));
-        });
-      } else {
-        dispatch(startJoinedPlayerGame(gameId));
-      }
+      
+      db.collection('games').doc(gameId).update({'players': firebase.firestore.FieldValue.arrayUnion(
+        {
+          admin: false,
+          allPoints: [],
+          bestScore: 0,
+          currentScore: 0,
+          playerIndex: data.players.length,
+          playerName: user.displayName,
+          uid: user.uid,
+        }
+      )})
+      .then(() => {
+        dispatch(setGameId(gameId));
+        dispatch(setShowConfirmation(true));
+      })
+      .catch(() => {
+        dispatch(setAlert('alert', 'Something went wrong, please check game ID'));
+      });
     })
     .catch(() => {
       dispatch(setAlert('alert', 'Something went wrong, please check game ID'));
@@ -89,6 +94,13 @@ export const joinGame = (gameId, language) => {
     });
 
     return unsubscribeGameStart;
+  }
+}
+
+const setShowConfirmation = (showConfirmation) => {
+  return {
+    type: 'MAIN_MENU/SET_SHOW_CONFIRMATION',
+    showConfirmation,
   }
 }
 

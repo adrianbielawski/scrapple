@@ -1,6 +1,7 @@
 import db from '../../firebase';
 //Redux Actions
 import { setScreen, setAlert } from '../actions/appActions';
+import { setPlayers } from '../actions/gameActions';
 
 export const setFetchingGameData = (fetching) => {
   return {
@@ -100,12 +101,10 @@ export const setShowConfirmation = (showConfirmation) => {
   }
 }
 
-export const subscribeJoinedPlayers = (gameId, players) => dispatch => {
+export const subscribeJoinedPlayers = (gameId) => dispatch => {
   return db.collection('games').doc(gameId).onSnapshot(doc => {
     const data = doc.data();
-    if(data.joinedPlayers.length >= players.length) {
-      dispatch(setAllPlayersJoined(true));
-    };
+    dispatch(setPlayers(data.players));
   });
 }
 
