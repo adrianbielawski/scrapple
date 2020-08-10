@@ -36,14 +36,7 @@ class Game extends React.Component {
 
   handleGameFinish = (e) => {
     e.preventDefault();
-    const action = e.target.id;
-    const type = e.target.value;
-    const messageKey = 'Are you sure you want to finish this game?';
-    const alertProps = {
-      gameId: this.props.gameId,
-      admin: this.props.admin,
-    };
-    this.props.setAlert(type, messageKey, null, action, alertProps);
+    this.props.setAlert('confirm', 'Are you sure you want to finish this game?', null, 'game-finish-button');
   }
 
   render() {
@@ -60,7 +53,7 @@ class Game extends React.Component {
           </div>
           <TwoLetterWords />
           <Stats />
-          {this.props.admin && <button id="game-finish-button" onClick={this.handleGameFinish} value="confirm">
+          {this.props.admin && <button className="game-finish-button" onClick={this.handleGameFinish}>
             {this.props.t("Finish the game")}
           </button>}
         </div>

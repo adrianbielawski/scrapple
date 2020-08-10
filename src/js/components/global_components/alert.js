@@ -13,7 +13,7 @@ const Alert = (props) => {
         if(response === 'true') {
             switch(props.alert.action) {
                 case 'game-finish-button':
-                props.handleFinishGame(props.alert.alertProps.gameId, props.alert.alertProps.admin);
+                props.handleFinishGame(props.gameId, props.admin);
 
                 case 'user-registered':
                 props.setScreen('login');
@@ -46,6 +46,8 @@ const Alert = (props) => {
 const mapStateToProps = (state) => {
     return {
       alert: state.app.alert,
+      gameId: state.app.gameId,
+      admin: state.app.admin,
     }
 }
 

@@ -21,7 +21,6 @@ export const createNewGame = (user, gameId, language, timer, time) => {
       ],
       currentPlayer: 0,
       gameStarted: false,
-      joinedPlayers: [user.uid],
       //exitOption: playedAgainWithSettings ? 'playAgainWithSettings' : null
     }
     
