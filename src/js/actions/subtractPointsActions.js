@@ -5,16 +5,18 @@ import { setScreen } from './appActions';
 
 export const subPoints = (gameId, players, points) => {
     return dispatch => {
+        debugger
         const updatedPlayers = cloneDeep(players);
 
         for (const player of updatedPlayers) {
-            player.currentScore -= points[player.playerId] || 0;
+            player.currentScore -= points[player.playerIndex] || 0;
         }
 
         db.collection('games').doc(gameId).update({
             players: updatedPlayers,
             pointsSubtracted: true
+        }).then(() => {
+            dispatch(setScreen(`Game/${gameId}/GameSummary`));
         });
-        dispatch(setScreen(`Game/${gameId}/GameSummary`));
     }
 };

@@ -28,6 +28,7 @@ const SubtractPoints = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        
         const isValid = validateUserInputs();
 
         if (isValid) {
