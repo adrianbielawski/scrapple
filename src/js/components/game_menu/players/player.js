@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faMobileAlt, faSlash, faUserCog } from '@fortawesome/free-solid-svg-icons';
 //Redux Actions
 import { removePlayer, reorderPlayers, setGrabbedElement, setIsTransitionEnabled, setInitialListSpace, setListSpace, setTouches } from '../../../actions/gameMenuActions';
 
@@ -197,11 +197,24 @@ class Player extends Component {
     getUserIcon = () => {
         const player = this.props.player;
         if (player.admin) {
-            return <img src="../../../../src/assets/img/admin.png" />;
+            return (
+                <div className="user-icon">
+                    <FontAwesomeIcon icon={faUserCog} />
+                </div>
+            );
         } else if (!player.admin && player.uid) {
-            return <img src="../../../../src/assets/img/mobile.png" />;
+            return (
+                <div className="user-icon">
+                    <FontAwesomeIcon icon={faMobileAlt} />
+                </div>
+            );
         } else if (!player.admin && !player.uid) {
-            return <img src="../../../../src/assets/img/no-mobile.png" />;
+            return (
+                <div className="fa-layers fa-fw user-icon">
+                    <FontAwesomeIcon icon={faMobileAlt} />
+                    <FontAwesomeIcon icon={faSlash} />
+                </div>
+            );
         }
     }
 

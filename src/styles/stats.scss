@@ -97,7 +97,15 @@
             display: flex;
             justify-content: center;
             color: $darkText;
+            .user-icon {
+                width: 30px;
+                margin-right: 3px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
         }
+
         
         button {
             height: 30px;
