@@ -9,6 +9,7 @@ const initialState = {
     players: [],
     timeLeft: null,
     showMenu: false,
+    showFinishedGameCover: false,
 };
   
 const gameReducer = (state = initialState, action) => {
@@ -43,6 +44,10 @@ const gameReducer = (state = initialState, action) => {
 
         case 'GAME/SET_FETCHING_GAME_DATA':
             newState.fetchingGameData = action.fetchingGameData;
+            return newState;
+
+        case 'GAME/SHOW_FINISHED_GAME_COVER':
+            newState.showFinishedGameCover = action.showFinishedGameCover;
             return newState;
 
         case 'GAME/TOGGLE_SHOW_WORDS':

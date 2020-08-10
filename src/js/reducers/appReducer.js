@@ -10,7 +10,6 @@ const initialState = {
   admin: false,
   playedAgain: false,
   playedAgainWithSettings: false,
-  showFinishedGameCover: false,
   alert: {
     show: false,
     type: '',
@@ -49,7 +48,6 @@ const appReducer = (state = initialState, action) => {
       newState.admin = false;
       newState.playedAgain = false;
       newState.playedAgainWithSettings = false;
-      newState.showFinishedGameCover = false;
       return newState;
 
     case 'APP/SET_LANGUAGE':
@@ -70,10 +68,6 @@ const appReducer = (state = initialState, action) => {
 
     case 'APP/SET_PLAYED_AGAIN_WITH_SETTINGS':
       newState.playedAgainWithSettings = action.playedAgainWithSettings;
-      return newState;
-
-    case 'APP/SHOW_FINISHED_GAME_COVER':
-      newState.showFinishedGameCover = action.showFinishedGameCover;
       return newState;
 
     case 'APP/SET_ALERT':

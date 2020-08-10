@@ -1,7 +1,7 @@
 import db from '../../firebase';
 import * as firebase from 'firebase';
 //Redux Actions
-import { changeLanguage, setGameId, setAlert, setAdmin, setShowFinishedGameCover, setScreen } from '../actions/appActions';
+import { changeLanguage, setGameId, setAlert, setAdmin, setScreen } from '../actions/appActions';
 
 export const createNewGame = (user, gameId, language, timer, time) => {
   return dispatch => {
@@ -106,7 +106,6 @@ export const setShowConfirmation = (showConfirmation) => {
 export const startJoinedPlayerGame = (gameId) => {
   return dispatch => {
     dispatch(setAdmin(false));
-    dispatch(setShowFinishedGameCover(false));
     dispatch(setScreen(`Game/${gameId}`));
   }
 }

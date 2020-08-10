@@ -27,7 +27,7 @@ const GameSummary = (props) => {
     }, [props.user.uid]);
 
     useEffect(() => {
-        const gameId =  props.gameId || props.getGameId();
+        const gameId = props.gameId || props.getGameId();
 
         const promise = props.getGameData(gameId);
         promise.then(data => {
@@ -35,9 +35,13 @@ const GameSummary = (props) => {
             props.setFetchingGameData(false);
         });
 
-        const unsubscribe = props.subscribeExitOption(gameId, props.exitOption);
+        const unsubscribe = !props.admin && props.subscribeExitOption(gameId, props.exitOption);
 
-        return unsubscribe;
+        return () => {
+            if (!props.admin) {
+                unsubscribe
+            }
+        };
     }, []);
 
     const getPlayersPositions = () => {

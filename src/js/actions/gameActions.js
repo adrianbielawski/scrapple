@@ -5,7 +5,7 @@ import { cloneDeep } from 'lodash';
 //Redux Actions
 import { setAdmin, setAlert, setScreen, handleFinishGame, changeLanguage } from '../actions/appActions';
 import { setTimer, setTime } from './gameMenuActions';
-import userName from '../components/global_components/accountInfo/userName';
+
 export const toggleShowWords = () => {
     return {
         type: 'GAME/TOGGLE_SHOW_WORDS',
@@ -57,6 +57,13 @@ export const toggleShowMenu = () => {
     return {
         type: 'GAME/TOGGLE_SHOW_MENU',
     }
+}
+
+export const setShowFinishedGameCover = (showFinishedGameCover) => {
+  return {
+    type: 'GAME/SHOW_FINISHED_GAME_COVER',
+    showFinishedGameCover
+  }
 }
 
 export const checkEndTime = (data, gameId) => {

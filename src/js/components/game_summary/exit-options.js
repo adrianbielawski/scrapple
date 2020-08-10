@@ -9,15 +9,15 @@ import { exitGame, playAgain, playAgainSettings } from '../../actions/appActions
 const ExitOptions = (props) => {
     const { t } = useTranslation();
     const handlePlayAgain = () => {
-        props.playAgain(props.gameId)
+        props.playAgain(props.gameId, props.admin);
     };
 
     const handlePlayAgainSettings = () => {
-        props.playAgainSettings(props.gameId)
+        props.playAgainSettings(props.gameId, props.admin);
     };
 
     const handleExitGame = () => {
-        props.exitGame(props.gameId, props.admin)
+        props.exitGame(props.gameId, props.admin);
     }
 
     return ( 
@@ -39,8 +39,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     exitGame: (gameId, admin) => { dispatch(exitGame(gameId, admin)) },
-    playAgain: (gameId) => { dispatch(playAgain(gameId)) },
-    playAgainSettings: (gameId) => { dispatch(playAgainSettings(gameId)) },
+    playAgain: (gameId, admin) => { dispatch(playAgain(gameId, admin)) },
+    playAgainSettings: (gameId, admin) => { dispatch(playAgainSettings(gameId, admin)) },
   }
 }
 

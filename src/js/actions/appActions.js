@@ -3,6 +3,7 @@ import i18n from '../../i18n';
 //Redux Actions
 import { joinGame } from '../actions/mainMenuActions';
 import { clearGameSummaryState } from '../actions/gameSummaryActions';
+import { setShowFinishedGameCover } from '../actions/gameActions';
 
 export const setGameId = (gameId) => {
   return {
@@ -80,13 +81,6 @@ export const setPlayedAgainWithSettings = (playedAgainWithSettings) => {
   }
 }
 
-export const setShowFinishedGameCover = (showFinishedGameCover) => {
-  return {
-    type: 'APP/SHOW_FINISHED_GAME_COVER',
-    showFinishedGameCover
-  }
-}
-
 export const setAlert = (alertType, messageKey, messageValue, action, alertProps) => {
   return {
     type: 'APP/SET_ALERT',
@@ -157,35 +151,25 @@ export const handleFinishGame = (gameId, admin) => {
   }
 }
 
-export const playAgain = (gameId) => {
+export const playAgain = (gameId, admin) => {
   return dispatch => {
-    sessionStorage.setItem('gameStarted', JSON.stringify(false));
-    const localData = sessionStorage.getItem('admin');
-    const isAdmin = JSON.parse(localData);
-    if(isAdmin) {
-      let timer = false;
-      let players = [];
+    if(admin) {
       db.collection('games').doc(gameId).get()
       .then(response => {
         const data = response.data();
-        timer = data.timer;
-        players = getPlayers(data.players);
+        const players = clearPlayers(data.players);
 
         db.collection('games').doc(gameId).update({
-          showFinishedGameCover: false,
           gameStarted: false,
           gameFinished: false,
           pointsSubtracted: false,
           currentPlayer: 0,
-          joinedPlayers: [1],
           players,
           exitOption: 'playAgain'
         })
         .then(() => {
-          dispatch(setShowFinishedGameCover(false));
-          dispatch(setAdmin(isAdmin));
-          dispatch(setPlayedAgain(true));
-          dispatch(setScreen(timer ? 'GameMenu' : `Game/${gameId}`));
+          dispatch(setAdmin(admin));
+          dispatch(setScreen(`Game/${gameId}`));
         })
         .catch(() => {
           dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
@@ -195,40 +179,32 @@ export const playAgain = (gameId) => {
         dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
       });
     } else {
-      dispatch(setShowFinishedGameCover(false));
-      dispatch(setScreen('MainMenu'));
-      dispatch(joinGame(gameId));
+      dispatch(setScreen(`Game/${gameId}`));
+      //dispatch(joinGame(gameId));
     };
     dispatch(clearGameSummaryState());
   }
 }
 
-export const playAgainSettings = (gameId) => {
+export const playAgainSettings = (gameId, admin) => {
   return dispatch => {
-    sessionStorage.setItem('gameStarted', JSON.stringify(false));
-    const localData = sessionStorage.getItem('admin');
-    const isAdmin = JSON.parse(localData);
-    if(isAdmin) {
+    if(admin) {
       db.collection('games').doc(gameId).update({
-        showFinishedGameCover: false,
         gameStarted: false,
         gameFinished: false,
         pointsSubtracted: false,
         currentPlayer: 0,
-        joinedPlayers: [],
         players: [],
         exitOption: 'playAgainWithSettings'
       })
       .then(() => {
         dispatch(setScreen(`GameMenu`));
         dispatch(setPlayedAgainWithSettings(true));
-        dispatch(setShowFinishedGameCover(false));
       })
       .catch(() => {
         dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
       });
     } else {
-        dispatch(setShowFinishedGameCover(false));
         dispatch(setScreen(`MainMenu`));
         dispatch(joinGame(gameId));
     };
@@ -255,14 +231,16 @@ const clearAppStateOnExit = () => {
   };
 }
   
-const getPlayers = (players) => {
+const clearPlayers = (players) => {
   return players.map((player, index) => {
     return {
+      admin: player.admin,
       playerName: player.playerName,
-      playerId: index,
+      playerIndex: player.playerIndex,
       currentScore: 0,
       bestScore: 0,
       allPoints: [],
+      uid: player.uid
     }
   });
 }

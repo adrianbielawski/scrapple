@@ -5,7 +5,6 @@ import { setScreen } from './appActions';
 
 export const subPoints = (gameId, players, points) => {
     return dispatch => {
-        debugger
         const updatedPlayers = cloneDeep(players);
 
         for (const player of updatedPlayers) {

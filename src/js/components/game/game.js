@@ -12,7 +12,7 @@ import AudioController from './audio-controller';
 import Menu from './menu/menu';
 //Redux Actions
 import { setGameId, setAlert } from '../../actions/appActions';
-import { setEndTime, checkEndTime, fetchGameData } from '../../actions/gameActions';
+import { setEndTime, checkEndTime, fetchGameData, setShowFinishedGameCover } from '../../actions/gameActions';
 
 class Game extends React.Component {
   componentDidMount() {
@@ -31,7 +31,8 @@ class Game extends React.Component {
   }
 
   componentWillUnmount(){
-      this.unsubscribe();
+    this.props.setShowFinishedGameCover(false);
+    this.unsubscribe();
   }
 
   handleGameFinish = (e) => {
@@ -67,7 +68,7 @@ const mapStateToProps = (state) => {
       gameId: state.app.gameId,
       user: state.app.user,
       admin: state.app.admin,
-      showFinishedGameCover: state.app.showFinishedGameCover,
+      showFinishedGameCover: state.game.showFinishedGameCover,
       showWords: state.game.showWords,
       fetchingGameData: state.game.fetchingGameData,
     }
@@ -80,6 +81,7 @@ const mapDispatchToProps = (dispatch) => {
     checkEndTime: (data, gameId) => dispatch(checkEndTime(data, gameId)),
     setEndTime: (endTime) => { dispatch(setEndTime(endTime)) },
     fetchGameData: (gameId, user) => dispatch(fetchGameData(gameId, user)),
+    setShowFinishedGameCover: (showFinishedGameCover) => dispatch(setShowFinishedGameCover(showFinishedGameCover)),
   }
 }
 

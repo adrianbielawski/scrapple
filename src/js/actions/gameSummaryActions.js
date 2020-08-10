@@ -6,6 +6,7 @@ export const subscribeExitOption = (gameId, exitOption) => {
     return dispatch => {
         return db.collection('games').doc(gameId).onSnapshot(doc => {
             const data = doc.data();
+
             if(data.exitOption !== exitOption) {
                 dispatch(setExitOption(data.exitOption));
                 if (data.exitOption === 'exitGame') {
