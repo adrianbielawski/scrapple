@@ -15,7 +15,7 @@ import GameId from '../global_components/game-id';
 //Redux Actions
 import { setGameId, setAlert, getGameData, changeLanguage } from '../../actions/appActions';
 import { setPlayers } from '../../actions/gameActions';
-import { startAdminGame, updateGameMenuData, setFetchingGameData, setAllPlayersJoined, setShowConfirmation, subscribeJoinedPlayers, getUserDataFromDatabase, setTimer, setTime } from '../../actions/gameMenuActions';
+import { startAdminGame, updateGameMenuData, setFetchingGameData, subscribeJoinedPlayers, getUserDataFromDatabase, setTimer, setTime } from '../../actions/gameMenuActions';
 
 const GameMenu = (props) => {
     const { t } = useTranslation();
@@ -118,7 +118,6 @@ const mapStateToProps = (state) => {
         time: state.timeLimit.time,
         playedAgain: state.app.playedAgain,
         playedAgainWithSettings: state.app.playedAgainWithSettings,
-        showConfirmation: state.gameMenu.showConfirmation,
     }
 }
 
@@ -134,9 +133,7 @@ const mapDispatchToProps = (dispatch) => {
         setTimer: (timer, gameId) => dispatch(setTimer(timer, gameId)),
         changeLanguage: (language) => dispatch(changeLanguage(language)),
         setAlert: (type, messageKey, messageValue, action, props) => dispatch(setAlert(type, messageKey, messageValue, action, props)),
-        setAllPlayersJoined: (allPlayersJoined) => dispatch(setAllPlayersJoined(allPlayersJoined)),
         subscribeJoinedPlayers: (gameId) => dispatch(subscribeJoinedPlayers(gameId)),
-        setShowConfirmation: (showConfirmation) => dispatch(setShowConfirmation(showConfirmation)),
         getUserDataFromDatabase: (uid) => dispatch(getUserDataFromDatabase(uid)),
     }
 }
