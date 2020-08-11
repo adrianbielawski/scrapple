@@ -16,12 +16,12 @@ import { setEndTime, checkEndTime, fetchGameData, setShowFinishedGameCover } fro
 
 class Game extends React.Component {
   componentDidMount() {
-      const pathArray = window.location.pathname.split('/');
-      const gameId = pathArray[2];
-      this.props.setGameId(gameId);
-      
-      const promise = this.props.fetchGameData(gameId, this.props.user);
-      promise.then((unsubscribe) => this.unsubscribe = unsubscribe);
+    const pathArray = window.location.pathname.split('/');
+    const gameId = pathArray[2];
+    this.props.setGameId(gameId);
+    
+    const promise = this.props.fetchGameData(gameId, this.props.user);
+    promise.then((unsubscribe) => this.unsubscribe = unsubscribe);
   }
 
   componentDidUpdate(prevProps) {

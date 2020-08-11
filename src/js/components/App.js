@@ -51,26 +51,12 @@ class App extends React.Component {
         <Switch>
           <Route path={["/login", "/signup"]} render={() => (<Main />)} />
           <Route path="/MainMenu" render={() => (<MainMenu />)} />
-          <Route path="/GameMenu" render={() => (
-            <Suspense fallback={<LoadingSpinner background={true} />}>
-              <GameMenu />
-            </Suspense>)}
-          />
-          <Route exact path="/Game/:gameId" render={() => (
-            <Suspense fallback={<LoadingSpinner background={true} />}>
-              <Game />
-            </Suspense>)} 
-          />
-          <Route exact path="/Game/:gameId/SubtractPoints" render={() => (
-            <Suspense fallback={<LoadingSpinner background={true} />}>
-              <SubtractPoints />
-            </Suspense>)}
-          />
-          <Route exact path="/Game/:gameId/GameSummary" render={() => (
-            <Suspense fallback={<LoadingSpinner background={true} />}>
-              <GameSummary />
-            </Suspense>)} 
-          />
+          <Suspense fallback={<LoadingSpinner background={true} />}>
+            <Route path="/GameMenu" component={GameMenu} />
+            <Route exact path="/Game/:gameId" component={Game} />
+            <Route exact path="/Game/:gameId/SubtractPoints" component={SubtractPoints} />
+            <Route exact path="/Game/:gameId/GameSummary" component={GameSummary} />
+          </Suspense>
         </Switch>
       </div>
     );
