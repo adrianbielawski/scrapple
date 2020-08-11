@@ -27,15 +27,15 @@ class Game extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.user.uid !== this.props.user.uid) {
       const promise = this.props.fetchGameData(this.props.gameId, this.props.user);
-      promise.then((unsubscribe) => this.unsubscribeAfterIpdate = unsubscribe);
+      promise.then((unsubscribe) => this.unsubscribeAfterUpdate = unsubscribe);
     }
   }
 
   componentWillUnmount(){
     this.props.setShowFinishedGameCover(false);
     this.unsubscribe();
-    if(this.unsubscribeAfterIpdate) {
-      this.unsubscribeAfterIpdate();
+    if(this.unsubscribeAfterUpdate) {
+      this.unsubscribeAfterUpdate();
     }
   }
 
