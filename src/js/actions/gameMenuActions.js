@@ -87,13 +87,6 @@ export const setTouches = (touches) => {
   }
 }
 
-export const setAllPlayersJoined = (allPlayersJoined) => {
-  return {
-    type: 'GAME_MENU/SET_ALL_PLAYERS_JOINED',
-    allPlayersJoined
-  }
-}
-
 export const setShowConfirmation = (showConfirmation) => {
   return {
     type: 'GAME_MENU/SET_SHOW_CONFIRMATION',

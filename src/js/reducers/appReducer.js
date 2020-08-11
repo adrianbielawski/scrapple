@@ -96,10 +96,6 @@ const appReducer = (state = initialState, action) => {
       newState.user = action.user
       return newState;
       
-    case 'APP/CLEAR_USER':
-      newState.user = {}
-      return newState;
-     
     default:
       return state;
   }

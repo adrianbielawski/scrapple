@@ -37,10 +37,6 @@ const gameMenuReducer = (state = initialState, action) => {
       newState.players.touches = action.touches;
       return newState;
     
-    case 'GAME_MENU/SET_ALL_PLAYERS_JOINED':
-      newState.allPlayersJoined = action.allPlayersJoined;
-      return newState;
-    
     case 'GAME_MENU/SET_SHOW_CONFIRMATION':
       newState.showConfirmation = action.showConfirmation;
       return newState;

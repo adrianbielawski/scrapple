@@ -18,12 +18,6 @@ export const setUser = (user) => {
   }
 }
 
-export const clearUser = () => {
-  return {
-    type: 'APP/CLEAR_USER',
-  }
-}
-
 export const setFetchingGameData = (fetching) => {
   return {
     type: 'APP/SET_FETCHING_GAME_DATA',
@@ -219,14 +213,13 @@ export const playAgainSettings = (gameId, admin) => {
 
 export const exitGame = (gameId, admin) => {
   return dispatch => {
+    dispatch(clearGameSummaryState());
+    dispatch(clearAppStateOnExit());
     if(admin) {
       db.collection('games').doc(gameId).set({
         exitOption: 'exitGame',
       });
     }
-    
-    dispatch(clearGameSummaryState());
-    dispatch(clearAppStateOnExit());
   }
 }
   

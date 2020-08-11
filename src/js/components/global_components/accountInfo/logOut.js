@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { auth } from '../../../../firebase';
 //Redux Actions
-import { clearUser, clearAppState } from '../../../actions/appActions';
+import { clearAppState } from '../../../actions/appActions';
 
 const LogOut = (props) => {
     const { t } = useTranslation();
@@ -24,7 +24,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    clearUser: () => dispatch(clearUser()),
     clearAppState: (language) => dispatch(clearAppState(language)),
   }
 }
