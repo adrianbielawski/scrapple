@@ -7,7 +7,6 @@ const initialState = {
     isTransitionEnabled: false,
     touches: 0
   },
-  allPlayersJoined: false,
   showConfirmation: false,
 };
 

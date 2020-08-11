@@ -22,26 +22,13 @@ const GameMenu = (props) => {
     let unsubscribeJoinedPlayers = null;
   
     useEffect(() => {
-        //props.playedAgain && !props.playedAgainWithSettings ? props.setShowConfirmation(true) : null;
-        // if(props.timer && props.playAgain) {
-        //     unsubscribeJoinedPlayers = props.subscribeJoinedPlayers(gameId, props.players)
-        // }
-        return () => {
-            //props.setShowConfirmation(false);
-            if(unsubscribeJoinedPlayers !== null) {
-                unsubscribeJoinedPlayers()
-            }
-        }
-    }, []);
-  
-    useEffect(() => {
         if (props.user.uid) {
             const gameIdPromise = props.getUserDataFromDatabase(props.user.uid);
             gameIdPromise.then((data) => {
                 props.setGameId(data.currentGame);
                 const gameDataPromise = props.getGameData(data.currentGame);
                 gameDataPromise.then((gameData) => {
-                    props.changeLanguage(gameData.language)
+                    props.changeLanguage(gameData.language);
                     props.setPlayers(gameData.players);
                     props.setTimer(gameData.timer, data.currentGame);
                     props.setTime(gameData.time, data.currentGame);
@@ -58,6 +45,14 @@ const GameMenu = (props) => {
             props.updateGameMenuData(props.gameId, props.language, props.timer, props.time, props.players);
         }
     });
+  
+    useEffect(() => {
+        return () => {
+            if(unsubscribeJoinedPlayers !== null) {
+                unsubscribeJoinedPlayers();
+            }
+        }
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();

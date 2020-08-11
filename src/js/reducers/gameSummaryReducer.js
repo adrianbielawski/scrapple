@@ -17,7 +17,7 @@ const gameSummaryReducer = (state = initialState, action) => {
         case 'GAME_SUMMARY/CLEAR_STATE':
             newState = { ...initialState };
             return newState;
-    
+
         default:
             return state;
     }

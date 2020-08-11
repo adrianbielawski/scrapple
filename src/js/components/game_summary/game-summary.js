@@ -15,6 +15,7 @@ import { subscribeExitOption, setShowExitOptions } from '../../actions/gameSumma
 
 const GameSummary = (props) => {
     const { t } = useTranslation();
+    let unsubscribe = null;
   
     useEffect(() => {
         if (props.user.uid) {
@@ -35,11 +36,11 @@ const GameSummary = (props) => {
             props.setFetchingGameData(false);
         });
 
-        const unsubscribe = !props.admin && props.subscribeExitOption(gameId, props.exitOption);
+        unsubscribe = !props.admin ? props.subscribeExitOption(gameId, props.exitOption) : null;
 
         return () => {
-            if (!props.admin) {
-                unsubscribe
+            if (unsubscribe !== null) {
+                unsubscribe()
             }
         };
     }, []);
@@ -85,7 +86,7 @@ const GameSummary = (props) => {
             {props.exitOption === 'playAgainWithSettings' || (props.exitOption === 'playAgain' && props.timer) ?
                 <WaitingCover exitOption={props.exitOption} />
             : null}
-            {props.showExitOptions && <ExitOptions />}
+            {props.showExitOptions && props.admin && <ExitOptions />}
             <Header />
             <h2>{t("Game results")}</h2>
             {props.fetchingGameData ? <LoadingSpinner background={true} /> : (

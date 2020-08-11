@@ -21,7 +21,6 @@ export const createNewGame = (user, gameId, language, timer, time) => {
       ],
       currentPlayer: 0,
       gameStarted: false,
-      //exitOption: playedAgainWithSettings ? 'playAgainWithSettings' : null
     }
     
     if(timer) {
@@ -35,16 +34,6 @@ export const createNewGame = (user, gameId, language, timer, time) => {
     }
     
     return db.collection('games').doc(gameId).set(game)
-      .then(() => {
-        //sessionStorage.setItem('admin', JSON.stringify(true));
-        //dispatch(setShowConfirmation(true));
-        if(timer) {
-          //dispatch(setAdmin(true));
-        } else {
-          // dispatch(setScreen(`Game/${gameId}`));
-          // dispatch(setAdmin(true));
-        }
-      })
       .catch(() => {
         dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
       });
