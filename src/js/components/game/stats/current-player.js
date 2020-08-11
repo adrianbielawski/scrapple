@@ -68,7 +68,7 @@ class CurrentPlayer extends Component {
     getTimeLeft = () => {
         const time = this.props.timeLeft;
         if (time === null) {
-            return <LoadingSpinner background={false} />;
+            return <LoadingSpinner background={true} />;
         }
         const duration = moment.duration(Math.max(0, time), 'seconds');
         let timeLeft = time >= 3600 ? duration.format('HH:mm:ss') : duration.format('mm:ss', {trim: false});
