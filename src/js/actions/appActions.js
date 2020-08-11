@@ -1,7 +1,6 @@
 import { db, auth } from '../../firebase';
 import i18n from '../../i18n';
 //Redux Actions
-import { joinGame } from '../actions/mainMenuActions';
 import { clearGameSummaryState } from '../actions/gameSummaryActions';
 import { setShowFinishedGameCover } from '../actions/gameActions';
 
@@ -160,15 +159,16 @@ export const playAgain = (gameId, admin) => {
         const players = clearPlayers(data.players);
 
         db.collection('games').doc(gameId).update({
-          gameStarted: false,
+          gameStarted: true,
           gameFinished: false,
           pointsSubtracted: false,
           currentPlayer: 0,
           players,
+          endTime: null,
           exitOption: 'playAgain'
         })
         .then(() => {
-          dispatch(setAdmin(admin));
+          dispatch(clearGameSummaryState());
           dispatch(setScreen(`Game/${gameId}`));
         })
         .catch(() => {
@@ -179,36 +179,41 @@ export const playAgain = (gameId, admin) => {
         dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
       });
     } else {
+      dispatch(clearGameSummaryState());
       dispatch(setScreen(`Game/${gameId}`));
-      //dispatch(joinGame(gameId));
     };
-    dispatch(clearGameSummaryState());
   }
 }
 
 export const playAgainSettings = (gameId, admin) => {
   return dispatch => {
     if(admin) {
-      db.collection('games').doc(gameId).update({
-        gameStarted: false,
-        gameFinished: false,
-        pointsSubtracted: false,
-        currentPlayer: 0,
-        players: [],
-        exitOption: 'playAgainWithSettings'
+      db.collection('games').doc(gameId).get()
+      .then(response => {
+        const data = response.data();
+        const players = clearPlayers(data.players);
+
+        db.collection('games').doc(gameId).update({
+          gameStarted: false,
+          gameFinished: false,
+          pointsSubtracted: false,
+          currentPlayer: 0,
+          players,
+          endTime: null,
+          exitOption: 'playAgainWithSettings'
+        })
+        .then(() => {
+          dispatch(setScreen(`GameMenu`));
+          dispatch(clearGameSummaryState());
+        })
+        .catch(() => {
+          dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+        });
       })
-      .then(() => {
-        dispatch(setScreen(`GameMenu`));
-        dispatch(setPlayedAgainWithSettings(true));
-      })
-      .catch(() => {
-        dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
-      });
     } else {
-        dispatch(setScreen(`MainMenu`));
-        dispatch(joinGame(gameId));
+      dispatch(clearGameSummaryState());
+      dispatch(setScreen(`Game/${gameId}`));
     };
-    dispatch(clearGameSummaryState());
   }
 }
 
@@ -232,7 +237,7 @@ const clearAppStateOnExit = () => {
 }
   
 const clearPlayers = (players) => {
-  return players.map((player, index) => {
+  return players.map((player) => {
     return {
       admin: player.admin,
       playerName: player.playerName,

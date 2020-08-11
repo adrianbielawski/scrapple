@@ -12,11 +12,16 @@ export const subscribeExitOption = (gameId, exitOption) => {
                 if (data.exitOption === 'exitGame') {
                     return;
                 } else if(data.exitOption === 'playAgain') {
-                    dispatch(playAgain(gameId));
+                    dispatch(playAgain(gameId, false));
                 };
             }
+
             if(data.exitOption === 'playAgainWithSettings') {
-                dispatch(playAgainSettings(gameId));
+                dispatch(setShowExitOptions('playAgainWithSettings'));
+                if (data.gameStarted) {
+                    dispatch(setShowExitOptions(null));
+                    dispatch(playAgainSettings(gameId, false));
+                }
             }
         });
     };
