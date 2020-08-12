@@ -9,8 +9,9 @@ const LogOut = (props) => {
     const { t } = useTranslation();
 
     const handleClick = () => {
-        auth.signOut();
-        props.clearAppState(props.language);
+        auth.signOut().then(() => {
+          props.clearAppState(props.language);
+        })
     }
 
     return ( <p className="log-out" onClick={handleClick}>{t("Logout")}</p> );

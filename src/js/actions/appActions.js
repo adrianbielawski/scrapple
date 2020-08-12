@@ -132,11 +132,12 @@ export const handleFinishGame = (gameId, admin) => {
       db.collection('games').doc(gameId).update({
         gameFinished: true,
         exitOption: null,
-      });
-      dispatch(setPlayedAgain(false));
-      dispatch(setPlayedAgainWithSettings(false));
-      dispatch(setScreen(`Game/${gameId}/SubtractPoints`));
-      dispatch(removeAlert());
+      }).then(() => {
+        dispatch(setPlayedAgain(false));
+        dispatch(setPlayedAgainWithSettings(false));
+        dispatch(setScreen(`Game/${gameId}/SubtractPoints`));
+        dispatch(removeAlert());
+      })
     } else {
       dispatch(setShowFinishedGameCover(true));
       dispatch(removeAlert());
