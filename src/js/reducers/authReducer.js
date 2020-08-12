@@ -1,4 +1,5 @@
 const initialState = {
+    loadingAuthState: true,
     isLoggingIn: false,
     isSigningUp: false,
   };
@@ -12,6 +13,10 @@ const initialState = {
 
         case 'AUTH/SET_IS_SIGNING_UP':
             newState.isSigningUp = action.isSigningUp;
+            return newState;
+
+        case 'AUTH/SET_LOADING_AUTH_STATE':
+            newState.loadingAuthState = action.loadingAuthState;
             return newState;
             
         default:

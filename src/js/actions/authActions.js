@@ -50,3 +50,10 @@ export const setIsLoggingIn = (isLoggingIn) => {
         isLoggingIn
     }
 }
+
+export const setLoadingAuthState = (loadingAuthState) => {
+    return {
+        type: 'AUTH/SET_LOADING_AUTH_STATE',
+        loadingAuthState
+    }
+}
