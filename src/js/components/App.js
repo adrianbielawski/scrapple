@@ -10,10 +10,12 @@ const GameMenu = React.lazy(() => import('./game_menu/game-menu'));
 const Game = React.lazy(() => import('./game/game'));
 const GameSummary = React.lazy(() => import('./game_summary/game-summary'));
 const SubtractPoints = React.lazy(() => import('./subtract_points/subtract_points'));
+import PrivateRoute from '../hoc/PrivateRoute';
 import LoadingSpinner from './global_components/loadingSpinner';
 import Alert from './global_components/alert';
 //Redux Actions
 import { setScreenHeight, setScreen, setUser, clearAppState } from '../actions/appActions';
+import { setLoadingAuthState } from '../actions/authActions';
 
 class App extends React.Component {
   constructor(props) {
@@ -35,6 +37,7 @@ class App extends React.Component {
         }
         this.props.clearAppState(this.props.language);
       }
+      this.props.setLoadingAuthState(false);
     });
   }
 
@@ -48,16 +51,16 @@ class App extends React.Component {
       <div className="App" style={{height: this.props.screenHeight}}>
         {this.props.alert.show && <Alert />}
         <Redirect to={`/${this.props.screen}`} />
-        <Switch>
-          <Route path={["/login", "/signup"]} render={() => (<Main />)} />
-          <Route path="/MainMenu" render={() => (<MainMenu />)} />
-          <Suspense fallback={<LoadingSpinner background={true} />}>
-            <Route path="/GameMenu" component={GameMenu} />
-            <Route exact path="/Game/:gameId" component={Game} />
-            <Route exact path="/Game/:gameId/SubtractPoints" component={SubtractPoints} />
-            <Route exact path="/Game/:gameId/GameSummary" component={GameSummary} />
-          </Suspense>
-        </Switch>
+        <Suspense fallback={<LoadingSpinner background={true} />}>
+          <Switch>
+            <Route path={["/login", "/signup"]} component={Main} />
+            <PrivateRoute path="/MainMenu" component={MainMenu} />
+            <PrivateRoute path="/GameMenu" component={GameMenu} />
+            <PrivateRoute exact path="/Game/:gameId" component={Game} />
+            <PrivateRoute exact path="/Game/:gameId/SubtractPoints" component={SubtractPoints} />
+            <PrivateRoute exact path="/Game/:gameId/GameSummary" component={GameSummary} />
+          </Switch>
+        </Suspense>
       </div>
     );
   }
@@ -78,6 +81,7 @@ const mapDispatchToProps = (dispatch) => {
     setScreen: (screen) => { dispatch(setScreen(screen)) },
     setUser: (user) => { dispatch(setUser(user)) },
     clearAppState: (language) => { dispatch(clearAppState(language)) },
+    setLoadingAuthState: (loadingAuthState) => { dispatch(setLoadingAuthState(loadingAuthState)) },
   }
 }
 
