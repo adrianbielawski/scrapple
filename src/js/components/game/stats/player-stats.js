@@ -5,6 +5,7 @@ import { faMobileAlt, faSlash, faUserCog } from '@fortawesome/free-solid-svg-ico
 //Custom Components
 import RoundPoints from './round-points';
 import Card from '../../global_components/card';
+import Button from '../../global_components/button/button';
 
 const PlayerStats = (props) => {
     const { t } = useTranslation();
@@ -65,7 +66,7 @@ const PlayerStats = (props) => {
             </div>
             <div className="wraper">
                 <div>{t("Current score")} {props.player.currentScore}</div>
-                <button onClick={toggleDisplayAllPoints}>{t("All points")}</button>
+                <Button onClick={toggleDisplayAllPoints}>{t("All points")}</Button>
             </div>
             <div className="all-points" style={{maxHeight: `${allPointsStyle}px`}}>
                 <p>{t("Best score")}: {props.player.bestScore}</p>

@@ -8,6 +8,7 @@ import Confirmation from './confirmation';
 import Card from '../global_components/card';
 import AccountInfo from '../global_components/accountInfo/accountInfo';
 import LoadingSpinner from '../global_components/loadingSpinner';
+import Button from '../global_components/button/button';
 //Redux Actions
 import { setAlert, setScreen, setGameId, updateUser } from '../../actions/appActions';
 import { joinGame, createNewGame, setShowConfirmation } from '../../actions/mainMenuActions';
@@ -76,11 +77,11 @@ const MainMenu = (props) => {
                 <div className="content">
                     <AccountInfo />
                     <Card>
-                        <button onClick={createNewGame}>{t("Create new game")}</button>
+                        <Button onClick={createNewGame}>{t("Create new game")}</Button>
                     </Card>
                     <Card>
                         <input placeholder={t("Game ID")} ref={gameIdInput}></input>
-                        <button onClick={handleJoinGame}>{t("Join the game")}</button>
+                        <Button onClick={handleJoinGame}>{t("Join the game")}</Button>
                     </Card>
                 </div>
                 )}

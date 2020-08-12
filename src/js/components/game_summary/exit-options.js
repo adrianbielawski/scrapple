@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 //Custom Components
 import Dropdown from '../global_components/dropdown';
+import Button from '../global_components/button/button';
 //Redux Actions
 import { exitGame, playAgain, playAgainSettings } from '../../actions/appActions';
 
@@ -22,9 +23,9 @@ const ExitOptions = (props) => {
 
     return ( 
         <Dropdown className="confirmation">
-            <button onClick={handlePlayAgain}>{t("Play again")}</button>
-            <button onClick={handlePlayAgainSettings}>{t("Play again with new settings")}</button>
-            <button onClick={handleExitGame}>{t("Exit")}</button>
+            <Button onClick={handlePlayAgain}>{t("Play again")}</Button>
+            <Button onClick={handlePlayAgainSettings}>{t("Play again with new settings")}</Button>
+            <Button onClick={handleExitGame}>{t("Exit")}</Button>
         </Dropdown>
     );
 }

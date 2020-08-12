@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faMobileAlt, faSlash, faUserCog } from '@fortawesome/free-solid-svg-icons';
+//Custom components
+import Button from '../../global_components/button/button';
 //Redux Actions
 import { removePlayer, reorderPlayers, setGrabbedElement, setIsTransitionEnabled, setInitialListSpace, setListSpace, setTouches } from '../../../actions/gameMenuActions';
 
@@ -233,9 +235,9 @@ class Player extends Component {
                         <p>{this.props.index + 1}: <span> {this.props.player.playerName}</span></p>
                     </div>
                         {this.getUserIcon()}
-                    <button onClick={this.removePlayerHandler} className="remove">
+                    <Button onClick={this.removePlayerHandler} className="remove">
                         <FontAwesomeIcon icon={faTimes} />
-                    </button>
+                    </Button>
                 </div>
                 <div className={`bottom-list-space ${styles.bottomSpaceClass}`} style={styles.bottomSpaceStyle}></div>
             </li>

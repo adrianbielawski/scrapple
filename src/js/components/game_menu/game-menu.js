@@ -12,6 +12,7 @@ import Header from '../global_components/header';
 import Card from '../global_components/card';
 import AccountInfo from '../global_components/accountInfo/accountInfo';
 import GameId from '../global_components/game-id';
+import Button from '../global_components/button/button';
 //Redux Actions
 import { setGameId, setAlert, getGameData, changeLanguage } from '../../actions/appActions';
 import { setPlayers } from '../../actions/gameActions';
@@ -101,7 +102,7 @@ const GameMenu = (props) => {
                     <AddPlayer />
                     <Players />
                 </Card>
-                <button onClick={handleSubmit} type="submit">{t(buttonText)}</button>
+                <Button onClick={handleSubmit} type="submit">{t(buttonText)}</Button>
             </div>}
         </div>
     );

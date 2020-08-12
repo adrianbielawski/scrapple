@@ -6,6 +6,7 @@ import '../../../styles/game-summary.scss';
 import PlayerSubPoints from '../subtract_points/player-subtract-points';
 import Header from '../global_components/header';
 import LoadingSpinner from '../global_components/loadingSpinner';
+import Button from '../global_components/button/button';
 //Redux Actions
 import { getGameId, setAlert, getGameData, setFetchingGameData } from '../../actions/appActions';
 import { setPlayers } from '../../actions/gameActions';
@@ -64,7 +65,7 @@ const SubtractPoints = (props) => {
                     <ul className="results">
                         {getPlayers()}
                     </ul>
-                    <button onClick={handleSubmit}>{t("Continue")}</button>
+                    <Button onClick={handleSubmit}>{t("Continue")}</Button>
                 </div>
             )}
         </div>

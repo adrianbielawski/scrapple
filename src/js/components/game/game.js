@@ -10,9 +10,11 @@ import FinishedGameCover from './finished-game-cover';
 import LoadingSpinner from '../global_components/loadingSpinner';
 import AudioController from './audio-controller';
 import Menu from './menu/menu';
+import Button from '../global_components/button/button';
 //Redux Actions
 import { setGameId, setAlert } from '../../actions/appActions';
 import { setEndTime, checkEndTime, fetchGameData, setShowFinishedGameCover } from '../../actions/gameActions';
+import styles from 'styles/game.scss';
 
 class Game extends React.Component {
   componentDidMount() {
@@ -35,11 +37,11 @@ class Game extends React.Component {
   }
 
   render() {
-    const gameClass = this.props.showWords ? 'show-words' : '';
+    const gameClass = this.props.showWords ? styles['show-words'] : '';
       
     return (
       this.props.fetchingGameData ? <LoadingSpinner background={true} /> : ( 
-        <div className={`game ${gameClass}`}>
+        <div className={`${styles.game} ${gameClass}`}>
           {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
           <div className="top-wrapper">
             <Menu />
@@ -48,9 +50,9 @@ class Game extends React.Component {
           </div>
           <TwoLetterWords />
           <Stats />
-          {this.props.admin && <button className="game-finish-button" onClick={this.handleGameFinish}>
+          {this.props.admin && <Button className="game-finish-button" onClick={this.handleGameFinish}>
             {this.props.t("Finish the game")}
-          </button>}
+          </Button>}
         </div>
       )
     );

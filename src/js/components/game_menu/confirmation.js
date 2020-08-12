@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 //Custom Components
 import Dropdown from '../global_components/dropdown';
 import LoadingSpinner from '../global_components/loadingSpinner';
+import Button from '../../global_components/button/button';
 //Redux Actions
 import { startAdminGame } from '../../actions/gameMenuActions';
 
@@ -32,9 +33,9 @@ const Confirmation = (props) => {
                 <div>
                     <LoadingSpinner background={false} />
                     <p className="or">{t("or")}</p>
-                    <button onClick={handleStartAdminGame}>{t("Start anyway")}</button>
+                    <Button onClick={handleStartAdminGame}>{t("Start anyway")}</Button>
                 </div> :
-                <button onClick={handleStartAdminGame}>{t("Start game")}</button>
+                <Button onClick={handleStartAdminGame}>{t("Start game")}</Button>
             }
         </Dropdown>
     );

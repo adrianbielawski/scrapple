@@ -5,6 +5,7 @@ import { Trans } from 'react-i18next';
 //Custom Components
 import Card from '../global_components/card';
 import LoadingSpinner from '../global_components/loadingSpinner';
+import Button from '../global_components/button/button';
 //Redux Actions
 import { setScreen } from '../../actions/appActions';
 import { logIn, setIsLoggingIn } from '../../actions/authActions';
@@ -44,7 +45,7 @@ const Login = (props) => {
                 <form onSubmit={handleSubmit}>
                     <input type="email" placeholder={t("e-mail")} ref={emailInput} required />
                     <input type="password" placeholder={t("password")} ref={passwordInput} minLength="6" required />
-                    {props.isLoggingIn ? <LoadingSpinner background={false} /> : <button type="submit">{t("Login")}</button>}
+                    { props.isLoggingIn ? <LoadingSpinner background={false} /> : <Button type="submit">{t("Login")}</Button> }
                 </form>
                 {!props.isLoggingIn &&
                     <p>

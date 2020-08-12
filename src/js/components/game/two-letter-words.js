@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import '../../../styles/two-letter-words.scss';
+//Custom components
+import Button from '../global_components/button/button';
 //Redux Actions
 import { toggleShowWords } from '../../actions/gameActions';
 
@@ -12,9 +14,9 @@ const TwoLetterWords = (props) => {
     
     return (
         <div className="two-letter-words">
-            <button onClick={props.toggleShowWords} className={wordsClass}>
+            <Button onClick={props.toggleShowWords} className={wordsClass}>
                 {t(buttonName)}
-            </button>
+            </Button>
             <div className={`words ${wordsClass}`} onClick={props.toggleShowWords}>
                 <img src={`../../src/assets/img/two-letter-words-${props.language}.jpg`}/>
             </div>

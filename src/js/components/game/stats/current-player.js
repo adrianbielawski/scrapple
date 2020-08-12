@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 //Custom Components
 import LoadingSpinner from '../../global_components/loadingSpinner';
+import Button from '../../global_components/button/button';
 //Redux Actions
 import { setEndTime, addPoints, timeOut, setTimeLeft } from '../../../actions/gameActions';
 
@@ -91,9 +92,9 @@ class CurrentPlayer extends Component {
                 </div> }
                 <form className="add-points" onSubmit={this.handleSubmit}>
                     <input type="number" placeholder={this.props.t("Add points")} ref="points" required min="0" max="999" />
-                    <button type="submit" className="confirm">
+                    <Button type="submit" className="confirm">
                         <FontAwesomeIcon icon={faCheck}/>
-                    </button>
+                    </Button>
                 </form>
             </div>
         );

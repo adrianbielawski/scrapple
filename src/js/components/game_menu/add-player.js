@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+//Custom components
+import Button from '../global_components/button/button';
 //Redux Actions
 import { addPlayer } from '../../actions/gameMenuActions';
 import { setAlert } from '../../actions/appActions';
@@ -55,9 +57,9 @@ const AddPlayer = (props) => {
             <p>{t("Add player")}</p>                    
             <div className="form">
                 <input id="player-name" type="text" autoComplete="false" spellCheck="false" maxLength="30" ref={inputEl}></input>
-                <button className="add" onClick={handleSubmit}>
+                <Button className="add" onClick={handleSubmit}>
                     <FontAwesomeIcon icon={faPlus} className="plus"/>
-                </button>
+                </Button>
             </div>
         </div>
     );

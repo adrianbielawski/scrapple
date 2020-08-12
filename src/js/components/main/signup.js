@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 //Custom Components
 import Card from '../global_components/card';
 import LoadingSpinner from '../global_components/loadingSpinner';
+import Button from '../global_components/button/button';
 //Redux Actions
 import { signUp, setIsSigningUp } from '../../actions/authActions';
 
@@ -38,7 +39,7 @@ const Signup = (props) => {
                 <input placeholder={t("user name")} ref={userNameInput} minLength="3" required />
                 <input type="email" placeholder={t("e-mail")} ref={emailInput} required />
                 <input type="password" placeholder={t("password")} ref={passwordInput} minLength="6" required />
-                {props.isSigningUp ? <LoadingSpinner background={false} /> : <button type="submit">{t("Create account")}</button>}
+                {props.isSigningUp ? <LoadingSpinner background={false} /> : <Button type="submit">{t("Create account")}</Button>}
             </form>
         </Card>
      );
