@@ -1,4 +1,4 @@
-import { db, auth } from '../../firebase';
+import { db, auth } from '../../firebaseConfig';
 import i18n from '../../i18n';
 //Redux Actions
 import { clearGameSummaryState } from '../actions/gameSummaryActions';

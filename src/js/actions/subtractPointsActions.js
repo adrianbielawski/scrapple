@@ -1,4 +1,4 @@
-import db from '../../firebase';
+import db from '../../firebaseConfig';
 import { cloneDeep } from 'lodash';
 //Redux Actions
 import { setScreen } from './appActions';

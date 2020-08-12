@@ -1,4 +1,4 @@
-import db from '../../firebase';
+import db from '../../firebaseConfig';
 import * as firebase from 'firebase';
 //Redux Actions
 import { changeLanguage, setGameId, setAlert, setAdmin, setScreen } from '../actions/appActions';

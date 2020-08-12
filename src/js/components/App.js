@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { auth } from '../../firebase';
+import { auth } from '../../firebaseConfig';
 import '../../styles/App.scss';
 //Custom Components
 import Main from './main/main';

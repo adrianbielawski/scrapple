@@ -1,4 +1,4 @@
-import db from '../../firebase';
+import db from '../../firebaseConfig';
 //Redux Actions
 import { setScreen, setAlert } from '../actions/appActions';
 import { setPlayers } from '../actions/gameActions';
@@ -105,10 +105,10 @@ export const startAdminGame = (gameId) => {
   return dispatch => {
     db.collection('games').doc(gameId).update({gameStarted: true})
     .then(() => {
-    dispatch(setScreen(`Game/${gameId}`));
+      dispatch(setScreen(`Game/${gameId}`));
     })
     .catch(() => {
-    dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+      dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
     });
   }
 }

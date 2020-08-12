@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { auth } from '../../firebase';
+import { auth } from '../../firebaseConfig';
 
 const PrivateRoute = ({ component: Component, loadingAuthState, ...rest }) => {
     if(loadingAuthState) {

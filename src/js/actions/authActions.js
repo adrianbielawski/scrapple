@@ -1,4 +1,4 @@
-import { db, auth } from '../../firebase';
+import { db, auth } from '../../firebaseConfig';
 //Redux Actions
 import { setScreen, setAlert } from '../actions/appActions';
 

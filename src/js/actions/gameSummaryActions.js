@@ -1,4 +1,4 @@
-import db from '../../firebase';
+import db from '../../firebaseConfig';
 //Redux Actions
 import { playAgain, playAgainSettings } from './appActions';
 
