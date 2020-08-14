@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import '../../../styles/main.scss';
 //Custom Components
-import Header from '../global_components/header';
-import Language from '../global_components/language/changeLanguage';
-import Login from './login';
+import Header from 'components/global_components/header';
+import Language from 'components/global_components/language/changeLanguage';
+import Login from './login/login';
 import Signup from './Signup';
 //Redux Actions
 

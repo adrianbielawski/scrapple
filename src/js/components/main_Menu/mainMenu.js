@@ -3,16 +3,17 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import '../../../styles/main-menu.scss';
 //Custom Components
-import Header from '../global_components/header';
-import Confirmation from './confirmation';
-import Card from '../global_components/card';
-import AccountInfo from '../global_components/accountInfo/accountInfo';
-import LoadingSpinner from '../global_components/loadingSpinner';
-import Button from '../global_components/button/button';
+import Header from 'components/global_components/header';
+import Confirmation from './confirmation/confirmation';
+import Card from 'components/global_components/card/card';
+import AccountInfo from 'components/global_components/accountInfo/accountInfo';
+import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
+import Button from 'components/global_components/button/button';
+import Input from 'components/global_components/input/input';
 //Redux Actions
-import { setAlert, setScreen, setGameId, updateUser } from '../../actions/appActions';
-import { joinGame, createNewGame, setShowConfirmation } from '../../actions/mainMenuActions';
-import { addPlayer } from '../../actions/gameMenuActions';
+import { setAlert, setScreen, setGameId, updateUser } from 'actions/appActions';
+import { joinGame, createNewGame, setShowConfirmation } from 'actions/mainMenuActions';
+import { addPlayer } from 'actions/gameMenuActions';
 
 const MainMenu = (props) => {
     sessionStorage.clear();

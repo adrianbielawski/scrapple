@@ -1,6 +1,6 @@
 import React from 'react';
 //Custom Components
-import LogOut from './logOut';
+import LogOut from './logout';
 import UserName from './userName';
 
 const AccountInfo = (props) => {

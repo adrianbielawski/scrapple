@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { auth } from 'firebaseConfig';
 import { auth } from '../../../../firebaseConfig';
 //Redux Actions
-import { clearAppState } from '../../../actions/appActions';
+import { clearAppState } from 'actions/appActions';
 
 const LogOut = (props) => {
     const { t } = useTranslation();

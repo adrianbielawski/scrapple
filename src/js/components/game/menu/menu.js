@@ -1,23 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
 //Custom Components
-import MenuContent from './menu-content';
-import MenuHeader from './menu-header';
+import MenuContent from './menu_content/menuContent';
+import MenuHeader from './menu_header/menuHeader';
 //Redux Actions
-import { toggleShowMenu } from '../../../actions/gameActions';
+import { toggleShowMenu } from 'actions/gameActions';
 
 const Menu = (props) => {
     return ( 
-        <div className="menu-wrapper">
-            <div className="menu-icon">
+        <div className={styles.menuWrapper}>
+            <div className={styles.menuIcon}>
                 <img src="../../src/assets/img/burger-menu-icon.png" onClick={props.toggleShowMenu}></img>
             </div>
-            <div className={props.showMenu ? "content show" : "content"}>
-                <div className="menu">
+            <div className={props.showMenu ? `${styles.content} ${styles.show}` : styles.content}>
+                <div className={styles.menu}>
                     <MenuHeader title="Menu" />
                     <MenuContent />
                 </div>
-                <div className={props.showMenu ? "background show" : "background"} onClick={props.toggleShowMenu}></div>
+                <div className={props.showMenu ? `${styles.background} ${styles.show}` : styles.background} onClick={props.toggleShowMenu}></div>
             </div>
         </div>
     );

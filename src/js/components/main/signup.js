@@ -2,11 +2,12 @@ import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 //Custom Components
-import Card from '../global_components/card';
-import LoadingSpinner from '../global_components/loadingSpinner';
-import Button from '../global_components/button/button';
+import Card from 'components/global_components/card/card';
+import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
+import Button from 'components/global_components/button/button';
+import Input from 'components/global_components/input/input';
 //Redux Actions
-import { signUp, setIsSigningUp } from '../../actions/authActions';
+import { signUp, setIsSigningUp } from 'actions/authActions';
 
 const Signup = (props) => {
     const { t } = useTranslation();

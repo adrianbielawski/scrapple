@@ -1,21 +1,22 @@
 import React, { Suspense } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { auth } from 'firebaseConfig';
 import { auth } from '../../firebaseConfig';
 import '../../styles/App.scss';
 //Custom Components
 import Main from './main/main';
 import MainMenu from './main_Menu/MainMenu';
-const GameMenu = React.lazy(() => import('./game_menu/game-menu'));
+const GameMenu = React.lazy(() => import('./game_menu/gameMenu'));
 const Game = React.lazy(() => import('./game/game'));
-const GameSummary = React.lazy(() => import('./game_summary/game-summary'));
-const SubtractPoints = React.lazy(() => import('./subtract_points/subtract_points'));
-import PrivateRoute from '../hoc/PrivateRoute';
-import LoadingSpinner from './global_components/loadingSpinner';
-import Alert from './global_components/alert';
+const GameSummary = React.lazy(() => import('./game_summary/gameSummary'));
+const SubtractPoints = React.lazy(() => import('./subtract_points/subtractPoints'));
+import PrivateRoute from 'hoc/PrivateRoute';
+import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
+import Alert from 'components/global_components/alert/alert';
 //Redux Actions
-import { setScreenHeight, setScreen, setUser, clearAppState } from '../actions/appActions';
-import { setLoadingAuthState } from '../actions/authActions';
+import { setScreenHeight, setScreen, setUser, clearAppState } from 'actions/appActions';
+import { setLoadingAuthState } from 'actions/authActions';
 
 class App extends React.Component {
   constructor(props) {

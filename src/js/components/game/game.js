@@ -3,18 +3,17 @@ import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import '../../../styles/game.scss';
 //Custom Components
-import WordChecker from './word-checker';
+import WordChecker from './word_checker/word-checker';
 import Stats from './stats/stats';
-import TwoLetterWords from './two-letter-words';
-import FinishedGameCover from './finished-game-cover';
-import LoadingSpinner from '../global_components/loadingSpinner';
-import AudioController from './audio-controller';
+import TwoLetterWords from './two_letter_words/twoLetterWords';
+import FinishedGameCover from './finish_game_cover/finishedGameCover';
+import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
+import AudioController from '../global_components/audioController/audioController';
 import Menu from './menu/menu';
-import Button from '../global_components/button/button';
+import Button from 'components/global_components/button/button';
 //Redux Actions
-import { setGameId, setAlert } from '../../actions/appActions';
-import { setEndTime, checkEndTime, fetchGameData, setShowFinishedGameCover } from '../../actions/gameActions';
-import styles from 'styles/game.scss';
+import { setGameId, setAlert } from 'actions/appActions';
+import { setEndTime, checkEndTime, fetchGameData, setShowFinishedGameCover } from 'actions/gameActions';
 
 class Game extends React.Component {
   componentDidMount() {

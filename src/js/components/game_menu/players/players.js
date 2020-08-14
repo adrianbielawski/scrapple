@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 //Custom Components
-import Player from './player';
+import Player from './player/player';
 
 const Players = (props) => {
     const getPlayers = () => {
