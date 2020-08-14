@@ -42,6 +42,8 @@ export const createNewGame = (user, gameId, language, timer, time) => {
 
 export const joinGame = (gameId, language, user) => {
     return dispatch => {
+        let unsubscribeGameStart = null;
+
         db.collection('games').doc(gameId).get()
             .then((response) => {
                 const data = response.data();
@@ -55,40 +57,36 @@ export const joinGame = (gameId, language, user) => {
                     dispatch(changeLanguage(data.language));
                 };
 
-                db.collection('games').doc(gameId).update({
-                    'players': firebase.firestore.FieldValue.arrayUnion(
-                        {
-                            admin: false,
-                            allPoints: [],
-                            bestScore: 0,
-                            currentScore: 0,
-                            playerIndex: data.players.length,
-                            playerName: user.displayName,
-                            uid: user.uid,
-                        }
-                    )
-                })
-                    .then(() => {
-                        dispatch(setGameId(gameId));
-                        dispatch(setShowConfirmation(true));
+                db.collection('games').doc(gameId).update({'players': firebase.firestore.FieldValue.arrayUnion(
+                    {
+                        admin: false,
+                        allPoints: [],
+                        bestScore: 0,
+                        currentScore: 0,
+                        playerIndex: data.players.length,
+                        playerName: user.displayName,
+                        uid: user.uid,
                     })
-                    .catch(() => {
-                        dispatch(setAlert('alert', 'Something went wrong, please check game ID'));
+                })
+                .then(() => {
+                    dispatch(setGameId(gameId));
+                    dispatch(setShowConfirmation(true));
+                })
+                .then(() => {
+                    unsubscribeGameStart = db.collection('games').doc(gameId).onSnapshot(doc => {
+                        const data = doc.data();
+                        if (data.gameStarted == true) {
+                            dispatch(startJoinedPlayerGame(gameId));
+                        }
                     });
+            
+                });
             })
             .catch(() => {
                 dispatch(setAlert('alert', 'Something went wrong, please check game ID'));
-                return
+                return;
             });
-
-        const unsubscribeGameStart = db.collection('games').doc(gameId).onSnapshot(doc => {
-            const data = doc.data();
-            if (data.gameStarted == true) {
-                dispatch(startJoinedPlayerGame(gameId));
-            }
-        });
-
-        return unsubscribeGameStart;
+            return unsubscribeGameStart;
     }
 }
 
