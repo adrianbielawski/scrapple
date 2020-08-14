@@ -11,6 +11,12 @@
         text-transform: none;
         width: 300px;
         max-width: 100%;
+        &::-webkit-time-picker-indicator,
+        &::-webkit-clear-button,
+        &::-webkit-inner-spin-button {
+            display: none;
+            -webkit-appearance: none;
+        }
     }
     .card {
         min-width: 300px;

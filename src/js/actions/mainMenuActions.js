@@ -46,6 +46,11 @@ export const joinGame = (gameId, language, user) => {
             .then((response) => {
                 const data = response.data();
 
+                if (data.players.length === 4) {
+                    dispatch(setAlert('alert', 'Games are restricted to 4 players max'));
+                    return;
+                }
+
                 if (language !== data.language) {
                     dispatch(changeLanguage(data.language));
                 };

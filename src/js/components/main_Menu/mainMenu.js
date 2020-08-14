@@ -79,7 +79,7 @@ const MainMenu = (props) => {
                         <Button onClick={createNewGame}>{t("Create new game")}</Button>
                     </Card>
                     <Card className={styles.card}>
-                        <Input placeholder={t("Game ID")} ref={gameIdInput} />
+                        <Input type="number" placeholder={t("Game ID")} ref={gameIdInput} />
                         <Button onClick={handleJoinGame}>{t("Join the game")}</Button>
                     </Card>
                 </div>
