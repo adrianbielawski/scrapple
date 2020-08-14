@@ -23,7 +23,7 @@ const Login = (props) => {
         const password = passwordInput.current.value;
 
         props.setIsLoggingIn(true);
-        
+
         const promise = props.logIn(email, password);
         promise.then(user => {
             props.setIsLoggingIn(false);
@@ -47,7 +47,7 @@ const Login = (props) => {
                 <form onSubmit={handleSubmit}>
                     <Input type="email" placeholder={t("e-mail")} ref={emailInput} required />
                     <Input type="password" placeholder={t("password")} ref={passwordInput} minLength="6" required />
-                    { props.isLoggingIn ? <LoadingSpinner background={false} /> : <Button type="submit">{t("Login")}</Button> }
+                    {props.isLoggingIn ? <LoadingSpinner background={false} /> : <Button type="submit">{t("Login")}</Button>}
                 </form>
                 {!props.isLoggingIn &&
                     <p>
@@ -63,16 +63,16 @@ const Login = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-      isLoggingIn: state.auth.isLoggingIn,
+        isLoggingIn: state.auth.isLoggingIn,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    setScreen: (screen) => dispatch(setScreen(screen)),
-    logIn: (email, password) => dispatch(logIn(email, password)),
-    setIsLoggingIn: (isLoggingIn) => dispatch(setIsLoggingIn(isLoggingIn)),
-  }
+    return {
+        setScreen: (screen) => dispatch(setScreen(screen)),
+        logIn: (email, password) => dispatch(logIn(email, password)),
+        setIsLoggingIn: (isLoggingIn) => dispatch(setIsLoggingIn(isLoggingIn)),
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -8,5 +8,5 @@ const Card = (props, ref) => {
         </div>
     );
 }
- 
+
 export default React.forwardRef(Card);

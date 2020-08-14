@@ -8,7 +8,7 @@ import MenuHeader from './menu_header/menuHeader';
 import { toggleShowMenu } from 'actions/gameActions';
 
 const Menu = (props) => {
-    return ( 
+    return (
         <div className={styles.menuWrapper}>
             <div className={styles.menuIcon}>
                 <img src="../../src/assets/img/burger-menu-icon.png" onClick={props.toggleShowMenu}></img>
@@ -26,15 +26,15 @@ const Menu = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-      gameId: state.app.gameId,
-      showMenu: state.game.showMenu,
+        gameId: state.app.gameId,
+        showMenu: state.game.showMenu,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    toggleShowMenu: () => { dispatch(toggleShowMenu()) },
-  }
+    return {
+        toggleShowMenu: () => { dispatch(toggleShowMenu()) },
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);

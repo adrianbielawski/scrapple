@@ -9,13 +9,13 @@ export const signUp = (email, password, userName) => dispatch => {
             displayName: userName,
         }).then(() => {
             db.collection('users').doc(user.uid).set({
-              email: user.email,
-              currentGame: null,
-              allGames: [],
+                email: user.email,
+                currentGame: null,
+                allGames: [],
             });
             user.sendEmailVerification().then(() => {
                 auth.signOut().then(() => {
-                    dispatch(setAlert('alert', 'Welcome', {'name': userName}, 'user-registered'));
+                    dispatch(setAlert('alert', 'Welcome', { 'name': userName }, 'user-registered'));
                 })
             });
         })
@@ -27,7 +27,7 @@ export const signUp = (email, password, userName) => dispatch => {
 
 export const logIn = (email, password) => dispatch => {
     return auth.signInWithEmailAndPassword(email, password).then(response => {
-        if(response.user.emailVerified) {
+        if (response.user.emailVerified) {
             dispatch(setScreen('MainMenu'));
         } else {
             dispatch(setAlert('alert', 'This account is not verified. Please check your inbox to finish registration.'));

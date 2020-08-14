@@ -18,15 +18,17 @@ const ChangeLanguage = (props) => {
 
     const getLanguages = () => {
         return Object.entries(languages).map((lang, i) => {
-            if(lang[0] === props.language) { return }
+            if (lang[0] === props.language) {
+                return;
+            }
             return (
                 <Language showName={props.showName} lang={lang[1]} key={i} styles={styles} />
-            )
-        })
+            );
+        });
     }
 
     const langClass = showLanguages && `${styles.active}`;
-    
+
     return (
         <div className={styles.changeLanguage} onClick={toggleShowLanguages}>
             <div className={styles.currentLanguage}>
@@ -42,7 +44,7 @@ const ChangeLanguage = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-      language: state.app.language
+        language: state.app.language
     }
 }
 

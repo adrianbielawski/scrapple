@@ -10,28 +10,28 @@ const Alert = (props) => {
 
     const handleAlertResponse = (e) => {
         const response = e.target.value;
-        if(response === 'true') {
-            switch(props.alert.action) {
+        if (response === 'true') {
+            switch (props.alert.action) {
                 case 'game-finish-button':
-                props.handleFinishGame(props.gameId, props.admin);
-                break;
+                    props.handleFinishGame(props.gameId, props.admin);
+                    break;
 
                 case 'user-registered':
-                props.setScreen('login');
-                break;
+                    props.setScreen('login');
+                    break;
             }
-        } 
-        props.removeAlert(); 
-    }   
+        }
+        props.removeAlert();
+    }
 
     let alertButtons = '';
-    if(props.alert.type === 'confirm') {
+    if (props.alert.type === 'confirm') {
         alertButtons =
             <div className={styles.wraper}>
                 <button className={styles.yes} value="true" onClick={handleAlertResponse}>{t("Yes")}</button>
                 <button className={styles.no} value="false" onClick={handleAlertResponse}>{t("No")}</button>
             </div>
-    } else if(props.alert.type === 'alert') {
+    } else if (props.alert.type === 'alert') {
         alertButtons = <button className={styles.ok} value="true" onClick={handleAlertResponse}>OK</button>
     };
 
@@ -47,19 +47,19 @@ const Alert = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-      alert: state.app.alert,
-      gameId: state.app.gameId,
-      admin: state.app.admin,
+        alert: state.app.alert,
+        gameId: state.app.gameId,
+        admin: state.app.admin,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(setAlert(type, messageKey, messageValue, action, alertProps)),
-    removeAlert: () => dispatch(removeAlert()),
-    handleFinishGame: (gameId, admin) => dispatch(handleFinishGame(gameId, admin)),
-    setScreen: (screen) => dispatch(setScreen(screen)),
-  }
+    return {
+        setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(setAlert(type, messageKey, messageValue, action, alertProps)),
+        removeAlert: () => dispatch(removeAlert()),
+        handleFinishGame: (gameId, admin) => dispatch(handleFinishGame(gameId, admin)),
+        setScreen: (screen) => dispatch(setScreen(screen)),
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Alert);

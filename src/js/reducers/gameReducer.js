@@ -11,12 +11,12 @@ const initialState = {
     showMenu: false,
     showFinishedGameCover: false,
 };
-  
+
 const gameReducer = (state = initialState, action) => {
     let newState = { ...state };
-    switch(action.type) {
+    switch (action.type) {
         case 'GAME_MENU/ADD_PLAYER':
-            const newPlayers = [ ...newState.players];
+            const newPlayers = [...newState.players];
             newPlayers.push({
                 playerName: action.playerName,
                 uid: action.uid,
@@ -37,7 +37,7 @@ const gameReducer = (state = initialState, action) => {
             return newState;
 
         case 'GAME_MENU/REORDER_PLAYERS':
-            const reorderedPlayers = [ ...newState.players];
+            const reorderedPlayers = [...newState.players];
             reorderedPlayers.splice(action.newIndex, 0, reorderedPlayers.splice(action.playerIndex, 1)[0]);
             newState.players = reorderedPlayers;
             return newState;
@@ -53,23 +53,23 @@ const gameReducer = (state = initialState, action) => {
         case 'GAME/TOGGLE_SHOW_WORDS':
             newState.showWords = !newState.showWords;
             return newState;
-                
+
         case 'GAME/TOGGLE_AUDIO':
             newState.isAudioEnabled = !newState.isAudioEnabled;
             return newState;
-                
+
         case 'GAME/SET_CURRENT_PLAYER':
             newState.currentPlayer = action.currentPlayer;
             return newState;
-                
+
         case 'GAME/SET_END_TIME':
             newState.endTime = action.endTime;
             return newState;
-                
+
         case 'GAME/SET_PLAYERS':
             newState.players = action.players;
             return newState;
-                
+
         case 'GAME/SET_TIME_LEFT':
             newState.timeLeft = action.timeLeft;
             return newState;
@@ -85,10 +85,10 @@ const gameReducer = (state = initialState, action) => {
         case 'APP/EXIT_GAME':
             newState = cloneDeep(initialState);
             return newState;
-        
+
         default:
             return state;
     }
 }
-  
+
 export default gameReducer;

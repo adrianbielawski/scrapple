@@ -19,9 +19,9 @@ const timeLimit = (props) => {
         time.hours = val.slice(0, 2);
         time.minutes = val.slice(3, 5);
         time.seconds = val.slice(6, 8);
-        if(time.seconds == '') {
-            time.seconds= '00';
-        } 
+        if (time.seconds == '') {
+            time.seconds = '00';
+        }
         props.setTime(time);
     }
 

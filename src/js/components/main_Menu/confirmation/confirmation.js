@@ -8,13 +8,13 @@ import LoadingSpinner from '../../global_components/loading_spinner/loadingSpinn
 
 const Confirmation = (props) => {
     const { t } = useTranslation();
-    
-    return ( 
+
+    return (
         <Dropdown className={styles.confirmation}>
             <h2>{t("You have joined the game")}</h2>
             <p className={styles.gameId}>{t("Game ID")}: {props.gameId}</p>
             <p className={styles.message}>{t("Please wait until game started")}</p>
-            <LoadingSpinner background={false} />            
+            <LoadingSpinner background={false} />
         </Dropdown>
     );
 }

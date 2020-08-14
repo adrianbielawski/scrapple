@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './gameSummary.scss';
 //Components
 import PlayerSummary from './player_summary/playerSummary';
-import Header from 'components/global_components/header';
+import Header from 'components/global_components/header/header';
 import ExitOptions from './exit_options/exitOptions';
 import WaitingCover from './waiting_cover/waitingCover';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
@@ -16,7 +16,7 @@ import { subscribeExitOption, setShowExitOptions } from 'actions/gameSummaryActi
 const GameSummary = (props) => {
     const { t } = useTranslation();
     let unsubscribe = null;
-  
+
     useEffect(() => {
         if (props.user.uid) {
             const gameDataPromise = props.getGameData(props.gameId);
@@ -40,15 +40,15 @@ const GameSummary = (props) => {
 
         return () => {
             if (unsubscribe !== null) {
-                unsubscribe()
+                unsubscribe();
             }
         };
     }, []);
 
     const getPlayersPositions = () => {
-        let players = [ ...props.players];
+        let players = [...props.players];
         players.sort((a, b) => {
-            return b.currentScore - a.currentScore
+            return b.currentScore - a.currentScore;
         });
 
         let previousPlayerScore = '';
@@ -56,10 +56,10 @@ const GameSummary = (props) => {
         let previousPlace = '';
         let playersSummary = players.map((player, index) => {
             const placeTexts = ['1st', '2nd', '3rd', '4th'];
-            let place = index + 1 ;
+            let place = index + 1;
             let placeText = placeTexts[index];
 
-            if(player.currentScore === previousPlayerScore) {
+            if (player.currentScore === previousPlayerScore) {
                 placeText = previousPlayerPlaceText
                 place = previousPlace
             };
@@ -68,24 +68,24 @@ const GameSummary = (props) => {
             previousPlayerPlaceText = placeText;
             previousPlace = place;
 
-            return <PlayerSummary player={player} placeText={placeText} place={place} key={index}/>
+            return <PlayerSummary player={player} placeText={placeText} place={place} key={index} />
         });
-        return playersSummary
+        return playersSummary;
     };
 
     const handleExit = () => {
-        props.setShowExitOptions(true)
+        props.setShowExitOptions(true);
     };
 
     const exitGame = () => {
-        props.exitGame(props.gameId, props.admin)
+        props.exitGame(props.gameId, props.admin);
     };
 
     return (
         <div className={styles.gameSummary}>
             {props.exitOption === 'playAgainWithSettings' || (props.exitOption === 'playAgain' && props.timer) ?
                 <WaitingCover exitOption={props.exitOption} />
-            : null}
+                : null}
             {props.showExitOptions && props.admin && <ExitOptions />}
             <Header />
             <h2>{t("Game results")}</h2>
@@ -95,7 +95,7 @@ const GameSummary = (props) => {
                         {getPlayersPositions()}
                     </ul>
                     {props.admin ? <button onClick={handleExit}>{t("Exit")}</button> : null}
-                    {props.exitOption === 'exitGame' ? <button onClick={exitGame}>{t("Exit")}</button> : null}                    
+                    {props.exitOption === 'exitGame' ? <button onClick={exitGame}>{t("Exit")}</button> : null}
                 </div>
             )}
         </div>

@@ -14,5 +14,5 @@ const MenuContent = (props) => {
         </div>
     );
 }
- 
+
 export default MenuContent;

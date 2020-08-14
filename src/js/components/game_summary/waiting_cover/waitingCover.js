@@ -10,16 +10,16 @@ const WaitingCover = (props) => {
 
     let title = 'Game continues!';
     let message = 'Please wait until settings will be changed';
-    if(props.exitOption === 'playAgain') {
+    if (props.exitOption === 'playAgain') {
         message = 'Please wait until game started';
     }
-    return ( 
+    return (
         <Dropdown className={styles.confirmation}>
             <h2>{t(title)}</h2>
             <p className={styles.message}>{t(message)}</p>
-            <LoadingSpinner background={false} />        
+            <LoadingSpinner background={false} />
         </Dropdown>
     );
 }
- 
+
 export default WaitingCover;

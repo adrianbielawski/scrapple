@@ -1,4 +1,4 @@
-@import 'styles/variables';
+@import "styles/variables";
 
 .menuWrapper {
     .menuIcon {
@@ -19,19 +19,19 @@
         width: 100%;
         height: 100%;
         background-color: transparent;
-        transition: all .4s linear;
+        transition: all 0.4s linear;
         &.show {
             left: 0;
-            transition: all .3s linear;
+            transition: all 0.3s linear;
         }
-        
+
         .background {
-            background-color: rgba(128, 128, 128, .5);
+            background-color: rgba(128, 128, 128, 0.5);
             width: 0;
-            transition: all .1s linear;
+            transition: all 0.1s linear;
             &.show {
                 flex: 1;
-                transition: all .3s linear;
+                transition: all 0.3s linear;
             }
         }
     }

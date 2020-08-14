@@ -14,8 +14,8 @@ const PlayerStats = (props) => {
     const [displayAllPoints, setDisplayAllPoints] = useState(false);
 
     useEffect(() => {
-        if(props.isCurrent) {   
-            playerStats.current.scrollIntoView({behavior: 'smooth'});
+        if (props.isCurrent) {
+            playerStats.current.scrollIntoView({ behavior: 'smooth' });
         }
     })
 
@@ -24,9 +24,9 @@ const PlayerStats = (props) => {
     };
 
     const getRoundPoints = () => {
-        return props.player.allPoints.map((points, index) =>  (
-                <RoundPoints round={index + 1} points={points} key={index}/>
-            )
+        return props.player.allPoints.map((points, index) => (
+            <RoundPoints round={index + 1} points={points} key={index} />
+        )
         );
     };
 
@@ -55,7 +55,7 @@ const PlayerStats = (props) => {
             );
         }
     }
-    
+
     const allPointsStyle = displayAllPoints ? props.player.allPoints.length * 24 + 50 : 0;
     const currentClass = props.isCurrent ? styles.current : '';
 
@@ -69,7 +69,7 @@ const PlayerStats = (props) => {
                 <div>{t("Current score")} {props.player.currentScore}</div>
                 <Button onClick={toggleDisplayAllPoints}>{t("All points")}</Button>
             </div>
-            <div className={styles.allPoints} style={{maxHeight: `${allPointsStyle}px`}}>
+            <div className={styles.allPoints} style={{ maxHeight: `${allPointsStyle}px` }}>
                 <p>{t("Best score")}: {props.player.bestScore}</p>
                 <ul>
                     {getRoundPoints()}

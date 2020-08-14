@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './subtractPoints.scss';
 //Custom Components
 import PlayerSubPoints from './player_subtract_points/playerSubtractPoints';
-import Header from 'components/global_components/header';
+import Header from 'components/global_components/header/header';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 import Button from 'components/global_components/button/button';
 //Redux Actions
@@ -29,7 +29,7 @@ const SubtractPoints = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         const isValid = validateUserInputs();
 
         if (isValid) {

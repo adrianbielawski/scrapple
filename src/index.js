@@ -14,24 +14,24 @@ const initialState = {}
 let composeEnhancers = compose;
 
 if (process.env.NODE_ENV === 'development') {
-  composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 }
 
 const store = createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(thunk))
+    rootReducer,
+    composeEnhancers(applyMiddleware(thunk))
 );
 
 const app = (
-  <Provider store={store}>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </BrowserRouter>
-  </Provider>
+    <Provider store={store}>
+        <BrowserRouter>
+            <ThemeProvider theme={theme}>
+                <App />
+            </ThemeProvider>
+        </BrowserRouter>
+    </Provider>
 );
 
 ReactDOM.render(app,
-  document.getElementById('root')
+    document.getElementById('root')
 );

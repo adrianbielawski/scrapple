@@ -1,17 +1,17 @@
 const initialState = {
     showConfirmation: false,
-  };
-  
-  const mainMenuReducer = (state = initialState, action) => {
+};
+
+const mainMenuReducer = (state = initialState, action) => {
     let newState = { ...state };
-    switch(action.type) {
+    switch (action.type) {
         case 'MAIN_MENU/SET_SHOW_CONFIRMATION':
             newState.showConfirmation = action.showConfirmation;
             return newState;
-            
+
         default:
             return state;
     }
-  }
-  
-  export default mainMenuReducer;
+}
+
+export default mainMenuReducer;

@@ -19,57 +19,57 @@ class Player extends Component {
             left: 0,
             distance: 0,
         },
-        this.element = React.createRef();
+            this.element = React.createRef();
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this.elementH = this.element.current.getBoundingClientRect().height;
     }
 
     handleGrab = (e) => {
-        if(this.props.players.length === 1) {
+        if (this.props.players.length === 1) {
             return;
         }
-        if(e.type === 'touchstart') {
-            if(this.props.touches > 0 && this.props.index !== this.props.grabbedElement) {
+        if (e.type === 'touchstart') {
+            if (this.props.touches > 0 && this.props.index !== this.props.grabbedElement) {
                 this.props.setTouches(this.props.touches + 1)
                 return
             }
-            this.setState(state => ({ ...state, isTouchDevice: true}));
+            this.setState(state => ({ ...state, isTouchDevice: true }));
         };
         this.setGrabbedElement(this.props.index, e.type);
-        
-        const topStart =  this.props.index * this.elementH;
-        
+
+        const topStart = this.props.index * this.elementH;
+
         let startX = e.clientX;
         let startY = e.clientY;
-        if(e.type === 'touchstart') {
+        if (e.type === 'touchstart') {
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
         }
 
-        this.setState(state => ({ ...state, isGrabbed: true, top: topStart}));
-        this.handleMove = () => {this.move(event, startX, startY, topStart)}
-        if(e.type === 'mousedown') {
+        this.setState(state => ({ ...state, isGrabbed: true, top: topStart }));
+        this.handleMove = () => { this.move(event, startX, startY, topStart) }
+        if (e.type === 'mousedown') {
             window.addEventListener('mousemove', this.handleMove);
         }
-        if(e.type === 'touchstart') {
+        if (e.type === 'touchstart') {
             window.addEventListener('touchmove', this.handleMove);
         }
     }
 
     setGrabbedElement = (index, eType) => {
         eType === 'touchstart' && this.props.setTouches(this.props.touches + 1);
-        this.props.setInitialListSpace(index -1);
-        this.props.setListSpace(index -1);
-        this.props.setGrabbedElement(index);        
+        this.props.setInitialListSpace(index - 1);
+        this.props.setListSpace(index - 1);
+        this.props.setGrabbedElement(index);
     }
 
     move = (e, startX, startY, topStart) => {
         this.props.setIsTransitionEnabled(true);
         let x = e.clientX;
         let y = e.clientY;
-        if(e.type == 'touchmove') {
+        if (e.type == 'touchmove') {
             x = e.touches[0].clientX;
             y = e.touches[0].clientY;
         };
@@ -77,39 +77,39 @@ class Player extends Component {
         const left = x - startX;
         let distance = (top - topStart) / this.elementH;
         distance = Math.round(distance);
-        if(distance === -0) {
+        if (distance === -0) {
             distance = 0;
         };
-        if(distance !== this.state.distance) {
+        if (distance !== this.state.distance) {
             this.addSpace(distance);
         };
-        this.setState(state => ({ ...state, top, left, distance}));
+        this.setState(state => ({ ...state, top, left, distance }));
     }
 
     addSpace = (distance) => {
         let listSpace = this.props.initialListSpace + distance;
-        if(this.props.grabbedElement <= listSpace) {
-            listSpace +=1;
+        if (this.props.grabbedElement <= listSpace) {
+            listSpace += 1;
         };
-        if(listSpace >= this.props.players.length) {
-            listSpace = this.props.players.length -1;
+        if (listSpace >= this.props.players.length) {
+            listSpace = this.props.players.length - 1;
         };
-        if(this.props.grabbedElement === this.props.players.length -1 && listSpace >= this.props.players.length -2) {
-            listSpace = this.props.players.length -2;
+        if (this.props.grabbedElement === this.props.players.length - 1 && listSpace >= this.props.players.length - 2) {
+            listSpace = this.props.players.length - 2;
         };
         this.props.setListSpace(listSpace);
     }
 
     handleDrop = (e) => {
         this.props.setIsTransitionEnabled(false);
-        if(this.props.touches > 0 && this.props.index !== this.props.grabbedElement) {
+        if (this.props.touches > 0 && this.props.index !== this.props.grabbedElement) {
             this.props.setTouches(-1)
             return
         };
-        
+
         window.removeEventListener('mousemove', this.handleMove);
         window.removeEventListener('touchmove', this.handleMove);
-        
+
         this.addSpace(0);
         const event = e.type;
         this.drop(event);
@@ -117,18 +117,18 @@ class Player extends Component {
     }
 
     drop = (eType) => {
-        let players = [ ...this.props.players];
+        let players = [...this.props.players];
         let newIndex = this.props.index + this.state.distance
-        if(newIndex < 1) {
+        if (newIndex < 1) {
             newIndex = 0;
-        } else if(newIndex >= players.length) {
-            newIndex = players.length -1;
+        } else if (newIndex >= players.length) {
+            newIndex = players.length - 1;
         }
         let touches = 0;
         if (eType === 'touchend') {
             touches = this.props.touches - 1;
         }
-        
+
         this.props.reorderPlayers(this.props.index, newIndex);
         this.props.setInitialListSpace(null);
         this.props.setListSpace(null);
@@ -141,7 +141,7 @@ class Player extends Component {
         this.removedPlayerTransition();
         setTimeout(this.remove, 500);
     }
-    
+
     removedPlayerTransition = () => {
         const element = this.element.current;
         element.style.transitionProperty = 'width, max-height';
@@ -168,22 +168,22 @@ class Player extends Component {
             hover: 'no-touch-device'
         }
 
-        if(this.props.grabbedElement != 0 && this.props.listSpace < 0 && this.props.index === 0
+        if (this.props.grabbedElement != 0 && this.props.listSpace < 0 && this.props.index === 0
             || this.props.grabbedElement === 0 && this.props.listSpace < 0 && this.props.index === 1
             && !this.state.isGrabbed) {
-                dynamicStyles.topSpaceStyle = {height: this.elementH};
-                dynamicStyles.topSpaceClass = styles.visible;
-        } else if(this.props.index === this.props.listSpace && !this.state.isGrabbed) {
-            dynamicStyles.bottomSpaceStyle = {height: this.elementH}
+            dynamicStyles.topSpaceStyle = { height: this.elementH };
+            dynamicStyles.topSpaceClass = styles.visible;
+        } else if (this.props.index === this.props.listSpace && !this.state.isGrabbed) {
+            dynamicStyles.bottomSpaceStyle = { height: this.elementH }
             dynamicStyles.bottomSpaceClass = styles.visible;
         };
 
-        if(!this.props.isTransitionEnabled && !this.state.isGrabbed) {
+        if (!this.props.isTransitionEnabled && !this.state.isGrabbed) {
             dynamicStyles.bottomSpaceStyle.transition = 'none';
             dynamicStyles.topSpaceStyle.transition = 'none';
         };
 
-        if(this.state.isGrabbed) {
+        if (this.state.isGrabbed) {
             dynamicStyles.grabbed = styles.grabbed;
             dynamicStyles.position = {
                 top: this.state.top,
@@ -235,12 +235,12 @@ class Player extends Component {
                         className={styles.playerNameWrapper}>
                         <p className={styles.playerName}>{this.props.index + 1}: <span> {this.props.player.playerName}</span></p>
                     </div>
-                        {this.getUserIcon()}
+                    {this.getUserIcon()}
                     <Button onClick={this.removePlayerHandler} className={styles.remove}>
                         <FontAwesomeIcon icon={faTimes} />
                     </Button>
                 </div>
-                    <div className={`${styles.bottomListSpace} ${dynamicStyles.bottomSpaceClass}`} style={dynamicStyles.bottomSpaceStyle}></div>
+                <div className={`${styles.bottomListSpace} ${dynamicStyles.bottomSpaceClass}`} style={dynamicStyles.bottomSpaceStyle}></div>
             </li>
         );
     }

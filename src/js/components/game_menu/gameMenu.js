@@ -8,7 +8,7 @@ import Players from './players/players';
 import Language from 'components/global_components/language/changeLanguage';
 import TimeLimit from './timeLimit/timeLimit';
 import AddPlayer from './addPlayer/addPlayer';
-import Header from 'components/global_components/header';
+import Header from 'components/global_components/header/header';
 import Card from 'components/global_components/card/card';
 import AccountInfo from 'components/global_components/accountInfo/accountInfo';
 import GameId from 'components/global_components/game_id/gameId';
@@ -21,7 +21,7 @@ import { startAdminGame, updateGameMenuData, setFetchingGameData, subscribeJoine
 const GameMenu = (props) => {
     const { t } = useTranslation();
     let unsubscribeJoinedPlayers = null;
-  
+
     useEffect(() => {
         if (props.user.uid) {
             const gameIdPromise = props.getUserDataFromDatabase(props.user.uid);
@@ -46,10 +46,10 @@ const GameMenu = (props) => {
             props.updateGameMenuData(props.gameId, props.language, props.timer, props.time, props.players);
         }
     });
-  
+
     useEffect(() => {
         return () => {
-            if(unsubscribeJoinedPlayers !== null) {
+            if (unsubscribeJoinedPlayers !== null) {
                 unsubscribeJoinedPlayers();
             }
         }
@@ -64,7 +64,7 @@ const GameMenu = (props) => {
     }
 
     const validateSettings = () => {
-        if(props.players.length < 2) {
+        if (props.players.length < 2) {
             const messageKey = 'Please add at least 2 players';
             props.setAlert('alert', messageKey);
             return false;
@@ -85,7 +85,7 @@ const GameMenu = (props) => {
         props.startAdminGame(props.gameId);
     }
 
-    const buttonText =  props.playedAgainWithSettings ? 'Play again' : 'Play';
+    const buttonText = props.playedAgainWithSettings ? 'Play again' : 'Play';
     return (
         <div className={styles.gameMenu}>
             <Header />

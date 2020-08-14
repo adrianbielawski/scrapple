@@ -18,9 +18,9 @@ const MenuHeader = (props) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    toggleShowMenu: () => { dispatch(toggleShowMenu()) },
-  }
+    return {
+        toggleShowMenu: () => { dispatch(toggleShowMenu()) },
+    }
 }
 
 export default connect(null, mapDispatchToProps)(MenuHeader);

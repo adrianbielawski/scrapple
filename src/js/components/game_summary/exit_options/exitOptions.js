@@ -21,7 +21,7 @@ const ExitOptions = (props) => {
         props.exitGame(props.gameId, props.admin);
     }
 
-    return ( 
+    return (
         <Dropdown>
             <Button onClick={handlePlayAgain}>{t("Play again")}</Button>
             <Button onClick={handlePlayAgainSettings}>{t("Play again with new settings")}</Button>
@@ -32,17 +32,17 @@ const ExitOptions = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-      gameId: state.app.gameId,
-      admin: state.app.admin,
+        gameId: state.app.gameId,
+        admin: state.app.admin,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    exitGame: (gameId, admin) => { dispatch(exitGame(gameId, admin)) },
-    playAgain: (gameId, admin) => { dispatch(playAgain(gameId, admin)) },
-    playAgainSettings: (gameId, admin) => { dispatch(playAgainSettings(gameId, admin)) },
-  }
+    return {
+        exitGame: (gameId, admin) => { dispatch(exitGame(gameId, admin)) },
+        playAgain: (gameId, admin) => { dispatch(playAgain(gameId, admin)) },
+        playAgainSettings: (gameId, admin) => { dispatch(playAgainSettings(gameId, admin)) },
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExitOptions);

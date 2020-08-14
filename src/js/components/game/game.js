@@ -16,68 +16,68 @@ import { setGameId, setAlert } from 'actions/appActions';
 import { setEndTime, checkEndTime, fetchGameData, setShowFinishedGameCover } from 'actions/gameActions';
 
 class Game extends React.Component {
-  componentDidMount() {
-    const pathArray = window.location.pathname.split('/');
-    const gameId = pathArray[2];
-    this.props.setGameId(gameId);
-    
-    const promise = this.props.fetchGameData(gameId, this.props.user);
-    promise.then((unsubscribe) => this.unsubscribe = unsubscribe);
-  }
+    componentDidMount() {
+        const pathArray = window.location.pathname.split('/');
+        const gameId = pathArray[2];
+        this.props.setGameId(gameId);
 
-  componentWillUnmount(){
-    this.props.setShowFinishedGameCover(false);
-    this.unsubscribe();
-  }
+        const promise = this.props.fetchGameData(gameId, this.props.user);
+        promise.then((unsubscribe) => this.unsubscribe = unsubscribe);
+    }
 
-  handleGameFinish = (e) => {
-    e.preventDefault();
-    this.props.setAlert('confirm', 'Are you sure you want to finish this game?', null, 'game-finish-button');
-  }
+    componentWillUnmount() {
+        this.props.setShowFinishedGameCover(false);
+        this.unsubscribe();
+    }
 
-  render() {
-    const gameClass = this.props.showWords ? styles['show-words'] : '';
-      
-    return (
-      this.props.fetchingGameData ? <LoadingSpinner background={true} /> : ( 
-        <div className={`${styles.game} ${gameClass}`}>
-          {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
-          <div className={styles.topWrapper}>
-            <Menu />
-            <WordChecker />
-            {this.props.admin ? <AudioController /> : null}
-          </div>
-          <TwoLetterWords />
-          <Stats />
-          {this.props.admin && <Button className={styles.gameFinishButton} onClick={this.handleGameFinish}>
-            {this.props.t("Finish the game")}
-          </Button>}
-        </div>
-      )
-    );
-  }
+    handleGameFinish = (e) => {
+        e.preventDefault();
+        this.props.setAlert('confirm', 'Are you sure you want to finish this game?', null, 'game-finish-button');
+    }
+
+    render() {
+        const gameClass = this.props.showWords ? styles['show-words'] : '';
+
+        return (
+            this.props.fetchingGameData ? <LoadingSpinner background={true} /> : (
+                <div className={`${styles.game} ${gameClass}`}>
+                    {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
+                    <div className={styles.topWrapper}>
+                        <Menu />
+                        <WordChecker />
+                        {this.props.admin ? <AudioController /> : null}
+                    </div>
+                    <TwoLetterWords />
+                    <Stats />
+                    {this.props.admin && <Button className={styles.gameFinishButton} onClick={this.handleGameFinish}>
+                        {this.props.t("Finish the game")}
+                    </Button>}
+                </div>
+            )
+        );
+    }
 }
 
 const mapStateToProps = (state) => {
     return {
-      gameId: state.app.gameId,
-      user: state.app.user,
-      admin: state.app.admin,
-      showFinishedGameCover: state.game.showFinishedGameCover,
-      showWords: state.game.showWords,
-      fetchingGameData: state.game.fetchingGameData,
+        gameId: state.app.gameId,
+        user: state.app.user,
+        admin: state.app.admin,
+        showFinishedGameCover: state.game.showFinishedGameCover,
+        showWords: state.game.showWords,
+        fetchingGameData: state.game.fetchingGameData,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    setGameId: (gameId) => { dispatch(setGameId(gameId)) },
-    setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
-    checkEndTime: (data, gameId) => dispatch(checkEndTime(data, gameId)),
-    setEndTime: (endTime) => { dispatch(setEndTime(endTime)) },
-    fetchGameData: (gameId, user) => dispatch(fetchGameData(gameId, user)),
-    setShowFinishedGameCover: (showFinishedGameCover) => dispatch(setShowFinishedGameCover(showFinishedGameCover)),
-  }
+    return {
+        setGameId: (gameId) => { dispatch(setGameId(gameId)) },
+        setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
+        checkEndTime: (data, gameId) => dispatch(checkEndTime(data, gameId)),
+        setEndTime: (endTime) => { dispatch(setEndTime(endTime)) },
+        fetchGameData: (gameId, user) => dispatch(fetchGameData(gameId, user)),
+        setShowFinishedGameCover: (showFinishedGameCover) => dispatch(setShowFinishedGameCover(showFinishedGameCover)),
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Game));

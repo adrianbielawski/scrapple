@@ -1,4 +1,4 @@
-@import 'styles/variables';
+@import "styles/variables";
 
 .subtractPoints {
     h1 {
@@ -22,31 +22,4 @@
         flex-direction: column;
         align-items: center;
     }
-        
-    
-    //     .player-name {
-    //         font-size: 1.4em;
-    //         margin: 5px 0;
-    //         text-align: center;
-    //         color: darken($grey, 55);
-
-    //         .place {
-    //             display: inline-flex;
-    //             justify-content: center;
-    //             align-items: center;
-    //             padding: 3px 0;
-    //         }
-        
-    //         .place img {
-    //             margin-left: 10px;
-    //         }
-    //     }    
-    
-    //     span {
-    //         font-weight: 600;
-    //     }
-
-    // .player-result {
-    //     width: 100%;
-    // }
 }

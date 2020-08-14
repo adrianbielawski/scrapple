@@ -8,8 +8,9 @@ const RoundPoints = (props) => {
     return (
         <li className={styles.roundPoints}>
             <div className={styles.round}>{t("Round")} {props.round}</div>
-            <div>{points} {t('points.key', {count: points})}</div>
+            <div>{points} {t('points.key', { count: points })}</div>
         </li>
     );
 }
+
 export default RoundPoints;

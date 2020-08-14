@@ -60,10 +60,10 @@ export const toggleShowMenu = () => {
 }
 
 export const setShowFinishedGameCover = (showFinishedGameCover) => {
-  return {
-    type: 'GAME/SHOW_FINISHED_GAME_COVER',
-    showFinishedGameCover
-  }
+    return {
+        type: 'GAME/SHOW_FINISHED_GAME_COVER',
+        showFinishedGameCover
+    }
 }
 
 export const checkEndTime = (data, gameId) => {
@@ -73,7 +73,7 @@ export const checkEndTime = (data, gameId) => {
         const isValid = endTime.diff(now, 'seconds') > 2;
         if (!isValid && data.endTime) {
             let currentPlayer = data.currentPlayer;
-            let players = [ ...data.players];
+            let players = [...data.players];
 
             currentPlayer = getNextPlayer(players, currentPlayer);
 
@@ -145,25 +145,25 @@ const setGameState = (data, endTime) => {
 }
 
 export const addPoints = (points, players, currentPlayer, timer, time, gameId) => () => {
-  let updatedPlayers = cloneDeep(players);
-  let player = updatedPlayers[currentPlayer];
-  player.currentScore += points;
-  player.allPoints.push(points);
+    let updatedPlayers = cloneDeep(players);
+    let player = updatedPlayers[currentPlayer];
+    player.currentScore += points;
+    player.allPoints.push(points);
 
-  if(points > player.bestScore) {
-    player.bestScore = points;
-  };
+    if (points > player.bestScore) {
+        player.bestScore = points;
+    };
 
-  updatedPlayers[currentPlayer] = player;
+    updatedPlayers[currentPlayer] = player;
 
-  const nextPlayer = getNextPlayer(players, currentPlayer);
-  const endTime = timer ? getEndTime(time) : null;
+    const nextPlayer = getNextPlayer(players, currentPlayer);
+    const endTime = timer ? getEndTime(time) : null;
 
-  db.collection('games').doc(gameId).update({
-    players: updatedPlayers,
-    currentPlayer: nextPlayer,
-    endTime
-  });
+    db.collection('games').doc(gameId).update({
+        players: updatedPlayers,
+        currentPlayer: nextPlayer,
+        endTime
+    });
 }
 
 export const timeOut = (players, currentPlayer, time, gameId) => {
@@ -182,7 +182,7 @@ export const timeOut = (players, currentPlayer, time, gameId) => {
 
 const getNextPlayer = (players, currentPlayer) => {
     let nextPlayer = currentPlayer;
-    if (currentPlayer < players.length -1) {
+    if (currentPlayer < players.length - 1) {
         nextPlayer++;
     } else {
         nextPlayer = 0;

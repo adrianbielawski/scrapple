@@ -103,23 +103,23 @@ export const subscribeJoinedPlayers = (gameId) => dispatch => {
 
 export const startAdminGame = (gameId) => {
   return dispatch => {
-    db.collection('games').doc(gameId).update({gameStarted: true})
-    .then(() => {
-      dispatch(setScreen(`Game/${gameId}`));
-    })
-    .catch(() => {
-      dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
-    });
+    db.collection('games').doc(gameId).update({ gameStarted: true })
+      .then(() => {
+        dispatch(setScreen(`Game/${gameId}`));
+      })
+      .catch(() => {
+        dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+      });
   }
 }
 
 export const getUserDataFromDatabase = (uid) => {
   return dispatch => {
     return db.collection('users').doc(uid).get()
-    .then(response => response.data())
-    .catch(() => {
-      dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
-    });
+      .then(response => response.data())
+      .catch(() => {
+        dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+      });
 
   }
 }

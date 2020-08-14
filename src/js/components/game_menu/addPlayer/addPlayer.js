@@ -27,25 +27,25 @@ const AddPlayer = (props) => {
 
     const validatePlayerName = (player) => {
         const isPlayerExists = checkPlayers(player);
-        
-        if(props.players.length >= 4) {
+
+        if (props.players.length >= 4) {
             props.setAlert('alert', 'Max 4 players');
             return
         }
-        if(isPlayerExists) {
-            props.setAlert('alert', 'Player exists', {'player': player}, null);
+        if (isPlayerExists) {
+            props.setAlert('alert', 'Player exists', { 'player': player }, null);
             return
         }
-        if(player.length < 1) {
+        if (player.length < 1) {
             props.setAlert('alert', "Please type in player's name");
             return
         }
         return true;
     }
-    
+
     const checkPlayers = (player) => {
         const lowNewPlayer = player.toLowerCase();
-        const players = [ ...props.players];
+        const players = [...props.players];
         const lowPlayers = players.map((player) => {
             const lowPlayer = player.playerName.toLowerCase();
             return lowPlayer
@@ -55,11 +55,11 @@ const AddPlayer = (props) => {
 
     return (
         <div className={styles.addPlayer}>
-            <p>{t("Add player")}</p>                    
+            <p>{t("Add player")}</p>
             <div className={styles.form}>
                 <input id="player-name" type="text" autoComplete="false" spellCheck="false" maxLength="30" ref={inputEl}></input>
                 <Button className={styles.add} onClick={handleSubmit}>
-                    <FontAwesomeIcon icon={faPlus} className="plus"/>
+                    <FontAwesomeIcon icon={faPlus} className="plus" />
                 </Button>
             </div>
         </div>

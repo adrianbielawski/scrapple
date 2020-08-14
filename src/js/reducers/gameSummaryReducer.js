@@ -2,10 +2,10 @@ const initialState = {
     showExitOptions: false,
     exitOption: null,
 };
-  
+
 const gameSummaryReducer = (state = initialState, action) => {
     let newState = { ...state };
-    switch(action.type) {
+    switch (action.type) {
         case 'GAME_SUMMARY/SET_EXIT_OPTION':
             newState.exitOption = action.exitOption;
             return newState;
@@ -22,5 +22,5 @@ const gameSummaryReducer = (state = initialState, action) => {
             return state;
     }
 }
-  
+
 export default gameSummaryReducer;

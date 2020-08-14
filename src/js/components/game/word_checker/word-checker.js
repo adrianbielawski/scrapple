@@ -29,14 +29,14 @@ class WordChecker extends Component {
     handleInputChange = () => {
         let word = this.refs.word.value;
         this.setState(state => ({ ...state, word }));
-        
+
         if (this.timeout) {
-          clearTimeout(this.timeout);
+            clearTimeout(this.timeout);
         };
 
         this.timeout = setTimeout(
-          () => this.checkWord(word),
-          300,
+            () => this.checkWord(word),
+            300,
         );
     }
 
@@ -45,24 +45,24 @@ class WordChecker extends Component {
             this.setState(state => ({ ...state, fetching: false, valid: null }));
             return;
         };
-    
-        this.setState(state => ({ ...state, fetching: true, valid: null })); 
+
+        this.setState(state => ({ ...state, fetching: true, valid: null }));
 
         let url = '';
         let params = '';
-        if(this.props.language === 'en-GB') {
+        if (this.props.language === 'en-GB') {
             url = 'https://burek.it/sowpods/';
             params = new URLSearchParams({
                 word: word
             });
-        } else if(this.props.language === 'pl-PL') {
+        } else if (this.props.language === 'pl-PL') {
             url = 'https://burek.it/osps/files/php/osps_funkcje2.php';
             params = new URLSearchParams({
                 s: 'spr',
                 slowo_arbiter2: word
             });
         };
-        
+
         fetch(`${url}?${params.toString()}`).then(
             response => response.text()
         ).then(
@@ -73,12 +73,12 @@ class WordChecker extends Component {
     }
 
     getImage = () => {
-        let img = this.state.valid ? IMAGES.thumbUp : IMAGES.thumbDown ;
-        if(this.state.word.length === 0) {
+        let img = this.state.valid ? IMAGES.thumbUp : IMAGES.thumbDown;
+        if (this.state.word.length === 0) {
             img = IMAGES.fist;
         }
         let image = <img className={styles.thumb} src={img}></img>;
-        if(this.state.fetching) {
+        if (this.state.fetching) {
             image = <LoadingSpinner background={true} />
         }
         return image
@@ -86,7 +86,7 @@ class WordChecker extends Component {
 
     render() {
         const image = this.getImage()
-        
+
         return (
             <div className={styles.wordChecker}>
                 <input type="text"
@@ -105,7 +105,7 @@ class WordChecker extends Component {
 
 const mapStateToProps = (state) => {
     return {
-      language: state.app.language,
+        language: state.app.language,
     }
 }
 export default connect(mapStateToProps)(withTranslation()(WordChecker));

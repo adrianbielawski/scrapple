@@ -10,7 +10,7 @@ const AccountInfo = (props) => {
             <UserName />
             <LogOut />
         </div>
-     );
+    );
 }
 
 export default AccountInfo;

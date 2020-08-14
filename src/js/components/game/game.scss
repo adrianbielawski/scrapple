@@ -9,21 +9,20 @@
         display: inline-flex;
         justify-content: center;
     }
-    
+
     .gameFinishButton {
         margin: 5px auto;
         padding: 3px 20px;
     }
-    
+
     .showWords {
         overflow: scroll;
         display: flex;
         flex-flow: column;
         flex-grow: 1;
     }
-    
+
     .showWords::-webkit-scrollbar {
         display: none;
     }
 }
-

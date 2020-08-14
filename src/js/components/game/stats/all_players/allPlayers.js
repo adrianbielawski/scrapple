@@ -10,7 +10,7 @@ const AllPlayers = (props) => {
     const playerStats = props.players.map((player, index) => {
         const isCurrent = currentPlayer === index;
         return (
-            <PlayerStats player={player} key={index} isCurrent={isCurrent}/>
+            <PlayerStats player={player} key={index} isCurrent={isCurrent} />
         );
     });
 
@@ -23,8 +23,8 @@ const AllPlayers = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-      currentPlayer: state.game.currentPlayer,
-      players: state.game.players,
+        currentPlayer: state.game.currentPlayer,
+        players: state.game.players,
     }
 }
 

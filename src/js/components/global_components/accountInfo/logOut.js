@@ -7,15 +7,15 @@ import styles from './accountInfo.scss';
 import { clearAppState } from 'actions/appActions';
 
 const LogOut = (props) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
-    const handleClick = () => {
-        auth.signOut().then(() => {
-          props.clearAppState(props.language);
-        })
-    }
+  const handleClick = () => {
+    auth.signOut().then(() => {
+      props.clearAppState(props.language);
+    });
+  }
 
-    return ( <p className={styles.logout} onClick={handleClick}>{t("Logout")}</p> );
+  return (<p className={styles.logout} onClick={handleClick}>{t("Logout")}</p>);
 }
 
 const mapStateToProps = (state) => {

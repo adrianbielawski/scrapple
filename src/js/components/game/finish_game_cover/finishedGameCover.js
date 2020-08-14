@@ -7,13 +7,13 @@ import LoadingSpinner from 'components/global_components/loading_spinner/loading
 
 const FinishedGameCover = () => {
     const { t } = useTranslation();
-    return ( 
+    return (
         <Dropdown className={styles.confirmation}>
             <h2>{t("Game finished")}!</h2>
             <p className={styles.message}>{t("Please wait until points of unused letters will be substracted")}</p>
-            <LoadingSpinner background={false} />               
+            <LoadingSpinner background={false} />
         </Dropdown>
     );
 }
- 
+
 export default FinishedGameCover;

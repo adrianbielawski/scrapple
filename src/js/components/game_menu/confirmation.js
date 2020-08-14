@@ -13,10 +13,10 @@ const Confirmation = (props) => {
 
     let title = props.gameId ? 'Game created succesfully' : 'Creating new game';
     let message = 'Please wait';
-    if(props.gameId) {
+    if (props.gameId) {
         message = 'Please wait for other players to join the game';
     }
-    if(props.allPlayersJoined) {
+    if (props.allPlayersJoined) {
         message = 'All players have joined the game, press start game to begin';
     }
 
@@ -24,12 +24,12 @@ const Confirmation = (props) => {
         props.startAdminGame(props.gameId)
     }
 
-    return ( 
+    return (
         <Dropdown className="confirmation">
             <h2>{t(title)}</h2>
             {props.gameId ? <p className="game-id">{t("Game ID")}: {props.gameId}</p> : null}
             <p className="message">{t(message)}</p>
-            {!props.allPlayersJoined ? 
+            {!props.allPlayersJoined ?
                 <div>
                     <LoadingSpinner background={false} />
                     <p className="or">{t("or")}</p>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import styles from './mainMenu.scss';
 //Custom Components
-import Header from 'components/global_components/header';
+import Header from 'components/global_components/header/header';
 import Confirmation from './confirmation/confirmation';
 import Card from 'components/global_components/card/card';
 import AccountInfo from 'components/global_components/accountInfo/accountInfo';
@@ -34,7 +34,7 @@ const MainMenu = (props) => {
         const gameId = gameIdInput.current.value.trim();
         const isValid = validateUserInput(gameId);
 
-        if(!isValid) {
+        if (!isValid) {
             return;
         }
 
@@ -73,16 +73,16 @@ const MainMenu = (props) => {
             {props.showConfirmation && <Confirmation />}
             <Header />
             {props.user === {} ? <LoadingSpinner background={true} /> : (
-            <div className={styles.content}>
-                <AccountInfo />
-                <Card className={styles.card}>
-                    <Button onClick={createNewGame}>{t("Create new game")}</Button>
-                </Card>
-                <Card className={styles.card}>
-                    <Input placeholder={t("Game ID")} ref={gameIdInput} />
-                    <Button onClick={handleJoinGame}>{t("Join the game")}</Button>
-                </Card>
-            </div>
+                <div className={styles.content}>
+                    <AccountInfo />
+                    <Card className={styles.card}>
+                        <Button onClick={createNewGame}>{t("Create new game")}</Button>
+                    </Card>
+                    <Card className={styles.card}>
+                        <Input placeholder={t("Game ID")} ref={gameIdInput} />
+                        <Button onClick={handleJoinGame}>{t("Join the game")}</Button>
+                    </Card>
+                </div>
             )}
         </div>
     );

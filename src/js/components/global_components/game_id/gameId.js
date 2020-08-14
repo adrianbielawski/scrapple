@@ -36,7 +36,7 @@ const GameId = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-      gameId: state.app.gameId,
+        gameId: state.app.gameId,
     }
 }
 

@@ -6,16 +6,16 @@ export const subscribeExitOption = (gameId, exitOption) => dispatch => {
     return db.collection('games').doc(gameId).onSnapshot(doc => {
         const data = doc.data();
 
-        if(data.exitOption !== exitOption) {
+        if (data.exitOption !== exitOption) {
             dispatch(setExitOption(data.exitOption));
             if (data.exitOption === 'exitGame') {
                 return;
-            } else if(data.exitOption === 'playAgain') {
+            } else if (data.exitOption === 'playAgain') {
                 dispatch(playAgain(gameId, false));
             };
         }
 
-        if(data.exitOption === 'playAgainWithSettings') {
+        if (data.exitOption === 'playAgainWithSettings') {
             dispatch(setShowExitOptions('playAgainWithSettings'));
             if (data.gameStarted) {
                 dispatch(setShowExitOptions(null));

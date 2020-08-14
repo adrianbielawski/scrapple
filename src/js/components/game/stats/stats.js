@@ -10,7 +10,7 @@ const Stats = () => {
             <CurrentPlayer />
             <AllPlayers />
         </div>
-    );        
+    );
 }
 
 export default Stats;

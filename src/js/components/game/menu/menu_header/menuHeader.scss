@@ -1,23 +1,23 @@
-@import 'styles/variables';
+@import "styles/variables";
 
 .menuHeader {
-    width        : 100%;
+    width: 100%;
     margin-bottom: 20px;
     border-bottom: 1px solid $boxShadow;
-    box-shadow   : 0px 2px 5px $boxShadow;
-    display      : inline-flex;
-    align-items  : center;
+    box-shadow: 0px 2px 5px $boxShadow;
+    display: inline-flex;
+    align-items: center;
 
     .arrow {
         font-size: 24px;
-        padding  : 10px;
-        color    : $darkText;
-        cursor   : pointer;
+        padding: 10px;
+        color: $darkText;
+        cursor: pointer;
     }
 
     p {
-        width     : 60%;
+        width: 60%;
         text-align: center;
-        font-size : 30px;
+        font-size: 30px;
     }
 }

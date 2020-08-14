@@ -31,7 +31,7 @@ const Signup = (props) => {
             userNameInput.current.value = '';
             emailInput.current.value = '';
             passwordInput.current.value = '';
-        });        
+        });
     }
 
     return (
@@ -43,20 +43,20 @@ const Signup = (props) => {
                 {props.isSigningUp ? <LoadingSpinner background={false} /> : <Button type="submit">{t("Create account")}</Button>}
             </form>
         </Card>
-     );
+    );
 }
 
 const mapStateToProps = (state) => {
     return {
-      isSigningUp: state.auth.isSigningUp,
+        isSigningUp: state.auth.isSigningUp,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    signUp: (email, password, userName) => dispatch(signUp(email, password, userName)),
-    setIsSigningUp: (isSigningUp) => dispatch(setIsSigningUp(isSigningUp)),
-  }
+    return {
+        signUp: (email, password, userName) => dispatch(signUp(email, password, userName)),
+        setIsSigningUp: (isSigningUp) => dispatch(setIsSigningUp(isSigningUp)),
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);

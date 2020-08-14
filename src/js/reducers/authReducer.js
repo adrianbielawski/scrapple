@@ -2,11 +2,11 @@ const initialState = {
     loadingAuthState: true,
     isLoggingIn: false,
     isSigningUp: false,
-  };
-  
-  const authReducer = (state = initialState, action) => {
+};
+
+const authReducer = (state = initialState, action) => {
     let newState = { ...state };
-    switch(action.type) {
+    switch (action.type) {
         case 'AUTH/SET_IS_LOGGING_IN':
             newState.isLoggingIn = action.isLoggingIn;
             return newState;
@@ -18,10 +18,10 @@ const initialState = {
         case 'AUTH/SET_LOADING_AUTH_STATE':
             newState.loadingAuthState = action.loadingAuthState;
             return newState;
-            
+
         default:
             return state;
     }
-  }
-  
-  export default authReducer;
+}
+
+export default authReducer;
