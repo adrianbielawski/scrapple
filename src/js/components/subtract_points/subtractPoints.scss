@@ -1,0 +1,52 @@
+@import 'styles/variables';
+
+.subtractPoints {
+    h1 {
+        margin: 0 0 20px 0;
+    }
+    h2 {
+        margin-bottom: 20px;
+    }
+
+    button {
+        margin: 10px auto;
+    }
+
+    .players {
+        text-align: center;
+        font-size: 1.3em;
+        padding: 0 5px;
+        margin: 0 auto;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+        
+    
+    //     .player-name {
+    //         font-size: 1.4em;
+    //         margin: 5px 0;
+    //         text-align: center;
+    //         color: darken($grey, 55);
+
+    //         .place {
+    //             display: inline-flex;
+    //             justify-content: center;
+    //             align-items: center;
+    //             padding: 3px 0;
+    //         }
+        
+    //         .place img {
+    //             margin-left: 10px;
+    //         }
+    //     }    
+    
+    //     span {
+    //         font-weight: 600;
+    //     }
+
+    // .player-result {
+    //     width: 100%;
+    // }
+}

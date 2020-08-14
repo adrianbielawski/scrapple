@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import styles from './players.scss';
 //Custom Components
 import Player from './player/player';
 
@@ -11,7 +12,7 @@ const Players = (props) => {
     }
 
     return (
-        <ul className="players">
+        <ul className={styles.players}>
             {getPlayers()}
         </ul>
     );

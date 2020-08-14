@@ -1,0 +1,10 @@
+.allPlayers {
+    position: relative;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    overflow: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}

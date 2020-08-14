@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import '../../../styles/game.scss';
+import styles from './game.scss';
 //Custom Components
 import WordChecker from './word_checker/word-checker';
 import Stats from './stats/stats';
@@ -42,14 +42,14 @@ class Game extends React.Component {
       this.props.fetchingGameData ? <LoadingSpinner background={true} /> : ( 
         <div className={`${styles.game} ${gameClass}`}>
           {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
-          <div className="top-wrapper">
+          <div className={styles.topWrapper}>
             <Menu />
             <WordChecker />
             {this.props.admin ? <AudioController /> : null}
           </div>
           <TwoLetterWords />
           <Stats />
-          {this.props.admin && <Button className="game-finish-button" onClick={this.handleGameFinish}>
+          {this.props.admin && <Button className={styles.gameFinishButton} onClick={this.handleGameFinish}>
             {this.props.t("Finish the game")}
           </Button>}
         </div>

@@ -7,10 +7,12 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import rootReducer from './js/reducers/';
+import theme from './js/components/global_components/muiTheme';
+import { ThemeProvider } from '@material-ui/core';
 
 const initialState = {}
 let composeEnhancers = compose;
- 
+
 if (process.env.NODE_ENV === 'development') {
   composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 }
@@ -28,6 +30,6 @@ const app = (
   </Provider>
 );
 
-ReactDOM.render( app,
+ReactDOM.render(app,
   document.getElementById('root')
 );

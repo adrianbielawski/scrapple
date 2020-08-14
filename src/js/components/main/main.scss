@@ -1,0 +1,65 @@
+@import "styles/variables";
+   
+.content {
+    margin: 0 auto;
+    padding: 0 10px;
+    max-width: 400px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    box-sizing: border-box;
+    .choose-language {
+        display: inline-flex;
+        align-self: center;
+        margin-bottom: 5px;
+        .languages {
+            display: inline-flex;
+            margin-left: 10px;
+            width: 0px;
+            transition: width .1s linear;
+            img {
+                width: 0px;
+                transition: width .1s linear;
+                cursor: pointer;
+                }
+            &.active {
+                transition: width .1s linear;
+                width: 100%;
+                img {
+                    transition: width .1s linear;
+                    width: 41.25px;
+                }
+            }
+            .language {
+                margin-right: 5px;
+            }
+        }
+        img {
+            height: 30px;
+            cursor: pointer;
+        }
+    }
+    .card {
+        min-width: 300px;
+        form {
+            display: flex;
+            flex-flow: column;
+            input {
+                margin-bottom: 10px;
+            }
+            button {
+                margin: 10px auto 15px auto;
+            }
+        }
+        p {
+            text-align: center;
+            font-size: .9em;
+            span {
+                color: $mainGreen;
+                font-weight: 700;
+                cursor: pointer;
+                font-size: 1.1em;
+            }
+        }
+    }
+}

@@ -2,8 +2,7 @@ import React, { Suspense } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { auth } from 'firebaseConfig';
-import { auth } from '../../firebaseConfig';
-import '../../styles/App.scss';
+import styles from 'styles/App.scss';
 //Custom Components
 import Main from './main/main';
 import MainMenu from './main_Menu/MainMenu';
@@ -49,7 +48,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App" style={{height: this.props.screenHeight}}>
+      <div className={styles.App} style={{height: this.props.screenHeight}}>
         {this.props.alert.show && <Alert />}
         <Redirect to={`/${this.props.screen}`} />
         <Suspense fallback={<LoadingSpinner background={true} />}>

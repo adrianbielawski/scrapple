@@ -1,0 +1,54 @@
+@import 'styles/variables';
+
+.alertCover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(128, 128, 128, .5);
+}
+
+.alert {
+    background: lighten($grey, 3);
+    width: 90%;
+    left: 5%;
+    top: 10px;
+    position: absolute;
+    z-index: 10;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    p {
+        width: 100%;
+        padding: 10px;
+        text-align: center;
+        font-size: 1.3em;
+    }
+    .wraper {
+        height: 100%;
+        display: inline-flex;
+    }
+
+    button {
+        width: 70px;
+        padding: 5px;
+        margin: 10px;
+        font-weight: 600;
+        font-size: 1.5em;
+        height: 100%;
+    }
+
+    .ok {
+        color: #fff;
+    }
+
+    .yes {
+        color: lightGreen;
+    }
+
+    .no {
+        color: $red;
+    }
+}

@@ -10,6 +10,7 @@ import Language from './language';
 const ChangeLanguage = (props) => {
     const { t } = useTranslation();
     const [showLanguages, setShowLanguages] = useState(false);
+    const styles = props.vertical ? stylesV : stylesH;
 
     const toggleShowLanguages = () => {
         setShowLanguages(!showLanguages);
@@ -19,20 +20,20 @@ const ChangeLanguage = (props) => {
         return Object.entries(languages).map((lang, i) => {
             if(lang[0] === props.language) { return }
             return (
-                <Language showName={props.showName} lang={lang[1]} key={i} />
+                <Language showName={props.showName} lang={lang[1]} key={i} styles={styles} />
             )
         })
     }
 
-    const langClass = showLanguages && 'active';
+    const langClass = showLanguages && `${styles.active}`;
     
     return (
-        <div className="choose-language" onClick={toggleShowLanguages}>
-            <div className="current-lang">
+        <div className={styles.changeLanguage} onClick={toggleShowLanguages}>
+            <div className={styles.currentLanguage}>
                 <img src={`../src/assets/img/${languages[props.language].flag}`}></img>
                 {props.showName && <p>{t("Language")}</p>}
             </div>
-            <div className={`languages ${langClass}`}>
+            <div className={`${styles.languages} ${langClass}`}>
                 {getLanguages()}
             </div>
         </div>

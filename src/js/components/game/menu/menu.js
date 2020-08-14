@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import styles from './menu.scss';
 //Custom Components
 import MenuContent from './menu_content/menuContent';
 import MenuHeader from './menu_header/menuHeader';

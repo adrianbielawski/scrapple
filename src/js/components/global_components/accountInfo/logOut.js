@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { auth } from 'firebaseConfig';
-import { auth } from '../../../../firebaseConfig';
+import styles from './accountInfo.scss';
 //Redux Actions
 import { clearAppState } from 'actions/appActions';
 
@@ -15,7 +15,7 @@ const LogOut = (props) => {
         })
     }
 
-    return ( <p className="log-out" onClick={handleClick}>{t("Logout")}</p> );
+    return ( <p className={styles.logout} onClick={handleClick}>{t("Logout")}</p> );
 }
 
 const mapStateToProps = (state) => {

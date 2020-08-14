@@ -1,0 +1,31 @@
+@import 'styles/variables';
+
+.gameMenu {
+    h1 {
+        margin: 0;
+    }
+
+    .menu {
+        width: 100%;
+        max-width: 400px;
+        padding: 0 10px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        flex-flow: column;
+        box-sizing: border-box;
+    }
+  
+    .card {
+        margin-bottom: 5px;
+        p {
+            font-size: 1.2em;
+            color: $darkText;
+            font-weight: 600;
+        }
+    }
+
+    button[type=submit] {
+        margin: 5px auto;
+    }
+}

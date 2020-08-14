@@ -10,7 +10,7 @@ const Language = (props) => {
   }
   
   return (
-      <div className={`language`} onClick={handleLanguageChange} lang={props.lang.symbol}>
+      <div className={props.styles.language} onClick={handleLanguageChange} lang={props.lang.symbol}>
           <img src={`../src/assets/img/${props.lang.flag}`}></img>
           {props.showName && <p>{props.lang.name}</p>}
       </div>

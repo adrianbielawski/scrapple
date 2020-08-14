@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import '../../../styles/main.scss';
+import styles from './main.scss';
 //Custom Components
 import Header from 'components/global_components/header';
 import Language from 'components/global_components/language/changeLanguage';
@@ -10,14 +10,14 @@ import Signup from './Signup';
 
 const Main = (props) => {
     return ( 
-        <div className="main">
+        <div>
             <Header />
-            <div className="content">
+            <div className={styles.content}>
                 <Language showName={false} />
                 {props.screen === 'signup' ? <Signup /> : <Login />}
             </div>
         </div>
-     );
+    );
 }
 
 const mapStateToProps = (state) => {

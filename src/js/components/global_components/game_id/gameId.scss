@@ -1,0 +1,26 @@
+.gameId {
+    display: inline-flex;
+    align-items: center;
+    div {
+        position: relative;
+        display: inline-flex;
+    }
+    p.id {
+        margin-left: 5px;
+        font-size: 26px;
+        font-weight: 700;
+    }
+    p.copyId {
+        position: absolute;
+        &.move {
+            transform: translateX(50px);
+            transition-duration: .3s;
+            opacity: 0;
+        }
+    }
+    span {
+        margin-left: 10px;
+        font-size: 26px;
+        z-index: 10;
+    }
+}

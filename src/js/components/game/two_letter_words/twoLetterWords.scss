@@ -1,0 +1,39 @@
+@import 'styles/variables';
+
+.twoLetterWords {
+    width: 100%;
+    margin-bottom: 5px;
+    position: relative;
+
+    button {
+        display: block;
+        margin: 0 auto;
+        z-index: 3;
+    }
+    
+    .words {
+        position: absolute;
+        top: 40px;
+        z-index: 2;
+        width: 100%;
+        max-height: 0px;
+        overflow: hidden;
+        background: darken($grey, 10);
+        transition-property: max-height;
+        transition-duration: .2s;
+        transition-delay: .0s;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &.active {
+            max-height: 1000px;
+            border: 1px solid darken($grey, 30);
+        }
+    }
+    
+    img {
+        width: 99%;
+        margin: .5% 0;
+    }
+}

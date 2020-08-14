@@ -1,0 +1,95 @@
+@import 'styles/variables';
+
+.player {
+    font-size: 1.2em;
+    background: $offWhite;
+    border: .5px solid transparent;
+    border-bottom: .5px solid darken($grey, 20);
+    width: 100%;
+    max-height: 1000px;
+    overflow: hidden;
+    float: right;
+    box-sizing: border-box;
+    user-select:none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select:none;
+        -o-user-select:none;
+    cursor: grab;
+    .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .playerNameWrapper {
+        padding: 5px 0 5px 3px;
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        flex-shrink: 0;
+        .playerName {
+            font-weight: unset;
+            max-width: 295px;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-flow: nowrap;
+        }
+        span {
+            font-weight: 700;
+            padding-left: 3px;
+        }
+    }
+    
+    .topListSpace {
+        height: 0;
+        overflow: hidden;
+        transition: height .3s ease-out;
+        &.visible {
+            border-top: .5px solid darken($grey, 20);
+            border-bottom: .5px solid darken($grey, 20);
+        }
+    }
+    .bottomListSpace {
+        overflow: hidden;
+        height: 0;
+        transition: height .3s ease-out;
+        &.visible {
+            border-top: .5px solid darken($grey, 20);
+        }
+    }
+    &.noTouchDevice &:hover {
+        position: relative;
+        border-radius: 10px;
+        border: .5px solid darken($grey, 5);
+        box-shadow: 2px 2px 3px darken($grey, 30);
+    }
+    &.grabbed {
+        position: absolute;
+        border-radius: 10px;
+        border: .5px solid darken($grey, 5);
+        box-shadow: 2px 2px 3px darken($grey, 30);
+        z-index: 10;
+        width: 100%;
+    }
+    button {
+        margin: 0 4px;
+        width: 25px;
+        height: 25px;
+        font-size: 1em;
+    }
+    .remove {
+        color: white;
+        border-radius: 50%;
+        padding: 0;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    .userIcon {
+        width: 24px;
+        display: flex;
+        justify-content: center;
+    }
+}

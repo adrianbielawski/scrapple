@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import '../../../styles/main-menu.scss';
+import styles from './mainMenu.scss';
 //Custom Components
 import Header from 'components/global_components/header';
 import Confirmation from './confirmation/confirmation';
@@ -16,7 +16,6 @@ import { joinGame, createNewGame, setShowConfirmation } from 'actions/mainMenuAc
 import { addPlayer } from 'actions/gameMenuActions';
 
 const MainMenu = (props) => {
-    sessionStorage.clear();
     const gameIdInput = useRef(null);
     const { t } = useTranslation();
 
@@ -70,23 +69,22 @@ const MainMenu = (props) => {
     }
 
     return (
-        
-            <div className="main-menu">
-                {props.showConfirmation && <Confirmation />}
-                <Header />
-                {props.user === {} ? <LoadingSpinner background={true} /> : (
-                <div className="content">
-                    <AccountInfo />
-                    <Card>
-                        <Button onClick={createNewGame}>{t("Create new game")}</Button>
-                    </Card>
-                    <Card>
-                        <input placeholder={t("Game ID")} ref={gameIdInput}></input>
-                        <Button onClick={handleJoinGame}>{t("Join the game")}</Button>
-                    </Card>
-                </div>
-                )}
+        <div className={styles.mainMenu}>
+            {props.showConfirmation && <Confirmation />}
+            <Header />
+            {props.user === {} ? <LoadingSpinner background={true} /> : (
+            <div className={styles.content}>
+                <AccountInfo />
+                <Card className={styles.card}>
+                    <Button onClick={createNewGame}>{t("Create new game")}</Button>
+                </Card>
+                <Card className={styles.card}>
+                    <Input placeholder={t("Game ID")} ref={gameIdInput} />
+                    <Button onClick={handleJoinGame}>{t("Join the game")}</Button>
+                </Card>
             </div>
+            )}
+        </div>
     );
 }
 

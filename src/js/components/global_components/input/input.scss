@@ -1,0 +1,21 @@
+@import 'styles/variables';
+
+input {
+    padding: 3px;
+    height: 35px;
+    border: 1px solid darken($grey, 20);
+    background: lighten($grey, 3);
+    font-weight: 700;
+    font-size: 1.5em;
+    font-family: 'nunito';
+    color: $mainGreen;
+    text-align: center;
+    box-sizing: border-box;
+    outline: none;
+    &::placeholder {
+        opacity: .5;
+    }
+    &:invalid {
+        color: $red;
+    }
+}
