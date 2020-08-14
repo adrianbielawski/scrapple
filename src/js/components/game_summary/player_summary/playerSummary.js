@@ -31,10 +31,12 @@ const PlayerSummary = (props) => {
         <li className={styles.playerSummary}>
             <Card className={styles.card}>
                 <div className={styles.place}>
+                    <p>{t("place", {'place': t(props.placeText)})}</p>
                     {getImg()}
                 </div>
                 <p className={styles.playerName}>{player.playerName}</p>
                 <p>
+                    {t("Player results", {'total': player.currentScore, 'best': player.bestScore})}
                 </p>
             </Card>
         </li>

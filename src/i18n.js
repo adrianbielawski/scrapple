@@ -68,24 +68,24 @@ const resources = {
         "key": "point",
         "key_plural": "points",
       },
-      //GameSummary
-      "Game results" : "Game results",
+      //SubtractPoints
       "Points value must be positive integer" : "Points value must be positive integer",
       "Subtract points of unused letters" : "Subtract points of unused letters",
-      "Exit" : "Exit",
       "Continue" : "Continue",
+      //GameSummary
+      "Game results" : "Game results",
+      "Exit" : "Exit",
       "1st" : "1st",
       "2nd" : "2nd",
       "3rd" : "3rd",
       "4th" : "4th",
+      "place" : "{{place}} place",
+      "Player results" : "Total: {{total}} Best score: {{best}}",
       "Play again" : "Play again",
       "Play again with new settings" : "Play again with new settings",
       "Game continues!" : "Game continues!",
       "Please wait until settings will be changed" : "Please wait until settings will be changed",
-      //PlayerSummary
-      "place" : "place",
-      "Total" : "Total",
-      "Best score" : "Best score",
+      //Alert
       "Yes" : "Yes",
       "No" : "No",
     }
@@ -157,24 +157,23 @@ const resources = {
         "key_1": "punkty",
         "key_2": "punktów",
       },
-      //GameSummary
-      "Game results" : "Wyniki Gry",
+      //SubtractPoints
       "Points value must be positive integer" : "Wprowadzona wartość musi byc całkowitą liczbą dodatnią",
       "Subtract points of unused letters" : "Odejmij wartość pozostałych liter",
-      "Exit" : "Wyjdź",
       "Continue" : "Kontynuuj",
+      //GameSummary
+      "Game results" : "Wyniki Gry",
+      "Exit" : "Wyjdź",
       "1st" : "Pierwsze",
       "2nd" : "Drugie",
       "3rd" : "Trzecie",
       "4th" : "Czwarte",
+      "place" : "{{place}} miejsce",
+      "Player results" : "Wynik: {{total}} Najlepszy wynik: {{best}}",
       "Play again" : "Zagraj ponownie",
       "Play again with new settings" : "Zagraj ponownie ze zmienionymi ustawieniami",
       "Game continues!" : "Kontynuujemy grę!",
       "Please wait until settings will be changed" : "Poczekaj, aż ustawienia gry zostaną zmienione",
-      //PlayerSummary
-      "place" : "miejsce",
-      "Total" : "Wynik",
-      "Best score" : "Najlepszy wynik",
       //Alert
       "Yes" : "Tak",
       "No" : "Nie",
