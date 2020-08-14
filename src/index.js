@@ -25,7 +25,9 @@ const store = createStore(
 const app = (
   <Provider store={store}>
     <BrowserRouter>
-      <App/>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </BrowserRouter>
   </Provider>
 );
