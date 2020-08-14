@@ -1,5 +1,6 @@
 import db from '../../firebaseConfig';
 import * as firebase from 'firebase';
+import { some } from 'lodash';
 //Redux Actions
 import { changeLanguage, setGameId, setAlert, setAdmin, setScreen } from '../actions/appActions';
 
@@ -44,6 +45,18 @@ export const joinGame = (gameId, language, user) => {
     return dispatch => {
         let unsubscribeGameStart = null;
 
+        const setStateAndSubscribe = () => {
+            dispatch(setGameId(gameId));
+            dispatch(setShowConfirmation(true));
+
+            return db.collection('games').doc(gameId).onSnapshot(doc => {
+                const data = doc.data();
+                if (data.gameStarted == true) {
+                    dispatch(startJoinedPlayerGame(gameId));
+                }
+            });
+        }
+
         db.collection('games').doc(gameId).get()
             .then((response) => {
                 const data = response.data();
@@ -57,36 +70,33 @@ export const joinGame = (gameId, language, user) => {
                     dispatch(changeLanguage(data.language));
                 };
 
-                db.collection('games').doc(gameId).update({'players': firebase.firestore.FieldValue.arrayUnion(
-                    {
-                        admin: false,
-                        allPoints: [],
-                        bestScore: 0,
-                        currentScore: 0,
-                        playerIndex: data.players.length,
-                        playerName: user.displayName,
-                        uid: user.uid,
+                const didPlayerJoin = some(data.players, { uid: user.uid });
+
+                if (!didPlayerJoin) {
+                    db.collection('games').doc(gameId).update({
+                        'players': firebase.firestore.FieldValue.arrayUnion(
+                            {
+                                admin: false,
+                                allPoints: [],
+                                bestScore: 0,
+                                currentScore: 0,
+                                playerIndex: data.players.length,
+                                playerName: user.displayName,
+                                uid: user.uid,
+                            })
                     })
-                })
-                .then(() => {
-                    dispatch(setGameId(gameId));
-                    dispatch(setShowConfirmation(true));
-                })
-                .then(() => {
-                    unsubscribeGameStart = db.collection('games').doc(gameId).onSnapshot(doc => {
-                        const data = doc.data();
-                        if (data.gameStarted == true) {
-                            dispatch(startJoinedPlayerGame(gameId));
-                        }
+                    .then(() => {
+                        unsubscribeGameStart = setStateAndSubscribe();
                     });
-            
-                });
+                } else {
+                    unsubscribeGameStart = setStateAndSubscribe();
+                }
             })
             .catch(() => {
                 dispatch(setAlert('alert', 'Something went wrong, please check game ID'));
                 return;
             });
-            return unsubscribeGameStart;
+        return unsubscribeGameStart;
     }
 }
 
