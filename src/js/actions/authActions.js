@@ -1,6 +1,6 @@
 import { db, auth } from '../../firebaseConfig';
 //Redux Actions
-import { setScreen, setAlert } from '../actions/appActions';
+import { setAlert } from '../actions/appActions';
 
 export const signUp = (email, password, userName) => dispatch => {
     return auth.createUserWithEmailAndPassword(email, password).then(response => {
@@ -25,10 +25,10 @@ export const signUp = (email, password, userName) => dispatch => {
     });
 }
 
-export const logIn = (email, password) => dispatch => {
+export const logIn = (email, password, history) => dispatch => {
     return auth.signInWithEmailAndPassword(email, password).then(response => {
         if (response.user.emailVerified) {
-            dispatch(setScreen('MainMenu'));
+            history.push('/main_menu');
         } else {
             dispatch(setAlert('alert', 'This account is not verified. Please check your inbox to finish registration.'));
         }

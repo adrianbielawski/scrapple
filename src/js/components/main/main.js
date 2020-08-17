@@ -14,7 +14,7 @@ const Main = (props) => {
             <Header />
             <div className={styles.content}>
                 <Language showName={false} />
-                {props.screen === 'signup' ? <Signup /> : <Login />}
+                {props.location.pathname === '/signup' ? <Signup /> : <Login history={props.history} />}
             </div>
         </div>
     );

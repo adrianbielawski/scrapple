@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router";
 import { useTranslation } from 'react-i18next';
 import styles from './alert.scss';
 //Redux Actions
@@ -17,7 +18,7 @@ const Alert = (props) => {
                     break;
 
                 case 'user-registered':
-                    props.setScreen('login');
+                    props.history.push('/login');
                     break;
             }
         }
@@ -62,4 +63,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Alert);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Alert));

@@ -24,7 +24,7 @@ class App extends React.Component {
     }
 
     componentWillUnmount = () => {
-        removeEventListener(this.listenScreenHeight)
+        removeEventListener(this.listenScreenHeight);
     }
 
     componentDidMount = () => {
@@ -32,7 +32,7 @@ class App extends React.Component {
             if (user) {
                 this.props.setUser(user);
             } else {
-                if (this.props.screen === 'signup') {
+                if (window.location.pathname.slice(1) === 'signup') {
                     return;
                 }
                 this.props.clearAppState(this.props.language);
@@ -50,11 +50,10 @@ class App extends React.Component {
         return (
             <div className={styles.App} style={{ height: this.props.screenHeight }}>
                 {this.props.alert.show && <Alert />}
-                <Redirect to={`/${this.props.screen}`} />
                 <Suspense fallback={<LoadingSpinner background={true} />}>
                     <Switch>
-                        <Route path={["/login", "/signup"]} component={Main} />
-                        <PrivateRoute path="/MainMenu" component={MainMenu} />
+                        <Route exact path={["/", "/login", "/signup"]} component={Main} />
+                        <PrivateRoute path="/main_menu" component={MainMenu} />
                         <PrivateRoute path="/GameMenu" component={GameMenu} />
                         <PrivateRoute exact path="/Game/:gameId" component={Game} />
                         <PrivateRoute exact path="/Game/:gameId/SubtractPoints" component={SubtractPoints} />

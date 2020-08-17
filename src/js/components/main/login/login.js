@@ -24,7 +24,7 @@ const Login = (props) => {
 
         props.setIsLoggingIn(true);
 
-        const promise = props.logIn(email, password);
+        const promise = props.logIn(email, password, props.history);
         promise.then(user => {
             props.setIsLoggingIn(false);
 
@@ -38,7 +38,7 @@ const Login = (props) => {
     }
 
     const handleSignUp = () => {
-        props.setScreen('signup')
+        props.history.push('/signup');
     }
 
     return (
@@ -68,7 +68,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setScreen: (screen) => dispatch(setScreen(screen)),
-        logIn: (email, password) => dispatch(logIn(email, password)),
+        logIn: (email, password, history) => dispatch(logIn(email, password, history)),
         setIsLoggingIn: (isLoggingIn) => dispatch(setIsLoggingIn(isLoggingIn)),
     }
 }
