@@ -107,7 +107,7 @@ export const startAdminGame = (gameId, user, history) => {
     db.collection('games').doc(gameId).update({ gameStarted: true })
       .then(() => {
         db.collection('users').doc(user.uid).update({
-          'allGames': firebase.firestore.FieldValue.arrayUnion({gameId})
+          'allGames': firebase.firestore.FieldValue.arrayUnion(gameId)
         }).then(() => {
           history.push(`/game/${gameId}`);
         });

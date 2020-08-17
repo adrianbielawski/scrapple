@@ -4,6 +4,7 @@ import styles from './menuContent.scss'
 import GameId from 'components/global_components/game_id/gameId';
 import UserName from 'components/global_components/accountInfo/userName';
 import LogOut from 'components/global_components/accountInfo/logout';
+import UserInfo from '../../../global_components/accountInfo/user_info/userInfo';
 
 const MenuContent = (props) => {
     return (
@@ -11,6 +12,7 @@ const MenuContent = (props) => {
             <LogOut className={styles.logout} />
             <UserName />
             <GameId />
+            <UserInfo />
         </div>
     );
 }
