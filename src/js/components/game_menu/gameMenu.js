@@ -59,7 +59,7 @@ const GameMenu = (props) => {
         e.preventDefault();
         const isValid = validateSettings();
         if (isValid) {
-            props.startAdminGame(props.gameId, props.history);
+            props.startAdminGame(props.gameId, props.user, props.history);
         }
     }
 
@@ -122,7 +122,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         updateGameMenuData: (gameId, language, timer, time, players) => dispatch(updateGameMenuData(gameId, language, timer, time, players)),
         setFetchingGameData: (fetching) => dispatch(setFetchingGameData(fetching)),
-        startAdminGame: (gameId, history) => dispatch(startAdminGame(gameId, history)),
+        startAdminGame: (gameId, user, history) => dispatch(startAdminGame(gameId, user, history)),
         setGameId: (gameId) => dispatch(setGameId(gameId)),
         getGameData: (gameId) => dispatch(getGameData(gameId)),
         setPlayers: (players) => dispatch(setPlayers(players)),

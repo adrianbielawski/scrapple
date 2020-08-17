@@ -1,7 +1,8 @@
-import db from '../../firebaseConfig';
+import db from 'firebaseConfig';
+import * as firebase from 'firebase';
 //Redux Actions
-import { setAlert } from '../actions/appActions';
-import { setPlayers } from '../actions/gameActions';
+import { setAlert } from 'actions/appActions';
+import { setPlayers } from 'actions/gameActions';
 
 export const setFetchingGameData = (fetching) => {
   return {
@@ -101,11 +102,15 @@ export const subscribeJoinedPlayers = (gameId) => dispatch => {
   });
 }
 
-export const startAdminGame = (gameId, history) => {
+export const startAdminGame = (gameId, user, history) => {
   return dispatch => {
     db.collection('games').doc(gameId).update({ gameStarted: true })
       .then(() => {
-        history.push(`/game/${gameId}`);
+        db.collection('users').doc(user.uid).update({
+          'allGames': firebase.firestore.FieldValue.arrayUnion({gameId})
+        }).then(() => {
+          history.push(`/game/${gameId}`);
+        });
       })
       .catch(() => {
         dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));

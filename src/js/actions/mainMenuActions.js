@@ -52,7 +52,7 @@ export const joinGame = (gameId, language, user, history) => {
             return db.collection('games').doc(gameId).onSnapshot(doc => {
                 const data = doc.data();
                 if (data.gameStarted == true) {
-                    dispatch(startJoinedPlayerGame(gameId, history));
+                    dispatch(startJoinedPlayerGame(gameId, user, history));
                 }
             });
         }
@@ -104,12 +104,18 @@ export const setShowConfirmation = (showConfirmation) => {
     return {
         type: 'MAIN_MENU/SET_SHOW_CONFIRMATION',
         showConfirmation,
-    }
+    };
 }
 
-export const startJoinedPlayerGame = (gameId, history) => {
+export const startJoinedPlayerGame = (gameId, user, history) => {
     return dispatch => {
-        dispatch(setAdmin(false));
-        history.push(`/game/${gameId}`);
-    }
+        db.collection('users').doc(user.uid).update({
+            'allGames': firebase.firestore.FieldValue.arrayUnion({gameId})
+        }).then(() => {
+            dispatch(setAdmin(false));
+            history.push(`/game/${gameId}`);
+        }).catch(() => {
+            dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+        });
+    };
 }
