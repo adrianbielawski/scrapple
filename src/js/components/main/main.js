@@ -5,7 +5,7 @@ import styles from './main.scss';
 import Header from 'components/global_components/header/header';
 import Language from 'components/global_components/language/changeLanguage';
 import Login from './login/login';
-import Signup from './Signup';
+import Signup from './signup/signup';
 //Redux Actions
 
 const Main = (props) => {

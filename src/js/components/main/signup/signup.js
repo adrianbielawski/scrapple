@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import styles from './signup.scss';
 //Custom Components
 import Card from 'components/global_components/card/card';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
@@ -35,7 +36,7 @@ const Signup = (props) => {
     }
 
     return (
-        <Card>
+        <Card className={styles.signup}>
             <form onSubmit={handleSubmit}>
                 <Input placeholder={t("user name")} ref={userNameInput} minLength="3" required />
                 <Input type="email" placeholder={t("e-mail")} ref={emailInput} required />

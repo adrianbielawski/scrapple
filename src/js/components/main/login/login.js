@@ -42,21 +42,19 @@ const Login = (props) => {
     }
 
     return (
-        <Card>
-            <div className={styles.login}>
-                <form onSubmit={handleSubmit}>
-                    <Input type="email" placeholder={t("e-mail")} ref={emailInput} required />
-                    <Input type="password" placeholder={t("password")} ref={passwordInput} minLength="6" required />
-                    {props.isLoggingIn ? <LoadingSpinner background={false} /> : <Button type="submit">{t("Login")}</Button>}
-                </form>
-                {!props.isLoggingIn &&
-                    <p>
-                        <Trans i18nKey="Don't have an account">
-                            Don't have an account? <span onClick={handleSignUp}>Create new account here!</span>
-                        </Trans>
-                    </p>
-                }
-            </div>
+        <Card className={styles.login}>
+            <form onSubmit={handleSubmit}>
+                <Input type="email" placeholder={t("e-mail")} ref={emailInput} required />
+                <Input type="password" placeholder={t("password")} ref={passwordInput} minLength="6" required />
+                {props.isLoggingIn ? <LoadingSpinner background={false} /> : <Button type="submit">{t("Login")}</Button>}
+            </form>
+            {!props.isLoggingIn &&
+                <p>
+                    <Trans i18nKey="Don't have an account">
+                        Don't have an account? <span onClick={handleSignUp}>Create new account here!</span>
+                    </Trans>
+                </p>
+            }
         </Card>
     );
 }

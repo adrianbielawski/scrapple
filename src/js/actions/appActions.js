@@ -137,7 +137,9 @@ export const handleFinishGame = (gameId, admin) => {
                 dispatch(setPlayedAgainWithSettings(false));
                 dispatch(setScreen(`Game/${gameId}/SubtractPoints`));
                 dispatch(removeAlert());
+            }).catch(() => {
             })
+            });
         } else {
             dispatch(setShowFinishedGameCover(true));
             dispatch(removeAlert());
