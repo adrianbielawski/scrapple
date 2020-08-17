@@ -8,9 +8,9 @@ import LogOut from 'components/global_components/accountInfo/logout';
 const MenuContent = (props) => {
     return (
         <div className={styles.menuContent}>
+            <LogOut className={styles.logout} />
             <UserName />
             <GameId />
-            <LogOut />
         </div>
     );
 }

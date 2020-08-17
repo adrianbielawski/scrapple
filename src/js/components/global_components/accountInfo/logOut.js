@@ -15,7 +15,7 @@ const LogOut = (props) => {
     });
   }
 
-  return (<p className={styles.logout} onClick={handleClick}>{t("Logout")}</p>);
+  return (<p className={`${styles.logout} ${props.className}`} onClick={handleClick}>{t("Logout")}</p>);
 }
 
 const mapStateToProps = (state) => {
