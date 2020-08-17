@@ -24,6 +24,10 @@ const SubtractPoints = (props) => {
         promise.then(data => {
             props.setPlayers(data.players);
             props.setFetchingGameData(false);
+            
+            if (data.pointsSubtracted && data.gameFinished) {
+                props.history.push(`/game/${gameId}/game_summary`);
+            }
         })
     }, []);
 

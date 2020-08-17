@@ -128,7 +128,6 @@ export const handleFinishGame = (gameId, admin, history) => {
             }).then(() => {
                 dispatch(setPlayedAgain(false));
                 dispatch(setPlayedAgainWithSettings(false));
-                history.push(`/game/${gameId}/subtract_points`);
                 dispatch(removeAlert());
             }).catch(() => {
                 dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
@@ -213,7 +212,7 @@ export const exitGame = (gameId, admin, history) => {
         dispatch(clearAppStateOnExit());
         history.push('/main_menu');
         if (admin) {
-            db.collection('games').doc(gameId).set({
+            db.collection('games').doc(gameId).update({
                 exitOption: 'exitGame',
             });
         }

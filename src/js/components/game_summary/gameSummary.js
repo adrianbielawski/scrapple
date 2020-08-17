@@ -18,24 +18,13 @@ const GameSummary = (props) => {
     let unsubscribe = null;
 
     useEffect(() => {
-        if (props.user.uid) {
-            console.log(props.gameId)
-            const gameDataPromise = props.getGameData(props.gameId);
-            gameDataPromise.then((data) => {
-                const isAdmin = data.admin === props.user.uid;
-                props.setAdmin(isAdmin);
-            })
-        }
-    }, [props.user.uid]);
-
-    useEffect(() => {
         const gameId = props.gameId || props.getGameId();
-        console.log(gameId)
 
         const promise = props.getGameData(gameId);
         promise.then(data => {
             props.setPlayers(data.players);
             props.setFetchingGameData(false);
+            props.setAdmin(data.admin === props.user.uid);
         });
 
         unsubscribe = !props.admin ? props.subscribeExitOption(gameId, props.exitOption, props.history) : null;
@@ -97,7 +86,7 @@ const GameSummary = (props) => {
                         {getPlayersPositions()}
                     </ul>
                     {props.admin ? <button onClick={handleExit}>{t("Exit")}</button> : null}
-                    {props.exitOption === 'exitGame' ? <button onClick={exitGame}>{t("Exit")}</button> : null}
+                    {!props.admin && props.exitOption === 'exitGame' ? <button onClick={exitGame}>{t("Exit")}</button> : null}
                 </div>
             )}
         </div>

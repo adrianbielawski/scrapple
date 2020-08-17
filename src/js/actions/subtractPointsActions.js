@@ -1,4 +1,4 @@
-import db from '../../firebaseConfig';
+import db from 'firebaseConfig';
 import { cloneDeep } from 'lodash';
 
 export const subPoints = (gameId, players, points, history) => {
