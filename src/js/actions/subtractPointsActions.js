@@ -1,10 +1,8 @@
 import db from '../../firebaseConfig';
 import { cloneDeep } from 'lodash';
-//Redux Actions
-import { setScreen } from './appActions';
 
-export const subPoints = (gameId, players, points) => {
-    return dispatch => {
+export const subPoints = (gameId, players, points, history) => {
+    return () => {
         const updatedPlayers = cloneDeep(players);
 
         for (const player of updatedPlayers) {
@@ -15,7 +13,7 @@ export const subPoints = (gameId, players, points) => {
             players: updatedPlayers,
             pointsSubtracted: true
         }).then(() => {
-            dispatch(setScreen(`Game/${gameId}/GameSummary`));
+            history.push(`/game/${gameId}/game_summary`);
         });
     }
 };

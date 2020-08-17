@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import { useTranslation } from 'react-i18next';
 import styles from './alert.scss';
 //Redux Actions
-import { setAlert, removeAlert, handleFinishGame, setScreen } from 'actions/appActions';
+import { setAlert, removeAlert, handleFinishGame } from 'actions/appActions';
 
 const Alert = (props) => {
     const { t } = useTranslation();
@@ -14,7 +14,7 @@ const Alert = (props) => {
         if (response === 'true') {
             switch (props.alert.action) {
                 case 'game-finish-button':
-                    props.handleFinishGame(props.gameId, props.admin);
+                    props.handleFinishGame(props.gameId, props.admin, props.history);
                     break;
 
                 case 'user-registered':
@@ -58,8 +58,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(setAlert(type, messageKey, messageValue, action, alertProps)),
         removeAlert: () => dispatch(removeAlert()),
-        handleFinishGame: (gameId, admin) => dispatch(handleFinishGame(gameId, admin)),
-        setScreen: (screen) => dispatch(setScreen(screen)),
+        handleFinishGame: (gameId, admin, history) => dispatch(handleFinishGame(gameId, admin, history)),
     }
 }
 

@@ -33,7 +33,7 @@ const SubtractPoints = (props) => {
         const isValid = validateUserInputs();
 
         if (isValid) {
-            props.subPoints(props.gameId, props.players, points);
+            props.subPoints(props.gameId, props.players, points, props.history);
         } else {
             props.setAlert('alert', 'Points value must be positive integer');
         }
@@ -85,7 +85,7 @@ const mapDispatchToProps = (dispatch) => {
         getGameId: () => dispatch(getGameId()),
         setPlayers: (players) => { dispatch(setPlayers(players)) },
         setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
-        subPoints: (gameId, players, points) => { dispatch(subPoints(gameId, players, points)) },
+        subPoints: (gameId, players, points, history) => { dispatch(subPoints(gameId, players, points, history)) },
         getGameData: (gameId) => dispatch(getGameData(gameId)),
         setFetchingGameData: (fetching) => { dispatch(setFetchingGameData(fetching)) },
     }

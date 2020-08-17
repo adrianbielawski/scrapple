@@ -21,7 +21,7 @@ class Game extends React.Component {
         const gameId = pathArray[2];
         this.props.setGameId(gameId);
 
-        const promise = this.props.fetchGameData(gameId, this.props.user);
+        const promise = this.props.fetchGameData(gameId, this.props.user, this.props.history);
         promise.then((unsubscribe) => this.unsubscribe = unsubscribe);
     }
 
@@ -75,7 +75,7 @@ const mapDispatchToProps = (dispatch) => {
         setAlert: (type, messageKey, messageValue, action, props) => { dispatch(setAlert(type, messageKey, messageValue, action, props)) },
         checkEndTime: (data, gameId) => dispatch(checkEndTime(data, gameId)),
         setEndTime: (endTime) => { dispatch(setEndTime(endTime)) },
-        fetchGameData: (gameId, user) => dispatch(fetchGameData(gameId, user)),
+        fetchGameData: (gameId, user, history) => dispatch(fetchGameData(gameId, user, history)),
         setShowFinishedGameCover: (showFinishedGameCover) => dispatch(setShowFinishedGameCover(showFinishedGameCover)),
     }
 }

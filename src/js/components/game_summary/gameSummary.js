@@ -9,7 +9,7 @@ import ExitOptions from './exit_options/exitOptions';
 import WaitingCover from './waiting_cover/waitingCover';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 //Redux Actions
-import { getGameId, getGameData, exitGame, playAgain, playAgainSettings, setFetchingGameData, setAdmin } from 'actions/appActions';
+import { getGameId, getGameData, exitGame, setFetchingGameData, setAdmin } from 'actions/appActions';
 import { setPlayers } from 'actions/gameActions';
 import { subscribeExitOption, setShowExitOptions } from 'actions/gameSummaryActions';
 
@@ -19,6 +19,7 @@ const GameSummary = (props) => {
 
     useEffect(() => {
         if (props.user.uid) {
+            console.log(props.gameId)
             const gameDataPromise = props.getGameData(props.gameId);
             gameDataPromise.then((data) => {
                 const isAdmin = data.admin === props.user.uid;
@@ -29,6 +30,7 @@ const GameSummary = (props) => {
 
     useEffect(() => {
         const gameId = props.gameId || props.getGameId();
+        console.log(gameId)
 
         const promise = props.getGameData(gameId);
         promise.then(data => {
@@ -36,7 +38,7 @@ const GameSummary = (props) => {
             props.setFetchingGameData(false);
         });
 
-        unsubscribe = !props.admin ? props.subscribeExitOption(gameId, props.exitOption) : null;
+        unsubscribe = !props.admin ? props.subscribeExitOption(gameId, props.exitOption, props.history) : null;
 
         return () => {
             if (unsubscribe !== null) {
@@ -78,7 +80,7 @@ const GameSummary = (props) => {
     };
 
     const exitGame = () => {
-        props.exitGame(props.gameId, props.admin);
+        props.exitGame(props.gameId, props.admin, props.history);
     };
 
     return (
@@ -120,11 +122,9 @@ const mapDispatchToProps = (dispatch) => {
         setAdmin: (admin) => dispatch(setAdmin(admin)),
         getGameData: (gameId) => dispatch(getGameData(gameId)),
         setPlayers: (players) => { dispatch(setPlayers(players)) },
-        exitGame: (gameId, admin) => { dispatch(exitGame(gameId, admin)) },
-        playAgain: (gameId) => { dispatch(playAgain(gameId)) },
-        playAgainSettings: (gameId) => { dispatch(playAgainSettings(gameId)) },
+        exitGame: (gameId, admin, history) => { dispatch(exitGame(gameId, admin, history)) },
         setFetchingGameData: (fetching) => { dispatch(setFetchingGameData(fetching)) },
-        subscribeExitOption: (gameId, exitOption) => dispatch(subscribeExitOption(gameId, exitOption)),
+        subscribeExitOption: (gameId, exitOption, history) => dispatch(subscribeExitOption(gameId, exitOption, history)),
         setShowExitOptions: (show) => dispatch(setShowExitOptions(show)),
     }
 }

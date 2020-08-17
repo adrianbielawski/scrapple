@@ -1,8 +1,8 @@
-import db from '../../firebaseConfig';
+import db from 'firebaseConfig';
 //Redux Actions
 import { playAgain, playAgainSettings } from './appActions';
 
-export const subscribeExitOption = (gameId, exitOption) => dispatch => {
+export const subscribeExitOption = (gameId, exitOption, history) => dispatch => {
     return db.collection('games').doc(gameId).onSnapshot(doc => {
         const data = doc.data();
 
@@ -11,7 +11,7 @@ export const subscribeExitOption = (gameId, exitOption) => dispatch => {
             if (data.exitOption === 'exitGame') {
                 return;
             } else if (data.exitOption === 'playAgain') {
-                dispatch(playAgain(gameId, false));
+                dispatch(playAgain(gameId, false, history));
             };
         }
 
@@ -19,7 +19,7 @@ export const subscribeExitOption = (gameId, exitOption) => dispatch => {
             dispatch(setShowExitOptions('playAgainWithSettings'));
             if (data.gameStarted) {
                 dispatch(setShowExitOptions(null));
-                dispatch(playAgainSettings(gameId, false));
+                dispatch(playAgainSettings(gameId, false, history));
             }
         }
     });

@@ -110,6 +110,6 @@ export const setShowConfirmation = (showConfirmation) => {
 export const startJoinedPlayerGame = (gameId, history) => {
     return dispatch => {
         dispatch(setAdmin(false));
-        history.push(`game/${gameId}`);
+        history.push(`/game/${gameId}`);
     }
 }

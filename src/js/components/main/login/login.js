@@ -9,7 +9,6 @@ import LoadingSpinner from 'components/global_components/loading_spinner/loading
 import Input from 'components/global_components/input/input';
 import Button from 'components/global_components/button/button';
 //Redux Actions
-import { setScreen } from 'actions/appActions';
 import { logIn, setIsLoggingIn } from 'actions/authActions';
 
 const Login = (props) => {
@@ -67,7 +66,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setScreen: (screen) => dispatch(setScreen(screen)),
         logIn: (email, password, history) => dispatch(logIn(email, password, history)),
         setIsLoggingIn: (isLoggingIn) => dispatch(setIsLoggingIn(isLoggingIn)),
     }

@@ -3,7 +3,7 @@ import Moment from 'react-moment';//important
 import moment from 'moment';
 import { cloneDeep } from 'lodash';
 //Redux Actions
-import { setAdmin, setAlert, setScreen, handleFinishGame, changeLanguage } from '../actions/appActions';
+import { setAdmin, setAlert, handleFinishGame, changeLanguage } from 'actions/appActions';
 import { setTimer, setTime } from './gameMenuActions';
 
 export const toggleShowWords = () => {
@@ -84,7 +84,7 @@ export const checkEndTime = (data, gameId) => {
     }
 }
 
-export const fetchGameData = (gameId, user) => dispatch => {
+export const fetchGameData = (gameId, user, history) => dispatch => {
     return db.collection('games').doc(gameId).get()
         .then(response => {
             const data = response.data();
@@ -110,9 +110,9 @@ export const fetchGameData = (gameId, user) => dispatch => {
                     dispatch(setEndTime(endTime));
                     dispatch(setPlayers(data.players));
                 } else if (!data.pointsSubtracted && data.gameFinished) {
-                    dispatch(handleFinishGame(gameId, isAdmin));
+                    dispatch(handleFinishGame(gameId, isAdmin, history));
                 } else if (data.pointsSubtracted && data.gameFinished) {
-                    dispatch(setScreen(`Game/${gameId}/GameSummary`));
+                    history.push(`/game/${gameId}/game_summary`);
                 }
             });
 

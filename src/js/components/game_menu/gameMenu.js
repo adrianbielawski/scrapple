@@ -59,7 +59,7 @@ const GameMenu = (props) => {
         e.preventDefault();
         const isValid = validateSettings();
         if (isValid) {
-            play();
+            props.startAdminGame(props.gameId, props.history);
         }
     }
 
@@ -79,10 +79,6 @@ const GameMenu = (props) => {
         //     }
         // }
         return true;
-    }
-
-    const play = () => {
-        props.startAdminGame(props.gameId);
     }
 
     const buttonText = props.playedAgainWithSettings ? 'Play again' : 'Play';
@@ -126,7 +122,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         updateGameMenuData: (gameId, language, timer, time, players) => dispatch(updateGameMenuData(gameId, language, timer, time, players)),
         setFetchingGameData: (fetching) => dispatch(setFetchingGameData(fetching)),
-        startAdminGame: (gameId) => dispatch(startAdminGame(gameId)),
+        startAdminGame: (gameId, history) => dispatch(startAdminGame(gameId, history)),
         setGameId: (gameId) => dispatch(setGameId(gameId)),
         getGameData: (gameId) => dispatch(getGameData(gameId)),
         setPlayers: (players) => dispatch(setPlayers(players)),

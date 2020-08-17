@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import styles from './main.scss';
 //Custom Components
 import Header from 'components/global_components/header/header';
@@ -20,10 +19,4 @@ const Main = (props) => {
     );
 }
 
-const mapStateToProps = (state) => {
-    return {
-        screen: state.app.screen,
-    }
-}
-
-export default connect(mapStateToProps)(Main);
+export default Main;

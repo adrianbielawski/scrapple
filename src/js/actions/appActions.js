@@ -1,8 +1,8 @@
-import { db, auth } from '../../firebaseConfig';
-import i18n from '../../i18n';
+import { db, auth } from 'firebaseConfig';
+import i18n from 'i18n';
 //Redux Actions
-import { clearGameSummaryState } from '../actions/gameSummaryActions';
-import { setShowFinishedGameCover } from '../actions/gameActions';
+import { clearGameSummaryState } from 'actions/gameSummaryActions';
+import { setShowFinishedGameCover } from 'actions/gameActions';
 
 export const setGameId = (gameId) => {
     return {
@@ -43,13 +43,6 @@ export const setScreenHeight = (height) => {
     return {
         type: 'APP/SET_SCREEN_HEIGHT',
         height
-    }
-}
-
-export const setScreen = (screen) => {
-    return {
-        type: 'APP/SET_SCREEN',
-        screen
     }
 }
 
@@ -126,7 +119,7 @@ export const getGameData = (gameId) => {
     }
 }
 
-export const handleFinishGame = (gameId, admin) => {
+export const handleFinishGame = (gameId, admin, history) => {
     return dispatch => {
         if (admin) {
             db.collection('games').doc(gameId).update({
@@ -135,10 +128,10 @@ export const handleFinishGame = (gameId, admin) => {
             }).then(() => {
                 dispatch(setPlayedAgain(false));
                 dispatch(setPlayedAgainWithSettings(false));
-                dispatch(setScreen(`Game/${gameId}/SubtractPoints`));
+                history.push(`/game/${gameId}/subtract_points`);
                 dispatch(removeAlert());
             }).catch(() => {
-            })
+                dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
             });
         } else {
             dispatch(setShowFinishedGameCover(true));
@@ -147,7 +140,7 @@ export const handleFinishGame = (gameId, admin) => {
     }
 }
 
-export const playAgain = (gameId, admin) => {
+export const playAgain = (gameId, admin, history) => {
     return dispatch => {
         if (admin) {
             db.collection('games').doc(gameId).get()
@@ -166,7 +159,7 @@ export const playAgain = (gameId, admin) => {
                     })
                         .then(() => {
                             dispatch(clearGameSummaryState());
-                            dispatch(setScreen(`Game/${gameId}`));
+                            history.push(`/game/${gameId}`);
                         })
                         .catch(() => {
                             dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
@@ -177,12 +170,12 @@ export const playAgain = (gameId, admin) => {
                 });
         } else {
             dispatch(clearGameSummaryState());
-            dispatch(setScreen(`Game/${gameId}`));
+            history.push(`/game/${gameId}`);
         };
     }
 }
 
-export const playAgainSettings = (gameId, admin) => {
+export const playAgainSettings = (gameId, admin, history) => {
     return dispatch => {
         if (admin) {
             db.collection('games').doc(gameId).get()
@@ -200,7 +193,7 @@ export const playAgainSettings = (gameId, admin) => {
                         exitOption: 'playAgainWithSettings'
                     })
                         .then(() => {
-                            dispatch(setScreen(`GameMenu`));
+                            history.push(`/game_menu`);
                             dispatch(clearGameSummaryState());
                         })
                         .catch(() => {
@@ -209,15 +202,16 @@ export const playAgainSettings = (gameId, admin) => {
                 })
         } else {
             dispatch(clearGameSummaryState());
-            dispatch(setScreen(`Game/${gameId}`));
+            history.push(`/game/${gameId}`);
         };
     }
 }
 
-export const exitGame = (gameId, admin) => {
+export const exitGame = (gameId, admin, history) => {
     return dispatch => {
         dispatch(clearGameSummaryState());
         dispatch(clearAppStateOnExit());
+        history.push('/main_menu');
         if (admin) {
             db.collection('games').doc(gameId).set({
                 exitOption: 'exitGame',

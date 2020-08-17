@@ -4,7 +4,6 @@ const initialState = {
     screenHeight: window.innerHeight,
     user: {},
     fetchingGameData: true,
-    screen: window.location.pathname.slice(1) || 'login',
     gameId: null,
     language: 'en-GB',
     admin: false,
@@ -37,13 +36,11 @@ const appReducer = (state = initialState, action) => {
 
         case 'APP/CLEAR_APP_STATE':
             newState = cloneDeep(initialState);
-            newState.screen = 'login';
             newState.language = action.language;
             return newState;
 
         case 'APP/EXIT_GAME':
             newState.fetchingGameData = true;
-            newState.screen = 'MainMenu';
             newState.gameId = null;
             newState.admin = false;
             newState.playedAgain = false;
@@ -53,11 +50,7 @@ const appReducer = (state = initialState, action) => {
         case 'APP/SET_LANGUAGE':
             newState.language = action.language;
             return newState;
-
-        case 'APP/SET_SCREEN':
-            newState.screen = action.screen;
-            return newState;
-
+            
         case 'APP/SET_ADMIN':
             newState.admin = action.admin;
             return newState;
