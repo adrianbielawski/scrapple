@@ -54,8 +54,8 @@ class App extends React.Component {
                     <Switch>
                         <Route exact path={["/", "/login", "/signup"]} component={Main} />
                         <PrivateRoute path="/main_menu" component={MainMenu} />
-                        <PrivateRoute path="/GameMenu" component={GameMenu} />
-                        <PrivateRoute exact path="/Game/:gameId" component={Game} />
+                        <PrivateRoute path="/game_menu" component={GameMenu} />
+                        <PrivateRoute exact path="/game/:gameId" component={Game} />
                         <PrivateRoute exact path="/Game/:gameId/SubtractPoints" component={SubtractPoints} />
                         <PrivateRoute exact path="/Game/:gameId/GameSummary" component={GameSummary} />
                     </Switch>

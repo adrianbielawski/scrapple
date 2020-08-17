@@ -11,7 +11,7 @@ import LoadingSpinner from 'components/global_components/loading_spinner/loading
 import Button from 'components/global_components/button/button';
 import Input from 'components/global_components/input/input';
 //Redux Actions
-import { setAlert, setScreen, setGameId, updateUser } from 'actions/appActions';
+import { setAlert, setGameId, updateUser } from 'actions/appActions';
 import { joinGame, createNewGame, setShowConfirmation } from 'actions/mainMenuActions';
 import { addPlayer } from 'actions/gameMenuActions';
 
@@ -38,7 +38,7 @@ const MainMenu = (props) => {
             return;
         }
 
-        unsubscribeGameStart = props.joinGame(gameId, props.language, props.user);
+        unsubscribeGameStart = props.joinGame(gameId, props.language, props.user, props.history);
     }
 
     const validateUserInput = (gameId) => {
@@ -57,7 +57,7 @@ const MainMenu = (props) => {
         createNewGamePromise.then(() => {
             const updateUserPromise = props.updateUser(user.uid, gameId);
             updateUserPromise.then(() => {
-                props.setScreen(`GameMenu`);
+                props.history.push(`/game_menu`);
             });
         });
     }
@@ -102,8 +102,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setAlert: (type, messageKey, messageValue, action, props) => dispatch(setAlert(type, messageKey, messageValue, action, props)),
-        joinGame: (gameId, language, user) => dispatch(joinGame(gameId, language, user)),
-        setScreen: (screen) => dispatch(setScreen(screen)),
+        joinGame: (gameId, language, user, history) => dispatch(joinGame(gameId, language, user, history)),
         setGameId: (gameId) => dispatch(setGameId(gameId)),
         setShowConfirmation: (showConfirmation) => dispatch(setShowConfirmation(showConfirmation)),
         addPlayer: (playerName, uid, admin) => dispatch(addPlayer(playerName, uid, admin)),

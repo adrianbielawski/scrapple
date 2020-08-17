@@ -1,6 +1,6 @@
-import { db, auth } from '../../firebaseConfig';
+import { db, auth } from 'firebaseConfig';
 //Redux Actions
-import { setAlert } from '../actions/appActions';
+import { setAlert } from 'actions/appActions';
 
 export const signUp = (email, password, userName) => dispatch => {
     return auth.createUserWithEmailAndPassword(email, password).then(response => {

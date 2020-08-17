@@ -1,8 +1,8 @@
-import db from '../../firebaseConfig';
+import db from 'firebaseConfig';
 import * as firebase from 'firebase';
 import { some } from 'lodash';
 //Redux Actions
-import { changeLanguage, setGameId, setAlert, setAdmin, setScreen } from '../actions/appActions';
+import { changeLanguage, setGameId, setAlert, setAdmin } from 'actions/appActions';
 
 export const createNewGame = (user, gameId, language, timer, time) => {
     return dispatch => {
@@ -41,7 +41,7 @@ export const createNewGame = (user, gameId, language, timer, time) => {
     }
 }
 
-export const joinGame = (gameId, language, user) => {
+export const joinGame = (gameId, language, user, history) => {
     return dispatch => {
         let unsubscribeGameStart = null;
 
@@ -52,7 +52,7 @@ export const joinGame = (gameId, language, user) => {
             return db.collection('games').doc(gameId).onSnapshot(doc => {
                 const data = doc.data();
                 if (data.gameStarted == true) {
-                    dispatch(startJoinedPlayerGame(gameId));
+                    dispatch(startJoinedPlayerGame(gameId, history));
                 }
             });
         }
@@ -107,9 +107,9 @@ export const setShowConfirmation = (showConfirmation) => {
     }
 }
 
-export const startJoinedPlayerGame = (gameId) => {
+export const startJoinedPlayerGame = (gameId, history) => {
     return dispatch => {
         dispatch(setAdmin(false));
-        dispatch(setScreen(`Game/${gameId}`));
+        history.push(`game/${gameId}`);
     }
 }
