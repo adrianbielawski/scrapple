@@ -33,6 +33,18 @@ export const setShowAccountSettings = (showAccountSettings) => {
     };
 }
 
+export const decreaseGamesToRender = () => {
+    return {
+        type: 'SIDE_MENU/DECREASE_GAMES_TO_RENDER'
+    };
+}
+
+export const increaseGamesToRender = () => {
+    return {
+        type: 'SIDE_MENU/INCREASE_GAMES_TO_RENDER'
+    };
+}
+
 export const clearSideMenuState = () => {
     return {
         type: 'SIDE_MENU/CLEAR_SIDE_MENU_STATE'

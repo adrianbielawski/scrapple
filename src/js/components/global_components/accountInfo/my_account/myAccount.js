@@ -22,7 +22,7 @@ const MyAccount = (props) => {
         <div className={styles.myAccount}>
             <p className={styles.userName} onClick={showMyAccount}>{t("My account")}</p>
             <div className={`${styles.accountContent} ${props.showAccountInfo && styles.showContent}`}
-                style={props.showGames && props.showAccountInfo ? {maxHeight: '200px'} : null}>
+                style={props.showGames && props.showAccountInfo ? {maxHeight: '300px'} : null}>
                 <p onClick={showAccountSettings}>{t("Account settings")}</p>
                 <GamesHistory />
             </div>

@@ -14,7 +14,15 @@ const MenuContent = (props) => {
     useEffect(() => {
         db.collection('users').doc(props.user.uid).get()
             .then((response) => {
-                props.setUserInfo(response.data());
+                let data = response.data();
+                const allGames = data.allGames;
+                let reversedAllGames = [];
+                for (let i = 0; i < allGames.length; i++) {
+                    reversedAllGames.unshift(allGames[i]);
+                }
+                data.allGames = reversedAllGames;
+
+                props.setUserInfo(data);
                 props.setFetchingUserInfo(false);
             });
     }, [])

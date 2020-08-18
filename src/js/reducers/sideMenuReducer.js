@@ -3,6 +3,7 @@ const initialState = {
     userInfo: null,
     showAccountInfo: false,
     showGames: false,
+    gamesRenderFrom: 1,
     showAccountSettings: false,
 };
 
@@ -31,6 +32,14 @@ const sideMenuReducer = (state = initialState, action) => {
 
         case 'SIDE_MENU/CLEAR_SIDE_MENU_STATE':
             newState = { ...initialState };
+            return newState;
+
+        case 'SIDE_MENU/DECREASE_GAMES_TO_RENDER':
+            newState.gamesRenderFrom -= 10;
+            return newState;
+
+        case 'SIDE_MENU/INCREASE_GAMES_TO_RENDER':
+            newState.gamesRenderFrom += 10;
             return newState;
 
         default:

@@ -51,6 +51,12 @@ const resources = {
       "Please wait until points of unused letters will be substracted" : "Please wait until points of unused letters will be substracted",
       //Game/Menu
       "Menu" : "Menu",
+      "Game id" : "Game id",
+      "My account" : "My account",
+      "Account settings" : "Account settings",
+      "Games history" : "Games history",
+      "Date" : "Date",
+      "fromNum" : "from {{allGames}}",
       //TwoLetterWords
       "Show two-letter words" : "Show two-letter words",
       "Hide two-letter words" : "Hide two-letter words",
@@ -140,6 +146,12 @@ const resources = {
       "Please wait until points of unused letters will be substracted" : "Poczekaj, aż wartość pozostałych liter zostanie odjęta",
       //Game/Menu
       "Menu" : "Menu",
+      "Game id" : "Numer gry",
+      "My account" : "Moje konto",
+      "Account settings" : "Ustawienia konta",
+      "Games history" : "Historia gier",
+      "Date" : "Data",
+      "fromNum" : "z {{allGames}}",
       //TwoLetterWords
       "Show two-letter words" : "Pokaż slowa dwuliterowe",
       "Hide two-letter words" : "Ukryj slowa dwuliterowe",
