@@ -1,0 +1,36 @@
+@import "global_styles/variables";
+
+.gamesHistory {
+    .title {
+        display: inline-flex;
+        cursor: pointer;
+        &:hover {
+            color: $mainGreen;
+        }
+    }
+    .games {
+        max-height: 0;
+        overflow: hidden;
+        display: block;
+        border-collapse: collapse;
+        transition: max-height .2s linear;
+        &.showGames {
+            max-height: 200px;
+            overflow: scroll;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+        td, th {
+            border: 1px solid $darkText;
+            text-align: center;
+        }
+        .gameId {
+            &:hover {
+                color: $mainGreen;
+                font-weight: 700;
+                cursor: pointer;
+            }
+        }
+    }
+}

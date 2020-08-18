@@ -6,6 +6,7 @@ import gameReducer from './gameReducer';
 import appReducer from './appReducer';
 import gameSummaryReducer from './gameSummaryReducer';
 import authReducer from './authReducer';
+import sideMenuReducer from './sideMenuReducer';
 
 const rootReducer = combineReducers({
     timeLimit: timeLimitReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     app: appReducer,
     gameSummary: gameSummaryReducer,
     auth: authReducer,
+    sideMenu: sideMenuReducer,
 });
 
 export default rootReducer;
