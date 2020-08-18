@@ -14,6 +14,7 @@ import Button from 'components/global_components/button/button';
 //Redux Actions
 import { setGameId, setAlert } from 'actions/appActions';
 import { setEndTime, checkEndTime, fetchGameData, setShowFinishedGameCover } from 'actions/gameActions';
+import { clearSideMenuState } from 'actions/sideMenuActions';
 
 class Game extends React.Component {
     componentDidMount() {
@@ -26,6 +27,7 @@ class Game extends React.Component {
     }
 
     componentWillUnmount() {
+        this.props.clearSideMenuState()
         this.props.setShowFinishedGameCover(false);
         this.unsubscribe();
     }
@@ -77,6 +79,7 @@ const mapDispatchToProps = (dispatch) => {
         setEndTime: (endTime) => { dispatch(setEndTime(endTime)) },
         fetchGameData: (gameId, user, history) => dispatch(fetchGameData(gameId, user, history)),
         setShowFinishedGameCover: (showFinishedGameCover) => dispatch(setShowFinishedGameCover(showFinishedGameCover)),
+        clearSideMenuState: () => dispatch(clearSideMenuState()),
     }
 }
 

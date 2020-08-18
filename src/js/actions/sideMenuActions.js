@@ -32,3 +32,9 @@ export const setShowAccountSettings = (showAccountSettings) => {
         showAccountSettings,
     };
 }
+
+export const clearSideMenuState = () => {
+    return {
+        type: 'SIDE_MENU/CLEAR_SIDE_MENU_STATE'
+    };
+}

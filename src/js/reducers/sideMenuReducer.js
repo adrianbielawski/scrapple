@@ -29,6 +29,10 @@ const sideMenuReducer = (state = initialState, action) => {
             newState.showAccountSettings = action.showAccountSettings;
             return newState;
 
+        case 'SIDE_MENU/CLEAR_SIDE_MENU_STATE':
+            newState = { ...initialState };
+            return newState;
+
         default:
             return state;
     }
