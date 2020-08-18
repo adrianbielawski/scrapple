@@ -9,7 +9,7 @@ import TwoLetterWords from './two_letter_words/twoLetterWords';
 import FinishedGameCover from './finish_game_cover/finishedGameCover';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 import AudioController from '../global_components/audioController/audioController';
-import Menu from './menu/menu';
+import SideMenu from './side_menu/sideMenu';
 import Button from 'components/global_components/button/button';
 //Redux Actions
 import { setGameId, setAlert } from 'actions/appActions';
@@ -43,7 +43,7 @@ class Game extends React.Component {
                 <div className={`${styles.game} ${gameClass}`}>
                     {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
                     <div className={styles.topWrapper}>
-                        <Menu />
+                        <SideMenu />
                         <WordChecker />
                         {this.props.admin ? <AudioController /> : null}
                     </div>

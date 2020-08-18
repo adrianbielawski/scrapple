@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import styles from './menu.scss';
+import styles from './sideMenu.scss';
 //Custom Components
 import MenuContent from './menu_content/menuContent';
 import MenuHeader from './menu_header/menuHeader';
 //Redux Actions
 import { toggleShowMenu } from 'actions/gameActions';
 
-const Menu = (props) => {
+const SideMenu = (props) => {
     return (
         <div className={styles.menuWrapper}>
             <div className={styles.menuIcon}>
@@ -37,4 +37,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Menu);
+export default connect(mapStateToProps, mapDispatchToProps)(SideMenu);
