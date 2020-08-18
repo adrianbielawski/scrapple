@@ -1,5 +1,6 @@
 import db from 'firebaseConfig';
 import * as firebase from 'firebase';
+import moment from 'moment';
 //Redux Actions
 import { setAlert } from 'actions/appActions';
 import { setPlayers } from 'actions/gameActions';
@@ -104,10 +105,12 @@ export const subscribeJoinedPlayers = (gameId) => dispatch => {
 
 export const startAdminGame = (gameId, user, history) => {
   return dispatch => {
+    const date = moment().format('DD.MM.YYYY');
+    
     db.collection('games').doc(gameId).update({ gameStarted: true })
       .then(() => {
         db.collection('users').doc(user.uid).update({
-          'allGames': firebase.firestore.FieldValue.arrayUnion(gameId)
+          'allGames': firebase.firestore.FieldValue.arrayUnion({gameId, date})
         }).then(() => {
           history.push(`/game/${gameId}`);
         });

@@ -1,5 +1,6 @@
 import db from 'firebaseConfig';
 import * as firebase from 'firebase';
+import moment from 'moment';
 import { some } from 'lodash';
 //Redux Actions
 import { changeLanguage, setGameId, setAlert, setAdmin } from 'actions/appActions';
@@ -109,8 +110,10 @@ export const setShowConfirmation = (showConfirmation) => {
 
 export const startJoinedPlayerGame = (gameId, user, history) => {
     return dispatch => {
+        const date = moment().format('DD.MM.YYYY');
+
         db.collection('users').doc(user.uid).update({
-            'allGames': firebase.firestore.FieldValue.arrayUnion({gameId})
+            'allGames': firebase.firestore.FieldValue.arrayUnion({gameId, date})
         }).then(() => {
             dispatch(setAdmin(false));
             history.push(`/game/${gameId}`);

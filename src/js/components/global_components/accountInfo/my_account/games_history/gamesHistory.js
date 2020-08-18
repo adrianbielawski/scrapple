@@ -16,8 +16,8 @@ const GamesHistory = (props) => {
         return props.userInfo.allGames.map((game, i) => {
             return (
                 <tr key={i}>
-                    <td className={styles.gameId}>{game}</td>
-                    <td className={styles.date}>{'11.22.2222'}</td>
+                    <td className={styles.gameId}>{game.gameId}</td>
+                    <td className={styles.date}>{game.date}</td>
                 </tr>
             );
         });
