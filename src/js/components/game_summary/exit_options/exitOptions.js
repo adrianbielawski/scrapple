@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { withRouter } from "react-router";
+import styles from './exitOptions.scss';
 //Custom Components
 import Modal from 'components/global_components/modal/modal';
 import Button from 'components/global_components/button/button';
@@ -23,10 +24,12 @@ const ExitOptions = (props) => {
     }
 
     return (
-        <Modal>
-            <Button onClick={handlePlayAgain}>{t("Play again")}</Button>
-            <Button onClick={handlePlayAgainSettings}>{t("Play again with new settings")}</Button>
-            <Button onClick={handleExitGame}>{t("Exit")}</Button>
+        <Modal show={props.show}>
+            <div className={styles.exitOptions}>
+                <Button onClick={handlePlayAgain}>{t("Play again")}</Button>
+                <Button onClick={handlePlayAgainSettings}>{t("Play again with new settings")}</Button>
+                <Button onClick={handleExitGame}>{t("Exit")}</Button>
+            </div>
         </Modal>
     );
 }

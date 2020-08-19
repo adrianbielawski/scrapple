@@ -5,10 +5,10 @@ import styles from './finishedGameCover.scss';
 import Modal from 'components/global_components/modal/modal';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 
-const FinishedGameCover = () => {
+const FinishedGameCover = (props) => {
     const { t } = useTranslation();
     return (
-        <Modal className={styles.confirmation}>
+        <Modal show={props.show} className={styles.confirmation}>
             <h2>{t("Game finished")}!</h2>
             <p className={styles.message}>{t("Please wait until points of unused letters will be substracted")}</p>
             <LoadingSpinner background={false} />

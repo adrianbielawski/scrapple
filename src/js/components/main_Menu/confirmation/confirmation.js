@@ -10,7 +10,7 @@ const Confirmation = (props) => {
     const { t } = useTranslation();
 
     return (
-        <Modal className={styles.confirmation}>
+        <Modal show={props.show} className={styles.confirmation}>
             <h2>{t("You have joined the game")}</h2>
             <p className={styles.gameId}>{t("Game ID")}: {props.gameId}</p>
             <p className={styles.message}>{t("Please wait until game started")}</p>

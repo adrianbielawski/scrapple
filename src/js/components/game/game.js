@@ -27,7 +27,7 @@ class Game extends React.Component {
     }
 
     componentWillUnmount() {
-        this.props.clearSideMenuState()
+        this.props.clearSideMenuState();
         this.props.setShowFinishedGameCover(false);
         this.unsubscribe();
     }
@@ -43,7 +43,7 @@ class Game extends React.Component {
         return (
             this.props.fetchingGameData ? <LoadingSpinner background={true} /> : (
                 <div className={`${styles.game} ${gameClass}`}>
-                    {this.props.showFinishedGameCover ? <FinishedGameCover /> : null}
+                    <FinishedGameCover show={this.props.showFinishedGameCover} />
                     <div className={styles.topWrapper}>
                         <SideMenu />
                         <WordChecker />

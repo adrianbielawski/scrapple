@@ -70,7 +70,7 @@ const MainMenu = (props) => {
 
     return (
         <div className={styles.mainMenu}>
-            {props.showConfirmation && <Confirmation />}
+            <Confirmation show={props.showConfirmation} />
             <Header />
             {props.user === {} ? <LoadingSpinner background={true} /> : (
                 <div className={styles.content}>
