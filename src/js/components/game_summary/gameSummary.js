@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import styles from './gameSummary.scss';
 //Components
-import PlayerSummary from './player_summary/playerSummary';
+import PlayersSummary from './playersSummary';
 import Header from 'components/global_components/header/header';
 import ExitOptions from './exit_options/exitOptions';
 import WaitingCover from './waiting_cover/waitingCover';
@@ -36,34 +36,6 @@ const GameSummary = (props) => {
         };
     }, []);
 
-    const getPlayersPositions = () => {
-        let players = [...props.players];
-        players.sort((a, b) => {
-            return b.currentScore - a.currentScore;
-        });
-
-        let previousPlayerScore = '';
-        let previousPlayerPlaceText = '';
-        let previousPlace = '';
-        let playersSummary = players.map((player, index) => {
-            const placeTexts = ['1st', '2nd', '3rd', '4th'];
-            let place = index + 1;
-            let placeText = placeTexts[index];
-
-            if (player.currentScore === previousPlayerScore) {
-                placeText = previousPlayerPlaceText
-                place = previousPlace
-            };
-
-            previousPlayerScore = player.currentScore;
-            previousPlayerPlaceText = placeText;
-            previousPlace = place;
-
-            return <PlayerSummary player={player} placeText={placeText} place={place} key={index} />
-        });
-        return playersSummary;
-    };
-
     const handleExit = () => {
         props.setShowExitOptions(true);
     };
@@ -75,16 +47,14 @@ const GameSummary = (props) => {
     return (
         <div className={styles.gameSummary}>
             {props.exitOption === 'playAgainWithSettings' || (props.exitOption === 'playAgain' && props.timer) ?
-                <WaitingCover exitOption={props.exitOption} />
+                <WaitingCover show={true} exitOption={props.exitOption} />
                 : null}
-            {props.showExitOptions && props.admin && <ExitOptions />}
+            {props.admin && <ExitOptions show={props.showExitOptions} />}
             <Header />
             <h2>{t("Game results")}</h2>
             {props.fetchingGameData ? <LoadingSpinner background={true} /> : (
                 <div>
-                    <ul className={styles.results}>
-                        {getPlayersPositions()}
-                    </ul>
+                    <PlayersSummary players={props.players} />
                     {props.admin ? <button onClick={handleExit}>{t("Exit")}</button> : null}
                     {!props.admin && props.exitOption === 'exitGame' ? <button onClick={exitGame}>{t("Exit")}</button> : null}
                 </div>
