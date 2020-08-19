@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 //Custom Components
-import Dropdown from '../global_components/dropdown';
+import Modal from '../global_components/modal/modal';
 import LoadingSpinner from '../global_components/loadingSpinner';
 import Button from '../../global_components/button/button';
 //Redux Actions
@@ -25,7 +25,7 @@ const Confirmation = (props) => {
     }
 
     return (
-        <Dropdown className="confirmation">
+        <Modal className="confirmation">
             <h2>{t(title)}</h2>
             {props.gameId ? <p className="game-id">{t("Game ID")}: {props.gameId}</p> : null}
             <p className="message">{t(message)}</p>
@@ -37,7 +37,7 @@ const Confirmation = (props) => {
                 </div> :
                 <Button onClick={handleStartAdminGame}>{t("Start game")}</Button>
             }
-        </Dropdown>
+        </Modal>
     );
 }
 

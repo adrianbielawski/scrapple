@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { withRouter } from "react-router";
 //Custom Components
-import Dropdown from 'components/global_components/dropdown/dropdown';
+import Modal from 'components/global_components/modal/modal';
 import Button from 'components/global_components/button/button';
 //Redux Actions
 import { exitGame, playAgain, playAgainSettings } from 'actions/appActions';
@@ -23,11 +23,11 @@ const ExitOptions = (props) => {
     }
 
     return (
-        <Dropdown>
+        <Modal>
             <Button onClick={handlePlayAgain}>{t("Play again")}</Button>
             <Button onClick={handlePlayAgainSettings}>{t("Play again with new settings")}</Button>
             <Button onClick={handleExitGame}>{t("Exit")}</Button>
-        </Dropdown>
+        </Modal>
     );
 }
 
