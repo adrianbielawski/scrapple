@@ -22,6 +22,9 @@ const GamesHistory = (props) => {
     }
 
     const handleIncrease = () => {
+        if (props.gamesRenderFrom > props.userInfo.allGames.length - 10) {
+            return
+        }
         props.increaseGamesToRender();
     }
 
