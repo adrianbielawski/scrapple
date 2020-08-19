@@ -4,6 +4,9 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   en: {
     translation: {
+      //Languages
+      "English" : "English",
+      "Polski" : "Polish",
       //Auth
       "e-mail" : "e-mail",
       "password" : "password",
@@ -57,6 +60,10 @@ const resources = {
       "Games history" : "Games history",
       "Date" : "Date",
       "fromNum" : "from {{allGames}}",
+      "Close" : "Close",
+      "Played in lang" : "Language: {{lang}}",
+      "Time limit" : "Time limit: {{time}}",
+      "No time limit" : "No time limit",
       //TwoLetterWords
       "Show two-letter words" : "Show two-letter words",
       "Hide two-letter words" : "Hide two-letter words",
@@ -99,6 +106,9 @@ const resources = {
   },
   pl: {
     translation: {
+      //Languages
+      "English" : "Angielski",
+      "Polski" : "Polski",
       //Auth
       "e-mail" : "e-mail",
       "password" : "hasło",
@@ -152,6 +162,10 @@ const resources = {
       "Games history" : "Historia gier",
       "Date" : "Data",
       "fromNum" : "z {{allGames}}",
+      "Close" : "Zamknij",
+      "Played in lang" : "Język: {{lang}}",
+      "Time limit" : "Limit czasu: {{time}}",
+      "No time limit" : "Bez limitu czasu",
       //TwoLetterWords
       "Show two-letter words" : "Pokaż slowa dwuliterowe",
       "Hide two-letter words" : "Ukryj slowa dwuliterowe",

@@ -6,6 +6,7 @@ const initialState = {
     showGames: false,
     gamesRenderFrom: 1,
     gameDetails: {},
+    showGameDetails: false,
     showAccountSettings: false,
 };
 
@@ -46,6 +47,10 @@ const sideMenuReducer = (state = initialState, action) => {
 
         case 'SIDE_MENU/SET_GAME_DETAILS':
             newState.gameDetails = action.gameDetails;
+            return newState;
+
+        case 'SIDE_MENU/SET_SHOW_GAME_DETAILS':
+            newState.showGameDetails = action.showGameDetails;
             return newState;
 
         default:

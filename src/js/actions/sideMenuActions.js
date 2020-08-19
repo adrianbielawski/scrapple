@@ -1,4 +1,5 @@
 import { db } from 'firebaseConfig';
+import languages from 'components/global_components/language/languages';
 
 export const setUserInfo = (userInfo) => {
     return {
@@ -54,6 +55,13 @@ export const setGameDetails = (gameDetails) => {
     };
 }
 
+export const setShowGameDetails = (showGameDetails) => {
+    return {
+        type: 'SIDE_MENU/SET_SHOW_GAME_DETAILS',
+        showGameDetails
+    };
+}
+
 export const clearSideMenuState = () => {
     return {
         type: 'SIDE_MENU/CLEAR_SIDE_MENU_STATE'
@@ -84,11 +92,14 @@ export const fetchGameDetails = (gameId) => dispatch => {
     .then((response) => {
         const data = response.data();
 
+        const lang = languages[data.language].name;
+        const time = data.time ? `${data.time.hours}:${data.time.minutes}:${data.time.seconds}` : null;
+
         dispatch(setGameDetails(
             {
-                language: data.language,
+                language: lang,
                 players: data.players,
-                time: data.timer ? data.time : null
+                time: time
             }
         ))
     }).catch((err) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styles from './gamesTable.scss';
 //Redux actions
-import { fetchGameDetails } from 'actions/sideMenuActions';
+import { fetchGameDetails, setShowGameDetails } from 'actions/sideMenuActions';
 
 const SingleGame = (props) => {
 
@@ -10,7 +10,7 @@ const SingleGame = (props) => {
         const gameId = e.target.id;
         const gameDetailsPromise = props.fetchGameDetails(gameId);
         gameDetailsPromise.then(() => {
-
+            props.setShowGameDetails(true);
         });
     }
 
@@ -30,6 +30,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchGameDetails: (gameId) => dispatch(fetchGameDetails(gameId)),
+        setShowGameDetails: (showGameDetails) => dispatch(setShowGameDetails(showGameDetails)),
     }
 }
 

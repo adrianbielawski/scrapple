@@ -4,12 +4,21 @@ import { useTranslation } from 'react-i18next';
 import styles from './gamesTable.scss';
 //Custom Components
 import GamesHistoryPagination from '../games_history_pagination/gamesHistoryPagination';
+import Button from 'components/global_components/button/button';
 //Redux actions
 import { setGameDetails, fetchGameDetails } from 'actions/sideMenuActions';
 import SingleGame from './singleGame';
+import Modal from 'components/global_components/modal/modal';
+import PlayersSummary from 'components/game_summary/playersSummary';
+import { setShowGameDetails } from 'actions/sideMenuActions';
 
 const GamesTable = (props) => {
     const { t } = useTranslation();
+
+    const closeModal = () => {
+        props.setShowGameDetails(false);
+        props.setGameDetails({})
+    }
 
     const getGames = () => {
         const gamesFrom = props.gamesRenderFrom;
@@ -23,6 +32,16 @@ const GamesTable = (props) => {
 
     return (
         <div className={`${styles.gamesTable} ${props.showGames && styles.showGames}`}>
+            <Modal show={props.showGameDetails}>
+                <p className={styles.gameDetails}>
+                    {t("Played in lang", {'lang': t(props.gameDetails.language)})}
+                    </p>
+                <p className={styles.gameDetails}>
+                    {props.gameDetails.time ? t("Time limit", {'time': props.gameDetails.time}) : t("No time limit")}
+                </p>
+                <PlayersSummary players={props.gameDetails.players} />
+                <Button onClick={closeModal}>{t("Close")}</Button>
+            </Modal>
             <GamesHistoryPagination />
             <table>
                 <thead>
@@ -44,12 +63,15 @@ const mapStateToProps = (state) => {
         userInfo: state.sideMenu.userInfo,
         showGames: state.sideMenu.showGames,
         gamesRenderFrom: state.sideMenu.gamesRenderFrom,
+        gameDetails: state.sideMenu.gameDetails,
+        showGameDetails: state.sideMenu.showGameDetails,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         setGameDetails: (gameDetails) => dispatch(setGameDetails(gameDetails)),
+        setShowGameDetails: (showGameDetails) => dispatch(setShowGameDetails(showGameDetails)),
         fetchGameDetails: (gameId) => dispatch(fetchGameDetails(gameId)),
     }
 }
