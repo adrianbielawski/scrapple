@@ -111,7 +111,9 @@ export const fetchGameData = (gameId, user, history) => dispatch => {
                     dispatch(setPlayers(data.players));
                 } else if (!data.pointsSubtracted && data.gameFinished) {
                     dispatch(handleFinishGame(gameId, isAdmin, history));
-                    history.push(`/game/${gameId}/subtract_points`);
+                    if (isAdmin) {
+                        history.push(`/game/${gameId}/subtract_points`);
+                    }
                 } else if (data.pointsSubtracted && data.gameFinished) {
                     history.push(`/game/${gameId}/game_summary`);
                 }
