@@ -8,49 +8,5 @@
             color: $mainGreen;
         }
     }
-    .games {
-        max-height: 0;
-        overflow: hidden;
-        display: flex;
-        overflow: scroll;
-        flex-flow: column;
-        transition: max-height .2s linear;
-        &.showGames {
-            max-height: 200px;
-            padding: 3px;
-        }
-        &::-webkit-scrollbar {
-            display: none;
-        }
-        .gamesToRender {
-            display: inline-flex;
-            align-items: center;
-            margin: 0 auto;
-            p {
-                font-size: .8em;
-            }
-            .chevron {
-                font-size: .7em;
-                padding: 0 5px;
-                cursor: pointer;
-                &:hover {
-                    color: $mainGreen;
-                }
-            }
-        }
-        table {
-            border-collapse: collapse;
-        }
-        td, th {
-            border: 1px solid $darkText;
-            text-align: center;
-        }
-        .gameId {
-            &:hover {
-                color: $mainGreen;
-                font-weight: 700;
-                cursor: pointer;
-            }
-        }
-    }
+    
 }

@@ -1,0 +1,32 @@
+@import "global_styles/variables";
+
+.gamesTable {
+    max-height: 0;
+    overflow: hidden;
+    display: flex;
+    overflow: scroll;
+    flex-flow: column;
+    transition: max-height .2s linear;
+    &.showGames {
+        max-height: 200px;
+        padding: 3px;
+    }
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    
+    table {
+        border-collapse: collapse;
+    }
+    td, th {
+        border: 1px solid $darkText;
+        text-align: center;
+    }
+    .gameId {
+        &:hover {
+            color: $mainGreen;
+            font-weight: 700;
+            cursor: pointer;
+        }
+    }
+}
