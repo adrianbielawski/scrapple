@@ -1,9 +1,11 @@
 const initialState = {
     fetchingUserInfo: true,
+    fetchingGameDetails: true,
     userInfo: null,
     showAccountInfo: false,
     showGames: false,
     gamesRenderFrom: 1,
+    gameDetails: {},
     showAccountSettings: false,
 };
 
@@ -40,6 +42,10 @@ const sideMenuReducer = (state = initialState, action) => {
 
         case 'SIDE_MENU/INCREASE_GAMES_TO_RENDER':
             newState.gamesRenderFrom += 10;
+            return newState;
+
+        case 'SIDE_MENU/SET_GAME_DETAILS':
+            newState.gameDetails = action.gameDetails;
             return newState;
 
         default:

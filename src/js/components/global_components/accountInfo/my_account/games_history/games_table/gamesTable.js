@@ -4,6 +4,9 @@ import { useTranslation } from 'react-i18next';
 import styles from './gamesTable.scss';
 //Custom Components
 import GamesHistoryPagination from '../games_history_pagination/gamesHistoryPagination';
+//Redux actions
+import { setGameDetails, fetchGameDetails } from 'actions/sideMenuActions';
+import SingleGame from './singleGame';
 
 const GamesTable = (props) => {
     const { t } = useTranslation();
@@ -13,10 +16,7 @@ const GamesTable = (props) => {
         const gamesToRender = props.userInfo.allGames.slice(gamesFrom -1, gamesFrom + 9);
         return gamesToRender.map((game, i) => {
             return (
-                <tr key={i}>
-                    <td className={styles.gameId}>{game.gameId}</td>
-                    <td className={styles.date}>{game.date}</td>
-                </tr>
+                <SingleGame key={i} game={game} />
             );
         });
     }
@@ -47,4 +47,11 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(GamesTable);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setGameDetails: (gameDetails) => dispatch(setGameDetails(gameDetails)),
+        fetchGameDetails: (gameId) => dispatch(fetchGameDetails(gameId)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GamesTable);

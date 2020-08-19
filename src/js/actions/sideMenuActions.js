@@ -1,4 +1,5 @@
 import { db } from 'firebaseConfig';
+
 export const setUserInfo = (userInfo) => {
     return {
         type: 'SIDE_MENU/SET_USER_INFO',
@@ -46,6 +47,13 @@ export const increaseGamesToRender = () => {
     };
 }
 
+export const setGameDetails = (gameDetails) => {
+    return {
+        type: 'SIDE_MENU/SET_GAME_DETAILS',
+        gameDetails
+    };
+}
+
 export const clearSideMenuState = () => {
     return {
         type: 'SIDE_MENU/CLEAR_SIDE_MENU_STATE'
@@ -69,4 +77,21 @@ export const fetchUserInfo = (uid) => dispatch => {
         }).catch(() => {
 
         })
+}
+
+export const fetchGameDetails = (gameId) => dispatch => {
+    return db.collection('games').doc(gameId).get()
+    .then((response) => {
+        const data = response.data();
+
+        dispatch(setGameDetails(
+            {
+                language: data.language,
+                players: data.players,
+                time: data.timer ? data.time : null
+            }
+        ))
+    }).catch((err) => {
+        console.log(err)
+    })
 }
