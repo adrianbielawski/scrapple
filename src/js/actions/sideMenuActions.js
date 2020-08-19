@@ -1,3 +1,4 @@
+import { db } from 'firebaseConfig';
 export const setUserInfo = (userInfo) => {
     return {
         type: 'SIDE_MENU/SET_USER_INFO',
@@ -49,4 +50,23 @@ export const clearSideMenuState = () => {
     return {
         type: 'SIDE_MENU/CLEAR_SIDE_MENU_STATE'
     };
+}
+
+export const fetchUserInfo = (uid) => dispatch => {
+    return db.collection('users').doc(uid).get()
+        .then((response) => {
+            let data = response.data();
+            const allGames = data.allGames;
+            let reversedAllGames = [];
+            for (let i = 0; i < allGames.length; i++) {
+                reversedAllGames.unshift(allGames[i]);
+            }
+            data.allGames = reversedAllGames;
+
+            dispatch(setUserInfo(data));
+        }).then(() => {
+            dispatch(setFetchingUserInfo(false));
+        }).catch(() => {
+
+        })
 }

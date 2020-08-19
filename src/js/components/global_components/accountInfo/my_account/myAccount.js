@@ -1,32 +1,22 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { db } from 'firebaseConfig';
 import styles from './myAccount.scss'
 //Custom Components
 import GamesHistory from './games_history/gamesHistory';
 //Redux actions
-import { setUserInfo, setFetchingUserInfo, setShowAccountInfo, setShowAccountSettings } from 'actions/sideMenuActions';
+import { fetchUserInfo, setUserInfo, setFetchingUserInfo, setShowAccountInfo, setShowAccountSettings } from 'actions/sideMenuActions';
 
 const MyAccount = (props) => {
     const { t } = useTranslation();
   
-    const showMyAccount = () => {
+    const handleMyAccountClick = () => {
         if (!props.userInfo) {
-            db.collection('users').doc(props.user.uid).get()
-                .then((response) => {
-                    let data = response.data();
-                    const allGames = data.allGames;
-                    let reversedAllGames = [];
-                    for (let i = 0; i < allGames.length; i++) {
-                        reversedAllGames.unshift(allGames[i]);
-                    }
-                    data.allGames = reversedAllGames;
-
-                    props.setUserInfo(data);
-                    props.setFetchingUserInfo(false);
-                    props.setShowAccountInfo(!props.showAccountInfo);
-                })
+            const userInfoPromise = props.fetchUserInfo(props.user.uid);
+            userInfoPromise.then(() => {
+                props.setFetchingUserInfo(false);
+                props.setShowAccountInfo(!props.showAccountInfo);
+            })
         } else {
             props.setShowAccountInfo(!props.showAccountInfo);
         }
@@ -38,7 +28,7 @@ const MyAccount = (props) => {
 
     return (
         <div className={styles.myAccount}>
-            <p className={styles.userName} onClick={showMyAccount}>{t("My account")}</p>
+            <p className={styles.userName} onClick={handleMyAccountClick}>{t("My account")}</p>
             {!props.fetchingUserInfo && 
             <div className={`${styles.accountContent} ${props.showAccountInfo && styles.showContent}`}
                 style={props.showGames && props.showAccountInfo ? {maxHeight: '300px'} : null}>
@@ -63,6 +53,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        fetchUserInfo: (uid) => dispatch(fetchUserInfo(uid)),
         setUserInfo: (userInfo) => dispatch(setUserInfo(userInfo)),
         setFetchingUserInfo: (fetchingUserInfo) => dispatch(setFetchingUserInfo(fetchingUserInfo)),
         setShowAccountInfo: (showAccountInfo) => dispatch(setShowAccountInfo(showAccountInfo)),
