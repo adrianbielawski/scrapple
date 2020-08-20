@@ -5,7 +5,7 @@ import styles from './myAccount.scss'
 //Custom Components
 import GamesHistory from './games_history/gamesHistory';
 //Redux actions
-import { fetchUserInfo, setUserInfo, setFetchingUserInfo, setShowAccountInfo, setShowAccountSettings } from 'actions/sideMenuActions';
+import { fetchUserInfo, setFetchingUserInfo, setShowAccountInfo, setShowAccountSettings } from 'actions/sideMenuActions';
 
 const MyAccount = (props) => {
     const { t } = useTranslation();
@@ -54,7 +54,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchUserInfo: (uid) => dispatch(fetchUserInfo(uid)),
-        setUserInfo: (userInfo) => dispatch(setUserInfo(userInfo)),
         setFetchingUserInfo: (fetchingUserInfo) => dispatch(setFetchingUserInfo(fetchingUserInfo)),
         setShowAccountInfo: (showAccountInfo) => dispatch(setShowAccountInfo(showAccountInfo)),
         setShowAccountSettings: (showAccountSettings) => dispatch(setShowAccountSettings(showAccountSettings)),
