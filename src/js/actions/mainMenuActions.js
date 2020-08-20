@@ -62,9 +62,9 @@ export const joinGame = (gameId, language, user, history) => {
             .then((response) => {
                 const data = response.data();
 
-                const didPlayerJoin = some(data.players, { uid: user.uid });
+                const alreadyJoined = some(data.players, { uid: user.uid });
 
-                if (data.players.length === 4 && !didPlayerJoin) {
+                if (data.players.length === 4 && !alreadyJoined) {
                     dispatch(setAlert('alert', 'Games are restricted to 4 players max'));
                     return;
                 }
@@ -74,7 +74,7 @@ export const joinGame = (gameId, language, user, history) => {
                 };
 
 
-                if (!didPlayerJoin) {
+                if (!alreadyJoined) {
                     db.collection('games').doc(gameId).update({
                         'players': firebase.firestore.FieldValue.arrayUnion(
                             {
