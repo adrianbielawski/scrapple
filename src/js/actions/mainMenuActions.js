@@ -62,7 +62,9 @@ export const joinGame = (gameId, language, user, history) => {
             .then((response) => {
                 const data = response.data();
 
-                if (data.players.length === 4) {
+                const didPlayerJoin = some(data.players, { uid: user.uid });
+
+                if (data.players.length === 4 && !didPlayerJoin) {
                     dispatch(setAlert('alert', 'Games are restricted to 4 players max'));
                     return;
                 }
@@ -71,7 +73,6 @@ export const joinGame = (gameId, language, user, history) => {
                     dispatch(changeLanguage(data.language));
                 };
 
-                const didPlayerJoin = some(data.players, { uid: user.uid });
 
                 if (!didPlayerJoin) {
                     db.collection('games').doc(gameId).update({
