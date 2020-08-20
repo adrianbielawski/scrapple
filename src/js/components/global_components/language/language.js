@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 //Redux Actions
-import { changeLanguage } from '../../../actions/appActions';
+import { changeLanguage } from 'actions/appActions';
 
 const Language = (props) => {
     const handleLanguageChange = () => {
@@ -11,7 +11,7 @@ const Language = (props) => {
 
     return (
         <div className={props.styles.language} onClick={handleLanguageChange} lang={props.lang.symbol}>
-            <img src={`../src/assets/img/${props.lang.flag}`}></img>
+            <img src={`/assets/img/${props.lang.flag}`}></img>
             {props.showName && <p>{props.lang.name}</p>}
         </div>
     );

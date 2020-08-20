@@ -32,7 +32,7 @@ const ChangeLanguage = (props) => {
     return (
         <div className={styles.changeLanguage} onClick={toggleShowLanguages}>
             <div className={styles.currentLanguage}>
-                <img src={`../src/assets/img/${languages[props.language].flag}`}></img>
+                <img src={`/assets/img/${languages[props.language].flag}`}></img>
                 {props.showName && <p>{t("Language")}</p>}
             </div>
             <div className={`${styles.languages} ${langClass}`}>

@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 //Custom Components
-import Modal from '../global_components/modal/modal';
-import LoadingSpinner from '../global_components/loadingSpinner';
-import Button from '../../global_components/button/button';
+import Modal from 'components/global_components/modal/modal';
+import LoadingSpinner from 'components/global_components/loadingSpinner';
+import Button from 'components/global_components/button/button';
 //Redux Actions
-import { startAdminGame } from '../../actions/gameMenuActions';
+import { startAdminGame } from 'actions/gameMenuActions';
 
 const Confirmation = (props) => {
     const { t } = useTranslation();

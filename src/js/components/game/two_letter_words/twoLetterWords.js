@@ -18,7 +18,7 @@ const TwoLetterWords = (props) => {
                 {t(buttonName)}
             </Button>
             <div className={`${styles.words} ${wordsClass}`} onClick={props.toggleShowWords}>
-                <img src={`../../src/assets/img/two-letter-words-${props.language}.jpg`} />
+                <img src={`/assets/img/two-letter-words-${props.language}.jpg`} />
             </div>
         </div>
     );

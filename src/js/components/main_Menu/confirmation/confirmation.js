@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import styles from './confirmation.scss';
 //Custom Components
-import Modal from '../../global_components/modal/modal';
-import LoadingSpinner from '../../global_components/loading_spinner/loadingSpinner';
+import Modal from 'components/global_components/modal/modal';
+import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 
 const Confirmation = (props) => {
     const { t } = useTranslation();

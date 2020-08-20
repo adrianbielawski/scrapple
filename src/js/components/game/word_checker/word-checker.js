@@ -6,9 +6,9 @@ import styles from './word-checker.scss'
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner'
 
 const IMAGES = {
-    fist: '../../src/assets/img/fist.png',
-    thumbUp: '../../src/assets/img/thumb-up.png',
-    thumbDown: '../../src/assets/img/thumb-down.png'
+    fist: '/assets/img/fist.png',
+    thumbUp: '/assets/img/thumb-up.png',
+    thumbDown: '/assets/img/thumb-down.png'
 }
 
 class WordChecker extends Component {

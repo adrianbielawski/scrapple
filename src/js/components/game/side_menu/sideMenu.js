@@ -11,7 +11,7 @@ const SideMenu = (props) => {
     return (
         <div className={styles.menuWrapper}>
             <div className={styles.menuIcon}>
-                <img src="../../src/assets/img/burger-menu-icon.png" onClick={props.toggleShowMenu}></img>
+                <img src="/assets/img/burger-menu-icon.png" onClick={props.toggleShowMenu}></img>
             </div>
             <div className={props.showMenu ? `${styles.content} ${styles.show}` : styles.content}>
                 <div className={styles.menu}>

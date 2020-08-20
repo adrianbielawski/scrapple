@@ -13,8 +13,8 @@ import Button from 'components/global_components/button/button';
 import { setEndTime, addPoints, timeOut, setTimeLeft } from 'actions/gameActions';
 
 const AUDIO = {
-    beep: new Audio('../../../../src/assets/audio/beep.mp3'),
-    longBeep: new Audio('../../../../src/assets/audio/long-beep.mp3')
+    beep: new Audio('/assets/audio/beep.mp3'),
+    longBeep: new Audio('/assets/audio/long-beep.mp3')
 }
 
 class CurrentPlayer extends Component {

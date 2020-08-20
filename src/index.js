@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './i18n';
+import 'i18n';
 import App from 'app';
 import { BrowserRouter } from 'react-router-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import rootReducer from './js/reducers/';
-import theme from './js/components/global_components/muiTheme';
+import rootReducer from 'reducers/';
+import theme from 'components/global_components/muiTheme';
 import { ThemeProvider } from '@material-ui/core';
 
 const initialState = {}

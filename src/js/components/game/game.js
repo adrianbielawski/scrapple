@@ -8,7 +8,7 @@ import Stats from './stats/stats';
 import TwoLetterWords from './two_letter_words/twoLetterWords';
 import FinishedGameCover from './finish_game_cover/finishedGameCover';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
-import AudioController from '../global_components/audioController/audioController';
+import AudioController from 'components/global_components/audioController/audioController';
 import SideMenu from './side_menu/sideMenu';
 import Button from 'components/global_components/button/button';
 //Redux Actions

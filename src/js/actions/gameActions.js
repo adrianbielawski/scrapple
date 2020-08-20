@@ -1,4 +1,4 @@
-import db from '../../firebaseConfig';
+import db from 'firebaseConfig';
 import Moment from 'react-moment';//important
 import moment from 'moment';
 import { cloneDeep } from 'lodash';

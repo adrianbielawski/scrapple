@@ -23,7 +23,7 @@ const PlayerSummary = (props) => {
                 return
         }
 
-        return <img src={`../../src/assets/img/${place}-place.png`}></img>;
+        return <img src={`/assets/img/${place}-place.png`}></img>;
     };
 
     const player = props.player;
