@@ -2,7 +2,7 @@ import db from 'firebaseConfig';
 import * as firebase from 'firebase';
 import moment from 'moment';
 //Redux Actions
-import { setAlert } from 'actions/appActions';
+import { setAlert, updateUserInfo } from 'actions/appActions';
 import { setPlayers } from 'actions/gameActions';
 
 export const setFetchingGameData = (fetching) => {
@@ -109,9 +109,8 @@ export const startAdminGame = (gameId, user, history) => {
     
     db.collection('games').doc(gameId).update({ gameStarted: true })
       .then(() => {
-        db.collection('users').doc(user.uid).update({
-          'allGames': firebase.firestore.FieldValue.arrayUnion({gameId, date})
-        }).then(() => {
+        dispatch(updateUserInfo(user.uid, {'allGames': firebase.firestore.FieldValue.arrayUnion({gameId, date})}
+        )).then(() => {
           history.push(`/game/${gameId}`);
         });
       })
