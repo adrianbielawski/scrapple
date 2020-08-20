@@ -1,6 +1,8 @@
 @import "global_styles/variables";
 
 .gameMenu {
+    overflow: scroll;
+    padding-bottom: 5px;
     h1 {
         margin: 0;
     }

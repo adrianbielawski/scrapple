@@ -1,11 +1,9 @@
 @import "global_styles/variables";
 
 .gameSummary {
-    h1 {
-        margin: 0 0 20px 0;
-    }
+    overflow: scroll;
     h2 {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
     button {
         margin: 10px auto;

@@ -57,7 +57,7 @@ const AddPlayer = (props) => {
         <div className={styles.addPlayer}>
             <p>{t("Add player")}</p>
             <div className={styles.form}>
-                <input id="player-name" type="text" autoComplete="false" spellCheck="false" maxLength="30" ref={inputEl}></input>
+                <input type="text" autoComplete="false" spellCheck="false" maxLength="30" ref={inputEl}></input>
                 <Button className={styles.add} onClick={handleSubmit}>
                     <FontAwesomeIcon icon={faPlus} className="plus" />
                 </Button>
