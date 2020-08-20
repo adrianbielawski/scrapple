@@ -3,6 +3,10 @@ import { cloneDeep } from 'lodash';
 const initialState = {
     screenHeight: window.innerHeight,
     user: {},
+    userInfo: {
+        currentGame: null,
+        allGames: [1],
+    },
     fetchingGameData: true,
     gameId: null,
     language: 'en-GB',
@@ -32,6 +36,13 @@ const appReducer = (state = initialState, action) => {
 
         case 'APP/SET_GAME_ID':
             newState.gameId = action.gameId;
+            return newState;
+
+        case 'APP/SET_USER_INFO':
+            newState.userInfo = {
+                currentGame: action.currentGame || newState.userInfo.currentGame,
+                allGames: action.allGames || newState.userInfo.allGames,
+            };
             return newState;
 
         case 'APP/CLEAR_APP_STATE':

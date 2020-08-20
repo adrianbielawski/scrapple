@@ -1,4 +1,5 @@
 import { db, auth } from 'firebaseConfig';
+import * as firebase from 'firebase';
 import i18n from 'i18n';
 //Redux Actions
 import { clearGameSummaryState } from 'actions/gameSummaryActions';
@@ -67,6 +68,14 @@ export const setPlayedAgainWithSettings = (playedAgainWithSettings) => {
     }
 }
 
+export const setUserInfo = (currentGame, allGames) => {
+    return {
+        type: 'APP/SET_USER_INFO',
+        currentGame,
+        allGames
+    }
+}
+
 export const setAlert = (alertType, messageKey, messageValue, action, alertProps) => {
     return {
         type: 'APP/SET_ALERT',
@@ -94,8 +103,15 @@ export const changeLanguage = (language) => {
     }
 }
 
-export const updateUserInfo = (uid, dataToUpdate) => () => {
-    return db.collection('users').doc(uid).update(dataToUpdate);
+export const updateUserCurrentGame = (uid, currentGame) => () => {
+    return db.collection('users').doc(uid).collection('currentGame').doc('gameId')
+        .update({id: currentGame});
+}
+
+export const updateUserAllGames = (uid, gameId, date) => () => {
+    return db.collection('users').doc(uid).collection('allGames').doc('allGames')
+        .update({'allGames': firebase.firestore.FieldValue.arrayUnion({gameId, date})
+    });
 }
 
 export const getGameId = () => {
@@ -117,7 +133,7 @@ export const getGameData = (gameId) => {
     }
 }
 
-export const handleFinishGame = (gameId, admin, history) => {
+export const handleFinishGame = (gameId, admin) => {
     return dispatch => {
         if (admin) {
             db.collection('games').doc(gameId).update({
@@ -204,8 +220,9 @@ export const playAgainSettings = (gameId, admin, history) => {
     }
 }
 
-export const exitGame = (gameId, admin, history) => {
+export const exitGame = (uid, gameId, admin, history) => {
     return dispatch => {
+        dispatch(updateUserCurrentGame(uid, null));
         dispatch(clearGameSummaryState());
         dispatch(clearAppStateOnExit());
         history.push('/main_menu');

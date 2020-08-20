@@ -69,7 +69,7 @@ export const clearSideMenuState = () => {
 }
 
 export const fetchUserInfo = (uid) => dispatch => {
-    return db.collection('users').doc(uid).get()
+    return db.collection('users').doc(uid).collection('allGames').doc('allGames').get()
         .then((response) => {
             let data = response.data();
             const allGames = data.allGames;

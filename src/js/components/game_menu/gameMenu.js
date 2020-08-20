@@ -16,7 +16,8 @@ import Button from 'components/global_components/button/button';
 //Redux Actions
 import { setGameId, setAlert, getGameData, changeLanguage } from 'actions/appActions';
 import { setPlayers } from 'actions/gameActions';
-import { startAdminGame, updateGameMenuData, setFetchingGameData, subscribeJoinedPlayers, getUserDataFromDatabase, setTimer, setTime } from 'actions/gameMenuActions';
+import { startAdminGame, updateGameMenuData, setFetchingGameData, subscribeJoinedPlayers,
+    getCurrentGameFromDatabase, setTimer, setTime } from 'actions/gameMenuActions';
 
 const GameMenu = (props) => {
     const { t } = useTranslation();
@@ -24,18 +25,18 @@ const GameMenu = (props) => {
 
     useEffect(() => {
         if (props.user.uid) {
-            const gameIdPromise = props.getUserDataFromDatabase(props.user.uid);
-            gameIdPromise.then((data) => {
-                props.setGameId(data.currentGame);
-                const gameDataPromise = props.getGameData(data.currentGame);
+            const gameIdPromise = props.getCurrentGameFromDatabase(props.user.uid);
+            gameIdPromise.then((currentGame) => {
+                props.setGameId(currentGame);
+                const gameDataPromise = props.getGameData(currentGame);
                 gameDataPromise.then((gameData) => {
                     props.changeLanguage(gameData.language);
                     props.setPlayers(gameData.players);
-                    props.setTimer(gameData.timer, data.currentGame);
-                    props.setTime(gameData.time, data.currentGame);
+                    props.setTimer(gameData.timer, currentGame);
+                    props.setTime(gameData.time, currentGame);
                     props.setFetchingGameData(false);
 
-                    unsubscribeJoinedPlayers = props.subscribeJoinedPlayers(data.currentGame);
+                    unsubscribeJoinedPlayers = props.subscribeJoinedPlayers(currentGame);
                 })
             })
         }
@@ -131,7 +132,7 @@ const mapDispatchToProps = (dispatch) => {
         changeLanguage: (language) => dispatch(changeLanguage(language)),
         setAlert: (type, messageKey, messageValue, action, props) => dispatch(setAlert(type, messageKey, messageValue, action, props)),
         subscribeJoinedPlayers: (gameId) => dispatch(subscribeJoinedPlayers(gameId)),
-        getUserDataFromDatabase: (uid) => dispatch(getUserDataFromDatabase(uid)),
+        getCurrentGameFromDatabase: (uid) => dispatch(getCurrentGameFromDatabase(uid)),
     }
 }
 

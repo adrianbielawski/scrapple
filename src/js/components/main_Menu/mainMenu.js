@@ -11,7 +11,7 @@ import LoadingSpinner from 'components/global_components/loading_spinner/loading
 import Button from 'components/global_components/button/button';
 import Input from 'components/global_components/input/input';
 //Redux Actions
-import { setAlert, setGameId, updateUserInfo } from 'actions/appActions';
+import { setAlert, setGameId, updateUserCurrentGame } from 'actions/appActions';
 import { joinGame, createNewGame, setShowConfirmation } from 'actions/mainMenuActions';
 import { addPlayer } from 'actions/gameMenuActions';
 
@@ -55,7 +55,7 @@ const MainMenu = (props) => {
         const gameId = createGameId();
         const createNewGamePromise = props.createNewGame(user, gameId, props.language, props.timer, props.time);
         createNewGamePromise.then(() => {
-            const updateUserPromise = props.updateUserInfo(user.uid, {currentGame: gameId});
+            const updateUserPromise = props.updateUserCurrentGame(user.uid, gameId);
             updateUserPromise.then(() => {
                 props.history.push(`/game_menu`);
             });
@@ -107,7 +107,7 @@ const mapDispatchToProps = (dispatch) => {
         setShowConfirmation: (showConfirmation) => dispatch(setShowConfirmation(showConfirmation)),
         addPlayer: (playerName, uid, admin) => dispatch(addPlayer(playerName, uid, admin)),
         createNewGame: (user, gameId, language, timer, time) => dispatch(createNewGame(user, gameId, language, timer, time)),
-        updateUserInfo: (uid, dataToUpdate) => dispatch(updateUserInfo(uid, dataToUpdate)),
+        updateUserCurrentGame: (uid, gameId) => dispatch(updateUserCurrentGame(uid, gameId)),
     }
 }
 

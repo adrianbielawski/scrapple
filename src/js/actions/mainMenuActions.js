@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import moment from 'moment';
 import { some } from 'lodash';
 //Redux Actions
-import { changeLanguage, setGameId, setAlert, setAdmin, updateUserInfo } from 'actions/appActions';
+import { changeLanguage, setGameId, setAlert, setAdmin, updateUserAllGames, updateUserCurrentGame } from 'actions/appActions';
 
 export const createNewGame = (user, gameId, language, timer, time) => {
     return dispatch => {
@@ -88,7 +88,7 @@ export const joinGame = (gameId, language, user, history) => {
                             })
                     })
                     .then(() => {
-                        dispatch(updateUserInfo(user.uid, {currentGame: gameId}));
+                        dispatch(updateUserCurrentGame(user.uid, gameId));
                     })
                     .then(() => {
                         unsubscribeGameStart = setStateAndSubscribe();
@@ -116,9 +116,8 @@ export const startJoinedPlayerGame = (gameId, user, history) => {
     return dispatch => {
         const date = moment().format('DD.MM.YYYY');
 
-        dispatch(updateUserInfo(user.uid, {
-            'allGames': firebase.firestore.FieldValue.arrayUnion({gameId, date})
-        })).then(() => {
+        dispatch(updateUserAllGames(user.uid, gameId, date))
+        .then(() => {
             dispatch(setAdmin(false));
             history.push(`/game/${gameId}`);
         }).catch(() => {

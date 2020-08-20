@@ -1,8 +1,7 @@
 import db from 'firebaseConfig';
-import * as firebase from 'firebase';
 import moment from 'moment';
 //Redux Actions
-import { setAlert, updateUserInfo } from 'actions/appActions';
+import { setAlert, updateUserAllGames, updateUserCurrentGame } from 'actions/appActions';
 import { setPlayers } from 'actions/gameActions';
 
 export const setFetchingGameData = (fetching) => {
@@ -109,10 +108,11 @@ export const startAdminGame = (gameId, user, history) => {
     
     db.collection('games').doc(gameId).update({ gameStarted: true })
       .then(() => {
-        dispatch(updateUserInfo(user.uid, {'allGames': firebase.firestore.FieldValue.arrayUnion({gameId, date})}
-        )).then(() => {
-          history.push(`/game/${gameId}`);
-        });
+        dispatch(updateUserAllGames(user.uid, gameId, date));
+      })
+      .then(() => {
+        dispatch(updateUserCurrentGame(user.uid, gameId));
+        history.push(`/game/${gameId}`);
       })
       .catch(() => {
         dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
@@ -120,10 +120,10 @@ export const startAdminGame = (gameId, user, history) => {
   }
 }
 
-export const getUserDataFromDatabase = (uid) => {
+export const getCurrentGameFromDatabase = (uid) => {
   return dispatch => {
-    return db.collection('users').doc(uid).get()
-      .then(response => response.data())
+    return db.collection('users').doc(uid).collection('currentGame').doc('gameId').get()
+      .then(response => response.data().id)
       .catch(() => {
         dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
       });

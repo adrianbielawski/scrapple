@@ -8,9 +8,10 @@ export const signUp = (email, password, userName) => dispatch => {
         user.updateProfile({
             displayName: userName,
         }).then(() => {
-            db.collection('users').doc(user.uid).set({
-                email: user.email,
-                currentGame: null,
+            db.collection('users').doc(user.uid).collection('currentGame').doc('gameId').set({
+                id: null,
+            });
+            db.collection('users').doc(user.uid).collection('allGames').doc('allGames').set({
                 allGames: [],
             });
             user.sendEmailVerification().then(() => {
@@ -32,6 +33,7 @@ export const logIn = (email, password, history) => dispatch => {
         } else {
             dispatch(setAlert('alert', 'This account is not verified. Please check your inbox to finish registration.'));
         }
+        return response.user;
     }).catch(error => {
         dispatch(setAlert('alert', error.message));
     });
