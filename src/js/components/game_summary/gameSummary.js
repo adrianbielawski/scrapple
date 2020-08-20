@@ -41,7 +41,7 @@ const GameSummary = (props) => {
     };
 
     const exitGame = () => {
-        props.exitGame(props.gameId, props.admin, props.history);
+        props.exitGame(props.user.uid, props.gameId, props.admin, props.history);
     };
 
     return (
@@ -81,7 +81,7 @@ const mapDispatchToProps = (dispatch) => {
         setAdmin: (admin) => dispatch(setAdmin(admin)),
         getGameData: (gameId) => dispatch(getGameData(gameId)),
         setPlayers: (players) => { dispatch(setPlayers(players)) },
-        exitGame: (gameId, admin, history) => { dispatch(exitGame(gameId, admin, history)) },
+        exitGame: (uid, gameId, admin, history) => { dispatch(exitGame(uid, gameId, admin, history)) },
         setFetchingGameData: (fetching) => { dispatch(setFetchingGameData(fetching)) },
         subscribeExitOption: (gameId, exitOption, history) => dispatch(subscribeExitOption(gameId, exitOption, history)),
         setShowExitOptions: (show) => dispatch(setShowExitOptions(show)),

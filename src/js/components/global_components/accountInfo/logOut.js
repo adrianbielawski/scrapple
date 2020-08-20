@@ -4,12 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { auth } from 'firebaseConfig';
 import styles from './accountInfo.scss';
 //Redux Actions
-import { clearAppState } from 'actions/appActions';
+import { clearAppState, updateUserCurrentGame } from 'actions/appActions';
 
 const LogOut = (props) => {
   const { t } = useTranslation();
 
   const handleClick = () => {
+    props.updateUserCurrentGame(props.user.uid, null);
     auth.signOut().then(() => {
       props.clearAppState(props.language);
     });
@@ -20,6 +21,7 @@ const LogOut = (props) => {
 
 const mapStateToProps = (state) => {
   return {
+    user: state.app.user,
     language: state.app.language,
   }
 }
@@ -27,6 +29,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     clearAppState: (language) => dispatch(clearAppState(language)),
+    updateUserCurrentGame: (uid, gameId) => dispatch(updateUserCurrentGame(uid, gameId)),
   }
 }
 

@@ -20,7 +20,7 @@ const ExitOptions = (props) => {
     };
 
     const handleExitGame = () => {
-        props.exitGame(props.gameId, props.admin, props.history);
+        props.exitGame(props.user.uid, props.gameId, props.admin, props.history);
     }
 
     return (
@@ -36,6 +36,7 @@ const ExitOptions = (props) => {
 
 const mapStateToProps = (state) => {
     return {
+        user: state.app.user,
         gameId: state.app.gameId,
         admin: state.app.admin,
     }
@@ -43,7 +44,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        exitGame: (gameId, admin, history) => { dispatch(exitGame(gameId, admin, history)) },
+        exitGame: (uid, gameId, admin, history) => { dispatch(exitGame(uid, gameId, admin, history)) },
         playAgain: (gameId, admin, history) => { dispatch(playAgain(gameId, admin, history)) },
         playAgainSettings: (gameId, admin, history) => { dispatch(playAgainSettings(gameId, admin, history)) },
     }

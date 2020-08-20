@@ -253,3 +253,27 @@ const clearPlayers = (players) => {
         }
     });
 }
+
+export const getUserCurrentGame = (uid) => dispatch => {
+    return db.collection('users').doc(uid).collection('currentGame').doc('gameId').get().then(
+        (response) => {
+            if (response.data()) {
+                const currentGame = response.data().id;
+                dispatch(setUserInfo(currentGame))
+                return currentGame;
+            }
+    });
+}
+
+export const checkCurrentGameStatus = (gameId) => () => {
+    return db.collection('games').doc(gameId).get()
+    .then((response) => {
+            const data = response.data();
+            const exitOption = data.exitOption;
+            const gameStarted = data.gameStarted;
+            if (exitOption === 'exitGame' || !gameStarted) {
+                return false;
+            }
+            return true;
+    });
+}

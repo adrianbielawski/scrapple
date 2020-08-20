@@ -14,7 +14,7 @@ import PrivateRoute from 'hoc/PrivateRoute';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 import Alert from 'components/global_components/alert/alert';
 //Redux Actions
-import { setScreenHeight, setUser, clearAppState } from 'actions/appActions';
+import { setScreenHeight, setUser, clearAppState, getUserCurrentGame, checkCurrentGameStatus } from 'actions/appActions';
 import { setLoadingAuthState } from 'actions/authActions';
 
 const App = (props) => {
@@ -25,6 +25,17 @@ const App = (props) => {
         auth.onAuthStateChanged(user => {
             if (user) {
                 props.setUser(user);
+                const currentGamePromise = props.getUserCurrentGame(user.uid);
+                currentGamePromise.then((currentGame) => {
+                    if (currentGame) {
+                        const isCurrentGameValid = props.checkCurrentGameStatus(currentGame)
+                        isCurrentGameValid.then((isValid) => {
+                            if (isValid) {
+                                history.push(`/game/${currentGame}`);
+                            }
+                        })
+                    }
+                })
             } else {
                 if (window.location.pathname.slice(1) === 'signup') {
                     return;
@@ -73,8 +84,10 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setScreenHeight: (height) => dispatch(setScreenHeight(height)),
         setUser: (user) => dispatch(setUser(user)),
+        getUserCurrentGame: (uid) => dispatch(getUserCurrentGame(uid)),
         clearAppState: (language) => dispatch(clearAppState(language)),
         setLoadingAuthState: (loadingAuthState) => dispatch(setLoadingAuthState(loadingAuthState)),
+        checkCurrentGameStatus: (gameId) => dispatch(checkCurrentGameStatus(gameId)),
     }
 }
 
