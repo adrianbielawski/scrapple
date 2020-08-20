@@ -24,15 +24,8 @@ const Login = (props) => {
         props.setIsLoggingIn(true);
 
         const promise = props.logIn(email, password, props.history);
-        promise.then(user => {
+        promise.then(() => {
             props.setIsLoggingIn(false);
-
-            if (user === undefined) {
-                return;
-            };
-
-            emailInput.current.value = '';
-            passwordInput.current.value = '';
         });
     }
 
