@@ -1,5 +1,5 @@
-import React, { Suspense } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { useEffect, Suspense } from 'react';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { auth } from 'firebaseConfig';
 import styles from 'global_styles/app.scss';
@@ -17,52 +17,48 @@ import Alert from 'components/global_components/alert/alert';
 import { setScreenHeight, setUser, clearAppState } from 'actions/appActions';
 import { setLoadingAuthState } from 'actions/authActions';
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.listenScreenHeight = window.addEventListener('resize', this.setScreenHeight);
-    }
+const App = (props) => {
+    let history = useHistory();
+    const listenScreenHeight = window.addEventListener('resize', setScreenHeight);
 
-    componentWillUnmount = () => {
-        removeEventListener(this.listenScreenHeight);
-    }
-
-    componentDidMount = () => {
+    useEffect(() => {
         auth.onAuthStateChanged(user => {
             if (user) {
-                this.props.setUser(user);
+                props.setUser(user);
             } else {
                 if (window.location.pathname.slice(1) === 'signup') {
                     return;
                 }
-                this.props.clearAppState(this.props.language);
+                props.clearAppState(props.language);
             }
-            this.props.setLoadingAuthState(false);
+            props.setLoadingAuthState(false);
         });
-    }
 
-    setScreenHeight = () => {
+        return () => {
+            removeEventListener(listenScreenHeight);
+        }
+    }, [])
+
+    const setScreenHeight = () => {
         const screenHeight = window.innerHeight;
-        this.props.setScreenHeight(screenHeight);
+        props.setScreenHeight(screenHeight);
     }
 
-    render() {
-        return (
-            <div className={styles.App} style={{ height: this.props.screenHeight }}>
-                {this.props.alert.show && <Alert />}
-                <Suspense fallback={<LoadingSpinner background={true} />}>
-                    <Switch>
-                        <Route exact path={["/", "/login", "/signup"]} component={Main} />
-                        <PrivateRoute path="/main_menu" component={MainMenu} />
-                        <PrivateRoute path="/game_menu" component={GameMenu} />
-                        <PrivateRoute exact path="/game/:gameId" component={Game} />
-                        <PrivateRoute exact path="/game/:gameId/subtract_points" component={SubtractPoints} />
-                        <PrivateRoute exact path="/game/:gameId/game_summary" component={GameSummary} />
-                    </Switch>
-                </Suspense>
-            </div>
-        );
-    }
+    return (
+        <div className={styles.App} style={{ height: props.screenHeight }}>
+            {props.alert.show && <Alert />}
+            <Suspense fallback={<LoadingSpinner background={true} />}>
+                <Switch>
+                    <Route exact path={["/", "/login", "/signup"]} component={Main} />
+                    <PrivateRoute path="/main_menu" component={MainMenu} />
+                    <PrivateRoute path="/game_menu" component={GameMenu} />
+                    <PrivateRoute exact path="/game/:gameId" component={Game} />
+                    <PrivateRoute exact path="/game/:gameId/subtract_points" component={SubtractPoints} />
+                    <PrivateRoute exact path="/game/:gameId/game_summary" component={GameSummary} />
+                </Switch>
+            </Suspense>
+        </div>
+    );
 }
 
 const mapStateToProps = (state) => {
@@ -75,10 +71,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setScreenHeight: (height) => { dispatch(setScreenHeight(height)) },
-        setUser: (user) => { dispatch(setUser(user)) },
-        clearAppState: (language) => { dispatch(clearAppState(language)) },
-        setLoadingAuthState: (loadingAuthState) => { dispatch(setLoadingAuthState(loadingAuthState)) },
+        setScreenHeight: (height) => dispatch(setScreenHeight(height)),
+        setUser: (user) => dispatch(setUser(user)),
+        clearAppState: (language) => dispatch(clearAppState(language)),
+        setLoadingAuthState: (loadingAuthState) => dispatch(setLoadingAuthState(loadingAuthState)),
     }
 }
 
