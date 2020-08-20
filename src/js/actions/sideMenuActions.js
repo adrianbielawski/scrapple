@@ -1,12 +1,7 @@
 import { db } from 'firebaseConfig';
 import languages from 'components/global_components/language/languages';
-
-export const setUserInfo = (userInfo) => {
-    return {
-        type: 'SIDE_MENU/SET_USER_INFO',
-        userInfo,
-    };
-}
+//Redux actions
+import {setUserInfo} from 'actions/appActions';
 
 export const setShowAccountInfo = (showAccountInfo) => {
     return {
@@ -72,14 +67,13 @@ export const fetchUserInfo = (uid) => dispatch => {
     return db.collection('users').doc(uid).collection('allGames').doc('allGames').get()
         .then((response) => {
             let data = response.data();
-            const allGames = data.allGames;
+            let allGames = data.allGames;
             let reversedAllGames = [];
             for (let i = 0; i < allGames.length; i++) {
                 reversedAllGames.unshift(allGames[i]);
             }
-            data.allGames = reversedAllGames;
 
-            dispatch(setUserInfo(data));
+            dispatch(setUserInfo(null, reversedAllGames));
         }).then(() => {
             dispatch(setFetchingUserInfo(false));
         }).catch(() => {

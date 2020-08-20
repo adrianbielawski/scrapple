@@ -1,7 +1,6 @@
 const initialState = {
     fetchingUserInfo: true,
     fetchingGameDetails: true,
-    userInfo: null,
     showAccountInfo: false,
     showGames: false,
     gamesRenderFrom: 1,
@@ -13,10 +12,6 @@ const initialState = {
 const sideMenuReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
-        case 'SIDE_MENU/SET_USER_INFO':
-            newState.userInfo = action.userInfo;
-            return newState;
-
         case 'SIDE_MENU/SET_SHOW_ACCOUNT_INFO':
             newState.showAccountInfo = action.showAccountInfo;
             return newState;

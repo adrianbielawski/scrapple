@@ -44,7 +44,7 @@ const GamesHistoryPagination = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.sideMenu.userInfo,
+        userInfo: state.app.userInfo,
         gamesRenderFrom: state.sideMenu.gamesRenderFrom,
     }
 }
