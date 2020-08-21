@@ -13,6 +13,7 @@ import Card from 'components/global_components/card/card';
 import AccountInfo from 'components/global_components/accountInfo/accountInfo';
 import GameId from 'components/global_components/game_id/gameId';
 import Button from 'components/global_components/button/button';
+import SideMenu from 'components/global_components/side_menu/sideMenu';
 //Redux Actions
 import { setGameId, setAlert, getGameData, changeLanguage } from 'actions/appActions';
 import { setPlayers } from 'actions/gameActions';
@@ -87,7 +88,10 @@ const GameMenu = (props) => {
         <div className={styles.gameMenu}>
             <Header />
             {props.fetchingGameData ? <LoadingSpinner background={true} /> : <div className={styles.menu}>
-                <AccountInfo />
+                <div className={styles.topWrapper}>
+                    <SideMenu />
+                    <AccountInfo />
+                </div>
                 <GameId />
                 <Card className={styles.card}>
                     <Language showName={true} vertical={true} />

@@ -6,6 +6,10 @@
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
+    .topWrapper {
+        display: flex;
+        width: 100%;
+    }
     input {
         margin-bottom: 10px;
         text-transform: none;

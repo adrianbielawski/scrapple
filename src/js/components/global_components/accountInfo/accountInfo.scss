@@ -4,8 +4,9 @@
 	width: 100%;
 	padding: 5px;
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	flex-flow: column;
+	justify-content: end;
+	align-items: flex-end;
 }
 .logout {
 	font-size: 1.2em;

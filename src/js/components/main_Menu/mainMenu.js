@@ -10,6 +10,7 @@ import AccountInfo from 'components/global_components/accountInfo/accountInfo';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 import Button from 'components/global_components/button/button';
 import Input from 'components/global_components/input/input';
+import SideMenu from 'components/global_components/side_menu/sideMenu';
 //Redux Actions
 import { setAlert, setGameId, updateUserCurrentGame } from 'actions/appActions';
 import { joinGame, createNewGame, setShowConfirmation } from 'actions/mainMenuActions';
@@ -74,7 +75,10 @@ const MainMenu = (props) => {
             <Header />
             {props.user === {} ? <LoadingSpinner background={true} /> : (
                 <div className={styles.content}>
-                    <AccountInfo />
+                    <div className={styles.topWrapper}>
+                        <SideMenu />
+                        <AccountInfo />
+                    </div>
                     <Card className={styles.card}>
                         <Button onClick={createNewGame}>{t("Create new game")}</Button>
                     </Card>

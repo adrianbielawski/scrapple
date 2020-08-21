@@ -1,6 +1,11 @@
 @import "global_styles/variables";
 
 .gameMenu {
+    .topWrapper {
+        display: flex;
+        width: 100%;
+        margin-bottom: 10px;
+    }
     padding-bottom: 5px;
     overflow: scroll;
     -ms-overflow-style: none;
