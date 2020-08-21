@@ -96,7 +96,7 @@ class WordChecker extends Component {
                     ref="word"
                     placeholder={this.props.t("Check your word")}
                     spellCheck="false" />
-                <div className={`${styles.resoultImg} ${!this.props.timer ? styles.noAudio : ''}`}>
+                <div className={`${styles.resoultImg} ${!this.props.timer || !this.props.admin ? styles.noAudio : ''}`}>
                     {image}
                 </div>
             </div>
@@ -106,6 +106,7 @@ class WordChecker extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        admin: state.app.admin,
         language: state.app.language,
         timer: state.timeLimit.timer,
     }
