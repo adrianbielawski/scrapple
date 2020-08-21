@@ -5,7 +5,7 @@
     overflow: hidden;
     display: flex;
     flex-flow: column;
-    transition: max-height .2s linear;
+    transition: max-height .2s ease-out;
     overflow: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;

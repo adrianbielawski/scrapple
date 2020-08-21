@@ -5,12 +5,11 @@ import styles from './gamesTable.scss';
 //Custom Components
 import GamesHistoryPagination from '../games_history_pagination/gamesHistoryPagination';
 import Button from 'components/global_components/button/button';
-//Redux actions
-import { setGameDetails, fetchGameDetails } from 'actions/sideMenuActions';
 import SingleGame from './singleGame';
 import Modal from 'components/global_components/modal/modal';
 import PlayersSummary from 'components/game_summary/playersSummary';
-import { setShowGameDetails } from 'actions/sideMenuActions';
+//Redux actions
+import { setGameDetails, fetchGameDetails, setShowGameDetails } from 'actions/sideMenuActions';
 
 const GamesTable = (props) => {
     const { t } = useTranslation();
