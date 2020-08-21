@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './alert.scss';
 //Redux Actions
 import { setAlert, removeAlert, handleFinishGame } from 'actions/appActions';
+import { changeUserName } from 'actions/authActions';
 
 const Alert = (props) => {
     const { t } = useTranslation();
@@ -19,6 +20,10 @@ const Alert = (props) => {
 
                 case 'user-registered':
                     props.history.push('/login');
+                    break;
+
+                case 'change-name':
+                    props.changeUserName(props.alert.alertProps);
                     break;
             }
         }
@@ -59,6 +64,8 @@ const mapDispatchToProps = (dispatch) => {
         setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(setAlert(type, messageKey, messageValue, action, alertProps)),
         removeAlert: () => dispatch(removeAlert()),
         handleFinishGame: (gameId, admin, history) => dispatch(handleFinishGame(gameId, admin, history)),
+        setShowChangeNameModal: (showChangeNameModal) => dispatch(setShowChangeNameModal(showChangeNameModal)),
+        changeUserName: (newName) => dispatch(changeUserName(newName)),
     }
 }
 

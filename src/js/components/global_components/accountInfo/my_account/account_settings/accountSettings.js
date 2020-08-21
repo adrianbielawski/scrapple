@@ -34,8 +34,8 @@ const AccountSettings = (props) => {
             <ChangeName />
             <ChangePassword />
             <ul className={`${styles.settings} ${props.showAccountSettings && styles.showSettings}`}>
-                <li><p onClick={handleChangeNameModal}>Change name</p></li>
-                <li><p onClick={handleChangePasswordModal}>Change password</p></li>
+                <li><p onClick={handleChangeNameModal}>{t("Change name")}</p></li>
+                <li><p onClick={handleChangePasswordModal}>{t("Change password")}</p></li>
             </ul>
         </div>
     );
