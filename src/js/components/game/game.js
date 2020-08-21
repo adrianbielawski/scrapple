@@ -9,7 +9,7 @@ import TwoLetterWords from './two_letter_words/twoLetterWords';
 import FinishedGameCover from './finish_game_cover/finishedGameCover';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 import AudioController from 'components/global_components/audioController/audioController';
-import SideMenu from './side_menu/sideMenu';
+import SideMenu from 'components/global_components/side_menu/sideMenu';
 import Button from 'components/global_components/button/button';
 //Redux Actions
 import { setGameId, setAlert } from 'actions/appActions';

@@ -4,8 +4,11 @@
     justify-content: center;
     align-items: center;
     flex-grow: 1;
+    width: 400px;
+    max-width: 100%;
     .input {
         margin-bottom: 10px;
+        width: 97%
     }
     .button {
         margin: 0 auto;
