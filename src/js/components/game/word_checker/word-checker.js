@@ -4,6 +4,7 @@ import { withTranslation } from 'react-i18next';
 import styles from './word-checker.scss'
 //Custom Components
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner'
+import { stubFalse } from 'lodash';
 
 const IMAGES = {
     fist: '/assets/img/fist.png',
@@ -95,7 +96,7 @@ class WordChecker extends Component {
                     ref="word"
                     placeholder={this.props.t("Check your word")}
                     spellCheck="false" />
-                <div className={styles.resoultImg}>
+                <div className={`${styles.resoultImg} ${!this.props.timer ? styles.noAudio : ''}`}>
                     {image}
                 </div>
             </div>
@@ -106,6 +107,7 @@ class WordChecker extends Component {
 const mapStateToProps = (state) => {
     return {
         language: state.app.language,
+        timer: state.timeLimit.timer,
     }
 }
 export default connect(mapStateToProps)(withTranslation()(WordChecker));

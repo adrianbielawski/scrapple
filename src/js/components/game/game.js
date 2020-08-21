@@ -47,7 +47,7 @@ class Game extends React.Component {
                     <div className={styles.topWrapper}>
                         <SideMenu />
                         <WordChecker />
-                        {this.props.admin ? <AudioController /> : null}
+                        {this.props.admin && this.props.timer ? <AudioController /> : null}
                     </div>
                     <TwoLetterWords />
                     <Stats />
@@ -65,6 +65,7 @@ const mapStateToProps = (state) => {
         gameId: state.app.gameId,
         user: state.app.user,
         admin: state.app.admin,
+        timer: state.timeLimit.timer,
         showFinishedGameCover: state.game.showFinishedGameCover,
         showWords: state.game.showWords,
         fetchingGameData: state.game.fetchingGameData,

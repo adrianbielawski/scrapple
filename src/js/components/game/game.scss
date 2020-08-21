@@ -7,6 +7,8 @@
     .topWrapper {
         display: inline-flex;
         justify-content: center;
+        width: 400px;
+        margin: 0 auto;
     }
 
     .gameFinishButton {
@@ -23,6 +25,11 @@
         scrollbar-width: none;
         &::-webkit-scrollbar {
             display: none;
+        }
+    }
+    @media only screen and (max-width: 400px) {
+        .topWrapper {
+            width: 100%;
         }
     }
 }

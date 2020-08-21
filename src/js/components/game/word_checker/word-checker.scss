@@ -1,23 +1,24 @@
 .wordChecker {
     display: flex;
     align-items: center;
-    flex-grow: 1;
     flex-direction: column;
     padding: 10px 5px;
-    max-width: 320px;
     box-sizing: border-box;
+    width: 100%;
     input {
         width: 100%;
-        max-width: 500px;
     }
-}
 
-.resoult-img {
-    width: 70px;
-    height: 70px;
-    margin: 10px auto 0 auto;
-}
-
-.thumb {
-    width: 100%;
+    .resoult-img {
+        width: 70px;
+        height: 70px;
+        margin: 10px auto 0 auto;
+        &.noAudio {
+            padding-right: 50px;
+        }
+    }
+    
+    .thumb {
+        width: 100%;
+    }
 }
