@@ -2,7 +2,7 @@ import { db, auth } from 'firebaseConfig';
 //Redux Actions
 import { setAlert } from 'actions/appActions';
 import { changePlayerName } from 'actions/gameActions';
-import { setShowChangeNameModal } from 'actions/sideMenuActions';
+import { setShowChangeNameModal, setShowChangePasswordModal } from 'actions/sideMenuActions';
 
 export const signUp = (email, password, userName) => dispatch => {
     return auth.createUserWithEmailAndPassword(email, password).then(response => {
@@ -69,6 +69,17 @@ export const changeUserName = (newName) => {
         }).then(() => {
             dispatch(setShowChangeNameModal(false));
             dispatch(setAlert('alert', 'Name changed successfully'));
+        }).catch(() => {
+            dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+        })
+    }
+}
+
+export const changeUserPassword = (newPassword) => {
+    return dispatch => {
+        auth.currentUser.updatePassword(newPassword).then(() => {
+            dispatch(setShowChangePasswordModal(false));
+            dispatch(setAlert('alert', 'Password changed successfully'));
         }).catch(() => {
             dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
         })
