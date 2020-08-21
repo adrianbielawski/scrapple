@@ -35,7 +35,7 @@ const timeLimit = (props) => {
                 <Switch onClick={toggleTimer} checked={props.timer}></Switch>
                 <p>{t("Player's time limit")}</p>
             </div>
-            <Input type="time" className={inputClass} onChange={handleTimeChange} defaultValue={defaultTime} step="1" />
+            <Input type="time" className={inputClass} onChange={handleTimeChange} defaultValue={defaultTime} step="1" required={props.timer} />
         </div>
     );
 }

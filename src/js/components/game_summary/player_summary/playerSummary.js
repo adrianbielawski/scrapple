@@ -35,9 +35,8 @@ const PlayerSummary = (props) => {
                     {getImg()}
                 </div>
                 <p className={styles.playerName}>{player.playerName}</p>
-                <p>
-                    {t("Player results", { 'total': player.currentScore, 'best': player.bestScore })}
-                </p>
+                <p>{t("Total", { 'total': player.currentScore})}</p>
+                <p>{t("Best score", { 'best': player.bestScore })}</p>
             </Card>
         </li>
     );

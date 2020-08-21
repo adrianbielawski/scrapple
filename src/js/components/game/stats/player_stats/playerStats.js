@@ -15,7 +15,7 @@ const PlayerStats = (props) => {
 
     useEffect(() => {
         if (props.isCurrent) {
-            playerStats.current.scrollIntoView({ behavior: 'smooth' });
+            playerStats.current.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
         }
     })
 

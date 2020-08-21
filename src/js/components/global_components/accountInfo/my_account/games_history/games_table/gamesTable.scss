@@ -4,15 +4,17 @@
     max-height: 0;
     overflow: hidden;
     display: flex;
-    overflow: scroll;
     flex-flow: column;
     transition: max-height .2s linear;
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
     &.showGames {
         max-height: 200px;
         padding: 3px;
-    }
-    &::-webkit-scrollbar {
-        display: none;
     }
     
     table {

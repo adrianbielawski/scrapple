@@ -19,7 +19,7 @@ import { setLoadingAuthState } from 'actions/authActions';
 
 const App = (props) => {
     let history = useHistory();
-    const listenScreenHeight = window.addEventListener('resize', setScreenHeight);
+    let listenScreenHeight = null;
 
     useEffect(() => {
         auth.onAuthStateChanged(user => {
@@ -44,6 +44,8 @@ const App = (props) => {
             }
             props.setLoadingAuthState(false);
         });
+
+        listenScreenHeight = window.addEventListener('resize', setScreenHeight);
 
         return () => {
             removeEventListener(listenScreenHeight);
