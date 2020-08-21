@@ -6,6 +6,7 @@ import styles from './myAccount.scss'
 import GamesHistory from './games_history/gamesHistory';
 //Redux actions
 import { fetchUserInfo, setFetchingUserInfo, setShowAccountInfo, setShowAccountSettings } from 'actions/sideMenuActions';
+import AccountSettings from './account_settings/accountSettings';
 
 const MyAccount = (props) => {
     const { t } = useTranslation();
@@ -21,18 +22,14 @@ const MyAccount = (props) => {
             props.setShowAccountInfo(!props.showAccountInfo);
         }
     }
-  
-    const showAccountSettings = () => {
-        props.setShowAccountSettings(!props.showAccountSettings);
-    }
 
     return (
         <div className={styles.myAccount}>
-            <p className={styles.userName} onClick={handleMyAccountClick}>{t("My account")}</p>
+            <p className={styles.title} onClick={handleMyAccountClick}>{t("My account")}</p>
             {!props.fetchingUserInfo && 
             <div className={`${styles.accountContent} ${props.showAccountInfo && styles.showContent}`}
                 style={props.showGames && props.showAccountInfo ? {maxHeight: '300px'} : null}>
-                <p onClick={showAccountSettings}>{t("Account settings")}</p>
+                <AccountSettings />
                 <GamesHistory />
             </div>
             }

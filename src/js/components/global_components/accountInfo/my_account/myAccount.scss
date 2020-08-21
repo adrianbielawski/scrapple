@@ -1,7 +1,8 @@
 @import "global_styles/variables";
 
 .myAccount {
-    .userName {
+    .title {
+        display: inline-flex;
         &:hover {
             color: $mainGreen;
             cursor: pointer;
@@ -11,9 +12,9 @@
         max-height: 0;
         padding: 0;
         overflow: hidden;
-        transition: all 0.2s linear;
+        transition: all 0.2s ease-out;
         &.showContent {
-            max-height: 80px;
+            max-height: 200px;
             padding: 10px 20px;
             overflow: scroll;
             -ms-overflow-style: none;

@@ -3,13 +3,6 @@ import languages from 'components/global_components/language/languages';
 //Redux actions
 import {setUserInfo} from 'actions/appActions';
 
-export const setShowAccountInfo = (showAccountInfo) => {
-    return {
-        type: 'SIDE_MENU/SET_SHOW_ACCOUNT_INFO',
-        showAccountInfo,
-    };
-}
-
 export const setFetchingUserInfo = (fetchingUserInfo) => {
     return {
         type: 'SIDE_MENU/SET_FETCHING_USER_INFO',
@@ -24,10 +17,31 @@ export const setShowGames = (showGames) => {
     };
 }
 
+export const setShowAccountInfo = (showAccountInfo) => {
+    return {
+        type: 'SIDE_MENU/SET_SHOW_ACCOUNT_INFO',
+        showAccountInfo,
+    };
+}
+
 export const setShowAccountSettings = (showAccountSettings) => {
     return {
         type: 'SIDE_MENU/SET_SHOW_ACCOUNT_SETTINGS',
         showAccountSettings,
+    };
+}
+
+export const setShowChangeNameModal = (showChangeNameModal) => {
+    return {
+        type: 'SIDE_MENU/SET_SHOW_CHANGE_NAME_MODAL',
+        showChangeNameModal,
+    };
+}
+
+export const setShowChangePasswordModal = (showChangePasswordModal) => {
+    return {
+        type: 'SIDE_MENU/SET_SHOW_CHANGE_PASSWORD_MODAL',
+        showChangePasswordModal,
     };
 }
 

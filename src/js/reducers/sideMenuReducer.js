@@ -7,6 +7,8 @@ const initialState = {
     gameDetails: {},
     showGameDetails: false,
     showAccountSettings: false,
+    showChangeNameModal: false,
+    showChangePasswordModal: false,
 };
 
 const sideMenuReducer = (state = initialState, action) => {
@@ -18,6 +20,14 @@ const sideMenuReducer = (state = initialState, action) => {
 
         case 'SIDE_MENU/SET_FETCHING_USER_INFO':
             newState.fetchingUserInfo = action.fetchingUserInfo;
+            return newState;
+
+        case 'SIDE_MENU/SET_SHOW_CHANGE_NAME_MODAL':
+            newState.showChangeNameModal = action.showChangeNameModal;
+            return newState;
+
+        case 'SIDE_MENU/SET_SHOW_CHANGE_PASSWORD_MODAL':
+            newState.showChangePasswordModal = action.showChangePasswordModal;
             return newState;
 
         case 'SIDE_MENU/SET_SHOW_GAMES':
