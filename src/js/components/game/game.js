@@ -45,7 +45,7 @@ class Game extends React.Component {
                 <div className={`${styles.game} ${gameClass}`}>
                     <FinishedGameCover show={this.props.showFinishedGameCover} />
                     <div className={styles.topWrapper}>
-                        <SideMenu />
+                        <SideMenu className={styles.sideMenu} />
                         <WordChecker />
                         {this.props.admin && this.props.timer ? <AudioController /> : null}
                     </div>

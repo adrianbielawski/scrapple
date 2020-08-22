@@ -17,9 +17,7 @@ const GamesHistory = (props) => {
     return (
         <div className={styles.gamesHistory}>
             <p className={styles.title} onClick={handleClick}>{t("Games history")}</p>
-            <div className={`${styles.games} ${props.showGames && styles.showGames}`}>
-                <GamesTable />
-            </div>
+            <GamesTable />
         </div>
     );
 }

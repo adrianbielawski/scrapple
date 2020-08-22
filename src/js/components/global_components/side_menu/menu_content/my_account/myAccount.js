@@ -28,7 +28,7 @@ const MyAccount = (props) => {
             <p className={styles.title} onClick={handleMyAccountClick}>{t("My account")}</p>
             {!props.fetchingUserInfo && 
             <div className={`${styles.accountContent} ${props.showAccountInfo && styles.showContent}`}
-                style={props.showGames && props.showAccountInfo ? {maxHeight: '300px'} : null}>
+                style={props.showGames && props.showAccountInfo ? {maxHeight: '400px'} : null}>
                 <AccountSettings />
                 <GamesHistory />
             </div>

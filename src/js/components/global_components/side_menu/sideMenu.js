@@ -10,7 +10,7 @@ import { toggleShowMenu } from 'actions/gameActions';
 const SideMenu = (props) => {
     return (
         <div className={styles.menuWrapper}>
-            <div className={styles.menuIcon}>
+            <div className={`${styles.menuIcon} ${props.className}`}>
                 <img src="/assets/img/burger-menu-icon.png" onClick={props.toggleShowMenu}></img>
             </div>
             <div className={props.showMenu ? `${styles.content} ${styles.show}` : styles.content}>
