@@ -7,7 +7,9 @@ import styles from './player.scss';
 //Custom components
 import Button from 'components/global_components/button/button';
 //Redux Actions
-import { removePlayer, reorderPlayers, setGrabbedElement, setIsTransitionEnabled, setInitialListSpace, setListSpace, setTouches } from 'actions/gameMenuActions';
+import { removePlayer, reorderPlayers, setGrabbedElement, setIsTransitionEnabled,
+    setInitialListSpace, setListSpace, setTouches } from 'actions/gameMenuActions';
+import { setAlert } from 'actions/appActions';
 
 class Player extends Component {
     constructor(props) {
@@ -136,8 +138,11 @@ class Player extends Component {
         this.props.setTouches(touches);
     }
 
-    removePlayerHandler = (e) => {
-        e.preventDefault();
+    removePlayerHandler = () => {
+        if (this.props.player.uid === this.props.user.uid) {
+            this.props.setAlert('alert', "You can't remove game admin")
+            return;
+        }
         this.removedPlayerTransition();
         setTimeout(this.remove, 500);
     }
@@ -248,6 +253,7 @@ class Player extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        user: state.app.user,
         players: state.game.players,
         initialListSpace: state.gameMenu.players.initialListSpace,
         listSpace: state.gameMenu.players.listSpace,
@@ -266,6 +272,7 @@ const mapDispatchToProps = (dispatch) => {
         setGrabbedElement: (grabbedElement) => dispatch(setGrabbedElement(grabbedElement)),
         setListSpace: (listSpace) => dispatch(setListSpace(listSpace)),
         setTouches: (touches) => dispatch(setTouches(touches)),
+        setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(setAlert(type, messageKey, messageValue, action, alertProps)),
     }
 }
 
