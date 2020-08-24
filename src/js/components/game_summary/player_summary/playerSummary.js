@@ -3,27 +3,21 @@ import { useTranslation } from 'react-i18next';
 import styles from './playerSummary.scss';
 //Custom Components
 import Card from 'components/global_components/card/card';
+import place1st from 'img/1st-place.png';
+import place2nd from 'img/2nd-place.png';
+import place3rd from 'img/3rd-place.png';
 
 const PlayerSummary = (props) => {
     const { t } = useTranslation();
 
     const getImg = () => {
-        let place = '';
-        switch (props.place) {
-            case (1):
-                place = '1st';
-                break
-            case (2):
-                place = '2nd';
-                break
-            case (3):
-                place = '3rd';
-                break
-            default:
-                return
-        }
+        const images = {
+            1: place1st,
+            2: place2nd,
+            3: place3rd,
+        };
 
-        return <img src={`/assets/img/${place}-place.png`}></img>;
+        return <img src={images[props.place]}></img>;
     };
 
     const player = props.player;

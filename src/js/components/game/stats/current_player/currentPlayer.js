@@ -11,10 +11,12 @@ import LoadingSpinner from 'components/global_components/loading_spinner/loading
 import Button from 'components/global_components/button/button';
 //Redux Actions
 import { setEndTime, addPoints, timeOut, setTimeLeft } from 'actions/gameActions';
+import beep from 'audio/beep.mp3';
+import longBeep from 'audio/long-beep.mp3';
 
 const AUDIO = {
-    beep: new Audio('/assets/audio/beep.mp3'),
-    longBeep: new Audio('/assets/audio/long-beep.mp3')
+    beep: new Audio(beep),
+    longBeep: new Audio(longBeep)
 }
 
 class CurrentPlayer extends Component {

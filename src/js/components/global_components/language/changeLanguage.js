@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import languages from './languages';
@@ -6,6 +6,9 @@ import stylesH from './changeLanguageHorizontal.scss';
 import stylesV from './changeLanguageVertical.scss';
 //Custom components
 import Language from './language';
+//Redux Actions
+import { changeLanguage } from 'actions/appActions';
+
 
 const ChangeLanguage = (props) => {
     const { t } = useTranslation();
@@ -16,13 +19,29 @@ const ChangeLanguage = (props) => {
         setShowLanguages(!showLanguages);
     };
 
+    const handleLanguageChange = (lang) => {
+        setTimeout(() => props.changeLanguage(lang), 100);
+    }
+
     const getLanguages = () => {
         return Object.entries(languages).map((lang, i) => {
             if (lang[0] === props.language) {
                 return;
             }
+
+            const onClick = useCallback(
+                () => handleLanguageChange(lang[i].symbol),
+                [lang[i].symbol]
+            )
+            
             return (
-                <Language showName={props.showName} lang={lang[1]} key={i} styles={styles} />
+                <Language
+                    showName={props.showName}
+                    lang={lang[i]}
+                    onClick={onClick}
+                    key={i}
+                    styles={styles}
+                />
             );
         });
     }
@@ -32,7 +51,11 @@ const ChangeLanguage = (props) => {
     return (
         <div className={styles.changeLanguage} onClick={toggleShowLanguages}>
             <div className={styles.currentLanguage}>
-                <img src={`/assets/img/${languages[props.language].flag}`}></img>
+                <Language
+                    showName={false}
+                    lang={languages[props.language]}
+                    styles={styles}
+                />
                 {props.showName && <p>{t("Language")}</p>}
             </div>
             <div className={`${styles.languages} ${langClass}`}>
@@ -48,4 +71,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(ChangeLanguage);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeLanguage: (language) => dispatch(changeLanguage(language)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChangeLanguage);

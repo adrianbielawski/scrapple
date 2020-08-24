@@ -6,12 +6,13 @@ import MenuContent from './menu_content/menuContent';
 import MenuHeader from './menu_header/menuHeader';
 //Redux Actions
 import { toggleShowMenu } from 'actions/gameActions';
+import burgerIcon from "img/burger-menu-icon.png";
 
 const SideMenu = (props) => {
     return (
         <div className={styles.menuWrapper}>
             <div className={`${styles.menuIcon} ${props.className}`}>
-                <img src="/assets/img/burger-menu-icon.png" onClick={props.toggleShowMenu}></img>
+                <img src={burgerIcon} onClick={props.toggleShowMenu}></img>
             </div>
             <div className={props.showMenu ? `${styles.content} ${styles.show}` : styles.content}>
                 <div className={styles.menu}>

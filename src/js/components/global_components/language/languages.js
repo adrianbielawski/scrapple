@@ -1,13 +1,16 @@
+import flagPL from 'img/pl-PL-flag.png';
+import flagGB from 'img/en-GB-flag.png';
+
 const languages = {
     'en-GB': {
         name: 'English',
         symbol: 'en-GB',
-        flag: 'en-GB-flag.png'
+        flag: flagGB,
     },
     'pl-PL': {
         name: 'Polski',
         symbol: 'pl-PL',
-        flag: 'pl-PL-flag.png'
+        flag: flagPL,
     }
 };
 

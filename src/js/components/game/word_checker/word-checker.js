@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import styles from './word-checker.scss'
+import styles from './word-checker.scss';
 //Custom Components
-import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner'
-import { stubFalse } from 'lodash';
-
-const IMAGES = {
-    fist: '/assets/img/fist.png',
-    thumbUp: '/assets/img/thumb-up.png',
-    thumbDown: '/assets/img/thumb-down.png'
-}
+import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
+import fist from 'img/fist.png';
+import thumbUp from 'img/thumb-up.png';
+import thumbDown from 'img/thumb-down.png';
 
 class WordChecker extends Component {
     constructor(props) {
@@ -74,9 +70,9 @@ class WordChecker extends Component {
     }
 
     getImage = () => {
-        let img = this.state.valid ? IMAGES.thumbUp : IMAGES.thumbDown;
+        let img = this.state.valid ? thumbUp : thumbDown;
         if (this.state.word.length === 0) {
-            img = IMAGES.fist;
+            img = fist;
         }
         let image = <img className={styles.thumb} src={img}></img>;
         if (this.state.fetching) {
