@@ -1,5 +1,5 @@
 import React, { useEffect, Suspense } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { auth } from 'firebaseConfig';
 import styles from 'global_styles/app.scss';
@@ -18,6 +18,7 @@ import { setScreenHeight, setUser, clearAppState, getUserCurrentGame, checkCurre
 import { setLoadingAuthState } from 'actions/authActions';
 
 const App = (props) => {
+    const location = useLocation();
     let history = useHistory();
     let listenScreenHeight = null;
 
@@ -33,11 +34,11 @@ const App = (props) => {
                             if (isValid) {
                                 history.push(`/game/${currentGame}`);
                             }
-                        })
+                        });
                     }
-                })
+                });
             } else {
-                if (window.location.pathname.slice(1) === 'signup') {
+                if (location.pathname.slice(1) === 'signup') {
                     return;
                 }
                 props.clearAppState(props.language);
@@ -48,7 +49,9 @@ const App = (props) => {
         listenScreenHeight = window.addEventListener('resize', setScreenHeight);
 
         return () => {
-            removeEventListener(listenScreenHeight);
+            if (listenScreenHeight !== null) {
+                removeEventListener(listenScreenHeight);
+            }
         }
     }, [])
 

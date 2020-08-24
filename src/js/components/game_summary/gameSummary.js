@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import styles from './gameSummary.scss';
 //Components
 import PlayersSummary from './playersSummary';
@@ -9,17 +10,16 @@ import ExitOptions from './exit_options/exitOptions';
 import WaitingCover from './waiting_cover/waitingCover';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 //Redux Actions
-import { getGameId, getGameData, exitGame, setFetchingGameData, setAdmin } from 'actions/appActions';
+import { getGameData, exitGame, setFetchingGameData, setAdmin } from 'actions/appActions';
 import { setPlayers } from 'actions/gameActions';
 import { subscribeExitOption, setShowExitOptions } from 'actions/gameSummaryActions';
 
 const GameSummary = (props) => {
+    const { gameId } = useParams();
     const { t } = useTranslation();
     let unsubscribe = null;
 
     useEffect(() => {
-        const gameId = props.gameId || props.getGameId();
-
         const promise = props.getGameData(gameId);
         promise.then(data => {
             props.setPlayers(data.players);
@@ -41,7 +41,7 @@ const GameSummary = (props) => {
     };
 
     const exitGame = () => {
-        props.exitGame(props.user.uid, props.gameId, props.admin, props.history);
+        props.exitGame(props.user.uid, gameId, props.admin, props.history);
     };
 
     return (
@@ -67,7 +67,6 @@ const mapStateToProps = (state) => {
     return {
         user: state.app.user,
         admin: state.app.admin,
-        gameId: state.app.gameId,
         players: state.game.players,
         fetchingGameData: state.app.fetchingGameData,
         showExitOptions: state.gameSummary.showExitOptions,
@@ -77,7 +76,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getGameId: () => dispatch(getGameId()),
         setAdmin: (admin) => dispatch(setAdmin(admin)),
         getGameData: (gameId) => dispatch(getGameData(gameId)),
         setPlayers: (players) => { dispatch(setPlayers(players)) },

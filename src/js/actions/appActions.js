@@ -114,15 +114,6 @@ export const updateUserAllGames = (uid, gameId, date) => () => {
     });
 }
 
-export const getGameId = () => {
-    return dispatch => {
-        const pathArray = window.location.pathname.split('/');
-        const gameId = pathArray[2];
-        dispatch(setGameId(gameId));
-        return gameId;
-    }
-}
-
 export const getGameData = (gameId) => {
     return dispatch => {
         return db.collection('games').doc(gameId).get()
@@ -222,14 +213,21 @@ export const playAgainSettings = (gameId, admin, history) => {
 
 export const exitGame = (uid, gameId, admin, history) => {
     return dispatch => {
-        dispatch(updateUserCurrentGame(uid, null));
-        dispatch(clearGameSummaryState());
-        dispatch(clearAppStateOnExit());
-        history.push('/main_menu');
+        const finishGame = () => {
+            dispatch(updateUserCurrentGame(uid, null));
+            dispatch(clearGameSummaryState());
+            dispatch(clearAppStateOnExit());
+            history.push('/main_menu');
+        }
+
         if (admin) {
             db.collection('games').doc(gameId).update({
                 exitOption: 'exitGame',
-            });
+            }).then(() => {
+                finishGame();
+            })
+        } else {
+            finishGame();
         }
     }
 }

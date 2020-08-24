@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import styles from './game.scss';
 //Custom Components
@@ -16,53 +17,53 @@ import { setGameId, setAlert } from 'actions/appActions';
 import { setEndTime, checkEndTime, fetchGameData, setShowFinishedGameCover } from 'actions/gameActions';
 import { clearSideMenuState } from 'actions/sideMenuActions';
 
-class Game extends React.Component {
-    componentDidMount() {
-        const pathArray = window.location.pathname.split('/');
-        const gameId = pathArray[2];
-        this.props.setGameId(gameId);
+const Game = (props) => {
+    const { gameId } = useParams();
+    let unsubscribe = null;
 
-        const promise = this.props.fetchGameData(gameId, this.props.user, this.props.history);
-        promise.then((unsubscribe) => this.unsubscribe = unsubscribe);
-    }
+    useEffect(() => {
+        props.setGameId(gameId);
 
-    componentWillUnmount() {
-        this.props.clearSideMenuState();
-        this.props.setShowFinishedGameCover(false);
-        this.unsubscribe();
-    }
+        const promise = props.fetchGameData(gameId, props.user, props.history);
+        promise.then((unsubscribe) => unsubscribe = unsubscribe);
 
-    handleGameFinish = (e) => {
+        return () => {
+            props.clearSideMenuState();
+            props.setShowFinishedGameCover(false);
+            if (unsubscribe !== null) {
+                unsubscribe();
+            }
+        }
+    }, [])
+
+    const handleGameFinish = (e) => {
         e.preventDefault();
-        this.props.setAlert('confirm', 'Are you sure you want to finish this game?', null, 'game-finish-button');
+        props.setAlert('confirm', 'Are you sure you want to finish this game?', null, 'game-finish-button');
     }
 
-    render() {
-        const gameClass = this.props.showWords ? styles['show-words'] : '';
+    const gameClass = props.showWords ? styles['show-words'] : '';
 
-        return (
-            this.props.fetchingGameData ? <LoadingSpinner background={true} /> : (
-                <div className={`${styles.game} ${gameClass}`}>
-                    <FinishedGameCover show={this.props.showFinishedGameCover} />
-                    <div className={styles.topWrapper}>
-                        <SideMenu className={styles.sideMenu} />
-                        <WordChecker />
-                        {this.props.admin && this.props.timer ? <AudioController /> : null}
-                    </div>
-                    <TwoLetterWords />
-                    <Stats />
-                    {this.props.admin && <Button className={styles.gameFinishButton} onClick={this.handleGameFinish}>
-                        {this.props.t("Finish the game")}
-                    </Button>}
+    return (
+        props.fetchingGameData ? <LoadingSpinner background={true} /> : (
+            <div className={`${styles.game} ${gameClass}`}>
+                <FinishedGameCover show={props.showFinishedGameCover} />
+                <div className={styles.topWrapper}>
+                    <SideMenu className={styles.sideMenu} />
+                    <WordChecker />
+                    {props.admin && props.timer ? <AudioController /> : null}
                 </div>
-            )
-        );
-    }
+                <TwoLetterWords />
+                <Stats />
+                {props.admin && <Button className={styles.gameFinishButton} onClick={handleGameFinish}>
+                    {props.t("Finish the game")}
+                </Button>}
+            </div>
+        )
+    );
 }
 
 const mapStateToProps = (state) => {
     return {
-        gameId: state.app.gameId,
         user: state.app.user,
         admin: state.app.admin,
         timer: state.timeLimit.timer,
