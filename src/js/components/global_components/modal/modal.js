@@ -10,9 +10,9 @@ const Modal = (props) => {
     }, []);
     return (
         props.show && ReactDOM.createPortal(
-        <div className={`${styles.modal} ${props.className ? props.className : ''}`}>
+        <div className={`${styles.modal} ${props.className || ''}`}>
             <div className={styles.wrapper}>
-                <Card className={`${styles.card} ${cardClass}`}>
+                <Card className={`${styles.card} ${cardClass} ${props.cardClassName || ''}`}>
                     {props.children}
                 </Card>
             </div>

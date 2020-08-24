@@ -31,11 +31,11 @@ const GamesTable = (props) => {
 
     return (
         <div className={`${styles.gamesTable} ${props.showGames && styles.showGames}`}>
-            <Modal show={props.showGameDetails}>
-                <p className={styles.gameDetails}>
+            <Modal show={props.showGameDetails} cardClassName={styles.card}>
+                <p className={styles.details}>
                     {t("Played in lang", {'lang': t(props.gameDetails.language)})}
-                    </p>
-                <p className={styles.gameDetails}>
+                </p>
+                <p className={styles.details}>
                     {props.gameDetails.time ? t("Time limit", {'time': props.gameDetails.time}) : t("No time limit")}
                 </p>
                 <PlayersSummary players={props.gameDetails.players} />
