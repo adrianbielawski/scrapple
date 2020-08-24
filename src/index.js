@@ -10,7 +10,6 @@ import rootReducer from 'reducers/';
 import theme from 'components/global_components/muiTheme';
 import { ThemeProvider } from '@material-ui/core';
 
-const initialState = {}
 let composeEnhancers = compose;
 
 if (process.env.NODE_ENV === 'development') {
@@ -24,7 +23,7 @@ const store = createStore(
 
 const app = (
     <Provider store={store}>
-        <BrowserRouter>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
             <ThemeProvider theme={theme}>
                 <App />
             </ThemeProvider>
