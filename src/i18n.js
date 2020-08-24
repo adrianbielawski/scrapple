@@ -196,8 +196,8 @@ const resources = {
       "Please repeat new password" : "Proszę powtórzyć hasło",
       "Passwords doesn't match" : "Podane hasła nie są takie same",
       //TwoLetterWords
-      "Show two-letter words" : "Pokaż slowa dwuliterowe",
-      "Hide two-letter words" : "Ukryj slowa dwuliterowe",
+      "Show two-letter words" : "Pokaż słowa dwuliterowe",
+      "Hide two-letter words" : "Ukryj słowa dwuliterowe",
       //WordChecker
       "Check your word" : "Sprawdź słowo",
       //CurrentPlayer
