@@ -10,4 +10,31 @@
         margin: 0 auto;
         z-index: 3;
     }
+    .zoomable {
+        position: absolute;
+        top: 40px;
+        z-index: 2;
+        width: 100%;
+        max-height: 0px;
+        background: $offWhite;
+        border: none;
+        transition-property: max-height;
+        transition-duration: 0.2s;
+        transition-delay: 0s;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        &.active {
+            max-height: 400px;
+            border: 1px solid darken($grey, 30);
+        }
+    }
+    
+    [lang=pl-PL] .wordsTable {
+        font-size: 1.78vw;
+    }
+    
+    [lang=en-GB] .wordsTable {
+        font-size: 2.5vw;
+    }
 }

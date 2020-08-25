@@ -1,0 +1,7 @@
+@import "global_styles/variables";
+
+.zoomableComponent {
+    overflow: hidden;
+    background: $offWhite;
+    border: 1px solid darken($grey, 30);
+}

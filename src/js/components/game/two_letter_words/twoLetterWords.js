@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './twoLetterWords.scss';
 //Custom components
 import Button from 'components/global_components/button/button';
+import ZoomableComponent from '../../global_components/zoomable_component/zoomableComponent';
 import WordsTable from './wordsTable';
 //Redux Actions
 import { toggleShowWords } from 'actions/gameActions';
@@ -27,7 +28,9 @@ const TwoLetterWords = (props) => {
             <Button onClick={props.toggleShowWords} className={wordsClass}>
                 {t(buttonName)}
             </Button>
-            <WordsTable />
+            <ZoomableComponent className={`${styles.zoomable} ${props.showWords ? styles.active : ''}`}>
+                <WordsTable />
+            </ZoomableComponent>
         </div>
     );
 }
