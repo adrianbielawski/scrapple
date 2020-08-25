@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import styles from './twoLetterWords.scss';
@@ -11,6 +12,15 @@ const TwoLetterWords = (props) => {
     const { t } = useTranslation();
     let buttonName = props.showWords ? 'Hide two-letter words' : 'Show two-letter words';
     let wordsClass = props.showWords ? styles.active : '';
+
+    useEffect(() => {
+        if (props.showWords) {
+            window.document.body.style.overscrollBehavior = 'contain';
+        }
+        if (!props.showWords) {
+            window.document.body.style.overscrollBehavior = 'unset';
+        }
+    }, [props.showWords])
 
     return (
         <div className={styles.twoLetterWords}>
