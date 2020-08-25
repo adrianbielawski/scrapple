@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { connect } from 'react-redux';
 import { words } from './words.js';
 import styles from './wordsTable.scss';
 
 const WordsTable = (props) => {
+    const tableWrapper = useRef(null);
+    const table = useRef(null);
     const [rows, setRows] = useState([]);
     const [columns, setColumns] = useState([]);
+    const [startDistance, setStartDistance] = useState(null);
+    const [startScale, setStartScale] = useState(1);
+    const [scale, setScale] = useState(1);
 
     useEffect(() => {
         let _rows = new Set();
@@ -24,11 +29,54 @@ const WordsTable = (props) => {
         setColumns(_columns);
     }, [])
 
+    const handleTouchMove = useCallback((e) => {
+        if (e.touches.length === 2) {
+            const distance = Math.sqrt(
+                Math.pow(
+                    Math.abs(e.touches[0].clientX - e.touches[1].clientX), 2) +
+                Math.pow(
+                    Math.abs(e.touches[0].clientY - e.touches[1].clientY), 2)
+            );
+
+            if (startDistance === null) {
+                setStartDistance(distance);
+                return;
+            }
+
+            let _scale = startScale * distance / startDistance;
+            if (_scale < 1) {
+                _scale = 1;
+            }
+            if (_scale > 3) {
+                _scale = 3;
+            }
+            const tableWrapperD = tableWrapper.current.getBoundingClientRect();
+            const tableWrapperX = tableWrapperD.left;
+            const tableWrapperY = tableWrapperD.top;
+
+            const midPointX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - tableWrapperX;
+            const midPointY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - tableWrapperY;
+
+            table.current.style.transformOrigin = `${midPointX}px ${midPointY}px`;
+            setScale(_scale)
+        }
+    }, [startDistance])
+
+    const handleTouchEnd = useCallback((e) => {
+        setStartDistance(null);
+        setStartScale(scale);
+    }, [scale])
+
     let wordsClass = props.showWords ? styles.active : '';
 
     return (
-        <div className={`${styles.words} ${wordsClass}`}>
-            <table className={styles.wordsTable}>
+        <div className={`${styles.words} ${wordsClass}`} ref={tableWrapper}>
+            <table className={styles.wordsTable}
+                style={{transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`}}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                ref={table}
+            >
                 <thead>
                     <tr>
                         <th></th>
