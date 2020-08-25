@@ -72,14 +72,14 @@ const GameMenu = (props) => {
             return false;
         }
 
-        // if(props.timer) {
-        //     const time = props.time;
-        //     if(time.hours == 0 && time.minutes == 0) {
-        //         const messageKey = "Minimum player's time limit is 1 min";
-        //         props.setAlert('alert', messageKey);
-        //         return false;
-        //     }
-        // }
+        if(props.timer) {
+            const time = props.time;
+            if(time.hours == 0 && time.minutes == 0) {
+                const messageKey = "Minimum player's time limit is 1 min";
+                props.setAlert('alert', messageKey);
+                return false;
+            }
+        }
         return true;
     }
 
