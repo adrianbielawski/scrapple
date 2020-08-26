@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import styles from './game.scss';
 //Custom Components
-import WordChecker from './word_checker/word-checker';
+import WordChecker from './word_checker/wordChecker';
 import Stats from './stats/stats';
 import TwoLetterWords from './two_letter_words/twoLetterWords';
 import FinishedGameCover from './finish_game_cover/finishedGameCover';
