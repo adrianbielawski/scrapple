@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Trans } from 'react-i18next';
 import { withTranslation } from 'react-i18next';
@@ -10,7 +10,8 @@ import styles from './currentPlayer.scss';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 import Button from 'components/global_components/button/button';
 //Redux Actions
-import { setEndTime, addPoints, timeOut, setTimeLeft } from 'actions/gameActions';
+import { addPoints, timeOut, setTimeLeft } from 'actions/gameActions';
+//Assets
 import beep from 'audio/beep.mp3';
 import longBeep from 'audio/long-beep.mp3';
 
@@ -19,58 +20,53 @@ const AUDIO = {
     longBeep: new Audio(longBeep)
 }
 
-class CurrentPlayer extends Component {
-    componentDidMount = () => {
-        this.updateTimer(this.props.endTime);
-        this.startTimer = setInterval(this.updateTimer, 100);
-    }
+const CurrentPlayer = (props) => {
+    const pointsInput = useRef(null);
 
-    componentWillUnmount = () => {
-        clearInterval(this.startTimer);
-    }
-
-    componentDidUpdate = (prevProps) => {
-        if (prevProps.timeLeft == this.props.timeLeft) {
-            return;
+    useEffect(() => {
+        const startTimer = setInterval(updateTimer, 100);
+        return () => {
+            clearInterval(startTimer);
         }
+    }, [props.endTime])
 
-        const timeLeft = this.props.timeLeft;
-        if (timeLeft <= 10 && this.props.admin && this.props.isAudioEnabled) {
+    useEffect(() => {
+        if (props.timeLeft <= 10 && props.admin && props.isAudioEnabled) {
             AUDIO.beep.play();
         }
 
-        if (timeLeft === 0 && this.props.admin) {
-            this.props.isAudioEnabled && AUDIO.longBeep.play();
-            setTimeout(this.handleTimeOut, 1000);
+        if (props.timeLeft === 0 && props.admin) {
+            props.isAudioEnabled && AUDIO.longBeep.play();
+            setTimeout(handleTimeOut, 1000);
         }
+    }, [props.timeLeft])
+
+    const handleTimeOut = () => {
+        props.timeOut(props.players, props.currentPlayer, props.time, props.gameId)
     }
 
-    handleTimeOut = () => {
-        this.props.timeOut(this.props.players, this.props.currentPlayer, this.props.time, this.props.gameId)
-    }
-
-    handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        let points = this.refs.points.value;
+        let points = pointsInput.current.value;
         points = parseInt(points, 10);
         e.target.reset();
-        this.props.addPoints(points, this.props.players, this.props.currentPlayer, this.props.timer, this.props.time, this.props.gameId);
+        props.addPoints(points, props.players, props.currentPlayer, props.timer, props.time, props.gameId);
     }
 
-    updateTimer = () => {
-        if (this.props.endTime === null) {
+    const updateTimer = () => {
+        if (props.endTime === null) {
             return;
         }
 
         const now = moment();
-        let timeLeft = moment(this.props.endTime).diff(now, 'seconds', true);
+        let timeLeft = moment(props.endTime).diff(now, 'seconds', true);
         timeLeft = Math.ceil(timeLeft);
 
-        this.props.setTimeLeft(timeLeft);
+        props.setTimeLeft(timeLeft);
     }
 
-    getTimeLeft = () => {
-        const time = this.props.timeLeft;
+    const getTimeLeft = () => {
+        const time = props.timeLeft;
         if (time === null) {
             return <LoadingSpinner background={true} />;
         }
@@ -79,29 +75,27 @@ class CurrentPlayer extends Component {
         return timeLeft;
     }
 
-    render() {
-        const playerName = this.props.players[this.props.currentPlayer].playerName;
-        const shortTimeClass = this.props.timeLeft <= 30 ? styles.shortTime : '';
+    const playerName = props.players[props.currentPlayer].playerName;
+    const shortTimeClass = props.timeLeft <= 30 ? styles.shortTime : '';
 
-        return (
-            <div className={styles.currentPlayer}>
-                <p>
-                    <Trans i18nKey="ItsTurnNow">
-                        It is <span>{{ playerName }}</span>'s turn now
-                    </Trans>!
-                </p>
-                {this.props.timer && <div className={`${styles.timer} ${shortTimeClass}`}>
-                    {this.getTimeLeft()}
-                </div>}
-                <form className={styles.addPoints} onSubmit={this.handleSubmit}>
-                    <input type="number" placeholder={this.props.t("Add points")} ref="points" required min="0" max="999" />
-                    <Button type="submit" className={styles.confirm}>
-                        <FontAwesomeIcon icon={faCheck} />
-                    </Button>
-                </form>
-            </div>
-        );
-    }
+    return (
+        <div className={styles.currentPlayer}>
+            <p>
+                <Trans i18nKey="ItsTurnNow">
+                    It is <span>{{ playerName }}</span>'s turn now
+                </Trans>
+            </p>
+            {props.timer && <div className={`${styles.timer} ${shortTimeClass}`}>
+                {getTimeLeft()}
+            </div>}
+            <form className={styles.addPoints} onSubmit={handleSubmit}>
+                <input type="number" placeholder={props.t("Add points")} ref={pointsInput} required min="0" max="999" />
+                <Button type="submit" className={styles.confirm}>
+                    <FontAwesomeIcon icon={faCheck} />
+                </Button>
+            </form>
+        </div>
+    );
 }
 
 const mapStateToProps = (state) => {
@@ -120,10 +114,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setEndTime: (endTime) => { dispatch(setEndTime(endTime)) },
-        addPoints: (points, players, currentPlayer, timer, time, gameId) => { dispatch(addPoints(points, players, currentPlayer, timer, time, gameId)) },
-        timeOut: (players, currentPlayer, time, gameId) => { dispatch(timeOut(players, currentPlayer, time, gameId)) },
-        setTimeLeft: (timeLeft) => { dispatch(setTimeLeft(timeLeft)) },
+        addPoints: (points, players, currentPlayer, timer, time, gameId) => dispatch(addPoints(points, players, currentPlayer, timer, time, gameId)),
+        timeOut: (players, currentPlayer, time, gameId) => dispatch(timeOut(players, currentPlayer, time, gameId)),
+        setTimeLeft: (timeLeft) => dispatch(setTimeLeft(timeLeft)),
     }
 }
 
