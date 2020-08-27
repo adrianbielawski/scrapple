@@ -7,10 +7,10 @@ import { fetchGameDetails, setShowGameDetails } from 'actions/sideMenuActions';
 const SingleGame = (props) => {
 
     const handleGameIdClick = (e) => {
+        props.setShowGameDetails(true);
         const gameId = e.target.id;
         const gameDetailsPromise = props.fetchGameDetails(gameId);
         gameDetailsPromise.then(() => {
-            props.setShowGameDetails(true);
         });
     }
 
@@ -22,11 +22,6 @@ const SingleGame = (props) => {
     );
 }
 
-const mapStateToProps = (state) => {
-    return {
-    }
-}
-
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchGameDetails: (gameId) => dispatch(fetchGameDetails(gameId)),
@@ -34,4 +29,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleGame);
+export default connect(null, mapDispatchToProps)(SingleGame);

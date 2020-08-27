@@ -5,13 +5,13 @@ import styles from './gamesHistory.scss';
 //Custom Components
 import GamesTable from './games_table/gamesTable';
 //Redux actions
-import { setShowGames } from 'actions/sideMenuActions';
+import { setShowGamesHistory } from 'actions/sideMenuActions';
 
 const GamesHistory = (props) => {
     const { t } = useTranslation();
 
     const handleClick = () => {
-        props.setShowGames(!props.showGames);
+        props.setShowGamesHistory(!props.showGamesHistory);
     }
 
     return (
@@ -24,13 +24,13 @@ const GamesHistory = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        showGames: state.sideMenu.showGames,
+        showGamesHistory: state.sideMenu.showGamesHistory,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setShowGames: (showGames) => dispatch(setShowGames(showGames)),
+        setShowGamesHistory: (showGamesHistory) => dispatch(setShowGamesHistory(showGamesHistory)),
     }
 }
 

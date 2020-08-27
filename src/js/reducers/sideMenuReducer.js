@@ -1,8 +1,8 @@
 const initialState = {
-    fetchingUserInfo: true,
+    fetchingGamesHistory: true,
     fetchingGameDetails: true,
-    showAccountInfo: false,
-    showGames: false,
+    showMyAccount: false,
+    showGamesHistory: false,
     gamesRenderFrom: 1,
     gameDetails: {},
     showGameDetails: false,
@@ -14,12 +14,16 @@ const initialState = {
 const sideMenuReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
-        case 'SIDE_MENU/SET_SHOW_ACCOUNT_INFO':
-            newState.showAccountInfo = action.showAccountInfo;
+        case 'SIDE_MENU/SET_SHOW_MY_ACCOUNT':
+            newState.showMyAccount = action.showMyAccount;
             return newState;
 
-        case 'SIDE_MENU/SET_FETCHING_USER_INFO':
-            newState.fetchingUserInfo = action.fetchingUserInfo;
+        case 'SIDE_MENU/SET_FETCHING_GAMES_HISTORY':
+            newState.fetchingGamesHistory = action.fetchingGamesHistory;
+            return newState;
+
+        case 'SIDE_MENU/SET_FETCHING_GAME_DETAILS':
+            newState.fetchingGameDetails = action.fetchingGameDetails;
             return newState;
 
         case 'SIDE_MENU/SET_SHOW_CHANGE_NAME_MODAL':
@@ -30,8 +34,8 @@ const sideMenuReducer = (state = initialState, action) => {
             newState.showChangePasswordModal = action.showChangePasswordModal;
             return newState;
 
-        case 'SIDE_MENU/SET_SHOW_GAMES':
-            newState.showGames = action.showGames;
+        case 'SIDE_MENU/SET_SHOW_GAMES_HISTORY':
+            newState.showGamesHistory = action.showGamesHistory;
             return newState;
 
         case 'SIDE_MENU/SET_SHOW_ACCOUNT_SETTINGS':

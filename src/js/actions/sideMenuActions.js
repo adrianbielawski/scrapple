@@ -3,24 +3,31 @@ import languages from 'components/global_components/language/languages';
 //Redux actions
 import {setUserInfo} from 'actions/appActions';
 
-export const setFetchingUserInfo = (fetchingUserInfo) => {
+export const setFetchingGamesHistory = (fetchingGamesHistory) => {
     return {
-        type: 'SIDE_MENU/SET_FETCHING_USER_INFO',
-        fetchingUserInfo,
+        type: 'SIDE_MENU/SET_FETCHING_GAMES_HISTORY',
+        fetchingGamesHistory,
     };
 }
 
-export const setShowGames = (showGames) => {
+export const setFetchingGameDetails = (fetchingGameDetails) => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_GAMES',
-        showGames,
+        type: 'SIDE_MENU/SET_FETCHING_GAME_DETAILS',
+        fetchingGameDetails,
     };
 }
 
-export const setShowAccountInfo = (showAccountInfo) => {
+export const setShowGamesHistory = (showGamesHistory) => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_ACCOUNT_INFO',
-        showAccountInfo,
+        type: 'SIDE_MENU/SET_SHOW_GAMES_HISTORY',
+        showGamesHistory,
+    };
+}
+
+export const setShowMyAccount = (showMyAccount) => {
+    return {
+        type: 'SIDE_MENU/SET_SHOW_MY_ACCOUNT',
+        showMyAccount,
     };
 }
 
@@ -77,21 +84,21 @@ export const clearSideMenuState = () => {
     };
 }
 
-export const fetchUserInfo = (uid) => dispatch => {
+export const fetchGamesHistory = (uid) => dispatch => {
     return db.collection('users').doc(uid).collection('allGames').doc('allGames').get()
         .then((response) => {
             let data = response.data();
-            let allGames = data.allGames;
-            let reversedAllGames = [];
-            for (let i = 0; i < allGames.length; i++) {
-                reversedAllGames.unshift(allGames[i]);
+            let gamesHistory = data.allGames;
+            let reversedGamesHistory = [];
+
+            for (let i = 0; i < gamesHistory.length; i++) {
+                reversedGamesHistory.unshift(gamesHistory[i]);
             }
 
-            dispatch(setUserInfo(null, reversedAllGames));
-        }).then(() => {
-            dispatch(setFetchingUserInfo(false));
-        }).catch(() => {
-
+            dispatch(setUserInfo(null, reversedGamesHistory));
+            dispatch(setFetchingGamesHistory(false));
+        }).catch((err) => {
+            console.log(err)
         })
 }
 
@@ -109,7 +116,8 @@ export const fetchGameDetails = (gameId) => dispatch => {
                 players: data.players,
                 time: time
             }
-        ))
+        ));
+        dispatch(setFetchingGameDetails(false));
     }).catch((err) => {
         console.log(err)
     })

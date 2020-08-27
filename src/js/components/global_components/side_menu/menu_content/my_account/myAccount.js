@@ -1,34 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import styles from './myAccount.scss'
 //Custom Components
 import GamesHistory from './games_history/gamesHistory';
-//Redux actions
-import { fetchUserInfo, setFetchingUserInfo, setShowAccountInfo, setShowAccountSettings } from 'actions/sideMenuActions';
 import AccountSettings from './account_settings/accountSettings';
+import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
+//Redux actions
+import { fetchGamesHistory, setFetchingGamesHistory, setShowMyAccount } from 'actions/sideMenuActions';
 
 const MyAccount = (props) => {
     const { t } = useTranslation();
+    const [showSpinner, setShowSpinner] = useState(false);
   
     const handleMyAccountClick = () => {
-        if (!props.userInfo) {
-            const userInfoPromise = props.fetchUserInfo(props.user.uid);
+        if (props.fetchingGamesHistory) {
+            setShowSpinner(true);
+            const userInfoPromise = props.fetchGamesHistory(props.user.uid);
             userInfoPromise.then(() => {
-                props.setFetchingUserInfo(false);
-                props.setShowAccountInfo(!props.showAccountInfo);
+                props.setShowMyAccount(!props.showMyAccount);
+                setShowSpinner(false);
             })
         } else {
-            props.setShowAccountInfo(!props.showAccountInfo);
+            props.setShowMyAccount(!props.showMyAccount);
         }
     }
 
     return (
         <div className={styles.myAccount}>
-            <p className={styles.title} onClick={handleMyAccountClick}>{t("My account")}</p>
-            {!props.fetchingUserInfo && 
-            <div className={`${styles.accountContent} ${props.showAccountInfo && styles.showContent}`}
-                style={props.showGames && props.showAccountInfo ? {maxHeight: '400px'} : null}>
+            <div className={styles.title}>
+                <p onClick={handleMyAccountClick}>{t("My account")}</p>
+                {showSpinner && <LoadingSpinner size={20} />}
+            </div>
+            {!props.fetchingGamesHistory && 
+            <div className={`${styles.accountContent} ${props.showMyAccount && styles.showContent}`}
+                style={props.showGamesHistory && props.showMyAccount ? {maxHeight: '400px'} : null}>
                 <AccountSettings />
                 <GamesHistory />
             </div>
@@ -39,21 +45,19 @@ const MyAccount = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        fetchingUserInfo: state.sideMenu.fetchingUserInfo,
+        fetchingGamesHistory: state.sideMenu.fetchingGamesHistory,
         user: state.app.user,
-        userInfo: state.sideMenu.userInfo,
-        showAccountInfo: state.sideMenu.showAccountInfo,
-        showGames: state.sideMenu.showGames,
-        showAccountSettings: state.sideMenu.showAccountSettings,
+        userInfo: state.app.userInfo,
+        showMyAccount: state.sideMenu.showMyAccount,
+        showGamesHistory: state.sideMenu.showGamesHistory,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchUserInfo: (uid) => dispatch(fetchUserInfo(uid)),
-        setFetchingUserInfo: (fetchingUserInfo) => dispatch(setFetchingUserInfo(fetchingUserInfo)),
-        setShowAccountInfo: (showAccountInfo) => dispatch(setShowAccountInfo(showAccountInfo)),
-        setShowAccountSettings: (showAccountSettings) => dispatch(setShowAccountSettings(showAccountSettings)),
+        fetchGamesHistory: (uid) => dispatch(fetchGamesHistory(uid)),
+        setFetchingGamesHistory: (fetchingGamesHistory) => dispatch(setFetchingGamesHistory(fetchingGamesHistory)),
+        setShowMyAccount: (showMyAccount) => dispatch(setShowMyAccount(showMyAccount)),
     }
 }
 

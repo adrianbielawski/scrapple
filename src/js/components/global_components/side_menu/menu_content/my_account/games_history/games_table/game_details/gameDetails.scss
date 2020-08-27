@@ -1,0 +1,11 @@
+.card {
+    .wrapper {
+        width: 100%;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        .details {
+        font-size: 1.3em;
+        }
+    }
+}
