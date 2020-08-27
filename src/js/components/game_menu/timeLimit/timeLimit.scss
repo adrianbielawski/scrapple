@@ -1,9 +1,14 @@
 @import "global_styles/variables";
 
 .timeLimit {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
     .wrapper {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         margin-left: -15px;
     }
     .switch {
@@ -19,9 +24,10 @@
 
     input[type="time"] {
         font-size: 2em;
+        min-width: 200px;
         width: 100%;
         max-height: 0px;
-        padding: 0;
+        padding: 0 0 0 10px;
         overflow: hidden;
         border: none;
         transition-property: max-height;
