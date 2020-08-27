@@ -2,10 +2,9 @@
 
 .currentPlayer {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-flow: column;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     font-size: 1.2em;
 
     .timer {
