@@ -9,6 +9,7 @@ import Header from 'components/global_components/header/header';
 import ExitOptions from './exit_options/exitOptions';
 import WaitingCover from './waiting_cover/waitingCover';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
+import Button from 'components/global_components/button/button';
 //Redux Actions
 import { getGameData, exitGame, setFetchingGameData, setAdmin } from 'actions/appActions';
 import { setPlayers } from 'actions/gameActions';
@@ -55,8 +56,8 @@ const GameSummary = (props) => {
             {props.fetchingGameData ? <LoadingSpinner background={true} /> : (
                 <div>
                     <PlayersSummary players={props.players} />
-                    {props.admin ? <button onClick={handleExit}>{t("Exit")}</button> : null}
-                    {!props.admin && props.exitOption === 'exitGame' ? <button onClick={exitGame}>{t("Exit")}</button> : null}
+                    {props.admin ? <Button onClick={handleExit}>{t("Exit")}</Button> : null}
+                    {!props.admin && props.exitOption === 'exitGame' ? <Button onClick={exitGame}>{t("Exit")}</Button> : null}
                 </div>
             )}
         </div>

@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import { useTranslation } from 'react-i18next';
 import styles from './alert.scss';
+//Custom components
+import Button from 'components/global_components/button/button';
 //Redux Actions
 import { setAlert, removeAlert, handleFinishGame } from 'actions/appActions';
 import { changeUserName, changeUserPassword } from 'actions/authActions';
@@ -42,7 +44,7 @@ const Alert = (props) => {
                 <button className={styles.no} value="false" onClick={handleAlertResponse}>{t("No")}</button>
             </div>
     } else if (props.alert.type === 'alert') {
-        alertButtons = <button className={styles.ok} value="true" onClick={handleAlertResponse}>OK</button>
+        alertButtons = <Button className={styles.ok} value="true" onClick={handleAlertResponse}>OK</Button>
     };
 
     return (
