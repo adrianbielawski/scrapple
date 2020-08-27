@@ -15,6 +15,7 @@ import SideMenu from 'components/global_components/side_menu/sideMenu';
 import { setAlert, setGameId, updateUserCurrentGame } from 'actions/appActions';
 import { joinGame, createNewGame, setShowConfirmation } from 'actions/mainMenuActions';
 import { addPlayer } from 'actions/gameMenuActions';
+import { setPlayers } from 'actions/gameActions';
 
 const MainMenu = (props) => {
     const gameIdInput = useRef(null);
@@ -23,6 +24,7 @@ const MainMenu = (props) => {
     let unsubscribeGameStart = null;
 
     useEffect(() => {
+        props.setPlayers([]);
         return () => {
             props.setShowConfirmation(false);
             if (unsubscribeGameStart !== null) {
@@ -110,6 +112,7 @@ const mapDispatchToProps = (dispatch) => {
         setGameId: (gameId) => dispatch(setGameId(gameId)),
         setShowConfirmation: (showConfirmation) => dispatch(setShowConfirmation(showConfirmation)),
         addPlayer: (playerName, uid, admin) => dispatch(addPlayer(playerName, uid, admin)),
+        setPlayers: (players) => dispatch(setPlayers(players)),
         createNewGame: (user, gameId, language, timer, time) => dispatch(createNewGame(user, gameId, language, timer, time)),
         updateUserCurrentGame: (uid, gameId) => dispatch(updateUserCurrentGame(uid, gameId)),
     }
