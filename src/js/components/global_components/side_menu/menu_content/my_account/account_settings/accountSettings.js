@@ -6,15 +6,12 @@ import styles from './accountSettings.scss';
 import ChangeName from './change_name/changeName';
 import ChangePassword from './change_password/changePassword';
 //Redux actions
-import { setShowAccountSettings, setShowChangeNameModal, setShowChangePasswordModal } from 'actions/sideMenuActions';
+import { setShowAccountSettings, setShowChangeNameModal, setShowChangePasswordModal,
+    setShowChangeProfileImageModal } from 'actions/sideMenuActions';
+import ChangeProfileImage from './change_profile_image/changeProfileImage';
 
 const AccountSettings = (props) => {
     const { t } = useTranslation();
-
-    const closeModal = () => {
-        props.setShowGameDetails(false);
-        props.setGameDetails({})
-    }
   
     const showAccountSettings = () => {
         props.setShowAccountSettings(!props.showAccountSettings);
@@ -27,15 +24,21 @@ const AccountSettings = (props) => {
     const handleChangePasswordModal = () => {
         props.setShowChangePasswordModal(!props.showChangePasswordModal);
     }
+  
+    const handleChangeProfileImageModal = () => {
+        props.setShowChangeProfileImageModal(!props.showChangeProfileImageModal);
+    }
 
     return (
         <div className={styles.accountSettings}>
             <p className={styles.title} onClick={showAccountSettings}>{t("Account settings")}</p>
-            <ChangeName />
-            <ChangePassword />
+            <ChangeName show={props.showChangeNameModal} />
+            <ChangePassword show={props.showChangePasswordModal} />
+            <ChangeProfileImage show={props.showChangeProfileImageModal} />
             <ul className={`${styles.settings} ${props.showAccountSettings && styles.showSettings}`}>
                 <li><p onClick={handleChangeNameModal}>{t("Change name")}</p></li>
                 <li><p onClick={handleChangePasswordModal}>{t("Change password")}</p></li>
+                <li><p onClick={handleChangeProfileImageModal}>{t("Change profile image")}</p></li>
             </ul>
         </div>
     );
@@ -46,6 +49,7 @@ const mapStateToProps = (state) => {
         showAccountSettings: state.sideMenu.showAccountSettings,
         showChangeNameModal: state.sideMenu.showChangeNameModal,
         showChangePasswordModal: state.sideMenu.showChangePasswordModal,
+        showChangeProfileImageModal: state.sideMenu.showChangeProfileImageModal,
     }
 }
 
@@ -54,6 +58,7 @@ const mapDispatchToProps = (dispatch) => {
         setShowAccountSettings: (showAccountSettings) => dispatch(setShowAccountSettings(showAccountSettings)),
         setShowChangeNameModal: (showChangeNameModal) => dispatch(setShowChangeNameModal(showChangeNameModal)),
         setShowChangePasswordModal: (showChangePasswordModal) => dispatch(setShowChangePasswordModal(showChangePasswordModal)),
+        setShowChangeProfileImageModal: (showChangeProfileImageModal) => dispatch(setShowChangeProfileImageModal(showChangeProfileImageModal)),
     }
 }
 

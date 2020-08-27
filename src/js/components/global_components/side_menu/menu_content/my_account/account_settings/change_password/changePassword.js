@@ -61,7 +61,7 @@ const ChangePassword = (props) => {
     }
 
     return (
-        <Modal show={props.showChangePasswordModal}>
+        <Modal show={props.show}>
             <div className={styles.changePassword}>
                 <Input className={styles.input} type="password"
                     autoComplete="new-password" onChange={handleNewPasswordChange}
@@ -74,12 +74,6 @@ const ChangePassword = (props) => {
             <Button onClick={closeModal}>{t("Close")}</Button>
         </Modal>
     );
-}
-
-const mapStateToProps = (state) => {
-    return {
-        showChangePasswordModal: state.sideMenu.showChangePasswordModal,
-    }
 }
 
 const mapDispatchToProps = (dispatch) => {

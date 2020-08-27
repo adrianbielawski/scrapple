@@ -9,6 +9,7 @@ const initialState = {
     showAccountSettings: false,
     showChangeNameModal: false,
     showChangePasswordModal: false,
+    showChangeProfileImageModal: false,
 };
 
 const sideMenuReducer = (state = initialState, action) => {
@@ -32,6 +33,10 @@ const sideMenuReducer = (state = initialState, action) => {
 
         case 'SIDE_MENU/SET_SHOW_CHANGE_PASSWORD_MODAL':
             newState.showChangePasswordModal = action.showChangePasswordModal;
+            return newState;
+
+        case 'SIDE_MENU/SET_SHOW_CHANGE_PROFILE_IMAGE_MODAL':
+            newState.showChangeProfileImageModal = action.showChangeProfileImageModal;
             return newState;
 
         case 'SIDE_MENU/SET_SHOW_GAMES_HISTORY':

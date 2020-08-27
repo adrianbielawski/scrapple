@@ -30,7 +30,7 @@ const ChangeName = (props) => {
     }
 
     return (
-        <Modal show={props.showChangeNameModal}>
+        <Modal show={props.show}>
             <div className={styles.changeName}>
                 <Input className={styles.input} onChange={handleInputChange} placeholder={t("enter new name")} ref={newNameInput}/>
                 <Button className={styles.button} onClick={handleSubmit}>{t("Change name")}</Button>
@@ -42,7 +42,6 @@ const ChangeName = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        showChangeNameModal: state.sideMenu.showChangeNameModal,
     }
 }
 

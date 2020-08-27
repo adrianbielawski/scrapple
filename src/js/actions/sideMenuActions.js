@@ -52,6 +52,13 @@ export const setShowChangePasswordModal = (showChangePasswordModal) => {
     };
 }
 
+export const setShowChangeProfileImageModal = (showChangeProfileImageModal) => {
+    return {
+        type: 'SIDE_MENU/SET_SHOW_CHANGE_PROFILE_IMAGE_MODAL',
+        showChangeProfileImageModal,
+    };
+}
+
 export const decreaseGamesToRender = () => {
     return {
         type: 'SIDE_MENU/DECREASE_GAMES_TO_RENDER'
