@@ -3,13 +3,9 @@
 .myAccount {
     .title {
         display: inline-flex;
-        align-items: center;
         &:hover {
             color: $mainGreen;
             cursor: pointer;
-        }
-        p {
-            padding-right: 10px;
         }
     }
     .accountContent {

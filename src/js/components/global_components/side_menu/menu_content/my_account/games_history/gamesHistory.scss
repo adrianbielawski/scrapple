@@ -3,10 +3,13 @@
 .gamesHistory {
     .title {
         display: inline-flex;
-        cursor: pointer;
-        &:hover {
-            color: $mainGreen;
+        align-items: center;
+        p {
+            padding-right: 10px;
+            cursor: pointer;
+            &:hover {
+                color: $mainGreen;
+            }
         }
-    }
-    
+    }    
 }

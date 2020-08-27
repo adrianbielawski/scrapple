@@ -8,14 +8,15 @@ import Modal from 'components/global_components/modal/modal';
 import PlayersSummary from 'components/game_summary/playersSummary';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 //Redux actions
-import { setGameDetails, setShowGameDetails } from 'actions/sideMenuActions';
+import { setGameDetails, setShowGameDetails, setFetchingGameDetails } from 'actions/sideMenuActions';
 
 const GameDetails = (props) => {
     const { t } = useTranslation();
 
     const closeModal = () => {
         props.setShowGameDetails(false);
-        props.setGameDetails({})
+        props.setGameDetails({});
+        props.setFetchingGameDetails(true);
     }
 
     return (
@@ -47,6 +48,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setGameDetails: (gameDetails) => dispatch(setGameDetails(gameDetails)),
         setShowGameDetails: (showGameDetails) => dispatch(setShowGameDetails(showGameDetails)),
+        setFetchingGameDetails: (fetchingGameDetails) => dispatch(setFetchingGameDetails(fetchingGameDetails)),
     }
 }
 
