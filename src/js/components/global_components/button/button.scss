@@ -4,21 +4,20 @@ button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	border: 1px solid darken($grey, 30);
+	border: none;
 	background: $mainGreen;
 	color: #fff;
 	padding: 1px 20px;
 	border-radius: 17.5px;
-	box-shadow: 2px 2px 3px $boxShadow;
-	text-shadow: 1px 1px $textShadow;
 	font-weight: 700;
 	font-size: 1.3em;
 	box-sizing: border-box;
 	cursor: pointer;
 	outline: none;
 	font-family: "nunito";
+	-webkit-tap-highlight-color: transparent;
 	&:active {
-		box-shadow: none;
 		background: darken($mainGreen, 10);
+		outline: none;
 	}
 }
