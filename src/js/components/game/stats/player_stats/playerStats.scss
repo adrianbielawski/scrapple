@@ -2,7 +2,7 @@
 
 .playerStats {
     width: 97%;
-    padding: 0 10px;
+    padding: 3px 5px 5px 5px;
     margin-bottom: 10px;
     background: darken($grey, 5);
     box-shadow: 1px 1px 2px $boxShadow;
@@ -12,42 +12,54 @@
         box-shadow: 2px 2px 5px $boxShadow;
     }
 
-    .playerName {
-        width: 100%;
-        font-size: 1.5em;
-        font-weight: 700;
+    .wrapper {
         display: flex;
-        justify-content: center;
-        color: $darkText;
-        .userIcon {
-            font-size: 20px;
-            width: 25px;
-            margin-right: 3px;
+        width: 100%;
+        .profileImage {
+            position: relative;
+            width: 70px;
+            margin-right: 5px;
             display: flex;
-            align-items: center;
             justify-content: center;
-            span {
+            align-items: center;
+            font-size: 3em;
+            color: $grey;
+            .badge {
+                position: absolute;
+                right: 0;
+                bottom: -3px;
                 font-size: 20px;
+                color: $darkText;
+                span {
+                    font-size: 20px;
+                }
             }
         }
-    }
 
-    .wraper {
-        width: 100%;
-        margin: 3px 0 5px 0;
-        display: inline-flex;
-        justify-content: space-between;
-        align-items: center;
-        button {
-            height: 30px;
-            padding: 3px 10px;
-            font-size: 1.2em;
+        .player {
+            width: 100%;
+            .playerName {
+                font-size: 1.5em;
+                font-weight: 700;
+                color: $darkText;
+            }
+
+            .points {
+                width: 100%;
+                display: inline-flex;
+                justify-content: space-between;
+                align-items: center;
+                button {
+                    height: 30px;
+                    padding: 3px 10px;
+                    font-size: 1.2em;
+                }
+            }
         }
     }
 
     .allPoints {
         width: 100%;
-        margin-top: 3px;
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.2s ease-in-out;

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMobileAlt, faSlash, faUserCog } from '@fortawesome/free-solid-svg-icons';
+import { faMobileAlt, faSlash, faCog, faUser } from '@fortawesome/free-solid-svg-icons';
 import styles from './playerStats.scss';
 //Custom Components
 import RoundPoints from '../round_points/roundPoints';
@@ -26,27 +26,26 @@ const PlayerStats = (props) => {
     const getRoundPoints = () => {
         return props.player.allPoints.map((points, index) => (
             <RoundPoints round={index + 1} points={points} key={index} />
-        )
-        );
+        ));
     };
 
     const getUserIcon = () => {
         const player = props.player;
         if (player.admin) {
             return (
-                <span className={styles.userIcon}>
-                    <FontAwesomeIcon icon={faUserCog} />
+                <span className={styles.badge}>
+                    <FontAwesomeIcon icon={faCog} />
                 </span>
             );
         } else if (!player.admin && player.uid) {
             return (
-                <span className={styles.userIcon}>
+                <span className={styles.badge}>
                     <FontAwesomeIcon icon={faMobileAlt} />
                 </span>
             );
         } else if (!player.admin && !player.uid) {
             return (
-                <div className={styles.userIcon}>
+                <div className={styles.badge}>
                     <span className="fa-layers fa-fw">
                         <FontAwesomeIcon icon={faMobileAlt} />
                         <FontAwesomeIcon icon={faSlash} />
@@ -61,13 +60,20 @@ const PlayerStats = (props) => {
 
     return (
         <Card className={`${styles.playerStats} ${currentClass}`} ref={playerStats}>
-            <div className={styles.playerName}>
-                {getUserIcon()}
-                <span>{props.player.playerName}</span>
-            </div>
-            <div className={styles.wraper}>
-                <div>{t("Current score")} {props.player.currentScore}</div>
-                <Button onClick={toggleDisplayAllPoints}>{t("All points")}</Button>
+            <div className={styles.wrapper}>
+                <div className={styles.profileImage}>
+                    <FontAwesomeIcon icon={faUser} />
+                    {getUserIcon()}
+                </div>
+                <div className={styles.player}>
+                    <p className={styles.playerName}>
+                        {props.player.playerName}
+                    </p>
+                    <div className={styles.points}>
+                        <p>{t("Current score")} {props.player.currentScore}</p>
+                        <Button onClick={toggleDisplayAllPoints}>{t("All points")}</Button>
+                    </div>
+                </div>
             </div>
             <div className={styles.allPoints} style={{ maxHeight: `${allPointsStyle}px` }}>
                 <p>{t("Best score")}: {props.player.bestScore}</p>
