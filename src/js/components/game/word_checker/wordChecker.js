@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import styles from './wordChecker.scss';
 //Custom Components
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
+import Input from 'components/global_components/input/input';
+//Assets
 import fist from 'img/fist.png';
 import thumbUp from 'img/thumb-up.png';
 import thumbDown from 'img/thumb-down.png';
@@ -17,6 +19,7 @@ const WordChecker = (props) => {
     let timeout = null;
 
     const clearInput = () => {
+        setWord('');
         wordInput.current.value = null;
     }
 
@@ -84,7 +87,7 @@ const WordChecker = (props) => {
 
     return (
         <div className={styles.wordChecker}>
-            <input type="text"
+            <Input type="text"
                 onClick={clearInput}
                 onChange={handleInputChange}
                 ref={wordInput}

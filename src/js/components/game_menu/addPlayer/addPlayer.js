@@ -6,6 +6,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import styles from './addPlayer.scss';
 //Custom components
 import Button from 'components/global_components/button/button';
+import Input from 'components/global_components/input/input';
 //Redux Actions
 import { addPlayer } from 'actions/gameMenuActions';
 import { setAlert } from 'actions/appActions';
@@ -57,7 +58,7 @@ const AddPlayer = (props) => {
         <div className={styles.addPlayer}>
             <p>{t("Add player")}</p>
             <div className={styles.form}>
-                <input type="text" autoComplete="false" spellCheck="false" maxLength="30" ref={inputEl}></input>
+                <Input type="text" autoComplete="false" spellCheck="false" maxLength="30" ref={inputEl} />
                 <Button className={styles.add} onClick={handleSubmit}>
                     <FontAwesomeIcon icon={faPlus} className="plus" />
                 </Button>

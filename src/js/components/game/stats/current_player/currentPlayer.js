@@ -9,6 +9,7 @@ import styles from './currentPlayer.scss';
 //Custom Components
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 import Button from 'components/global_components/button/button';
+import Input from 'components/global_components/input/input';
 //Redux Actions
 import { addPoints, timeOut, setTimeLeft } from 'actions/gameActions';
 //Assets
@@ -89,7 +90,7 @@ const CurrentPlayer = (props) => {
                 {getTimeLeft()}
             </div>}
             <form className={styles.addPoints} onSubmit={handleSubmit}>
-                <input type="number" placeholder={props.t("Add points")} ref={pointsInput} required min="0" max="999" />
+                <Input type="number" placeholder={props.t("Add points")} ref={pointsInput} required min="0" max="999" />
                 <Button type="submit" className={styles.confirm}>
                     <FontAwesomeIcon icon={faCheck} />
                 </Button>
