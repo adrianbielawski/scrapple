@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMobileAlt, faSlash, faCog, faUser } from '@fortawesome/free-solid-svg-icons';
@@ -37,12 +38,6 @@ const PlayerStats = (props) => {
                     <FontAwesomeIcon icon={faCog} />
                 </span>
             );
-        } else if (!player.admin && player.uid) {
-            return (
-                <span className={styles.badge}>
-                    <FontAwesomeIcon icon={faMobileAlt} />
-                </span>
-            );
         } else if (!player.admin && !player.uid) {
             return (
                 <div className={styles.badge}>
@@ -62,7 +57,7 @@ const PlayerStats = (props) => {
         <Card className={`${styles.playerStats} ${currentClass}`} ref={playerStats}>
             <div className={styles.wrapper}>
                 <div className={styles.profileImage}>
-                    <FontAwesomeIcon icon={faUser} />
+                    {props.player.profileImage ? <img src={props.player.profileImage}/> : <FontAwesomeIcon icon={faUser} />}
                     {getUserIcon()}
                 </div>
                 <div className={styles.player}>
@@ -85,4 +80,10 @@ const PlayerStats = (props) => {
     );
 }
 
-export default PlayerStats;
+const mapStateToProps = (state) => {
+    return {
+        user: state.app.user,
+    }
+}
+
+export default connect(mapStateToProps)(PlayerStats)

@@ -1,7 +1,9 @@
-import { db } from 'firebaseConfig';
+import { db, auth, storageRef } from 'firebaseConfig';
+import moment from 'moment';
+import { cloneDeep } from 'lodash';
 import languages from 'components/global_components/language/languages';
 //Redux actions
-import {setUserInfo} from 'actions/appActions';
+import { setUserInfo, setAlert } from 'actions/appActions';
 
 export const setFetchingGamesHistory = (fetchingGamesHistory) => {
     return {
@@ -106,26 +108,55 @@ export const fetchGamesHistory = (uid) => dispatch => {
             dispatch(setFetchingGamesHistory(false));
         }).catch((err) => {
             console.log(err)
-        })
+        });
 }
 
 export const fetchGameDetails = (gameId) => dispatch => {
     return db.collection('games').doc(gameId).get()
-    .then((response) => {
-        const data = response.data();
+        .then((response) => {
+            const data = response.data();
 
-        const lang = languages[data.language].name;
-        const time = data.time ? `${data.time.hours}:${data.time.minutes}:${data.time.seconds}` : null;
+            const lang = languages[data.language].name;
+            const time = data.time ? `${data.time.hours}:${data.time.minutes}:${data.time.seconds}` : null;
 
-        dispatch(setGameDetails(
-            {
-                language: lang,
-                players: data.players,
-                time: time
-            }
-        ));
-        dispatch(setFetchingGameDetails(false));
-    }).catch((err) => {
-        console.log(err)
-    })
+            dispatch(setGameDetails(
+                {
+                    language: lang,
+                    players: data.players,
+                    time: time
+                }
+            ));
+            dispatch(setFetchingGameDetails(false));
+        }).catch((err) => {
+            console.log(err)
+        });
+}
+
+export const updateProfileImage = (profileImage, gameId, uid, players) => dispatch => {
+    const profileImageRef = storageRef.child(`profile_image_${uid}_${moment().unix()}`);
+    return profileImageRef.put(profileImage).then(() => {
+        profileImageRef.getDownloadURL().then((url) => {
+            auth.currentUser.updateProfile({ photoURL: url }).then(() => {
+                updateProfileImageInCurrentGame(url, gameId, uid, players);
+                dispatch(setAlert('alert', 'Profile image updated'));
+                dispatch(setShowChangeProfileImageModal(false));
+            })
+        })
+    }).catch(() => {
+        dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+    });
+}
+
+const updateProfileImageInCurrentGame = (url, gameId, uid, players) => {
+    let updatedPlayers = cloneDeep(players);
+    updatedPlayers.map(player => {
+        if (player.uid === uid) {
+            const updatedPlayer = player;
+            updatedPlayer.profileImage = url;
+        }
+    });
+
+    db.collection('games').doc(gameId).update({
+        players: updatedPlayers,
+    });
 }

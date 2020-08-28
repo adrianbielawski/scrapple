@@ -14,6 +14,7 @@ export const createNewGame = (user, gameId, language, timer, time) => {
                 {
                     playerName: user.displayName,
                     uid: user.uid,
+                    profileImage: user.photoURL,
                     admin: true,
                     playerIndex: 0,
                     currentScore: 0,
@@ -85,6 +86,7 @@ export const joinGame = (gameId, language, user, history) => {
                                 playerIndex: data.players.length,
                                 playerName: user.displayName,
                                 uid: user.uid,
+                                profileImage: user.photoURL,
                             })
                     })
                     .then(() => {

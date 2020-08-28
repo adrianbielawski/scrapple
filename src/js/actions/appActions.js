@@ -105,13 +105,14 @@ export const changeLanguage = (language) => {
 
 export const updateUserCurrentGame = (uid, currentGame) => () => {
     return db.collection('users').doc(uid).collection('currentGame').doc('gameId')
-        .update({id: currentGame});
+        .update({ id: currentGame });
 }
 
 export const updateUserAllGames = (uid, gameId, date) => () => {
     return db.collection('users').doc(uid).collection('allGames').doc('allGames')
-        .update({'allGames': firebase.firestore.FieldValue.arrayUnion({gameId, date})
-    });
+        .update({
+            'allGames': firebase.firestore.FieldValue.arrayUnion({ gameId, date })
+        });
 }
 
 export const getGameData = (gameId) => {
@@ -161,13 +162,13 @@ export const playAgain = (gameId, admin, history) => {
                         endTime: null,
                         exitOption: 'playAgain'
                     })
-                        .then(() => {
-                            dispatch(clearGameSummaryState());
-                            history.push(`/game/${gameId}`);
-                        })
-                        .catch(() => {
-                            dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
-                        });
+                    .then(() => {
+                        dispatch(clearGameSummaryState());
+                        history.push(`/game/${gameId}`);
+                    })
+                    .catch(() => {
+                        dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+                    });
                 })
                 .catch(() => {
                     dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
@@ -196,13 +197,13 @@ export const playAgainSettings = (gameId, admin, history) => {
                         endTime: null,
                         exitOption: 'playAgainWithSettings'
                     })
-                        .then(() => {
-                            history.push(`/game_menu`);
-                            dispatch(clearGameSummaryState());
-                        })
-                        .catch(() => {
-                            dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
-                        });
+                    .then(() => {
+                        history.push(`/game_menu`);
+                        dispatch(clearGameSummaryState());
+                    })
+                    .catch(() => {
+                        dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+                    });
                 })
         } else {
             dispatch(clearGameSummaryState());
@@ -247,7 +248,8 @@ const clearPlayers = (players) => {
             currentScore: 0,
             bestScore: 0,
             allPoints: [],
-            uid: player.uid
+            uid: player.uid,
+            profileImage: player.profileImage,
         }
     });
 }
@@ -260,12 +262,12 @@ export const getUserCurrentGame = (uid) => dispatch => {
                 dispatch(setUserInfo(currentGame))
                 return currentGame;
             }
-    });
+        });
 }
 
 export const checkCurrentGameStatus = (gameId) => () => {
     return db.collection('games').doc(gameId).get()
-    .then((response) => {
+        .then((response) => {
             const data = response.data();
             const exitOption = data.exitOption;
             const gameStarted = data.gameStarted;
@@ -273,5 +275,5 @@ export const checkCurrentGameStatus = (gameId) => () => {
                 return false;
             }
             return true;
-    });
+        });
 }

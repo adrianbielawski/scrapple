@@ -1,0 +1,26 @@
+@import "global_styles/variables";
+
+.changeProfileImage {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    flex-grow: 1;
+    width: 400px;
+    max-width: 100%;
+    .input {
+        display: none;
+    }
+    .selectPhotoButton {
+        margin-bottom: 10px;
+    }
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+
+    .cancelButton {
+        background-color: $red;
+        margin-right: 10px;
+    }
+}

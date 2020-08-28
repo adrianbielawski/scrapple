@@ -17,13 +17,18 @@
         width: 100%;
         .profileImage {
             position: relative;
-            width: 70px;
+            width: 50px;
             margin-right: 5px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 3em;
+            font-size: 2.5em;
             color: $grey;
+            img {
+                max-width: 50px;
+                max-height: 50px;
+                border-radius: 50%;
+            }
             .badge {
                 position: absolute;
                 right: 0;

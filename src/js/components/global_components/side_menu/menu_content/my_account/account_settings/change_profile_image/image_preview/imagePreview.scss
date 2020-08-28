@@ -1,0 +1,17 @@
+@import "global_styles/variables";
+
+.imagePreview {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 5px;
+    border: 1px solid $grey;
+    font-size: 6em;
+    color: $grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .image {
+        max-width: 200px;
+        max-height: 200px;
+    }
+}

@@ -20,6 +20,7 @@ const gameReducer = (state = initialState, action) => {
             newPlayers.push({
                 playerName: action.playerName,
                 uid: action.uid,
+                profileImage: null,
                 admin: action.admin,
                 playerIndex: newState.players.length,
                 currentScore: 0,
