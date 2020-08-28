@@ -53,7 +53,7 @@ const resources = {
       "Are you sure you want to finish this game?" : "Are you sure you want to finish this game?",
       "Game finished" : "Game finished",
       "Please wait until points of unused letters will be substracted" : "Please wait until points of unused letters will be substracted",
-      //Game/Menu
+      //Side menu
       "Menu" : "Menu",
       "Game id" : "Game id",
       "My account" : "My account",
@@ -78,6 +78,7 @@ const resources = {
       "Please enter new password" : "Please enter new password",
       "Please repeat new password" : "Please repeat new password",
       "Passwords doesn't match" : "Passwords doesn't match",
+      "Change profile image" : "Change profile image",
       //TwoLetterWords
       "Show two-letter words" : "Show two-letter words",
       "Hide two-letter words" : "Hide two-letter words",
@@ -117,6 +118,11 @@ const resources = {
       //Alert
       "Yes" : "Yes",
       "No" : "No",
+      //Buttons
+      "Select photo" : "Select photo",
+      "Change photo" : "Change photo",
+      "Cancel" : "Cancel",
+      "Confirm" : "Confirm",
     }
   },
   pl: {
@@ -170,7 +176,7 @@ const resources = {
       "Are you sure you want to finish this game?" : "Jesteś pewien, że chcesz zakończyć grę?",
       "Game finished" : "Gra zakończona",
       "Please wait until points of unused letters will be substracted" : "Poczekaj, aż wartość pozostałych liter zostanie odjęta",
-      //Game/Menu
+      //Side menu
       "Menu" : "Menu",
       "Game id" : "Numer gry",
       "My account" : "Moje konto",
@@ -195,6 +201,7 @@ const resources = {
       "Please enter new password" : "Proszę podać nowe hasło",
       "Please repeat new password" : "Proszę powtórzyć hasło",
       "Passwords doesn't match" : "Podane hasła nie są takie same",
+      "Change profile image" : "Zmień zdjęcie profilowe",
       //TwoLetterWords
       "Show two-letter words" : "Pokaż słowa dwuliterowe",
       "Hide two-letter words" : "Ukryj słowa dwuliterowe",
@@ -235,6 +242,11 @@ const resources = {
       //Alert
       "Yes" : "Tak",
       "No" : "Nie",
+      //Buttons
+      "Select photo" : "Wybierz zdjęcie",
+      "Change photo" : "Zmień zdjęcie",
+      "Cancel" : "Wróć",
+      "Confirm" : "Potwierdź",
     }
   }
 };
