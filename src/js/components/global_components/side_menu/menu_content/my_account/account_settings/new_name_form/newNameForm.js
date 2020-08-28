@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import styles from './changeName.scss';
+import styles from './newNameForm.scss';
 //Custom Components
 import Modal from 'components/global_components/modal/modal';
 import Button from 'components/global_components/button/button';
@@ -10,7 +10,7 @@ import Input from 'components/global_components/input/input';
 import { setShowChangeNameModal } from 'actions/sideMenuActions';
 import { setAlert } from 'actions/appActions';
 
-const ChangeName = (props) => {
+const NewNameForm = (props) => {
     const { t } = useTranslation();
     const [newName, setNewName] = useState(null);
     const newNameInput = useRef(null);
@@ -31,18 +31,13 @@ const ChangeName = (props) => {
 
     return (
         <Modal show={props.show}>
-            <div className={styles.changeName}>
+            <div className={styles.newNameForm}>
                 <Input className={styles.input} onChange={handleInputChange} placeholder={t("enter new name")} ref={newNameInput}/>
                 <Button className={styles.button} onClick={handleSubmit}>{t("Change name")}</Button>
             </div>
             <Button onClick={closeModal}>{t("Close")}</Button>
         </Modal>
     );
-}
-
-const mapStateToProps = (state) => {
-    return {
-    }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -52,4 +47,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChangeName);
+export default connect(null, mapDispatchToProps)(NewNameForm);

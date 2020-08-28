@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import styles from './accountSettings.scss';
 //Custom Components
-import ChangeName from './change_name/changeName';
-import ChangePassword from './change_password/changePassword';
+import NewNameForm from './new_name_form/newNameForm';
+import NewPasswordForm from './new_password_form/newPasswordForm';
+import ProfileImageForm from './profile_image_form/profileImageForm';
 //Redux actions
 import { setShowAccountSettings, setShowChangeNameModal, setShowChangePasswordModal,
     setShowChangeProfileImageModal } from 'actions/sideMenuActions';
-import ChangeProfileImage from './change_profile_image/changeProfileImage';
 
 const AccountSettings = (props) => {
     const { t } = useTranslation();
@@ -32,9 +32,9 @@ const AccountSettings = (props) => {
     return (
         <div className={styles.accountSettings}>
             <p className={styles.title} onClick={showAccountSettings}>{t("Account settings")}</p>
-            <ChangeName show={props.showChangeNameModal} />
-            <ChangePassword show={props.showChangePasswordModal} />
-            <ChangeProfileImage show={props.showChangeProfileImageModal} />
+            <NewNameForm show={props.showChangeNameModal} />
+            <NewPasswordForm show={props.showChangePasswordModal} />
+            <ProfileImageForm show={props.showChangeProfileImageModal} />
             <ul className={`${styles.settings} ${props.showAccountSettings && styles.showSettings}`}>
                 <li><p onClick={handleChangeNameModal}>{t("Change name")}</p></li>
                 <li><p onClick={handleChangePasswordModal}>{t("Change password")}</p></li>

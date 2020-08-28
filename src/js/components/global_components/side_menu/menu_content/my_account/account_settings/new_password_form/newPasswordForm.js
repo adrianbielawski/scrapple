@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import styles from './changePassword.scss';
+import styles from './newPasswordForm.scss';
 //Custom Components
 import Modal from 'components/global_components/modal/modal';
 import Button from 'components/global_components/button/button';
@@ -10,7 +10,7 @@ import Input from 'components/global_components/input/input';
 import { setShowChangePasswordModal } from 'actions/sideMenuActions';
 import { setAlert } from 'actions/appActions';
 
-const ChangePassword = (props) => {
+const NewPasswordForm = (props) => {
     const { t } = useTranslation();
     const [newPassword, setNewPassword] = useState(null);
     const [repeatPassword, setRepeatPassword] = useState(null);
@@ -62,7 +62,7 @@ const ChangePassword = (props) => {
 
     return (
         <Modal show={props.show}>
-            <div className={styles.changePassword}>
+            <div className={styles.newPasswordForm}>
                 <Input className={styles.input} type="password"
                     autoComplete="new-password" onChange={handleNewPasswordChange}
                     placeholder={t("enter new password")} ref={newPasswordInput} minLength={6} required/>
@@ -83,4 +83,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);
+export default connect(null, mapDispatchToProps)(NewPasswordForm);

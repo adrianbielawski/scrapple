@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import styles from './changeProfileImage.scss';
+import styles from './profileImageForm.scss';
 //Custom Components
 import Modal from 'components/global_components/modal/modal';
 import Button from 'components/global_components/button/button';
@@ -12,7 +12,7 @@ import ImagePreview from './image_preview/imagePreview';
 import { setShowChangeProfileImageModal, updateProfileImage } from 'actions/sideMenuActions';
 import { setAlert } from 'actions/appActions';
 
-const ChangeProfileImage = (props) => {
+const ProfileImageForm = (props) => {
     const { t } = useTranslation();
     const [uploadingImage, setUploadingImage] = useState(false);
     const { gameId } = useParams();
@@ -45,7 +45,7 @@ const ChangeProfileImage = (props) => {
 
     return (
         <Modal show={props.show}>
-            <div className={styles.changeProfileImage}>
+            <div className={styles.profileImageForm}>
                 <ImagePreview profileImageURL={profileImageURL} user={props.user} onClick={handleSelectPhoto} />
                 <input className={styles.input} type="file" accept="image/png, image/jpeg" capture="user" ref={fileInputRef} onChange={handleImageChange} />
                 <Button className={styles.selectPhotoButton} onClick={handleSelectPhoto}>
@@ -76,4 +76,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChangeProfileImage);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileImageForm);
