@@ -5,7 +5,7 @@ import { auth } from 'firebaseConfig';
 import styles from 'global_styles/app.scss';
 //Custom Components
 import Main from './components/main/main';
-import MainMenu from './components/main_Menu/MainMenu';
+import MainMenu from './components/main_Menu/mainMenu';
 const GameMenu = React.lazy(() => import('./components/game_menu/gameMenu'));
 const Game = React.lazy(() => import('./components/game/game'));
 const GameSummary = React.lazy(() => import('./components/game_summary/gameSummary'));
