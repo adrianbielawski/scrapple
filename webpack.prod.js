@@ -3,7 +3,7 @@ const common = require('./webpack.common.js');
 const { DefinePlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const basename = '/scrapple/dist/';
+const basename = '/';
 
 module.exports = merge(common, {
   mode: 'production',
