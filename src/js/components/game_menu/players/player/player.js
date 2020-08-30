@@ -155,13 +155,13 @@ const Player = (props) => {
     }
 
     const removedPlayerTransition = () => {
-        const element = element.current;
-        element.style.transitionProperty = 'width, max-height';
-        element.style.transitionDuration = '.4s, .4s';
-        element.style.transitionDelay = '0.1s, .4s';
-        element.style.transitionTimingFunction = 'ease-in, ease';
-        element.style.width = 0;
-        element.style.maxHeight = 0;
+        const el = element.current;
+        el.style.transitionProperty = 'width, max-height';
+        el.style.transitionDuration = '.4s, .4s';
+        el.style.transitionDelay = '0.1s, .4s';
+        el.style.transitionTimingFunction = 'ease-in, ease';
+        el.style.width = 0;
+        el.style.maxHeight = 0;
     }
 
     const remove = () => {
