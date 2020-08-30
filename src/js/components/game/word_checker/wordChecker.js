@@ -92,7 +92,8 @@ const WordChecker = (props) => {
                 onChange={handleInputChange}
                 ref={wordInput}
                 placeholder={t("Check your word")}
-                spellCheck="false" />
+                spellCheck="false"
+                autoFocus />
             <div className={`${styles.resoultImg} ${!props.timer || !props.admin ? styles.noAudio : ''}`}>
                 {image}
             </div>
