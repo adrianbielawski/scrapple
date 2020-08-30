@@ -50,4 +50,4 @@ jobs:
         REMOTE_USER: "scrapple"
         TARGET: "scrapple-fe"
         ARGS: "-rltgoDzvO"
-        SOURCE: "dist/"
+        SOURCE: "build/"
