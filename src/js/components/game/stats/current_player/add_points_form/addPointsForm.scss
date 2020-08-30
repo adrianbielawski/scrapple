@@ -1,0 +1,32 @@
+@import "global_styles/variables";
+
+.addPoints {
+    max-height: 0;
+    max-width: 300px;
+    overflow: hidden;
+    display: inline-flex;
+    justify-content: center;
+    justify-items: center;
+    transition: all 0.2s ease-out;
+    &.active {
+        max-height: 40px;
+        margin-top: 5px;
+    }
+    
+    input {
+        width: 200px;    
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+    }
+    
+    .confirm {
+        margin-left: 3px;
+        padding: 0;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+    }
+}
+
+

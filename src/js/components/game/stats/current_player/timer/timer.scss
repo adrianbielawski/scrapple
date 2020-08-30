@@ -1,0 +1,31 @@
+@import "global_styles/variables";
+
+
+.timerWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    .timer {
+        font-size: 2.5em;
+        line-height: 1em;
+        font-weight: 900;
+        color: darken($mainGreen, 10);
+    }
+
+    .shortTime {
+        color: $red;
+    }
+
+    .button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: .8em;
+        margin-left: 10px;
+        padding: 0;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+    }
+}

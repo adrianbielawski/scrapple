@@ -53,6 +53,20 @@ export const setTimeLeft = (timeLeft) => {
     }
 }
 
+export const setTimerPaused = (isTimerPaused) => {
+    return {
+        type: 'GAME/SET_TIMER_PAUSED',
+        isTimerPaused
+    }
+}
+
+export const setThisUserPaused = (thisUserPaused) => {
+    return {
+        type: 'GAME/SET_THIS_USER_PAUSED',
+        thisUserPaused
+    }
+}
+
 export const toggleShowMenu = () => {
     return {
         type: 'GAME/TOGGLE_SHOW_MENU',
@@ -109,11 +123,11 @@ export const fetchGameData = (gameId, user, history) => dispatch => {
 
             const unsubscribe = db.collection('games').doc(gameId).onSnapshot(doc => {
                 const data = doc.data();
-                const endTime = data.endTime;
 
                 if (!data.pointsSubtracted && !data.gameFinished) {
                     dispatch(setCurrentPlayer(data.currentPlayer));
-                    dispatch(setEndTime(endTime));
+                    dispatch(setEndTime(data.endTime));
+                    dispatch(setTimerPaused(data.isTimerPaused))
                     dispatch(setPlayers(data.players));
                 } else if (!data.pointsSubtracted && data.gameFinished) {
                     dispatch(handleFinishGame(gameId, isAdmin, history));
@@ -150,6 +164,7 @@ const setGameState = (data, endTime) => {
         dispatch(changeLanguage(data.language));
         dispatch(setPlayers(data.players));
         dispatch(setFetchingGameData(false));
+        dispatch(setTimerPaused(false));
     }
 }
 
@@ -171,7 +186,8 @@ export const addPoints = (points, players, currentPlayer, timer, time, gameId) =
     db.collection('games').doc(gameId).update({
         players: updatedPlayers,
         currentPlayer: nextPlayer,
-        endTime
+        endTime,
+        isTimerPaused: false,
     });
 }
 
@@ -182,7 +198,7 @@ export const timeOut = (players, currentPlayer, time, gameId) => {
 
         db.collection('games').doc(gameId).update({
             currentPlayer: nextPlayer,
-            endTime
+            endTime,
         }).catch(() => {
             dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
         });;

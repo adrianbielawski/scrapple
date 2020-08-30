@@ -33,6 +33,7 @@ export const createNewGame = (user, gameId, language, timer, time) => {
                 timer,
                 time,
                 endTime: null,
+                isTimerPaused: false,
             }
         }
 

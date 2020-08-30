@@ -6,6 +6,8 @@ const initialState = {
     isAudioEnabled: false,
     currentPlayer: 0,
     endTime: null,
+    isTimerPaused: false,
+    thisUserPaused: false,
     players: [],
     timeLeft: null,
     showMenu: false,
@@ -65,6 +67,14 @@ const gameReducer = (state = initialState, action) => {
 
         case 'GAME/SET_END_TIME':
             newState.endTime = action.endTime;
+            return newState;
+
+        case 'GAME/SET_TIMER_PAUSED':
+            newState.isTimerPaused = action.isTimerPaused;
+            return newState;
+
+        case 'GAME/SET_THIS_USER_PAUSED':
+            newState.thisUserPaused = action.thisUserPaused;
             return newState;
 
         case 'GAME/SET_PLAYERS':
