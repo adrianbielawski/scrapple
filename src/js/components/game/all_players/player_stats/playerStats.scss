@@ -1,9 +1,10 @@
 @import "global_styles/variables";
 
 .playerStats {
-    width: 97%;
     padding: 3px 5px 5px 5px;
     margin-bottom: 10px;
+    width: 97%;
+    box-sizing: border-box;
     background: darken($grey, 5);
     box-shadow: 1px 1px 2px $boxShadow;
     overflow: unset;

@@ -4,35 +4,17 @@
     display: flex;
     flex-flow: column;
     height: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    box-sizing: border-box;
+
     .topWrapper {
         display: inline-flex;
-        justify-content: center;
-        width: 400px;
-        margin: 0 auto;
-    }
-    .sideMenu {
-        margin: 10px 0 0 5px;
+        padding: 5px 5px;
     }
 
     .gameFinishButton {
-        margin: 5px auto;
+        margin: 5px auto 0 auto;
         padding: 3px 20px;
-    }
-
-    .showWords {
-        display: flex;
-        flex-flow: column;
-        flex-grow: 1;
-        overflow: scroll;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-        &::-webkit-scrollbar {
-            display: none;
-        }
-    }
-    @media only screen and (max-width: 400px) {
-        .topWrapper {
-            width: 100%;
-        }
     }
 }

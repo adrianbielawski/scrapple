@@ -5,7 +5,8 @@ import { withTranslation } from 'react-i18next';
 import styles from './game.scss';
 //Custom Components
 import WordChecker from './word_checker/wordChecker';
-import Stats from './stats/stats';
+import CurrentPlayer from './current_player/currentPlayer';
+import AllPlayers from './all_players/allPlayers';
 import TwoLetterWords from './two_letter_words/twoLetterWords';
 import FinishedGameCover from './finish_game_cover/finishedGameCover';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
@@ -41,19 +42,18 @@ const Game = (props) => {
         props.setAlert('confirm', 'Are you sure you want to finish this game?', null, 'game-finish-button');
     }
 
-    const gameClass = props.showWords ? styles['show-words'] : '';
-
     return (
         props.fetchingGameData ? <LoadingSpinner background={true} /> : (
-            <div className={`${styles.game} ${gameClass}`}>
+            <div className={styles.game}>
                 <FinishedGameCover show={props.showFinishedGameCover} />
                 <div className={styles.topWrapper}>
-                    <SideMenu className={styles.sideMenu} />
+                    <SideMenu />
                     <WordChecker />
                     {props.admin && props.timer ? <AudioController /> : null}
                 </div>
                 <TwoLetterWords />
-                <Stats />
+                <CurrentPlayer />
+                <AllPlayers />
                 {props.admin && <Button className={styles.gameFinishButton} onClick={handleGameFinish}>
                     {props.t("Finish the game")}
                 </Button>}
@@ -68,7 +68,6 @@ const mapStateToProps = (state) => {
         admin: state.app.admin,
         timer: state.timeLimit.timer,
         showFinishedGameCover: state.game.showFinishedGameCover,
-        showWords: state.game.showWords,
         fetchingGameData: state.game.fetchingGameData,
     }
 }

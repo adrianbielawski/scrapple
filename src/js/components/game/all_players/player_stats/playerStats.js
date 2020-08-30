@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMobileAlt, faSlash, faCog, faUser } from '@fortawesome/free-solid-svg-icons';
 import styles from './playerStats.scss';
 //Custom Components
-import RoundPoints from '../round_points/roundPoints';
+import RoundPoints from './round_points/roundPoints';
 import Card from 'components/global_components/card/card';
 import Button from 'components/global_components/button/button';
 

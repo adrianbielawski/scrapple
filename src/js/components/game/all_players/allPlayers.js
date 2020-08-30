@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styles from './allPlayers.scss';
 // Custom Components
-import PlayerStats from '../player_stats/playerStats';
+import PlayerStats from './player_stats/playerStats';
 
 const AllPlayers = (props) => {
     const currentPlayer = props.currentPlayer;
