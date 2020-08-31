@@ -32,7 +32,7 @@ const AddPointsForm = (props) => {
     }
 
     return (
-        <form className={`${styles.addPoints} ${props.thisUserPaused ? styles.active : ''}`} onSubmit={handleSubmit}>
+        <form className={`${styles.addPoints} ${props.thisUserPaused || !props.timer ? styles.active : ''}`} onSubmit={handleSubmit}>
             <Input type="number" placeholder={t("Add points")} ref={pointsInput} required min="0" max="999" />
             <Button type="submit" className={styles.confirm}>
                 <FontAwesomeIcon icon={faCheck} />
