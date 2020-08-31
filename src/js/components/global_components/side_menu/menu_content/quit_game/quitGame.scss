@@ -1,0 +1,9 @@
+@import "global_styles/variables";
+
+.title {
+    display: inline-flex;
+    &:hover {
+        color: $mainGreen;
+        cursor: pointer;
+    }
+}

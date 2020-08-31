@@ -3,7 +3,7 @@ import Moment from 'react-moment';//important
 import moment from 'moment';
 import { cloneDeep } from 'lodash';
 //Redux Actions
-import { setAdmin, setAlert, handleFinishGame, changeLanguage } from 'actions/appActions';
+import { setAdmin, setAlert, handleFinishGame, changeLanguage, exitGame } from 'actions/appActions';
 import { setTimer, setTime } from './gameMenuActions';
 
 export const toggleShowWords = () => {
@@ -205,6 +205,46 @@ export const timeOut = (players, currentPlayer, time, gameId) => {
     }
 }
 
+export const quitGame = ({uid, gameId, players, currentPlayer, endTime, time, history}) => {
+    return dispatch => {
+        const isCurrent = uid === players[currentPlayer].uid;
+        let player;
+
+        const newPlayers = players.filter(p => {
+            if (p.uid === uid) {
+                player = p;
+            }
+            return p.uid !== uid;
+        });
+        newPlayers.map((p, i) => {
+            return p.playerIndex = i;
+        })
+
+        let nextPlayer = currentPlayer;
+        let newEndTime = endTime;
+
+        if (isCurrent) {
+            newEndTime = getEndTime(time);
+
+            if (player.playerIndex === newPlayers.length) {
+                nextPlayer = 0;
+            }
+        } else if (!isCurrent && player.playerIndex < currentPlayer) {
+            nextPlayer -= 1;
+        }
+
+        db.collection('games').doc(gameId).update({
+            players: newPlayers,
+            currentPlayer: nextPlayer,
+            endTime: newEndTime,
+        }).then(() => {
+            dispatch(exitGame(uid, gameId, false, history));
+        }).catch(() => {
+            dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+        });;
+    }
+}
+
 const getNextPlayer = (players, currentPlayer) => {
     let nextPlayer = currentPlayer;
     if (currentPlayer < players.length - 1) {
@@ -221,5 +261,6 @@ const getEndTime = (time) => {
         'minutes': time.minutes,
         'seconds': time.seconds
     });
+
     return endTime.toJSON();
 }

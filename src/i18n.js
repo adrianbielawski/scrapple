@@ -79,6 +79,7 @@ const resources = {
       "Please repeat new password" : "Please repeat new password",
       "Passwords doesn't match" : "Passwords doesn't match",
       "Change profile image" : "Change profile image",
+      "Quit this game" : "Quit this game",
       //TwoLetterWords
       "Show two-letter words" : "Show two-letter words",
       "Hide two-letter words" : "Hide two-letter words",
@@ -118,6 +119,8 @@ const resources = {
       //Alert
       "Yes" : "Yes",
       "No" : "No",
+      "You can't quit this game, 2 players is required" : "You can't quit this game, 2 players is required",
+      "Are you sure you want to quit this game" : "Are you sure you want to quit this game?",
       //Buttons
       "Select photo" : "Select photo",
       "Change photo" : "Change photo",
@@ -202,6 +205,7 @@ const resources = {
       "Please repeat new password" : "Proszę powtórzyć hasło",
       "Passwords doesn't match" : "Podane hasła nie są takie same",
       "Change profile image" : "Zmień zdjęcie profilowe",
+      "Quit this game" : "Quit this game",
       //TwoLetterWords
       "Show two-letter words" : "Pokaż słowa dwuliterowe",
       "Hide two-letter words" : "Ukryj słowa dwuliterowe",
@@ -242,6 +246,8 @@ const resources = {
       //Alert
       "Yes" : "Tak",
       "No" : "Nie",
+      "You can't quit this game, 2 players is required" : "Nie możesz wyjść z tej gry, gra wymaga dwuch graczy",
+      "Are you sure you want to quit this game" : "Jesteś pewien, że chcesz wyjść z tej gry?",
       //Buttons
       "Select photo" : "Wybierz zdjęcie",
       "Change photo" : "Zmień zdjęcie",

@@ -8,6 +8,7 @@ import Button from 'components/global_components/button/button';
 //Redux Actions
 import { setAlert, removeAlert, handleFinishGame } from 'actions/appActions';
 import { changeUserName, changeUserPassword } from 'actions/authActions';
+import { quitGame } from 'actions/gameActions';
 
 const Alert = (props) => {
     const { t } = useTranslation();
@@ -30,6 +31,10 @@ const Alert = (props) => {
 
                 case 'change-password':
                     props.changeUserPassword(props.alert.alertProps)
+                    break;
+
+                case 'quit-game':
+                    props.quitGame({...props.alert.alertProps});
                     break;
             }
         }
@@ -74,6 +79,7 @@ const mapDispatchToProps = (dispatch) => {
         setShowChangePasswordModal: (showChangeNameModal) => dispatch(setShowChangePasswordModal(showChangeNameModal)),
         changeUserName: (newName) => dispatch(changeUserName(newName)),
         changeUserPassword: (newPassword) => dispatch(changeUserPassword(newPassword)),
+        quitGame: (uid, gameId, players, currentPlayer, endTime, time, history) => dispatch(quitGame(uid, gameId, players, currentPlayer, endTime, time, history)),
     }
 }
 
