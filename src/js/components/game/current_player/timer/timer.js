@@ -36,6 +36,10 @@ const Timer = (props) => {
     }, [props.endTime, props.isTimerPaused])
 
     useEffect(() => {
+        if (props.timeLeft % 60 === 0 && props.admin && props.isAudioEnabled) {
+            AUDIO.beep.play();
+        }
+
         if (props.timeLeft <= 10 && props.admin && props.isAudioEnabled) {
             AUDIO.beep.play();
         }
