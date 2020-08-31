@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styles from './menuContent.scss'
 //Custom Components
@@ -8,12 +9,14 @@ import MyAccount from './my_account/myAccount';
 import QuitGame from './quit_game/quitGame';
 
 const MenuContent = (props) => {
+    const { gameId } = useParams();
+    
     return (
         <div className={styles.menuContent}>
             <LogOut className={styles.logout} />
             {!props.admin && <QuitGame />}
             <MyAccount />
-            {props.gameId && <GameId />}
+            {gameId && <GameId />}
         </div>
     );
 }
