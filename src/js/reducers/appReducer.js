@@ -5,7 +5,7 @@ const initialState = {
     user: {},
     userInfo: {
         currentGame: null,
-        allGames: [1],
+        allGames: [],
     },
     fetchingGameData: true,
     gameId: null,
@@ -56,6 +56,10 @@ const appReducer = (state = initialState, action) => {
             newState.admin = false;
             newState.playedAgain = false;
             newState.playedAgainWithSettings = false;
+            newState.userInfo = {
+                currentGame: null,
+                allGames: [],
+            };
             return newState;
 
         case 'APP/SET_LANGUAGE':
