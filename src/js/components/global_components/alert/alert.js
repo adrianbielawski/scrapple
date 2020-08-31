@@ -18,7 +18,7 @@ const Alert = (props) => {
         if (response === 'true') {
             switch (props.alert.action) {
                 case 'game-finish-button':
-                    props.handleFinishGame(props.gameId, props.admin, props.history);
+                    props.handleFinishGame({...props.alert.alertProps});
                     break;
 
                 case 'user-registered':
@@ -26,11 +26,11 @@ const Alert = (props) => {
                     break;
 
                 case 'change-name':
-                    props.changeUserName(props.alert.alertProps);
+                    props.changeUserName({...props.alert.alertProps});
                     break;
 
                 case 'change-password':
-                    props.changeUserPassword(props.alert.alertProps)
+                    props.changeUserPassword({...props.alert.alertProps})
                     break;
 
                 case 'quit-game':
@@ -65,8 +65,6 @@ const Alert = (props) => {
 const mapStateToProps = (state) => {
     return {
         alert: state.app.alert,
-        gameId: state.app.gameId,
-        admin: state.app.admin,
     }
 }
 

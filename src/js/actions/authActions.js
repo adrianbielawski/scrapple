@@ -62,7 +62,8 @@ export const setLoadingAuthState = (loadingAuthState) => {
     }
 }
 
-export const changeUserName = (newName) => {
+export const changeUserName = ({newName}) => {
+    console.log(newName)
     return dispatch => {
         auth.currentUser.updateProfile({ displayName: newName }).then(() => {
             dispatch(changePlayerName(newName));
@@ -75,7 +76,7 @@ export const changeUserName = (newName) => {
     }
 }
 
-export const changeUserPassword = (newPassword) => {
+export const changeUserPassword = ({newPassword}) => {
     return dispatch => {
         auth.currentUser.updatePassword(newPassword).then(() => {
             dispatch(setShowChangePasswordModal(false));

@@ -40,7 +40,13 @@ const Game = (props) => {
 
     const handleGameFinish = (e) => {
         e.preventDefault();
-        props.setAlert('confirm', 'Are you sure you want to finish this game?', null, 'game-finish-button');
+        props.setAlert('confirm', 'Are you sure you want to finish this game?', null, 'game-finish-button',
+            {
+                gameId: gameId,
+                admin: props.admin,
+                history: props.history
+            }
+        );
     }
 
     return (

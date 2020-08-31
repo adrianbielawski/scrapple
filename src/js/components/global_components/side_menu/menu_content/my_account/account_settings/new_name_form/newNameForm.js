@@ -24,7 +24,7 @@ const NewNameForm = (props) => {
     }
 
     const handleSubmit = () => {
-        props.setAlert('confirm', 'Are you sure you want to change your name to', {'newName': newName}, 'change-name', newName);
+        props.setAlert('confirm', 'Are you sure you want to change your name to', {'newName': newName}, 'change-name', {newName});
         newNameInput.current.value = null;
         setNewName(null);
     }

@@ -48,7 +48,7 @@ const NewPasswordForm = (props) => {
         if (!isValid) {
             return;
         }
-        props.setAlert('confirm', 'Are you sure you want to change your password', null, 'change-password', newPassword);
+        props.setAlert('confirm', 'Are you sure you want to change your password', null, 'change-password', {newPassword});
 
         newPasswordInput.current.value = null;
         repeatPasswordInput.current.value = null;

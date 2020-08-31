@@ -125,7 +125,7 @@ export const getGameData = (gameId) => {
     }
 }
 
-export const handleFinishGame = (gameId, admin) => {
+export const handleFinishGame = ({gameId, admin}) => {
     return dispatch => {
         if (admin) {
             db.collection('games').doc(gameId).update({
