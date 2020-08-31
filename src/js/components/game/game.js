@@ -26,11 +26,12 @@ const Game = (props) => {
         props.setGameId(gameId);
 
         const promise = props.fetchGameData(gameId, props.user, props.history);
-        promise.then((unsubscribe) => unsubscribe = unsubscribe);
+        promise.then((u) => unsubscribe = u);
 
         return () => {
             props.clearSideMenuState();
             props.setShowFinishedGameCover(false);
+            
             if (unsubscribe !== null) {
                 unsubscribe();
             }

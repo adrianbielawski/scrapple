@@ -27,6 +27,7 @@ const MainMenu = (props) => {
         props.setPlayers([]);
         return () => {
             props.setShowConfirmation(false);
+
             if (unsubscribeGameStart !== null) {
                 unsubscribeGameStart();
             }
@@ -41,7 +42,10 @@ const MainMenu = (props) => {
             return;
         }
 
-        unsubscribeGameStart = props.joinGame(gameId, props.language, props.user, props.history);
+        const gameStartPromise = props.joinGame(gameId, props.language, props.user, props.history);
+        gameStartPromise.then((u) => unsubscribeGameStart = u);
+        gameIdInput.current.value = '';
+
     }
 
     const validateUserInput = (gameId) => {

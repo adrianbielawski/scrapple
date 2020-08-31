@@ -46,8 +46,6 @@ export const createNewGame = (user, gameId, language, timer, time) => {
 
 export const joinGame = (gameId, language, user, history) => {
     return dispatch => {
-        let unsubscribeGameStart = null;
-
         const setStateAndSubscribe = () => {
             dispatch(setGameId(gameId));
             dispatch(setShowConfirmation(true));
@@ -60,7 +58,7 @@ export const joinGame = (gameId, language, user, history) => {
             });
         }
 
-        db.collection('games').doc(gameId).get()
+        return db.collection('games').doc(gameId).get()
             .then((response) => {
                 const data = response.data();
 
@@ -74,10 +72,11 @@ export const joinGame = (gameId, language, user, history) => {
                 if (language !== data.language) {
                     dispatch(changeLanguage(data.language));
                 };
-
+                
+                let promise;
 
                 if (!alreadyJoined) {
-                    db.collection('games').doc(gameId).update({
+                    promise = db.collection('games').doc(gameId).update({
                         'players': firebase.firestore.FieldValue.arrayUnion(
                             {
                                 admin: false,
@@ -92,19 +91,17 @@ export const joinGame = (gameId, language, user, history) => {
                     })
                     .then(() => {
                         dispatch(updateUserCurrentGame(user.uid, gameId));
-                    })
-                    .then(() => {
-                        unsubscribeGameStart = setStateAndSubscribe();
                     });
                 } else {
-                    unsubscribeGameStart = setStateAndSubscribe();
+                    promise = Promise.resolve();
                 }
+
+                return promise.then(() => setStateAndSubscribe());
             })
             .catch(() => {
                 dispatch(setAlert('alert', 'Something went wrong, please check game ID'));
                 return;
             });
-        return unsubscribeGameStart;
     }
 }
 
