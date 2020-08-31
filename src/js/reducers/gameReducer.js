@@ -42,6 +42,9 @@ const gameReducer = (state = initialState, action) => {
         case 'GAME_MENU/REORDER_PLAYERS':
             const reorderedPlayers = [...newState.players];
             reorderedPlayers.splice(action.newIndex, 0, reorderedPlayers.splice(action.playerIndex, 1)[0]);
+            reorderedPlayers.map((player, i) => {
+                return player.playerIndex = i;
+            })
             newState.players = reorderedPlayers;
             return newState;
 
