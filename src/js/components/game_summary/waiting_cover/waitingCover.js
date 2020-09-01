@@ -14,7 +14,7 @@ const WaitingCover = (props) => {
         message = 'Please wait until game started';
     }
     return (
-        <Modal show={props.show} className={styles.confirmation}>
+        <Modal show={props.show} cardClassName={styles.confirmation}>
             <h2>{t(title)}</h2>
             <p className={styles.message}>{t(message)}</p>
             <LoadingSpinner background={false} />
