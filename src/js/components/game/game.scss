@@ -2,20 +2,20 @@
 
 .game {
     display: flex;
+    align-items: center;
     flex-flow: column;
     height: 100%;
-    width: 400px;
-    max-width: 100%;
-    margin: 0 auto;
-    box-sizing: border-box;
 
     .topWrapper {
         display: inline-flex;
         padding: 5px 5px;
+        max-width: 400px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .gameFinishButton {
-        margin: 5px auto 0 auto;
+        margin: 5px auto;
         padding: 3px 20px;
     }
 }
