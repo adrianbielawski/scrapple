@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { clamp } from 'lodash';
 import styles from './zoomableComponent.scss';
 
@@ -13,6 +14,15 @@ const ZoomableComponent = (props) => {
     const [translate, setTranslate] = useState({ x: 0, y: 0 });
     const [translateClamp, setTranslateClamp] = useState(null);
     const margin = 5;
+
+    useEffect(() => {
+        setStartScale(1);
+        setScale(1);
+        setMidPoint({ x: 0, y: 0 });
+        setStartMove({ x: 0, y: 0 });
+        setTranslate({ x: 0, y: 0 });
+        setTranslateClamp(null);
+    }, [props.deviceOrientation])
 
     const handleTouchStart = useCallback((e) => {
         if (e.touches.length === 1) {
@@ -102,13 +112,13 @@ const ZoomableComponent = (props) => {
         <div className={`${styles.wrapper} ${props.className}`} style={props.style} ref={wrapper}>
             <div
                 className={props.contentClassName}
-                style={{ 
+                style={ { 
                     transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,
                     transformOrigin: `${midPoint.x}px ${midPoint.y}px`
                 }}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
+                onTouchStart={props.isZoomable ? handleTouchStart : undefined}
+                onTouchMove={props.isZoomable ? handleTouchMove : undefined}
+                onTouchEnd={props.isZoomable ? handleTouchEnd : undefined}
                 ref={content}
             >
                 {props.children}
@@ -117,4 +127,10 @@ const ZoomableComponent = (props) => {
     )
 }
 
-export default ZoomableComponent;
+const mapStateToProps = (state) => {
+    return {
+        deviceOrientation: state.app.deviceOrientation,
+    }
+}
+
+export default connect(mapStateToProps)(ZoomableComponent);

@@ -13,21 +13,34 @@ const TwoLetterWords = (props) => {
     const { t } = useTranslation();
     const componentRef = useRef(null);
     const [maxHeight, setMaxHeight] = useState(null);
+    const [isElementScrollable, setIsElementScrollable] = useState(null);
+    const [isElementZoomable, setIsElementZoomable] = useState(null);
     let buttonName = props.showWords ? 'Hide two-letter words' : 'Show two-letter words';
     let wordsClass = props.showWords ? styles.active : '';
 
     useEffect(() => {
         if (props.showWords) {
             window.document.body.style.overscrollBehavior = 'contain';
-        }
-        if (!props.showWords) {
+        } else {
             window.document.body.style.overscrollBehavior = 'unset';
         }
     }, [props.showWords])
 
     useEffect(() => {
         const element = componentRef.current.getBoundingClientRect();
-        setMaxHeight(props.screenHeight - element.x - 10);
+        setMaxHeight(props.screenHeight - element.y - 40);
+
+        let scrollable = true;
+        let zoomable = true
+
+        if (props.isTouchDevice && props.deviceOrientation === 'portrait-primary') {
+            scrollable = false;
+        } else if (props.isTouchDevice && props.deviceOrientation === 'landscape-primary') {
+            zoomable = false;
+        }
+        setIsElementScrollable(scrollable);
+        setIsElementZoomable(zoomable);
+
     }, [props.screenHeight])
 
     return (
@@ -36,7 +49,10 @@ const TwoLetterWords = (props) => {
                 {t(buttonName)}
             </Button>
             <ZoomableComponent
-                className={`${styles.zoomable} ${props.showWords ? styles.active : ''}`}
+                isZoomable={isElementZoomable}
+                className={`${styles.zoomable} ${props.showWords ? styles.active : ''}
+                    ${isElementScrollable ? styles.scrollable : ''}`
+                }
                 style={props.showWords ? {maxHeight: `${maxHeight}px`} : {}}
             >
                 <WordsTable />
@@ -50,6 +66,8 @@ const mapStateToProps = (state) => {
         language: state.app.language,
         showWords: state.game.showWords,
         screenHeight: state.app.screenHeight,
+        isTouchDevice: state.app.isTouchDevice,
+        deviceOrientation: state.app.deviceOrientation,
     }
 }
 
