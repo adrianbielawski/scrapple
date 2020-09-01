@@ -5,6 +5,7 @@ import styles from './myAccount.scss'
 //Custom Components
 import GamesHistory from './games_history/gamesHistory';
 import AccountSettings from './account_settings/accountSettings';
+import LogOut from 'components/global_components/accountInfo/logout';
 //Redux actions
 import { setShowMyAccount } from 'actions/sideMenuActions';
 
@@ -22,6 +23,7 @@ const MyAccount = (props) => {
                 style={props.showGamesHistory && props.showMyAccount ? {maxHeight: '400px'} : null}>
                 <AccountSettings />
                 <GamesHistory />
+                <LogOut className={styles.logout} />
             </div>
         </div>
     );
