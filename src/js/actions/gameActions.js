@@ -80,12 +80,6 @@ export const setShowFinishedGameCover = (showFinishedGameCover) => {
     }
 }
 
-export const changePlayerName = (newName) => {
-    return () => {
-        
-    }
-}
-
 export const checkEndTime = (data, gameId) => {
     return () => {
         const now = moment();

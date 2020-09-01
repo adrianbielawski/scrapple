@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './newNameForm.scss';
 //Custom Components
@@ -12,6 +13,7 @@ import { setAlert } from 'actions/appActions';
 
 const NewNameForm = (props) => {
     const { t } = useTranslation();
+    const { gameId } = useParams();
     const [newName, setNewName] = useState(null);
     const newNameInput = useRef(null);
     
@@ -24,7 +26,13 @@ const NewNameForm = (props) => {
     }
 
     const handleSubmit = () => {
-        props.setAlert('confirm', 'Are you sure you want to change your name to', {'newName': newName}, 'change-name', {newName});
+        props.setAlert(
+            'confirm',
+            'Are you sure you want to change your name to',
+            {'newName': newName},
+            'change-name',
+            {newName, uid: props.user.uid, players: props.players, gameId}
+        );
         newNameInput.current.value = null;
         setNewName(null);
     }
@@ -40,6 +48,13 @@ const NewNameForm = (props) => {
     );
 }
 
+const mapStateToProps = (state) => {
+    return {
+        user: state.app.user,
+        players: state.game.players
+    }
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
         setShowChangeNameModal: (showChangeNameModal) => dispatch(setShowChangeNameModal(showChangeNameModal)),
@@ -47,4 +62,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(NewNameForm);
+export default connect(mapStateToProps, mapDispatchToProps)(NewNameForm);

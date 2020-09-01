@@ -1,7 +1,6 @@
 import { db, auth } from 'firebaseConfig';
 //Redux Actions
 import { setAlert } from 'actions/appActions';
-import { changePlayerName } from 'actions/gameActions';
 import { setShowChangeNameModal, setShowChangePasswordModal } from 'actions/sideMenuActions';
 
 export const signUp = (email, password, userName) => dispatch => {
@@ -62,14 +61,22 @@ export const setLoadingAuthState = (loadingAuthState) => {
     }
 }
 
-export const changeUserName = ({newName}) => {
-    console.log(newName)
+export const changeUserName = ({newName, uid, players, gameId}) => {
     return dispatch => {
         auth.currentUser.updateProfile({ displayName: newName }).then(() => {
-            dispatch(changePlayerName(newName));
-        }).then(() => {
-            dispatch(setShowChangeNameModal(false));
-            dispatch(setAlert('alert', 'Name changed successfully'));
+            const newPlayers = players.map(player => {
+                if (player.uid === uid) {
+                    player.playerName = newName;
+                }
+                return player;
+            });
+
+            db.collection('games').doc(gameId).update({
+                players: newPlayers
+            }).then(() => {
+                dispatch(setShowChangeNameModal(false));
+                dispatch(setAlert('alert', 'Name changed successfully'));
+            })
         }).catch(() => {
             dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
         })
