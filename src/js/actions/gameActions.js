@@ -141,7 +141,7 @@ export const fetchGameData = (gameId, user, history) => dispatch => {
             return unsubscribe;
         })
         .catch(() => {
-            dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+            dispatch(setAlert('alert', 'Something went wrong'));
         });
 }
 
@@ -194,8 +194,8 @@ export const timeOut = (players, currentPlayer, time, gameId) => {
             currentPlayer: nextPlayer,
             endTime,
         }).catch(() => {
-            dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
-        });;
+            dispatch(setAlert('alert', 'Something went wrong'));
+        });
     }
 }
 
@@ -234,7 +234,7 @@ export const quitGame = ({uid, gameId, players, currentPlayer, endTime, time, hi
         }).then(() => {
             dispatch(exitGame(uid, gameId, false, history));
         }).catch(() => {
-            dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+            dispatch(setAlert('alert', 'Something went wrong'));
         });;
     }
 }

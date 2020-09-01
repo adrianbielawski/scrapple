@@ -32,7 +32,7 @@ export const logIn = (email, password, history) => dispatch => {
         if (response.user.emailVerified) {
             history.push('/main_menu');
         } else {
-            dispatch(setAlert('alert', 'This account is not verified. Please check your inbox to finish registration.'));
+            dispatch(setAlert('alert', 'This account is not verified'));
         }
         return response.user;
     }).catch(error => {
@@ -78,7 +78,7 @@ export const changeUserName = ({newName, uid, players, gameId}) => {
                 dispatch(setAlert('alert', 'Name changed successfully'));
             })
         }).catch(() => {
-            dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+            dispatch(setAlert('alert', 'Something went wrong'));
         })
     }
 }
@@ -89,7 +89,7 @@ export const changeUserPassword = ({newPassword}) => {
             dispatch(setShowChangePasswordModal(false));
             dispatch(setAlert('alert', 'Password changed successfully'));
         }).catch(() => {
-            dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+            dispatch(setAlert('alert', 'Something went wrong'));
         })
     }
 }

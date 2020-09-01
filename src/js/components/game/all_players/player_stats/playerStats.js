@@ -71,7 +71,7 @@ const PlayerStats = (props) => {
                 </div>
             </div>
             <div className={styles.allPoints} style={{ maxHeight: `${allPointsStyle}px` }}>
-                <p>{t("Best score")}: {props.player.bestScore}</p>
+                <p>{t("Best score", {'best': props.player.bestScore})}</p>
                 <ul>
                     {getRoundPoints()}
                 </ul>

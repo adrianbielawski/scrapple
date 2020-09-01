@@ -39,7 +39,7 @@ export const createNewGame = (user, gameId, language, timer, time) => {
 
         return db.collection('games').doc(gameId).set(game)
             .catch(() => {
-                dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+                dispatch(setAlert('alert', 'Something went wrong'));
             });
     }
 }
@@ -121,7 +121,7 @@ export const startJoinedPlayerGame = (gameId, user, history) => {
             dispatch(setAdmin(false));
             history.push(`/game/${gameId}`);
         }).catch(() => {
-            dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+            dispatch(setAlert('alert', 'Something went wrong'));
         });
     };
 }

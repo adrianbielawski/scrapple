@@ -120,7 +120,7 @@ export const getGameData = (gameId) => {
         return db.collection('games').doc(gameId).get()
             .then(response => response.data())
             .catch(() => {
-                dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+                dispatch(setAlert('alert', 'Something went wrong'));
             });
     }
 }
@@ -136,7 +136,7 @@ export const handleFinishGame = ({gameId, admin}) => {
                 dispatch(setPlayedAgainWithSettings(false));
                 dispatch(removeAlert());
             }).catch(() => {
-                dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+                dispatch(setAlert('alert', 'Something went wrong'));
             });
         } else {
             dispatch(setShowFinishedGameCover(true));
@@ -167,11 +167,11 @@ export const playAgain = (gameId, admin, history) => {
                         history.push(`/game/${gameId}`);
                     })
                     .catch(() => {
-                        dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+                        dispatch(setAlert('alert', 'Something went wrong'));
                     });
                 })
                 .catch(() => {
-                    dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+                    dispatch(setAlert('alert', 'Something went wrong'));
                 });
         } else {
             dispatch(clearGameSummaryState());
@@ -202,7 +202,7 @@ export const playAgainSettings = (gameId, admin, history) => {
                         dispatch(clearGameSummaryState());
                     })
                     .catch(() => {
-                        dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+                        dispatch(setAlert('alert', 'Something went wrong'));
                     });
                 })
         } else {

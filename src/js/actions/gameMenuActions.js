@@ -115,7 +115,7 @@ export const startAdminGame = (gameId, user, history) => {
         history.push(`/game/${gameId}`);
       })
       .catch(() => {
-        dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+        dispatch(setAlert('alert', 'Something went wrong'));
       });
   }
 }
@@ -125,8 +125,7 @@ export const getCurrentGameFromDatabase = (uid) => {
     return db.collection('users').doc(uid).collection('currentGame').doc('gameId').get()
       .then(response => response.data().id)
       .catch(() => {
-        dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+        dispatch(setAlert('alert', 'Something went wrong'));
       });
-
   }
 }

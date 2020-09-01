@@ -143,7 +143,7 @@ export const updateProfileImage = (profileImage, gameId, uid, players) => dispat
             })
         })
     }).catch(() => {
-        dispatch(setAlert('alert', 'Something went wrong, please check your internet connection and try again'));
+        dispatch(setAlert('alert', 'Something went wrong'));
     });
 }
 
