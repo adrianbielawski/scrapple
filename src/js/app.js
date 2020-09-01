@@ -14,7 +14,7 @@ import PrivateRoute from 'hoc/PrivateRoute';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 import Alert from 'components/global_components/alert/alert';
 //Redux Actions
-import { setScreenHeight, setUser, clearAppState, getUserCurrentGame, checkCurrentGameStatus } from 'actions/appActions';
+import { setDeviceOrientation, setIsTouchDevice, setScreenHeight, setUser, clearAppState, getUserCurrentGame, checkCurrentGameStatus } from 'actions/appActions';
 import { setLoadingAuthState } from 'actions/authActions';
 
 const App = (props) => {
@@ -46,15 +46,29 @@ const App = (props) => {
         });
 
         window.addEventListener('resize', setScreenHeight);
+        window.addEventListener('touchstart', handleTouch);
+        window.addEventListener("orientationchange", handleOrientationChange);
+        handleOrientationChange()
 
         return () => {
             window.removeEventListener('resize', setScreenHeight);
+            window.removeEventListener('touchstart', handleTouch);
+            window.removeEventListener("orientationchange", handleOrientationChange);
         }
     }, [])
 
     const setScreenHeight = () => {
         const screenHeight = window.innerHeight;
         props.setScreenHeight(screenHeight);
+    }
+
+    const handleTouch = () => {
+        props.setIsTouchDevice(true);
+        window.removeEventListener('touchstart', handleTouch);
+    }
+
+    const handleOrientationChange = () => {
+        props.setDeviceOrientation(window.screen.orientation.type);
     }
 
     return (
@@ -84,7 +98,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        setIsTouchDevice: (isTouchDevice) => dispatch(setIsTouchDevice(isTouchDevice)),
         setScreenHeight: (height) => dispatch(setScreenHeight(height)),
+        setDeviceOrientation: (deviceOrientation) => dispatch(setDeviceOrientation(deviceOrientation)),
         setUser: (user) => dispatch(setUser(user)),
         getUserCurrentGame: (uid) => dispatch(getUserCurrentGame(uid)),
         clearAppState: (language) => dispatch(clearAppState(language)),

@@ -47,6 +47,20 @@ export const setScreenHeight = (height) => {
     }
 }
 
+export const setIsTouchDevice = (isTouchDevice) => {
+    return {
+        type: 'APP/SET_IS_TOUCH_DEVICE',
+        isTouchDevice
+    }
+}
+
+export const setDeviceOrientation = (deviceOrientation) => {
+    return {
+        type: 'APP/SET_DEVICE_ORIENTATION',
+        deviceOrientation
+    }
+}
+
 export const setAdmin = (admin) => {
     return {
         type: 'APP/SET_ADMIN',

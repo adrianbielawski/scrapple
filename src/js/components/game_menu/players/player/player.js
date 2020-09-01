@@ -12,7 +12,6 @@ import { setAlert } from 'actions/appActions';
 
 const Player = (props) => {
     const [isGrabbed, setIsGrabbed] = useState(false);
-    const [isTouchDevice, setIsTouchDevice] = useState(false);
     const [top, setTop] = useState(0);
     const [left, setLeft] = useState(0);
     const [distance, setDistance] = useState(0);
@@ -49,7 +48,6 @@ const Player = (props) => {
                 props.setTouches(props.touches + 1);
                 return;
             }
-            setIsTouchDevice(true);
         };
         setGrabbedElement(props.index, e.type);
         
@@ -202,7 +200,7 @@ const Player = (props) => {
                 left: left
             };
         };
-        if (isTouchDevice) {
+        if (props.isTouchDevice) {
             dynamicStyles.hover = '';
         };
 
@@ -260,6 +258,7 @@ const Player = (props) => {
 
 const mapStateToProps = (state) => {
     return {
+        isTouchDevice: state.app.isTouchDevice,
         user: state.app.user,
         players: state.game.players,
         initialListSpace: state.gameMenu.players.initialListSpace,

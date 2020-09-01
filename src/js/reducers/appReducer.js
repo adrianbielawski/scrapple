@@ -2,6 +2,8 @@ import { cloneDeep } from 'lodash';
 
 const initialState = {
     screenHeight: window.innerHeight,
+    isTouchDevice: false,
+    deviceOrientation: '',
     user: {},
     userInfo: {
         currentGame: null,
@@ -28,6 +30,14 @@ const appReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'APP/SET_SCREEN_HEIGHT':
             newState.screenHeight = action.height;
+            return newState;
+
+        case 'APP/SET_IS_TOUCH_DEVICE':
+            newState.isTouchDevice = action.isTouchDevice;
+            return newState;
+
+        case 'APP/SET_DEVICE_ORIENTATION':
+            newState.deviceOrientation = action.deviceOrientation;
             return newState;
 
         case 'APP/SET_FETCHING_GAME_DATA':
