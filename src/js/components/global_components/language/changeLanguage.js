@@ -30,14 +30,14 @@ const ChangeLanguage = (props) => {
             }
 
             const onClick = useCallback(
-                () => handleLanguageChange(lang[i].symbol),
-                [lang[i].symbol]
+                () => handleLanguageChange(lang[1].symbol),
+                [lang[1].symbol]
             )
             
             return (
                 <Language
                     showName={props.showName}
-                    lang={lang[i]}
+                    lang={lang[1]}
                     onClick={onClick}
                     key={i}
                     styles={styles}
