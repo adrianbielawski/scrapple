@@ -99,7 +99,7 @@ const ZoomableComponent = (props) => {
     }
 
     return (
-        <div className={`${styles.wrapper} ${props.className}`} ref={wrapper}>
+        <div className={`${styles.wrapper} ${props.className}`} style={props.style} ref={wrapper}>
             <div
                 className={props.contentClassName}
                 style={{ 
