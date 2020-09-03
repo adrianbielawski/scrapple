@@ -2,7 +2,7 @@ import { db, auth } from 'firebaseConfig';
 import axios from 'axiosInstance';
 //Redux Actions
 import { setAlert, clearAppState } from 'actions/appActions';
-import { setShowChangeNameModal, setShowChangePasswordModal } from 'actions/sideMenuActions';
+import { setShowChangePasswordModal } from 'actions/sideMenuActions';
 
 const signUpStart = () => ({
     type: 'AUTH/SIGN_UP/START',
@@ -24,7 +24,7 @@ export const signUp = (userName, email, password, repeatedPassword, history) => 
         email,
         password1: password,
         password2: repeatedPassword,
-        user_name: userName,
+        username: userName,
     })
     .then(response => {
         localStorage.setItem('token', response.data.key);
@@ -99,23 +99,19 @@ export const getUser = () => dispatch => {
     });
 };
 
-export const changeUserName = ({ newName, uid, players, gameId }) => {
-    return dispatch => {
-        auth.currentUser.updateProfile({ displayName: newName }).then(() => {
-            const newPlayers = players.map(player => {
-                if (player.uid === uid) {
-                    player.playerName = newName;
-                }
-                return player;
-            });
+const changeUsernameSuccess = (newName) => ({
+    type: 'AUTH/USERNAME_CHANGED',
+    newName
+})
 
-            db.collection('games').doc(gameId).update({
-                players: newPlayers
-            }).then(() => {
-                dispatch(setShowChangeNameModal(false));
-                dispatch(setAlert('alert', 'Name changed successfully'));
-            })
-        }).catch(() => {
+export const changeUserName = ({ newName }) => {
+    return dispatch => {
+        axios.patch('/user/', { username: newName })
+        .then(() => {
+            dispatch(changeUsernameSuccess(newName));
+            dispatch(setAlert('alert', 'Name changed successfully'));
+        })
+        .catch(() => {
             dispatch(setAlert('alert', 'Something went wrong'));
         })
     }

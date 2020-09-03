@@ -40,10 +40,15 @@ export const setShowAccountSettings = (showAccountSettings) => {
     };
 }
 
-export const setShowChangeNameModal = (showChangeNameModal) => {
+export const openNewNameModal = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_CHANGE_NAME_MODAL',
-        showChangeNameModal,
+        type: 'SIDE_MENU/NEW_NAME_CLICKED',
+    };
+}
+
+export const closeNewNameModal = () => {
+    return {
+        type: 'SIDE_MENU/CLOSE_NEW_NAME_CLICKED',
     };
 }
 

@@ -8,7 +8,7 @@ import Modal from 'components/global_components/modal/modal';
 import Button from 'components/global_components/button/button';
 import Input from 'components/global_components/input/input';
 //Redux actions
-import { setShowChangeNameModal } from 'actions/sideMenuActions';
+import { closeNewNameModal } from 'actions/sideMenuActions';
 import { setAlert } from 'actions/appActions';
 
 const NewNameForm = (props) => {
@@ -22,7 +22,7 @@ const NewNameForm = (props) => {
     }
 
     const closeModal = () => {
-        props.setShowChangeNameModal(false);
+        props.closeNewNameModal();
     }
 
     const handleSubmit = () => {
@@ -57,7 +57,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setShowChangeNameModal: (showChangeNameModal) => dispatch(setShowChangeNameModal(showChangeNameModal)),
+        closeNewNameModal: () => dispatch(closeNewNameModal()),
         setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(setAlert(type, messageKey, messageValue, action, alertProps)),
     }
 }

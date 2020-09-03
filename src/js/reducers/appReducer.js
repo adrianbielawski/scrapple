@@ -114,7 +114,11 @@ const appReducer = (state = initialState, action) => {
         case 'AUTH/LOG_IN/SUCCESS':
         case 'AUTH/SIGN_UP/SUCCESS':
         case 'AUTH/GET_USER/SUCCESS':
-            newState.user = action.user
+            newState.user = action.user;
+            return newState;
+
+        case 'AUTH/USERNAME_CHANGED':
+            newState.user.username = action.newName;
             return newState;
 
         default:
