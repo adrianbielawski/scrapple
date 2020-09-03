@@ -7,6 +7,19 @@ const initialState = {
 const authReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
+        case 'AUTH/LOG_IN/START':
+            newState.isLoggingIn = true;
+            return newState;
+
+        case 'AUTH/LOG_IN/SUCCESS':
+            newState.isLoggingIn = false;
+            newState.loadingAuthState = false;
+            return newState;
+
+        case 'AUTH/LOG_IN/FAILURE':
+            newState.isLoggingIn = false;
+            return newState;
+
         case 'AUTH/SIGN_UP/START':
             newState.isSigningUp = true;
             return newState;

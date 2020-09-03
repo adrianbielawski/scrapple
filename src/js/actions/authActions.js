@@ -38,16 +38,34 @@ export const signUp = (firstName, lastName, email, password, repeatedPassword, h
     });
 }
 
+const logInStart = () => ({
+    type: 'AUTH/LOG_IN/START',
+})
+
+const logInSuccess = (user) => ({
+    type: 'AUTH/LOG_IN/SUCCESS',
+    user,
+})
+
+const logInFailure = () => ({
+    type: 'AUTH/LOG_IN/FAILURE',
+})
+
 export const logIn = (email, password, history) => dispatch => {
-    return auth.signInWithEmailAndPassword(email, password).then(response => {
-        if (response.user.emailVerified) {
-            history.push('/main_menu');
-        } else {
-            dispatch(setAlert('alert', 'This account is not verified'));
-        }
-        return response.user;
-    }).catch(error => {
-        dispatch(setAlert('alert', error.message));
+    dispatch(logInStart());
+    
+    axios.post('/login/', {
+        email,
+        password,
+    })
+    .then(response => {
+        localStorage.setItem('token', response.data.key);
+        dispatch(logInSuccess(response.data.user));
+        history.push('/main_menu');
+    })
+    .catch(error => {
+        dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
+        dispatch(logInFailure());
     });
 };
 

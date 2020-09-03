@@ -9,7 +9,7 @@ import LoadingSpinner from 'components/global_components/loading_spinner/loading
 import Input from 'components/global_components/input/input';
 import Button from 'components/global_components/button/button';
 //Redux Actions
-import { logIn, setIsLoggingIn } from 'actions/authActions';
+import { logIn } from 'actions/authActions';
 
 const Login = (props) => {
     const { t } = useTranslation();
@@ -21,12 +21,7 @@ const Login = (props) => {
         const email = emailInput.current.value;
         const password = passwordInput.current.value;
 
-        props.setIsLoggingIn(true);
-
-        const promise = props.logIn(email, password, props.history);
-        promise.then(() => {
-            props.setIsLoggingIn(false);
-        });
+        props.logIn(email, password, props.history);
     }
 
     const handleSignUp = () => {
@@ -37,7 +32,7 @@ const Login = (props) => {
         <Card className={styles.login}>
             <form onSubmit={handleSubmit}>
                 <Input type="email" placeholder={t("e-mail")} ref={emailInput} required />
-                <Input type="password" placeholder={t("password")} ref={passwordInput} minLength="6" required />
+                <Input type="password" placeholder={t("password")} ref={passwordInput} minLength="8" required />
                 {props.isLoggingIn ? <LoadingSpinner background={false} /> : <Button type="submit">{t("Login")}</Button>}
             </form>
             {!props.isLoggingIn &&
@@ -60,7 +55,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         logIn: (email, password, history) => dispatch(logIn(email, password, history)),
-        setIsLoggingIn: (isLoggingIn) => dispatch(setIsLoggingIn(isLoggingIn)),
     }
 }
 
