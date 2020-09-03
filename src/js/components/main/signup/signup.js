@@ -13,8 +13,7 @@ import { setAlert } from 'actions/appActions';
 
 const Signup = (props) => {
     const { t } = useTranslation();
-    const firstNameInput = useRef(null);
-    const lastNameInput = useRef(null);
+    const userNameInput = useRef(null);
     const emailInput = useRef(null);
     const passwordInput = useRef(null);
     const repeatPasswordInput = useRef(null);
@@ -43,18 +42,16 @@ const Signup = (props) => {
             return;
         }
 
-        const firstName = firstNameInput.current.value;
-        const lastName = lastNameInput.current.value;
+        const userName = userNameInput.current.value;
         const email = emailInput.current.value;
 
-        props.signUp(firstName, lastName, email, password, repeatedPassword, props.history);
+        props.signUp(userName, email, password, repeatedPassword, props.history);
     }
 
     return (
         <Card className={styles.signup}>
             <form onSubmit={handleSubmit}>
-                <Input placeholder={t("first name")} ref={firstNameInput} minLength="2" required />
-                <Input placeholder={t("last name")} ref={lastNameInput} minLength="2" required />
+                <Input placeholder={t("user name")} ref={userNameInput} minLength="2" required />
                 <Input type="email" placeholder={t("e-mail")} ref={emailInput} required />
                 <Input type="password" placeholder={t("password")} ref={passwordInput} minLength="8" required />
                 <Input type="password" placeholder={t("repeat password")} ref={repeatPasswordInput} minLength="8" required />
@@ -72,7 +69,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        signUp: (firstName, lastName, email, password, repeatedPassword, history) => dispatch(signUp(firstName, lastName, email, password, repeatedPassword, history)),
+        signUp: (userName, email, password, repeatedPassword, history) => dispatch(signUp(userName, email, password, repeatedPassword, history)),
         setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(setAlert(type, messageKey, messageValue, action, alertProps)),
     }
 }

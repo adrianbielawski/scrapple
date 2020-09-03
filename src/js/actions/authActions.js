@@ -17,15 +17,14 @@ const signUpFailure = () => ({
     type: 'AUTH/SIGN_UP/FAILURE',
 })
 
-export const signUp = (firstName, lastName, email, password, repeatedPassword, history) => dispatch => {
+export const signUp = (userName, email, password, repeatedPassword, history) => dispatch => {
     dispatch(signUpStart());
 
     axios.post('/registration/', {
         email,
         password1: password,
         password2: repeatedPassword,
-        first_name: firstName,
-        last_name: lastName,
+        user_name: userName,
     })
     .then(response => {
         localStorage.setItem('token', response.data.key);
