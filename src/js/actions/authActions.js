@@ -79,19 +79,26 @@ export const logOut = () => dispatch => {
     });
 }
 
-export const setIsLoggingIn = (isLoggingIn) => {
-    return {
-        type: 'AUTH/SET_IS_LOGGING_IN',
-        isLoggingIn
-    }
-}
+const getUserStart = () => ({
+    type: 'AUTH/GET_USER/START',
+})
 
-export const setLoadingAuthState = (loadingAuthState) => {
-    return {
-        type: 'AUTH/SET_LOADING_AUTH_STATE',
-        loadingAuthState
-    }
-}
+const getUserSuccess = (user) => ({
+    type: 'AUTH/GET_USER/SUCCESS',
+    user,
+})
+
+export const getUser = () => dispatch => {
+    dispatch(getUserStart());
+    
+    axios.get('/user/')
+    .then(response => {
+        dispatch(getUserSuccess(response.data));
+    })
+    .catch(error => {
+        localStorage.removeItem('token');
+    });
+};
 
 export const changeUserName = ({ newName, uid, players, gameId }) => {
     return dispatch => {

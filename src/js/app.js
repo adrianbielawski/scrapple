@@ -1,7 +1,6 @@
 import React, { useEffect, Suspense } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { auth } from 'firebaseConfig';
 import styles from 'global_styles/app.scss';
 //Custom Components
 import Main from './components/main/main';
@@ -16,6 +15,7 @@ import Alert from 'components/global_components/alert/alert';
 //Redux Actions
 import { setDeviceOrientation, setIsTouchDevice, setScreenHeight, setUser, clearAppState,
     getUserCurrentGame, checkCurrentGameStatus } from 'actions/appActions';
+import { getUser } from 'actions/authActions';
 
 const App = (props) => {
     // const location = useLocation();
@@ -25,7 +25,7 @@ const App = (props) => {
         window.addEventListener('resize', setScreenHeight);
         window.addEventListener('touchstart', handleTouch);
         window.addEventListener("orientationchange", handleOrientationChange);
-        handleOrientationChange()
+        handleOrientationChange();
 
         return () => {
             window.removeEventListener('resize', setScreenHeight);
@@ -34,6 +34,11 @@ const App = (props) => {
         }
     }, [])
 
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            props.getUser();
+        }
+    }, [])
 
     useEffect(() => {
         if (props.user) {
@@ -103,6 +108,7 @@ const mapDispatchToProps = (dispatch) => {
         getUserCurrentGame: (uid) => dispatch(getUserCurrentGame(uid)),
         clearAppState: () => dispatch(clearAppState()),
         checkCurrentGameStatus: (gameId) => dispatch(checkCurrentGameStatus(gameId)),
+        getUser: () => dispatch(getUser()),
     }
 }
 

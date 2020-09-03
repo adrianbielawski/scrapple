@@ -33,8 +33,8 @@ const authReducer = (state = initialState, action) => {
             newState.isSigningUp = false;
             return newState;
 
-        case 'AUTH/SET_LOADING_AUTH_STATE':
-            newState.loadingAuthState = action.loadingAuthState;
+        case 'AUTH/GET_USER/SUCCESS':
+            newState.loadingAuthState = false;
             return newState;
 
         default:
