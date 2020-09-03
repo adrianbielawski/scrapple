@@ -8,39 +8,56 @@ import LoadingSpinner from 'components/global_components/loading_spinner/loading
 import Button from 'components/global_components/button/button';
 import Input from 'components/global_components/input/input';
 //Redux Actions
-import { signUp, setIsSigningUp } from 'actions/authActions';
+import { signUp } from 'actions/authActions';
+import { setAlert } from 'actions/appActions';
 
 const Signup = (props) => {
     const { t } = useTranslation();
-    const userNameInput = useRef(null);
+    const firstNameInput = useRef(null);
+    const lastNameInput = useRef(null);
     const emailInput = useRef(null);
     const passwordInput = useRef(null);
+    const repeatPasswordInput = useRef(null);
+
+    const validateUserInput = (password1, password2) => {
+        let error = null;
+
+        if (password1 !== password2) {
+            error = "Passwords don't match";
+        }
+
+        return {
+            valid: error === null,
+            error,
+        };
+    }
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        props.setIsSigningUp(true);
-        const userName = userNameInput.current.value;
-        const email = emailInput.current.value;
+        e.preventDefault();   
         const password = passwordInput.current.value;
+        const repeatedPassword = repeatPasswordInput.current.value;
 
-        const promise = props.signUp(email, password, userName);
-        promise.then((user) => {
-            props.setIsSigningUp(false);
-            if (user === undefined) {
-                return;
-            }
-            userNameInput.current.value = '';
-            emailInput.current.value = '';
-            passwordInput.current.value = '';
-        });
+        const {valid, error} = validateUserInput(password, repeatedPassword);
+        if (!valid) {
+            props.setAlert('alert', error);
+            return;
+        }
+
+        const firstName = firstNameInput.current.value;
+        const lastName = lastNameInput.current.value;
+        const email = emailInput.current.value;
+
+        props.signUp(firstName, lastName, email, password, repeatedPassword, props.history);
     }
 
     return (
         <Card className={styles.signup}>
             <form onSubmit={handleSubmit}>
-                <Input placeholder={t("user name")} ref={userNameInput} minLength="2" required />
+                <Input placeholder={t("first name")} ref={firstNameInput} minLength="2" required />
+                <Input placeholder={t("last name")} ref={lastNameInput} minLength="2" required />
                 <Input type="email" placeholder={t("e-mail")} ref={emailInput} required />
-                <Input type="password" placeholder={t("password")} ref={passwordInput} minLength="6" required />
+                <Input type="password" placeholder={t("password")} ref={passwordInput} minLength="8" required />
+                <Input type="password" placeholder={t("repeat password")} ref={repeatPasswordInput} minLength="8" required />
                 {props.isSigningUp ? <LoadingSpinner background={false} /> : <Button type="submit">{t("Create account")}</Button>}
             </form>
         </Card>
@@ -55,8 +72,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        signUp: (email, password, userName) => dispatch(signUp(email, password, userName)),
-        setIsSigningUp: (isSigningUp) => dispatch(setIsSigningUp(isSigningUp)),
+        signUp: (firstName, lastName, email, password, repeatedPassword, history) => dispatch(signUp(firstName, lastName, email, password, repeatedPassword, history)),
+        setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(setAlert(type, messageKey, messageValue, action, alertProps)),
     }
 }
 

@@ -10,8 +10,10 @@ const resources = {
       //Auth
       "e-mail" : "e-mail",
       "password" : "password",
+      "repeat password" : "repeat password",
+      "first name" : "first name",
+      "last name" : "last name",
       "Don't have an account" : "Don't have an account? <1>Create new account here!</1>",
-      "user name" : "user name",
       "Logout" : "Logout",
       "Logged in as" : "Logged in as: {{name}}",
       //MainMenu
@@ -122,8 +124,10 @@ const resources = {
       //Auth
       "e-mail" : "e-mail",
       "password" : "hasło",
+      "repeat password" : "powtórz hasło",
+      "first name" : "imię",
+      "last name" : "nazwisko",
       "Don't have an account" : "Nie masz konta? <1>Zarejestruj się tutaj!</1>",
-      "user name" : "imię",
       "Logout" : "Wyloguj",
       "Logged in as" : "Zalogowany jako: {{name}}",
       //MainMenu

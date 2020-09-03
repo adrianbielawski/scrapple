@@ -13,7 +13,10 @@ const Main = (props) => {
             <Header />
             <div className={styles.content}>
                 <Language showName={false} />
-                {props.location.pathname === '/signup' ? <Signup /> : <Login history={props.history} />}
+                {props.location.pathname === '/signup' ?
+                    <Signup history={props.history} /> :
+                    <Login history={props.history} />
+                }
             </div>
         </div>
     );

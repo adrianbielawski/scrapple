@@ -4,7 +4,7 @@ const initialState = {
     screenHeight: window.innerHeight,
     isTouchDevice: false,
     deviceOrientation: '',
-    user: {},
+    user: null,
     userInfo: {
         currentGame: null,
         allGames: [],
@@ -111,6 +111,7 @@ const appReducer = (state = initialState, action) => {
             return newState;
 
         case 'APP/SET_USER':
+        case 'AUTH/SIGN_UP/SUCCESS':
             newState.user = action.user
             return newState;
 

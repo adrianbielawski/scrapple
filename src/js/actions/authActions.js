@@ -1,29 +1,40 @@
 import { db, auth } from 'firebaseConfig';
+import axios from 'axiosInstance';
 //Redux Actions
 import { setAlert } from 'actions/appActions';
 import { setShowChangeNameModal, setShowChangePasswordModal } from 'actions/sideMenuActions';
 
-export const signUp = (email, password, userName) => dispatch => {
-    return auth.createUserWithEmailAndPassword(email, password).then(response => {
-        const user = response.user;
-        user.updateProfile({
-            displayName: userName,
-        }).then(() => {
-            db.collection('users').doc(user.uid).collection('currentGame').doc('gameId').set({
-                id: null,
-            });
-            db.collection('users').doc(user.uid).collection('allGames').doc('allGames').set({
-                allGames: [],
-            });
-            user.sendEmailVerification().then(() => {
-                auth.signOut().then(() => {
-                    dispatch(setAlert('alert', 'Welcome', { 'name': userName }, 'user-registered'));
-                })
-            });
-        })
-        return user;
-    }).catch(error => {
-        dispatch(setAlert('alert', error.message));
+const signUpStart = () => ({
+    type: 'AUTH/SIGN_UP/START',
+})
+
+const signUpSuccess = (user) => ({
+    type: 'AUTH/SIGN_UP/SUCCESS',
+    user,
+})
+
+const signUpFailure = () => ({
+    type: 'AUTH/SIGN_UP/FAILURE',
+})
+
+export const signUp = (firstName, lastName, email, password, repeatedPassword, history) => dispatch => {
+    dispatch(signUpStart());
+
+    axios.post('/registration/', {
+        email,
+        password1: password,
+        password2: repeatedPassword,
+        first_name: firstName,
+        last_name: lastName,
+    })
+    .then(response => {
+        localStorage.setItem('token', response.data.key);
+        dispatch(signUpSuccess(response.data.user));
+        history.push('/main_menu');
+    })
+    .catch(error => {
+        dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
+        dispatch(signUpFailure());
     });
 }
 
