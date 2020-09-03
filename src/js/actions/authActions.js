@@ -1,7 +1,7 @@
 import { db, auth } from 'firebaseConfig';
 import axios from 'axiosInstance';
 //Redux Actions
-import { setAlert } from 'actions/appActions';
+import { setAlert, clearAppState } from 'actions/appActions';
 import { setShowChangeNameModal, setShowChangePasswordModal } from 'actions/sideMenuActions';
 
 const signUpStart = () => ({
@@ -69,11 +69,14 @@ export const logIn = (email, password, history) => dispatch => {
     });
 };
 
-export const setIsSigningUp = (isSigningUp) => {
-    return {
-        type: 'AUTH/SET_IS_SIGNING_UP',
-        isSigningUp
-    }
+export const logOut = () => dispatch => {
+    axios.post('/logout/').then(() => {
+        dispatch(clearAppState());
+        localStorage.removeItem('token');
+    })
+    .catch(error => {
+        dispatch(setAlert('alert', error.response.data));
+    });
 }
 
 export const setIsLoggingIn = (isLoggingIn) => {
@@ -90,7 +93,7 @@ export const setLoadingAuthState = (loadingAuthState) => {
     }
 }
 
-export const changeUserName = ({newName, uid, players, gameId}) => {
+export const changeUserName = ({ newName, uid, players, gameId }) => {
     return dispatch => {
         auth.currentUser.updateProfile({ displayName: newName }).then(() => {
             const newPlayers = players.map(player => {
@@ -112,7 +115,7 @@ export const changeUserName = ({newName, uid, players, gameId}) => {
     }
 }
 
-export const changeUserPassword = ({newPassword}) => {
+export const changeUserPassword = ({ newPassword }) => {
     return dispatch => {
         auth.currentUser.updatePassword(newPassword).then(() => {
             dispatch(setShowChangePasswordModal(false));

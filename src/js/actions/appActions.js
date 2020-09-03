@@ -26,10 +26,9 @@ export const setFetchingGameData = (fetching) => {
     }
 }
 
-export const clearAppState = (language) => {
+export const clearAppState = () => {
     return {
         type: 'APP/CLEAR_APP_STATE',
-        language
     }
 }
 

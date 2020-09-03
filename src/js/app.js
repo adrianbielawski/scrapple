@@ -14,37 +14,14 @@ import PrivateRoute from 'hoc/PrivateRoute';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 import Alert from 'components/global_components/alert/alert';
 //Redux Actions
-import { setDeviceOrientation, setIsTouchDevice, setScreenHeight, setUser, clearAppState, getUserCurrentGame, checkCurrentGameStatus } from 'actions/appActions';
-import { setLoadingAuthState } from 'actions/authActions';
+import { setDeviceOrientation, setIsTouchDevice, setScreenHeight, setUser, clearAppState,
+    getUserCurrentGame, checkCurrentGameStatus } from 'actions/appActions';
 
 const App = (props) => {
-    const location = useLocation();
-    let history = useHistory();
+    // const location = useLocation();
+    // let history = useHistory();
 
     useEffect(() => {
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                props.setUser(user);
-                const currentGamePromise = props.getUserCurrentGame(user.uid);
-                currentGamePromise.then((currentGame) => {
-                    if (currentGame) {
-                        const isCurrentGameValid = props.checkCurrentGameStatus(currentGame)
-                        isCurrentGameValid.then((isValid) => {
-                            if (isValid) {
-                                history.push(`/game/${currentGame}`);
-                            }
-                        });
-                    }
-                });
-            } else {
-                if (location.pathname.slice(1) === 'signup') {
-                    return;
-                }
-                props.clearAppState(props.language);
-            }
-            props.setLoadingAuthState(false);
-        });
-
         window.addEventListener('resize', setScreenHeight);
         window.addEventListener('touchstart', handleTouch);
         window.addEventListener("orientationchange", handleOrientationChange);
@@ -56,6 +33,27 @@ const App = (props) => {
             window.removeEventListener("orientationchange", handleOrientationChange);
         }
     }, [])
+
+
+    useEffect(() => {
+        if (props.user) {
+            // TO DO
+
+            // const currentGamePromise = props.getUserCurrentGame(user.uid);
+            // currentGamePromise.then((currentGame) => {
+            //     if (currentGame) {
+            //         const isCurrentGameValid = props.checkCurrentGameStatus(currentGame)
+            //         isCurrentGameValid.then((isValid) => {
+            //             if (isValid) {
+            //                 history.push(`/game/${currentGame}`);
+            //             }
+            //         });
+            //     }
+            // });
+        } else {
+            props.clearAppState();
+        }
+    }, [props.user])
 
     const setScreenHeight = () => {
         const screenHeight = window.innerHeight;
@@ -92,7 +90,7 @@ const mapStateToProps = (state) => {
     return {
         screenHeight: state.app.screenHeight,
         alert: state.app.alert,
-        language: state.app.language,
+        user: state.app.user,
     }
 }
 
@@ -103,8 +101,7 @@ const mapDispatchToProps = (dispatch) => {
         setDeviceOrientation: (deviceOrientation) => dispatch(setDeviceOrientation(deviceOrientation)),
         setUser: (user) => dispatch(setUser(user)),
         getUserCurrentGame: (uid) => dispatch(getUserCurrentGame(uid)),
-        clearAppState: (language) => dispatch(clearAppState(language)),
-        setLoadingAuthState: (loadingAuthState) => dispatch(setLoadingAuthState(loadingAuthState)),
+        clearAppState: () => dispatch(clearAppState()),
         checkCurrentGameStatus: (gameId) => dispatch(checkCurrentGameStatus(gameId)),
     }
 }

@@ -57,7 +57,7 @@ const appReducer = (state = initialState, action) => {
 
         case 'APP/CLEAR_APP_STATE':
             newState = cloneDeep(initialState);
-            newState.language = action.language;
+            newState.language = state.language;
             return newState;
 
         case 'APP/EXIT_GAME':
@@ -75,7 +75,7 @@ const appReducer = (state = initialState, action) => {
         case 'APP/SET_LANGUAGE':
             newState.language = action.language;
             return newState;
-            
+
         case 'APP/SET_ADMIN':
             newState.admin = action.admin;
             return newState;
