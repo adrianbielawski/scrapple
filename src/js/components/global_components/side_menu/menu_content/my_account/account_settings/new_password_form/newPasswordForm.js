@@ -7,7 +7,7 @@ import Modal from 'components/global_components/modal/modal';
 import Button from 'components/global_components/button/button';
 import Input from 'components/global_components/input/input';
 //Redux actions
-import { setShowChangePasswordModal } from 'actions/sideMenuActions';
+import { closeNewPasswordModal } from 'actions/sideMenuActions';
 import { setAlert } from 'actions/appActions';
 
 const NewPasswordForm = (props) => {
@@ -26,38 +26,44 @@ const NewPasswordForm = (props) => {
     }
 
     const validateUserInput = () => {
+        let error = null;
+
         if (!newPassword) {
-            props.setAlert('alert', "Please enter new password");
-            return false;
+            error = "Please enter new password";
         }
 
         if (!repeatPassword) {
-            props.setAlert('alert', "Please repeat new password");
-            return false;
+            error = "Please repeat new password";
         }
 
         if (newPassword !== repeatPassword) {
-            props.setAlert('alert', "Passwords doesn't match");
-            return false;
+            error = "Passwords don't match";
         }
-        return true;
+
+        return {
+            valid: error === null,
+            error,
+        };
     }
 
     const handleSubmit = () => {
-        const isValid = validateUserInput();
-        if (!isValid) {
+        const { valid, error } = validateUserInput();
+        if (!valid) {
+            props.setAlert('alert', error);
             return;
         }
-        props.setAlert('confirm', 'Are you sure you want to change your password', null, 'change-password', {newPassword});
 
-        newPasswordInput.current.value = null;
-        repeatPasswordInput.current.value = null;
-        setNewPassword(null);
-        setRepeatPassword(null);
+        props.setAlert(
+            'confirm',
+            'Are you sure you want to change your password',
+            null,
+            'change-password',
+            {newPassword, repeatPassword}
+        );
     }
 
     const closeModal = () => {
-        props.setShowChangePasswordModal(false);
+        props.closeNewPasswordModal();
     }
 
     return (
@@ -65,10 +71,10 @@ const NewPasswordForm = (props) => {
             <div className={styles.newPasswordForm}>
                 <Input className={styles.input} type="password"
                     autoComplete="new-password" onChange={handleNewPasswordChange}
-                    placeholder={t("enter new password")} ref={newPasswordInput} minLength={6} required/>
+                    placeholder={t("enter new password")} ref={newPasswordInput} minLength={8} required/>
                 <Input className={styles.input} type="password"
                     autoComplete="new-password" onChange={handleRepeatPasswordChange}
-                    placeholder={t("repeat new password")} ref={repeatPasswordInput} minLength={6} required/>
+                    placeholder={t("repeat new password")} ref={repeatPasswordInput} minLength={8} required/>
                 <Button className={styles.button} onClick={handleSubmit}>{t("Change password")}</Button>
             </div>
             <Button onClick={closeModal}>{t("Close")}</Button>
@@ -78,8 +84,10 @@ const NewPasswordForm = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setShowChangePasswordModal: (showChangePasswordModal) => dispatch(setShowChangePasswordModal(showChangePasswordModal)),
-        setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(setAlert(type, messageKey, messageValue, action, alertProps)),
+        closeNewPasswordModal: () => dispatch(closeNewPasswordModal()),
+        setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(
+            setAlert(type, messageKey, messageValue, action, alertProps)
+        ),
     }
 }
 

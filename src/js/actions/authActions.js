@@ -117,13 +117,19 @@ export const changeUserName = ({ newName }) => {
     }
 }
 
-export const changeUserPassword = ({ newPassword }) => {
+const changePasswordSuccess = () => ({
+    type: 'AUTH/PASSWORD_CHANGED',
+})
+
+export const changeUserPassword = ({ newPassword, repeatPassword }) => {
     return dispatch => {
-        auth.currentUser.updatePassword(newPassword).then(() => {
-            dispatch(setShowChangePasswordModal(false));
+        axios.post('/password/change/', { new_password1: newPassword, new_password2: repeatPassword })
+        .then(() => {
+            dispatch(changePasswordSuccess());
             dispatch(setAlert('alert', 'Password changed successfully'));
-        }).catch(() => {
-            dispatch(setAlert('alert', 'Something went wrong'));
+        })
+        .catch((error) => {
+            dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
         })
     }
 }

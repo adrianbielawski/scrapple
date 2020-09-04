@@ -52,10 +52,15 @@ export const closeNewNameModal = () => {
     };
 }
 
-export const setShowChangePasswordModal = (showChangePasswordModal) => {
+export const openNewPasswordModal = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_CHANGE_PASSWORD_MODAL',
-        showChangePasswordModal,
+        type: 'SIDE_MENU/OPEN_NEW_PASSWORD_MODAL',
+    };
+}
+
+export const closeNewPasswordModal = () => {
+    return {
+        type: 'SIDE_MENU/CLOSE_NEW_PASSWORD_MODAL',
     };
 }
 
