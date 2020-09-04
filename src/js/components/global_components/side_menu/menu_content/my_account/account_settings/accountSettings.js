@@ -7,38 +7,21 @@ import NewNameForm from './new_name_form/newNameForm';
 import NewPasswordForm from './new_password_form/newPasswordForm';
 import ProfileImageForm from './profile_image_form/profileImageForm';
 //Redux actions
-import { setShowAccountSettings, openNewNameModal, openNewPasswordModal,
+import { toggleAccountSettings, openNewNameModal, openNewPasswordModal,
     openProfileImageModal } from 'actions/sideMenuActions';
 
 const AccountSettings = (props) => {
     const { t } = useTranslation();
-  
-    const showAccountSettings = () => {
-        props.setShowAccountSettings(!props.showAccountSettings);
-    }
-  
-    const handleNewNameModal = () => {
-        props.openNewNameModal();
-    }
-  
-    const handleNewPasswordModal = () => {
-        props.openNewPasswordModal();
-    }
-  
-    const handleProfileImageModal = () => {
-        props.openProfileImageModal();
-    }
-
     return (
         <div className={styles.accountSettings}>
-            <p className={styles.title} onClick={showAccountSettings}>{t("Account settings")}</p>
+            <p className={styles.title} onClick={props.toggleAccountSettings}>{t("Account settings")}</p>
             <NewNameForm show={props.showNewNameModal} />
             <NewPasswordForm show={props.showNewPasswordModal} />
             <ProfileImageForm show={props.showProfileImageModal} />
             <ul className={`${styles.settings} ${props.showAccountSettings && styles.showSettings}`}>
-                <li><p onClick={handleNewNameModal}>{t("Change name")}</p></li>
-                <li><p onClick={handleNewPasswordModal}>{t("Change password")}</p></li>
-                <li><p onClick={handleProfileImageModal}>{t("Change profile image")}</p></li>
+                <li><p onClick={props.openNewNameModal}>{t("Change name")}</p></li>
+                <li><p onClick={props.openNewPasswordModal}>{t("Change password")}</p></li>
+                <li><p onClick={props.openProfileImageModal}>{t("Change profile image")}</p></li>
             </ul>
         </div>
     );
@@ -55,7 +38,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setShowAccountSettings: (showAccountSettings) => dispatch(setShowAccountSettings(showAccountSettings)),
+        toggleAccountSettings: () => dispatch(toggleAccountSettings()),
         openNewNameModal: () => dispatch(openNewNameModal()),
         openNewPasswordModal: () => dispatch(openNewPasswordModal()),
         openProfileImageModal: () => dispatch(openProfileImageModal()),

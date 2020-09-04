@@ -1,8 +1,6 @@
-import { db, auth } from 'firebaseConfig';
 import axios from 'axiosInstance';
 //Redux Actions
 import { setAlert, clearAppState } from 'actions/appActions';
-import { setShowChangePasswordModal } from 'actions/sideMenuActions';
 
 const signUpStart = () => ({
     type: 'AUTH/SIGN_UP/START',
@@ -78,18 +76,12 @@ export const logOut = () => dispatch => {
     });
 }
 
-const getUserStart = () => ({
-    type: 'AUTH/GET_USER/START',
-})
-
 const getUserSuccess = (user) => ({
     type: 'AUTH/GET_USER/SUCCESS',
     user,
 })
 
 export const getUser = () => dispatch => {
-    dispatch(getUserStart());
-    
     axios.get('/user/')
     .then(response => {
         dispatch(getUserSuccess(response.data));

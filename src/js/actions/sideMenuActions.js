@@ -1,9 +1,7 @@
-import { db, auth, storageRef } from 'firebaseConfig';
-import moment from 'moment';
-import { cloneDeep } from 'lodash';
+import { db } from 'firebaseConfig';
 import languages from 'components/global_components/language/languages';
 //Redux actions
-import { setUserInfo, setAlert } from 'actions/appActions';
+import { setUserInfo } from 'actions/appActions';
 
 export const setFetchingGamesHistory = (fetchingGamesHistory) => {
     return {
@@ -33,10 +31,9 @@ export const setShowMyAccount = (showMyAccount) => {
     };
 }
 
-export const setShowAccountSettings = (showAccountSettings) => {
+export const toggleAccountSettings = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_ACCOUNT_SETTINGS',
-        showAccountSettings,
+        type: 'SIDE_MENU/TOGGLE_ACCOUNT_SETTINGS',
     };
 }
 

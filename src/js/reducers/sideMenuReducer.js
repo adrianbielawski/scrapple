@@ -58,8 +58,8 @@ const sideMenuReducer = (state = initialState, action) => {
             newState.showGamesHistory = action.showGamesHistory;
             return newState;
 
-        case 'SIDE_MENU/SET_SHOW_ACCOUNT_SETTINGS':
-            newState.showAccountSettings = action.showAccountSettings;
+        case 'SIDE_MENU/TOGGLE_ACCOUNT_SETTINGS':
+            newState.showAccountSettings = !newState.showAccountSettings;
             return newState;
 
         case 'SIDE_MENU/CLEAR_SIDE_MENU_STATE':
