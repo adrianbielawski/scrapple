@@ -117,9 +117,14 @@ const appReducer = (state = initialState, action) => {
             newState.user = action.user;
             return newState;
 
-        case 'AUTH/USERNAME_CHANGED':
+        case 'AUTH/USERNAME_CHANGE/SUCCESS':
             newState = cloneDeep(newState);
             newState.user.username = action.newName;
+            return newState;
+
+        case 'AUTH/PROFILE_IMAGE_UPDATE/SUCCESS':
+            newState = cloneDeep(newState);
+            newState.user.image = action.image;
             return newState;
 
         default:

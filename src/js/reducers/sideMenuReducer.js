@@ -45,8 +45,13 @@ const sideMenuReducer = (state = initialState, action) => {
             newState.showNewPasswordModal = false;
             return newState;
 
-        case 'SIDE_MENU/SET_SHOW_CHANGE_PROFILE_IMAGE_MODAL':
-            newState.showChangeProfileImageModal = action.showChangeProfileImageModal;
+        case 'SIDE_MENU/OPEN_PROFILE_IMAGE_MODAL':
+            newState.showProfileImageModal = true;
+            return newState;
+
+        case 'SIDE_MENU/CLOSE_PROFILE_IMAGE_MODAL':
+        case 'AUTH/PROFILE_IMAGE_UPDATE/SUCCESS':
+            newState.showProfileImageModal = false;
             return newState;
 
         case 'SIDE_MENU/SET_SHOW_GAMES_HISTORY':

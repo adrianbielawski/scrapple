@@ -133,3 +133,33 @@ export const changeUserPassword = ({ newPassword, repeatPassword }) => {
         })
     }
 }
+
+const profileImageUpdateStart = () => ({
+    type: 'AUTH/PROFILE_IMAGE_UPDATE/START',
+})
+
+const profileImageUpdateSuccess = (image) => ({
+    type: 'AUTH/PROFILE_IMAGE_UPDATE/SUCCESS',
+    image,
+})
+
+const profileImageUpdateFailure = () => ({
+    type: 'AUTH/PROFILE_IMAGE_UPDATE/FAILURE',
+})
+
+export const updateProfileImage = (image) => dispatch => {
+    dispatch(profileImageUpdateStart());
+    
+    const data = new FormData();
+    data.append('image', image);
+    
+    axios.patch('/user/', data)
+    .then(response => {
+        dispatch(profileImageUpdateSuccess(response.data.image));
+        dispatch(setAlert('alert', 'Profile image updated'));
+    })
+    .catch((error) => {
+        dispatch(profileImageUpdateFailure());
+        dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
+    });
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import styles from './imagePreview.scss';
@@ -7,10 +8,10 @@ const ImagePreview = (props) => {
     const getImage = () => {
         let image;
 
-        if (props.profileImageURL) {
-            image = <img className={styles.image} src={props.profileImageURL} />
-        } else if (props.user.photoURL) {
-            image = <img className={styles.image} src={props.user.photoURL} />
+        if (props.image) {
+            image = <img className={styles.image} src={URL.createObjectURL(props.image)} />
+        } else if (props.user.image) {
+            image = <img className={styles.image} src={props.user.image} />
         } else {
             image = <FontAwesomeIcon icon={faUser} />
         }
@@ -24,4 +25,10 @@ const ImagePreview = (props) => {
     );
 }
 
-export default ImagePreview;
+const mapStateToProps = (state) => {
+    return {
+        user: state.app.user,
+    }
+}
+
+export default connect(mapStateToProps)(ImagePreview);

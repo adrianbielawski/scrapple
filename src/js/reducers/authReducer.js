@@ -2,6 +2,7 @@ const initialState = {
     loadingAuthState: true,
     isLoggingIn: false,
     isSigningUp: false,
+    uploadingProfileImage: false,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -35,6 +36,15 @@ const authReducer = (state = initialState, action) => {
 
         case 'AUTH/GET_USER/SUCCESS':
             newState.loadingAuthState = false;
+            return newState;
+
+        case 'AUTH/PROFILE_IMAGE_UPDATE/START':
+            newState.uploadingProfileImage = true;
+            return newState;
+
+        case 'AUTH/PROFILE_IMAGE_UPDATE/FAILURE':
+        case 'AUTH/PROFILE_IMAGE_UPDATE/SUCCESS':
+            newState.uploadingProfileImage = false;
             return newState;
 
         default:

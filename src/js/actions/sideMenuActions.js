@@ -64,10 +64,15 @@ export const closeNewPasswordModal = () => {
     };
 }
 
-export const setShowChangeProfileImageModal = (showChangeProfileImageModal) => {
+export const openProfileImageModal = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_CHANGE_PROFILE_IMAGE_MODAL',
-        showChangeProfileImageModal,
+        type: 'SIDE_MENU/OPEN_PROFILE_IMAGE_MODAL',
+    };
+}
+
+export const closeProfileImageModal = () => {
+    return {
+        type: 'SIDE_MENU/CLOSE_PROFILE_IMAGE_MODAL',
     };
 }
 
@@ -140,33 +145,4 @@ export const fetchGameDetails = (gameId) => dispatch => {
         }).catch((err) => {
             console.log(err)
         });
-}
-
-export const updateProfileImage = (profileImage, gameId, uid, players) => dispatch => {
-    const profileImageRef = storageRef.child(`profile_image_${uid}_${moment().unix()}`);
-    return profileImageRef.put(profileImage).then(() => {
-        profileImageRef.getDownloadURL().then((url) => {
-            auth.currentUser.updateProfile({ photoURL: url }).then(() => {
-                updateProfileImageInCurrentGame(url, gameId, uid, players);
-                dispatch(setAlert('alert', 'Profile image updated'));
-                dispatch(setShowChangeProfileImageModal(false));
-            })
-        })
-    }).catch(() => {
-        dispatch(setAlert('alert', 'Something went wrong'));
-    });
-}
-
-const updateProfileImageInCurrentGame = (url, gameId, uid, players) => {
-    let updatedPlayers = cloneDeep(players);
-    updatedPlayers.map(player => {
-        if (player.uid === uid) {
-            const updatedPlayer = player;
-            updatedPlayer.profileImage = url;
-        }
-    });
-
-    db.collection('games').doc(gameId).update({
-        players: updatedPlayers,
-    });
 }
