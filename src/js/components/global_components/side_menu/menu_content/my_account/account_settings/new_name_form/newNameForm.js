@@ -6,7 +6,7 @@ import styles from './newNameForm.scss';
 import Modal from 'components/global_components/modal/modal';
 import Button from 'components/global_components/button/button';
 import Input from 'components/global_components/input/input';
-import LoadingSpinner from 'components/global_components/loading_spinner/LoadingSpinner';
+import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 //Redux actions
 import { closeNewNameModal } from 'actions/sideMenuActions';
 import { setAlert } from 'actions/appActions';
