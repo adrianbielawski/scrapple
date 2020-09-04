@@ -1,9 +1,7 @@
-import { db, auth, storageRef } from 'firebaseConfig';
-import moment from 'moment';
-import { cloneDeep } from 'lodash';
+import { db } from 'firebaseConfig';
 import languages from 'components/global_components/language/languages';
 //Redux actions
-import { setUserInfo, setAlert } from 'actions/appActions';
+import { setUserInfo } from 'actions/appActions';
 
 export const setFetchingGamesHistory = (fetchingGamesHistory) => {
     return {
@@ -26,38 +24,51 @@ export const setShowGamesHistory = (showGamesHistory) => {
     };
 }
 
-export const setShowMyAccount = (showMyAccount) => {
+export const toggleMyAccount = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_MY_ACCOUNT',
-        showMyAccount,
+        type: 'SIDE_MENU/TOGGLE_MY_ACCOUNT',
     };
 }
 
-export const setShowAccountSettings = (showAccountSettings) => {
+export const toggleAccountSettings = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_ACCOUNT_SETTINGS',
-        showAccountSettings,
+        type: 'SIDE_MENU/TOGGLE_ACCOUNT_SETTINGS',
     };
 }
 
-export const setShowChangeNameModal = (showChangeNameModal) => {
+export const openNewNameModal = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_CHANGE_NAME_MODAL',
-        showChangeNameModal,
+        type: 'SIDE_MENU/OPEN_NEW_NAME_MODAL',
     };
 }
 
-export const setShowChangePasswordModal = (showChangePasswordModal) => {
+export const closeNewNameModal = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_CHANGE_PASSWORD_MODAL',
-        showChangePasswordModal,
+        type: 'SIDE_MENU/CLOSE_NEW_NAME_MODAL',
     };
 }
 
-export const setShowChangeProfileImageModal = (showChangeProfileImageModal) => {
+export const openNewPasswordModal = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_CHANGE_PROFILE_IMAGE_MODAL',
-        showChangeProfileImageModal,
+        type: 'SIDE_MENU/OPEN_NEW_PASSWORD_MODAL',
+    };
+}
+
+export const closeNewPasswordModal = () => {
+    return {
+        type: 'SIDE_MENU/CLOSE_NEW_PASSWORD_MODAL',
+    };
+}
+
+export const openProfileImageModal = () => {
+    return {
+        type: 'SIDE_MENU/OPEN_PROFILE_IMAGE_MODAL',
+    };
+}
+
+export const closeProfileImageModal = () => {
+    return {
+        type: 'SIDE_MENU/CLOSE_PROFILE_IMAGE_MODAL',
     };
 }
 
@@ -130,33 +141,4 @@ export const fetchGameDetails = (gameId) => dispatch => {
         }).catch((err) => {
             console.log(err)
         });
-}
-
-export const updateProfileImage = (profileImage, gameId, uid, players) => dispatch => {
-    const profileImageRef = storageRef.child(`profile_image_${uid}_${moment().unix()}`);
-    return profileImageRef.put(profileImage).then(() => {
-        profileImageRef.getDownloadURL().then((url) => {
-            auth.currentUser.updateProfile({ photoURL: url }).then(() => {
-                updateProfileImageInCurrentGame(url, gameId, uid, players);
-                dispatch(setAlert('alert', 'Profile image updated'));
-                dispatch(setShowChangeProfileImageModal(false));
-            })
-        })
-    }).catch(() => {
-        dispatch(setAlert('alert', 'Something went wrong'));
-    });
-}
-
-const updateProfileImageInCurrentGame = (url, gameId, uid, players) => {
-    let updatedPlayers = cloneDeep(players);
-    updatedPlayers.map(player => {
-        if (player.uid === uid) {
-            const updatedPlayer = player;
-            updatedPlayer.profileImage = url;
-        }
-    });
-
-    db.collection('games').doc(gameId).update({
-        players: updatedPlayers,
-    });
 }

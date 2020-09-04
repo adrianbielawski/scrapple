@@ -1,8 +1,6 @@
-import { db, auth } from 'firebaseConfig';
 import axios from 'axiosInstance';
 //Redux Actions
 import { setAlert, clearAppState } from 'actions/appActions';
-import { setShowChangeNameModal, setShowChangePasswordModal } from 'actions/sideMenuActions';
 
 const signUpStart = () => ({
     type: 'AUTH/SIGN_UP/START',
@@ -24,7 +22,7 @@ export const signUp = (userName, email, password, repeatedPassword, history) => 
         email,
         password1: password,
         password2: repeatedPassword,
-        user_name: userName,
+        username: userName,
     })
     .then(response => {
         localStorage.setItem('token', response.data.key);
@@ -78,56 +76,100 @@ export const logOut = () => dispatch => {
     });
 }
 
-const getUserStart = () => ({
-    type: 'AUTH/GET_USER/START',
-})
-
 const getUserSuccess = (user) => ({
     type: 'AUTH/GET_USER/SUCCESS',
     user,
 })
 
 export const getUser = () => dispatch => {
-    dispatch(getUserStart());
-    
     axios.get('/user/')
     .then(response => {
         dispatch(getUserSuccess(response.data));
     })
     .catch(error => {
+        debugger
         localStorage.removeItem('token');
     });
 };
 
-export const changeUserName = ({ newName, uid, players, gameId }) => {
-    return dispatch => {
-        auth.currentUser.updateProfile({ displayName: newName }).then(() => {
-            const newPlayers = players.map(player => {
-                if (player.uid === uid) {
-                    player.playerName = newName;
-                }
-                return player;
-            });
+const changeUsernameStart = () => ({
+    type: 'AUTH/USERNAME_CHANGE/START',
+})
 
-            db.collection('games').doc(gameId).update({
-                players: newPlayers
-            }).then(() => {
-                dispatch(setShowChangeNameModal(false));
-                dispatch(setAlert('alert', 'Name changed successfully'));
-            })
-        }).catch(() => {
-            dispatch(setAlert('alert', 'Something went wrong'));
-        })
-    }
+const changeUsernameSuccess = (newName) => ({
+    type: 'AUTH/USERNAME_CHANGE/SUCCESS',
+    newName
+})
+
+const changeUsernameFailure = () => ({
+    type: 'AUTH/USERNAME_CHANGE/FAILURE',
+})
+
+export const changeUserName = ({ newName }) => dispatch => {
+    dispatch(changeUsernameStart());
+
+    axios.patch('/user/', { username: newName })
+    .then(() => {
+        dispatch(changeUsernameSuccess(newName));
+        dispatch(setAlert('alert', 'Name changed successfully'));
+    })
+    .catch(() => {
+        dispatch(changeUsernameFailure());
+        dispatch(setAlert('alert', 'Something went wrong'));
+    })
 }
 
-export const changeUserPassword = ({ newPassword }) => {
-    return dispatch => {
-        auth.currentUser.updatePassword(newPassword).then(() => {
-            dispatch(setShowChangePasswordModal(false));
-            dispatch(setAlert('alert', 'Password changed successfully'));
-        }).catch(() => {
-            dispatch(setAlert('alert', 'Something went wrong'));
-        })
-    }
+const changePasswordStart = () => ({
+    type: 'AUTH/PASSWORD_CHANGE/START',
+})
+
+const changePasswordSuccess = () => ({
+    type: 'AUTH/PASSWORD_CHANGE/SUCCESS',
+})
+
+const changePasswordFailure = () => ({
+    type: 'AUTH/PASSWORD_CHANGE/FAILURE',
+})
+
+export const changeUserPassword = ({ newPassword, repeatPassword }) => dispatch => {
+    dispatch(changePasswordStart());
+    axios.post('/password/change/', { new_password1: newPassword, new_password2: repeatPassword })
+    .then(() => {
+        dispatch(changePasswordSuccess());
+        dispatch(setAlert('alert', 'Password changed successfully'));
+    })
+    .catch((error) => {
+        dispatch(changePasswordFailure());
+        dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
+    })
+}
+
+const profileImageUpdateStart = () => ({
+    type: 'AUTH/PROFILE_IMAGE_UPDATE/START',
+})
+
+const profileImageUpdateSuccess = (image) => ({
+    type: 'AUTH/PROFILE_IMAGE_UPDATE/SUCCESS',
+    image,
+})
+
+const profileImageUpdateFailure = () => ({
+    type: 'AUTH/PROFILE_IMAGE_UPDATE/FAILURE',
+})
+
+export const updateProfileImage = (image) => dispatch => {
+    dispatch(profileImageUpdateStart());
+    
+    const data = new FormData();
+    data.append('image', image);
+
+    axios.patch('/user/', data)
+    .then(response => {
+        dispatch(profileImageUpdateSuccess(response.data.image));
+        dispatch(setAlert('alert', 'Profile image updated'));
+    })
+    .catch((error) => {
+        dispatch(profileImageUpdateFailure());
+        dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
+    });
 }

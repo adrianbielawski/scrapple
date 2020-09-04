@@ -20,4 +20,8 @@ button {
 		background: darken($mainGreen, 10);
 		outline: none;
 	}
+	&[disabled] {
+		background: $grey;
+		cursor: no-drop;
+	}
 }
