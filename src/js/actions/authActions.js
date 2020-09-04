@@ -95,12 +95,13 @@ export const getUser = () => dispatch => {
         dispatch(getUserSuccess(response.data));
     })
     .catch(error => {
+        debugger
         localStorage.removeItem('token');
     });
 };
 
 const changeUsernameSuccess = (newName) => ({
-    type: 'AUTH/USERNAME_CHANGED',
+    type: 'AUTH/USERNAME_CHANGE/SUCCESS',
     newName
 })
 
@@ -118,7 +119,7 @@ export const changeUserName = ({ newName }) => {
 }
 
 const changePasswordSuccess = () => ({
-    type: 'AUTH/PASSWORD_CHANGED',
+    type: 'AUTH/PASSWORD_CHANGE/SUCCESS',
 })
 
 export const changeUserPassword = ({ newPassword, repeatPassword }) => {

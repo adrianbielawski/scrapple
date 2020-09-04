@@ -9,7 +9,7 @@ const initialState = {
     showAccountSettings: false,
     showNewNameModal: false,
     showNewPasswordModal: false,
-    showChangeProfileImageModal: false,
+    showProfileImageModal: false,
 };
 
 const sideMenuReducer = (state = initialState, action) => {
@@ -32,7 +32,7 @@ const sideMenuReducer = (state = initialState, action) => {
             return newState;
 
         case 'SIDE_MENU/CLOSE_NEW_NAME_MODAL':
-        case 'AUTH/USERNAME_CHANGED':
+        case 'AUTH/USERNAME_CHANGE/SUCCESS':
             newState.showNewNameModal = false;
             return newState;
 
@@ -41,7 +41,7 @@ const sideMenuReducer = (state = initialState, action) => {
             return newState;
 
         case 'SIDE_MENU/CLOSE_NEW_PASSWORD_MODAL':
-        case 'AUTH/PASSWORD_CHANGED':
+        case 'AUTH/PASSWORD_CHANGE/SUCCESS':
             newState.showNewPasswordModal = false;
             return newState;
 

@@ -22,7 +22,7 @@ const AccountSettings = (props) => {
     }
   
     const handleNewPasswordModal = () => {
-        props.openNewPasswordModal(!props.showChangePasswordModal);
+        props.openNewPasswordModal();
     }
   
     const handleProfileImageModal = () => {
