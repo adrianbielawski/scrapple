@@ -15,8 +15,8 @@ const initialState = {
 const sideMenuReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
-        case 'SIDE_MENU/SET_SHOW_MY_ACCOUNT':
-            newState.showMyAccount = action.showMyAccount;
+        case 'SIDE_MENU/TOGGLE_MY_ACCOUNT':
+            newState.showMyAccount = !newState.showMyAccount;
             return newState;
 
         case 'SIDE_MENU/SET_FETCHING_GAMES_HISTORY':

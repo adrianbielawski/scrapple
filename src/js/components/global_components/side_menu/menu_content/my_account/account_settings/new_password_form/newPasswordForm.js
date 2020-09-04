@@ -63,10 +63,6 @@ const NewPasswordForm = (props) => {
         );
     }
 
-    const closeModal = () => {
-        props.closeNewPasswordModal();
-    }
-
     return (
         <Modal show={props.show}>
             <div className={styles.newPasswordForm}>
@@ -99,7 +95,7 @@ const NewPasswordForm = (props) => {
                         )
                     }
             </div>
-            <Button onClick={closeModal}>{t("Close")}</Button>
+            <Button onClick={props.closeNewPasswordModal}>{t("Close")}</Button>
         </Modal>
     );
 }

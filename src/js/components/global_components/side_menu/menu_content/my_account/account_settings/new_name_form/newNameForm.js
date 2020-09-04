@@ -20,10 +20,6 @@ const NewNameForm = (props) => {
         setNewName(newNameInput.current.value);
     }
 
-    const closeModal = () => {
-        props.closeNewNameModal();
-    }
-
     const handleSubmit = () => {
         props.setAlert(
             'confirm',
@@ -52,7 +48,7 @@ const NewNameForm = (props) => {
                     )
                 }
             </div>
-            <Button onClick={closeModal}>{t("Close")}</Button>
+            <Button onClick={props.closeNewNameModal}>{t("Close")}</Button>
         </Modal>
     );
 }

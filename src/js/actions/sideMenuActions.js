@@ -24,10 +24,9 @@ export const setShowGamesHistory = (showGamesHistory) => {
     };
 }
 
-export const setShowMyAccount = (showMyAccount) => {
+export const toggleMyAccount = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_MY_ACCOUNT',
-        showMyAccount,
+        type: 'SIDE_MENU/TOGGLE_MY_ACCOUNT',
     };
 }
 

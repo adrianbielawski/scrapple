@@ -29,10 +29,6 @@ const ProfileImageForm = (props) => {
         props.updateProfileImage(image);
     }
 
-    const closeModal = () => {
-        props.closeProfileImageModal();
-    }
-
     return (
         <Modal show={props.show}>
             <div className={styles.profileImageForm}>
@@ -51,7 +47,7 @@ const ProfileImageForm = (props) => {
                 {props.uploadingProfileImage && <LoadingSpinner background={false} />}
             </div>
             <div className={styles.buttons}>
-                <Button className={styles.cancelButton} onClick={closeModal}>{t("Cancel")}</Button>
+                <Button className={styles.cancelButton} onClick={props.closeProfileImageModal}>{t("Cancel")}</Button>
                 <Button onClick={handleConfirm} disabled={!image}>{t("Confirm")}</Button>
             </div>
         </Modal>
