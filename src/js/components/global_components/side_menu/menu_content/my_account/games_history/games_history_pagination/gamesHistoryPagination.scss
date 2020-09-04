@@ -14,5 +14,9 @@
         &:hover {
             color: $mainGreen;
         }
+        &.inactive {
+            color: $grey;
+            cursor: unset;
+        }
     }
 }

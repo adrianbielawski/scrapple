@@ -1,7 +1,7 @@
 import { db } from 'firebaseConfig';
 import languages from 'components/global_components/language/languages';
 //Redux actions
-import { setUserInfo } from 'actions/appActions';
+import axios from 'axiosInstance';
 
 export const setFetchingGamesHistory = (fetchingGamesHistory) => {
     return {
@@ -72,18 +72,6 @@ export const closeProfileImageModal = () => {
     };
 }
 
-export const decreaseGamesToRender = () => {
-    return {
-        type: 'SIDE_MENU/DECREASE_GAMES_TO_RENDER'
-    };
-}
-
-export const increaseGamesToRender = () => {
-    return {
-        type: 'SIDE_MENU/INCREASE_GAMES_TO_RENDER'
-    };
-}
-
 export const setGameDetails = (gameDetails) => {
     return {
         type: 'SIDE_MENU/SET_GAME_DETAILS',
@@ -104,22 +92,40 @@ export const clearSideMenuState = () => {
     };
 }
 
-export const fetchGamesHistory = (uid) => dispatch => {
-    return db.collection('users').doc(uid).collection('allGames').doc('allGames').get()
-        .then((response) => {
-            let data = response.data();
-            let gamesHistory = data.allGames;
-            let reversedGamesHistory = [];
+export const openGamesHistory = () => ({
+    type: 'SIDE_MENU/OPEN_GAMES_HISTORY',
+})
 
-            for (let i = 0; i < gamesHistory.length; i++) {
-                reversedGamesHistory.unshift(gamesHistory[i]);
-            }
+export const closeGamesHistory = () => ({
+    type: 'SIDE_MENU/CLOSE_GAMES_HISTORY',
+})
 
-            dispatch(setUserInfo(null, reversedGamesHistory));
-            dispatch(setFetchingGamesHistory(false));
-        }).catch((err) => {
-            console.log(err)
-        });
+const fetchGamesHistoryStart = () => ({
+    type: 'SIDE_MENU/FETCH_GAMES_HISTORY/START',
+})
+
+const fetchGamesHistorySuccess = (data) => ({
+    type: 'SIDE_MENU/FETCH_GAMES_HISTORY/SUCCESS',
+    data,
+})
+
+const fetchGamesHistoryFailure = () => ({
+    type: 'SIDE_MENU/FETCH_GAMES_HISTORY/FAILURE',
+})
+
+export const fetchGamesHistory = (page) => dispatch => {
+    dispatch(fetchGamesHistoryStart());
+    axios.get('/games/', {
+        params: {
+            page
+        }
+    })
+    .then((response) => {
+        dispatch(fetchGamesHistorySuccess(response.data));
+    })
+    .catch(() => {
+        dispatch(fetchGamesHistoryFailure());
+    });
 }
 
 export const fetchGameDetails = (gameId) => dispatch => {

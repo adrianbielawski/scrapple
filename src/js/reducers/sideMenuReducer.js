@@ -1,15 +1,17 @@
+import { listDeserializer, gameDeserializer } from '../serializers';
+
 const initialState = {
-    fetchingGamesHistory: true,
-    fetchingGameDetails: true,
     showMyAccount: false,
-    showGamesHistory: false,
-    gamesRenderFrom: 1,
-    gameDetails: {},
-    showGameDetails: false,
     showAccountSettings: false,
     showNewNameModal: false,
     showNewPasswordModal: false,
     showProfileImageModal: false,
+    fetchingGamesHistory: null,
+    showGamesHistory: false,
+    gamesHistory: null,
+    fetchingGameDetails: false,
+    showGameDetails: false,
+    gameDetails: null,
 };
 
 const sideMenuReducer = (state = initialState, action) => {
@@ -19,8 +21,27 @@ const sideMenuReducer = (state = initialState, action) => {
             newState.showMyAccount = !newState.showMyAccount;
             return newState;
 
-        case 'SIDE_MENU/SET_FETCHING_GAMES_HISTORY':
-            newState.fetchingGamesHistory = action.fetchingGamesHistory;
+        case 'SIDE_MENU/OPEN_GAMES_HISTORY':
+            newState.showGamesHistory = true;
+            return newState;
+
+        case 'SIDE_MENU/CLOSE_GAMES_HISTORY':
+            newState.showGamesHistory = false;
+            return newState;
+
+        case 'SIDE_MENU/FETCH_GAMES_HISTORY/START':
+            newState.fetchingGamesHistory = true;
+            return newState;
+
+        case 'SIDE_MENU/FETCH_GAMES_HISTORY/SUCCESS':
+            newState.gamesHistory = listDeserializer(action.data, gameDeserializer);
+
+            newState.fetchingGamesHistory = false;
+            newState.showGamesHistory = true;
+            return newState;
+
+        case 'SIDE_MENU/FETCH_GAMES_HISTORY/FAILURE':
+            newState.fetchingGamesHistory = false;
             return newState;
 
         case 'SIDE_MENU/SET_FETCHING_GAME_DETAILS':
@@ -64,14 +85,6 @@ const sideMenuReducer = (state = initialState, action) => {
 
         case 'SIDE_MENU/CLEAR_SIDE_MENU_STATE':
             newState = { ...initialState };
-            return newState;
-
-        case 'SIDE_MENU/DECREASE_GAMES_TO_RENDER':
-            newState.gamesRenderFrom -= 10;
-            return newState;
-
-        case 'SIDE_MENU/INCREASE_GAMES_TO_RENDER':
-            newState.gamesRenderFrom += 10;
             return newState;
 
         case 'SIDE_MENU/SET_GAME_DETAILS':
