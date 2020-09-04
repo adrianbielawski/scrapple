@@ -6,6 +6,7 @@ import styles from './newPasswordForm.scss';
 import Modal from 'components/global_components/modal/modal';
 import Button from 'components/global_components/button/button';
 import Input from 'components/global_components/input/input';
+import LoadingSpinner from 'components/global_components/loading_spinner/LoadingSpinner';
 //Redux actions
 import { closeNewPasswordModal } from 'actions/sideMenuActions';
 import { setAlert } from 'actions/appActions';
@@ -69,17 +70,44 @@ const NewPasswordForm = (props) => {
     return (
         <Modal show={props.show}>
             <div className={styles.newPasswordForm}>
-                <Input className={styles.input} type="password"
-                    autoComplete="new-password" onChange={handleNewPasswordChange}
-                    placeholder={t("enter new password")} ref={newPasswordInput} minLength={8} required/>
-                <Input className={styles.input} type="password"
-                    autoComplete="new-password" onChange={handleRepeatPasswordChange}
-                    placeholder={t("repeat new password")} ref={repeatPasswordInput} minLength={8} required/>
-                <Button className={styles.button} onClick={handleSubmit}>{t("Change password")}</Button>
+                <Input
+                    className={styles.input}
+                    type="password"
+                    autoComplete="new-password"
+                    onChange={handleNewPasswordChange}
+                    placeholder={t("enter new password")}
+                    ref={newPasswordInput}
+                    minLength={8}
+                    required
+                />
+                <Input
+                    className={styles.input}
+                    type="password"
+                    autoComplete="new-password"
+                    onChange={handleRepeatPasswordChange}
+                    placeholder={t("repeat new password")}
+                    ref={repeatPasswordInput}
+                    minLength={8}
+                    required
+                />
+                    {props.isChangingPassword
+                        ? <LoadingSpinner background={false} />
+                        : (
+                            <Button className={styles.button} onClick={handleSubmit}>
+                                {t("Change password")}
+                            </Button>
+                        )
+                    }
             </div>
             <Button onClick={closeModal}>{t("Close")}</Button>
         </Modal>
     );
+}
+
+const mapStateToProps = (state) => {
+    return {
+        isChangingPassword: state.auth.isChangingPassword,
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -91,4 +119,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(NewPasswordForm);
+export default connect(mapStateToProps, mapDispatchToProps)(NewPasswordForm);

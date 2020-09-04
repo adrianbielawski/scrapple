@@ -92,39 +92,56 @@ export const getUser = () => dispatch => {
     });
 };
 
+const changeUsernameStart = () => ({
+    type: 'AUTH/USERNAME_CHANGE/START',
+})
+
 const changeUsernameSuccess = (newName) => ({
     type: 'AUTH/USERNAME_CHANGE/SUCCESS',
     newName
 })
 
-export const changeUserName = ({ newName }) => {
-    return dispatch => {
-        axios.patch('/user/', { username: newName })
-        .then(() => {
-            dispatch(changeUsernameSuccess(newName));
-            dispatch(setAlert('alert', 'Name changed successfully'));
-        })
-        .catch(() => {
-            dispatch(setAlert('alert', 'Something went wrong'));
-        })
-    }
+const changeUsernameFailure = () => ({
+    type: 'AUTH/USERNAME_CHANGE/FAILURE',
+})
+
+export const changeUserName = ({ newName }) => dispatch => {
+    dispatch(changeUsernameStart());
+
+    axios.patch('/user/', { username: newName })
+    .then(() => {
+        dispatch(changeUsernameSuccess(newName));
+        dispatch(setAlert('alert', 'Name changed successfully'));
+    })
+    .catch(() => {
+        dispatch(changeUsernameFailure());
+        dispatch(setAlert('alert', 'Something went wrong'));
+    })
 }
+
+const changePasswordStart = () => ({
+    type: 'AUTH/PASSWORD_CHANGE/START',
+})
 
 const changePasswordSuccess = () => ({
     type: 'AUTH/PASSWORD_CHANGE/SUCCESS',
 })
 
-export const changeUserPassword = ({ newPassword, repeatPassword }) => {
-    return dispatch => {
-        axios.post('/password/change/', { new_password1: newPassword, new_password2: repeatPassword })
-        .then(() => {
-            dispatch(changePasswordSuccess());
-            dispatch(setAlert('alert', 'Password changed successfully'));
-        })
-        .catch((error) => {
-            dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
-        })
-    }
+const changePasswordFailure = () => ({
+    type: 'AUTH/PASSWORD_CHANGE/FAILURE',
+})
+
+export const changeUserPassword = ({ newPassword, repeatPassword }) => dispatch => {
+    dispatch(changePasswordStart());
+    axios.post('/password/change/', { new_password1: newPassword, new_password2: repeatPassword })
+    .then(() => {
+        dispatch(changePasswordSuccess());
+        dispatch(setAlert('alert', 'Password changed successfully'));
+    })
+    .catch((error) => {
+        dispatch(changePasswordFailure());
+        dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
+    })
 }
 
 const profileImageUpdateStart = () => ({
@@ -145,7 +162,7 @@ export const updateProfileImage = (image) => dispatch => {
     
     const data = new FormData();
     data.append('image', image);
-    
+
     axios.patch('/user/', data)
     .then(response => {
         dispatch(profileImageUpdateSuccess(response.data.image));

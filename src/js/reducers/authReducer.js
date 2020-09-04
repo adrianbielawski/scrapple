@@ -2,6 +2,8 @@ const initialState = {
     loadingAuthState: true,
     isLoggingIn: false,
     isSigningUp: false,
+    isChangingName: false,
+    isChangingPassword: false,
     uploadingProfileImage: false,
 };
 
@@ -36,6 +38,22 @@ const authReducer = (state = initialState, action) => {
 
         case 'AUTH/GET_USER/SUCCESS':
             newState.loadingAuthState = false;
+            return newState;
+
+        case 'AUTH/USERNAME_CHANGE/START':
+            newState.isChangingName = true;
+            return newState;
+
+        case 'AUTH/USERNAME_CHANGE/FAILURE':
+            newState.isChangingName = false;
+            return newState;
+
+        case 'AUTH/PASSWORD_CHANGE/START':
+            newState.isChangingPassword = true;
+            return newState;
+
+        case 'AUTH/PASSWORD_CHANGE/FAILURE':
+            newState.isChangingPassword = false;
             return newState;
 
         case 'AUTH/PROFILE_IMAGE_UPDATE/START':

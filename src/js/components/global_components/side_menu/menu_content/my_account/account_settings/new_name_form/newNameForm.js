@@ -6,6 +6,7 @@ import styles from './newNameForm.scss';
 import Modal from 'components/global_components/modal/modal';
 import Button from 'components/global_components/button/button';
 import Input from 'components/global_components/input/input';
+import LoadingSpinner from 'components/global_components/loading_spinner/LoadingSpinner';
 //Redux actions
 import { closeNewNameModal } from 'actions/sideMenuActions';
 import { setAlert } from 'actions/appActions';
@@ -42,13 +43,24 @@ const NewNameForm = (props) => {
                     placeholder={t("enter new name")}
                     ref={newNameInput}
                 />
-                <Button className={styles.button} onClick={handleSubmit}>
-                    {t("Change name")}
-                </Button>
+                {props.isChangingName
+                    ? <LoadingSpinner background={false} />
+                    : (
+                        <Button className={styles.button} onClick={handleSubmit}>
+                            {t("Change name")}
+                        </Button>
+                    )
+                }
             </div>
             <Button onClick={closeModal}>{t("Close")}</Button>
         </Modal>
     );
+}
+
+const mapStateToProps = (state) => {
+    return {
+        isChangingName: state.auth.isChangingName,
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -60,4 +72,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(NewNameForm);
+export default connect(mapStateToProps, mapDispatchToProps)(NewNameForm);
