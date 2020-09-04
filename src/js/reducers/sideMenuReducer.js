@@ -27,11 +27,11 @@ const sideMenuReducer = (state = initialState, action) => {
             newState.fetchingGameDetails = action.fetchingGameDetails;
             return newState;
 
-        case 'SIDE_MENU/NEW_NAME_CLICKED':
+        case 'SIDE_MENU/OPEN_NEW_NAME_MODAL':
             newState.showNewNameModal = true;
             return newState;
 
-        case 'SIDE_MENU/CLOSE_NEW_NAME_CLICKED':
+        case 'SIDE_MENU/CLOSE_NEW_NAME_MODAL':
         case 'AUTH/USERNAME_CHANGED':
             newState.showNewNameModal = false;
             return newState;

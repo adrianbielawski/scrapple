@@ -42,13 +42,13 @@ export const setShowAccountSettings = (showAccountSettings) => {
 
 export const openNewNameModal = () => {
     return {
-        type: 'SIDE_MENU/NEW_NAME_CLICKED',
+        type: 'SIDE_MENU/OPEN_NEW_NAME_MODAL',
     };
 }
 
 export const closeNewNameModal = () => {
     return {
-        type: 'SIDE_MENU/CLOSE_NEW_NAME_CLICKED',
+        type: 'SIDE_MENU/CLOSE_NEW_NAME_MODAL',
     };
 }
 
