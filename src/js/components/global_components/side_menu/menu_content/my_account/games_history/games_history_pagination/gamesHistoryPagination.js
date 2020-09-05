@@ -5,54 +5,50 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import styles from './gamesHistoryPagination.scss';
 //Redux actions
-import { decreaseGamesToRender, increaseGamesToRender } from 'actions/sideMenuActions';
+import { fetchGamesHistory } from 'actions/sideMenuActions';
 
 const GamesHistoryPagination = (props) => {
     const { t } = useTranslation();
+    let results = {
+        from: props.gamesHistory.startIndex,
+        to: props.gamesHistory.endIndex,
+    };
 
-    const handleDecrease = () => {
-        if (props.gamesRenderFrom === 1) {
-            return
-        }
-        props.decreaseGamesToRender();
+    const handlePreviousPage = () => {
+        props.fetchGamesHistory(props.gamesHistory.previous);
     }
 
-    const handleIncrease = () => {
-        if (props.gamesRenderFrom > props.userInfo.allGames.length - 10) {
-            return
-        }
-        props.increaseGamesToRender();
-    }
-
-    const getGamesRenderTo = () => {
-        let gamesRenderTo = props.gamesRenderFrom + 9
-        if (props.gamesRenderFrom + 10 > props.userInfo.allGames.length) {
-            gamesRenderTo = props.userInfo.allGames.length
-        }
-        return gamesRenderTo
+    const handleNextPage = () => {
+        props.fetchGamesHistory(props.gamesHistory.next);
     }
 
     return (
         <div className={styles.pagination}>
-            <FontAwesomeIcon icon={faChevronLeft} className={styles.chevron} onClick={handleDecrease} />
-            <p>{props.gamesRenderFrom} - {getGamesRenderTo()}</p>
-            <FontAwesomeIcon icon={faChevronRight} className={styles.chevron} onClick={handleIncrease} />
-            <p>{t('fromNum', {'allGames': props.userInfo.allGames.length})}</p>
+            <FontAwesomeIcon
+                icon={faChevronLeft}
+                className={`${styles.chevron} ${!props.gamesHistory.previous ? styles.inactive : ''}`}
+                onClick={props.gamesHistory.previous ? handlePreviousPage : null}
+            />
+            <p>{results.from} - {results.to}</p>
+            <FontAwesomeIcon
+                icon={faChevronRight}
+                className={`${styles.chevron} ${!props.gamesHistory.next ? styles.inactive : ''}`}
+                onClick={props.gamesHistory.next ? handleNextPage : null}
+            />
+            <p>{t('ofNum', {'allGames': props.gamesHistory.count})}</p>
         </div>
     );
 }
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.app.userInfo,
-        gamesRenderFrom: state.sideMenu.gamesRenderFrom,
+        gamesHistory: state.sideMenu.gamesHistory,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        decreaseGamesToRender: () => dispatch(decreaseGamesToRender()),
-        increaseGamesToRender: () => dispatch(increaseGamesToRender()),
+        fetchGamesHistory: (page) => dispatch(fetchGamesHistory(page)),
     }
 }
 

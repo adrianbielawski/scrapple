@@ -8,29 +8,28 @@ import Modal from 'components/global_components/modal/modal';
 import PlayersSummary from 'components/game_summary/playersSummary';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 //Redux actions
-import { setGameDetails, setShowGameDetails, setFetchingGameDetails } from 'actions/sideMenuActions';
+import { closeGameDetails } from 'actions/sideMenuActions';
+
+const TIME_FORMAT = 'HH:mm:ss';
 
 const GameDetails = (props) => {
     const { t } = useTranslation();
 
-    const closeModal = () => {
-        props.setShowGameDetails(false);
-        props.setGameDetails({});
-        props.setFetchingGameDetails(true);
-    }
-
     return (
         <Modal show={props.show} cardClassName={styles.card}>
-            {props.fetchingGameDetails ? <LoadingSpinner /> : (
+            {!props.gameDetails ? <LoadingSpinner /> : (
             <div className={styles.wrapper}>
                 <p className={styles.details}>
                     {t("Played in lang", {'lang': t(props.gameDetails.language)})}
                 </p>
                 <p className={styles.details}>
-                    {props.gameDetails.time ? t("Time limit", {'time': props.gameDetails.time}) : t("No time limit")}
+                    {props.gameDetails.timeLimit
+                        ? t("Time limit", {'time': props.gameDetails.timeLimit.format(TIME_FORMAT)})
+                        : t("No time limit")
+                    }
                 </p>
                 <PlayersSummary players={props.gameDetails.players} />
-                <Button onClick={closeModal}>{t("Close")}</Button>
+                <Button onClick={props.closeGameDetails}>{t("Close")}</Button>
             </div>
             )}
         </Modal>
@@ -39,16 +38,13 @@ const GameDetails = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        fetchingGameDetails: state.sideMenu.fetchingGameDetails,
         gameDetails: state.sideMenu.gameDetails,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setGameDetails: (gameDetails) => dispatch(setGameDetails(gameDetails)),
-        setShowGameDetails: (showGameDetails) => dispatch(setShowGameDetails(showGameDetails)),
-        setFetchingGameDetails: (fetchingGameDetails) => dispatch(setFetchingGameDetails(fetchingGameDetails)),
+        closeGameDetails: () => dispatch(closeGameDetails()),
     }
 }
 

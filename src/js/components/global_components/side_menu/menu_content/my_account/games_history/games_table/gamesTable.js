@@ -1,27 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import styles from './gamesTable.scss';
 //Custom Components
 import GamesHistoryPagination from '../games_history_pagination/gamesHistoryPagination';
-import SingleGame from './singleGame';
+import GameRow from './gameRow';
 import GameDetails from './game_details/gameDetails';
 //Redux actions
+import { fetchGamesHistory } from 'actions/sideMenuActions';
 
 const GamesTable = (props) => {
     const { t } = useTranslation();
 
-    const getGames = () => {
-        const gamesFrom = props.gamesRenderFrom;
-        const gamesToRender = props.userInfo.allGames.slice(gamesFrom -1, gamesFrom + 9);
-        return gamesToRender.map((game, i) => {
-            return (
-                <SingleGame key={i} game={game} />
-            );
+    useEffect(() => {
+        props.fetchGamesHistory(1);
+    }, [])
+
+    const getRows = () => {
+        return props.gamesHistory.results.map((game, i) => {
+            return <GameRow key={i} game={game} />;
         });
     }
 
     return (
+        props.fetchingGamesHistory === false &&
         <div className={`${styles.gamesTable} ${props.showGamesHistory && styles.showGames}`}>
             <GameDetails show={props.showGameDetails} />
             <GamesHistoryPagination />
@@ -33,7 +35,7 @@ const GamesTable = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {getGames()}
+                    {props.gamesHistory && getRows()}
                 </tbody>
             </table>
         </div>
@@ -42,12 +44,17 @@ const GamesTable = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.app.userInfo,
         showGamesHistory: state.sideMenu.showGamesHistory,
-        gamesRenderFrom: state.sideMenu.gamesRenderFrom,
-        gameDetails: state.sideMenu.gameDetails,
+        gamesHistory: state.sideMenu.gamesHistory,
+        fetchingGamesHistory: state.sideMenu.fetchingGamesHistory,
         showGameDetails: state.sideMenu.showGameDetails,
     }
 }
 
-export default connect(mapStateToProps)(GamesTable);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchGamesHistory: (page) => dispatch(fetchGamesHistory(page)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GamesTable);

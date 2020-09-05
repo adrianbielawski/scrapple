@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash';
+import { userDeserializer } from '../serializers'
 
 const initialState = {
     screenHeight: window.innerHeight,
@@ -114,7 +115,7 @@ const appReducer = (state = initialState, action) => {
         case 'AUTH/LOG_IN/SUCCESS':
         case 'AUTH/SIGN_UP/SUCCESS':
         case 'AUTH/GET_USER/SUCCESS':
-            newState.user = action.user;
+            newState.user = userDeserializer(action.user);
             return newState;
 
         case 'AUTH/USERNAME_CHANGE/SUCCESS':

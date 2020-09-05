@@ -7,7 +7,7 @@ const PlayersSummary = (props) => {
     const getPlayersSummary = () => {
         let players = [...props.players];
         players.sort((a, b) => {
-            return b.currentScore - a.currentScore;
+            return b.score - a.score;
         });
 
         let previousPlayerScore = '';
@@ -18,12 +18,12 @@ const PlayersSummary = (props) => {
             let place = index + 1;
             let placeText = placeTexts[index];
 
-            if (player.currentScore === previousPlayerScore) {
+            if (player.score === previousPlayerScore) {
                 placeText = previousPlayerPlaceText
                 place = previousPlace
             };
 
-            previousPlayerScore = player.currentScore;
+            previousPlayerScore = player.score;
             previousPlayerPlaceText = placeText;
             previousPlace = place;
 

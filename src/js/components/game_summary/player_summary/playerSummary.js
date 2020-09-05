@@ -28,8 +28,8 @@ const PlayerSummary = (props) => {
                     <p>{t("place", { 'place': t(props.placeText) })}</p>
                     {getImg()}
                 </div>
-                <p className={styles.playerName}>{player.playerName}</p>
-                <p>{t("Total", { 'total': player.currentScore})}</p>
+                <p className={styles.playerName}>{player.user.username}</p>
+                <p>{t("Score", { 'score': player.score})}</p>
                 <p>{t("Best score", { 'best': player.bestScore })}</p>
             </Card>
         </li>
