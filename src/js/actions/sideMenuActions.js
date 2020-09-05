@@ -1,28 +1,4 @@
-import { db } from 'firebaseConfig';
-import languages from 'components/global_components/language/languages';
-//Redux actions
 import axios from 'axiosInstance';
-
-export const setFetchingGamesHistory = (fetchingGamesHistory) => {
-    return {
-        type: 'SIDE_MENU/SET_FETCHING_GAMES_HISTORY',
-        fetchingGamesHistory,
-    };
-}
-
-export const setFetchingGameDetails = (fetchingGameDetails) => {
-    return {
-        type: 'SIDE_MENU/SET_FETCHING_GAME_DETAILS',
-        fetchingGameDetails,
-    };
-}
-
-export const setShowGamesHistory = (showGamesHistory) => {
-    return {
-        type: 'SIDE_MENU/SET_SHOW_GAMES_HISTORY',
-        showGamesHistory,
-    };
-}
 
 export const toggleMyAccount = () => {
     return {
@@ -117,7 +93,7 @@ export const fetchGamesHistory = (page) => dispatch => {
     dispatch(fetchGamesHistoryStart());
     axios.get('/games/', {
         params: {
-            page
+            page,
         }
     })
     .then((response) => {
@@ -128,23 +104,36 @@ export const fetchGamesHistory = (page) => dispatch => {
     });
 }
 
-export const fetchGameDetails = (gameId) => dispatch => {
-    return db.collection('games').doc(gameId).get()
-        .then((response) => {
-            const data = response.data();
+export const closeGameDetails = () => ({
+    type: 'SIDE_MENU/CLOSE_GAME_DETAILS',
+})
 
-            const lang = languages[data.language].name;
-            const time = data.time ? `${data.time.hours}:${data.time.minutes}:${data.time.seconds}` : null;
+export const fetchGameDetailsStart = () => ({
+    type: 'SIDE_MENU/FETCH_GAMES_DETAILS/START',
+})
 
-            dispatch(setGameDetails(
-                {
-                    language: lang,
-                    players: data.players,
-                    time: time
-                }
-            ));
-            dispatch(setFetchingGameDetails(false));
-        }).catch((err) => {
-            console.log(err)
-        });
+export const fetchGameDetailsSuccess = (data, game) => ({
+    type: 'SIDE_MENU/FETCH_GAME_DETAILS/SUCCESS',
+    data,
+    game,
+})
+
+export const fetchGameDetailsFailure = () => ({
+    type: 'SIDE_MENU/FETCH_GAME_DETAILS/FAILURE',
+})
+
+export const openGameDetails = (game) => dispatch => {
+    dispatch(fetchGameDetailsStart());
+
+    axios.get('/players/', {
+        params: {
+            game_id: game.id,
+        }
+    })
+    .then((response) => {
+        dispatch(fetchGameDetailsSuccess(response.data.results, game));
+    })
+    .catch(() => {
+        dispatch(fetchGameDetailsFailure());
+    });
 }

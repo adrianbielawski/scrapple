@@ -28,3 +28,11 @@ export const userDeserializer = (user) => ({
     image: user.image,
     isAnonymous: user.is_anonymous,
 })
+
+export const playerDeserializer = (player) => ({
+    gameId: player.game_id,
+    user: userDeserializer(player.user),
+    position: player.position,
+    score: player.score,
+    bestScore: player.best_score,
+})

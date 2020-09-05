@@ -16,21 +16,16 @@ const GamesTable = (props) => {
         props.fetchGamesHistory(1);
     }, [])
 
-    const getGames = () => {
+    const getRows = () => {
         return props.gamesHistory.results.map((game, i) => {
-            return (
-                <GameRow key={i} game={game} />
-            );
+            return <GameRow key={i} game={game} />;
         });
     }
 
     return (
         props.fetchingGamesHistory === false &&
         <div className={`${styles.gamesTable} ${props.showGamesHistory && styles.showGames}`}>
-            {/*
-            TO DO
-
-            <GameDetails show={props.showGameDetails} />*/}
+            <GameDetails show={props.showGameDetails} />
             <GamesHistoryPagination />
             <table>
                 <thead>
@@ -40,7 +35,7 @@ const GamesTable = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.gamesHistory && getGames()}
+                    {props.gamesHistory && getRows()}
                 </tbody>
             </table>
         </div>
@@ -51,8 +46,8 @@ const mapStateToProps = (state) => {
     return {
         showGamesHistory: state.sideMenu.showGamesHistory,
         gamesHistory: state.sideMenu.gamesHistory,
-        showGameDetails: state.sideMenu.showGameDetails,
         fetchingGamesHistory: state.sideMenu.fetchingGamesHistory,
+        showGameDetails: state.sideMenu.showGameDetails,
     }
 }
 

@@ -1,4 +1,6 @@
-import { listDeserializer, gameDeserializer } from '../serializers';
+import { listDeserializer, gameDeserializer, playerDeserializer } from '../serializers';
+import moment from 'moment';
+import languages from 'components/global_components/language/languages';
 
 const initialState = {
     showMyAccount: false,
@@ -9,7 +11,7 @@ const initialState = {
     fetchingGamesHistory: null,
     showGamesHistory: false,
     gamesHistory: null,
-    fetchingGameDetails: false,
+    fetchingGameDetails: null,
     showGameDetails: false,
     gameDetails: null,
 };
@@ -35,17 +37,12 @@ const sideMenuReducer = (state = initialState, action) => {
 
         case 'SIDE_MENU/FETCH_GAMES_HISTORY/SUCCESS':
             newState.gamesHistory = listDeserializer(action.data, gameDeserializer);
-
             newState.fetchingGamesHistory = false;
             newState.showGamesHistory = true;
             return newState;
 
         case 'SIDE_MENU/FETCH_GAMES_HISTORY/FAILURE':
             newState.fetchingGamesHistory = false;
-            return newState;
-
-        case 'SIDE_MENU/SET_FETCHING_GAME_DETAILS':
-            newState.fetchingGameDetails = action.fetchingGameDetails;
             return newState;
 
         case 'SIDE_MENU/OPEN_NEW_NAME_MODAL':
@@ -75,24 +72,32 @@ const sideMenuReducer = (state = initialState, action) => {
             newState.showProfileImageModal = false;
             return newState;
 
-        case 'SIDE_MENU/SET_SHOW_GAMES_HISTORY':
-            newState.showGamesHistory = action.showGamesHistory;
-            return newState;
-
         case 'SIDE_MENU/TOGGLE_ACCOUNT_SETTINGS':
             newState.showAccountSettings = !newState.showAccountSettings;
             return newState;
 
+        case 'SIDE_MENU/CLOSE_GAME_DETAILS':
+            newState.showGameDetails = false;
+            newState.gameDetails = null;
+            return newState;
+
+        case 'SIDE_MENU/FETCH_GAMES_DETAILS/START':
+            newState.showGameDetails = true;
+            newState.fetchingGameDetails = true;
+            return newState;
+
+        case 'SIDE_MENU/FETCH_GAME_DETAILS/SUCCESS':
+            newState.fetchingGameDetails = false;
+            newState.gameDetails = {
+                language: languages[action.game.language].name,
+                timeLimit: action.game.timeLimit && moment.duration(action.game.timeLimit, 'seconds'),
+                players: action.data.map(player => playerDeserializer(player)),
+            };
+            return newState;
+
+        case 'APP/CLEAR_APP_STATE':
         case 'SIDE_MENU/CLEAR_SIDE_MENU_STATE':
             newState = { ...initialState };
-            return newState;
-
-        case 'SIDE_MENU/SET_GAME_DETAILS':
-            newState.gameDetails = action.gameDetails;
-            return newState;
-
-        case 'SIDE_MENU/SET_SHOW_GAME_DETAILS':
-            newState.showGameDetails = action.showGameDetails;
             return newState;
 
         default:

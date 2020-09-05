@@ -2,31 +2,28 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styles from './gamesTable.scss';
 //Redux actions
-import { fetchGameDetails, setShowGameDetails } from 'actions/sideMenuActions';
+import { openGameDetails } from 'actions/sideMenuActions';
 
 const DATE_FORMAT = 'DD-MM-YYYY / H:mm';
 
 const GameRow = (props) => {
+    const handleGameClick = () => props.openGameDetails(props.game)
 
-    const handleGameIdClick = (e) => {
-        //TO DO
-
-        // const gameDetailsPromise = props.fetchGameDetails(gameId);
-        // gameDetailsPromise.then(() => {
-        // });
-    }
-    
     return (
         <tr>
-            <td className={styles.gameId} onClick={handleGameIdClick}>{props.game.number}</td>
-            <td className={styles.date}>{props.game.createdAt.format(DATE_FORMAT)}</td>
+            <td className={styles.gameId} onClick={handleGameClick}>
+                {props.game.number}
+            </td>
+            <td className={styles.date}>
+                {props.game.createdAt.format(DATE_FORMAT)}
+            </td>
         </tr>
     );
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setShowGameDetails: (showGameDetails) => dispatch(setShowGameDetails(showGameDetails)),
+        openGameDetails: (game) => dispatch(openGameDetails(game)),
     }
 }
 
