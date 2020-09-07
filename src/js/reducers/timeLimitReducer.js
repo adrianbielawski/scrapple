@@ -12,13 +12,6 @@ const initialState = {
 const timeLimitReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
-        case 'GAME_MENU/SET_TIMER':
-            newState.timer = action.timer;
-            return newState;
-
-        case 'GAME_MENU/SET_TIME':
-            newState.time = action.time;
-            return newState;
 
         case 'APP/CLEAR_APP_STATE':
             newState = cloneDeep(initialState);

@@ -30,6 +30,7 @@ export const userDeserializer = (user) => ({
 })
 
 export const playerDeserializer = (player) => ({
+    id: player.id,
     gameId: player.game_id,
     user: userDeserializer(player.user),
     position: player.position,

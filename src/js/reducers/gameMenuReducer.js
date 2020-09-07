@@ -7,14 +7,33 @@ const initialState = {
         isTransitionEnabled: false,
         touches: 0
     },
+    showTimePicker: true,
+    timeLimit: 300,
     showConfirmation: false,
 };
 
 const gameMenuReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
-        case 'GAME_MENU/SET_FETCHING_GAME_DATA':
-            newState.fetchingGameData = action.fetching;
+        case 'GAME_MENU/TIME_PICKER_ON':
+            newState.showTimePicker = true;
+            return newState;
+
+        case 'GAME_MENU/TIME_PICKER_OFF':
+            newState.showTimePicker = false;
+            return newState;
+
+        case 'GAME_MENU/TIME_LIMIT_UPDATE/SUCCESS':
+            newState.timeLimit = action.timeLimit;
+            return newState;
+
+        case 'GAME_MENU/FETCH_GAME_DATA/START':
+            newState.fetchingGameData = true;
+            return newState;
+
+        case 'GAME_MENU/FETCH_GAME_DATA/SUCCESS':
+            newState.timeLimit = action.game.timeLimit;
+            newState.fetchingGameData = false;
             return newState;
 
         case 'GAME_MENU/SET_LIST_SPACE':
@@ -35,10 +54,6 @@ const gameMenuReducer = (state = initialState, action) => {
 
         case 'GAME_MENU/SET_TOUCHES':
             newState.players.touches = action.touches;
-            return newState;
-
-        case 'GAME_MENU/SET_SHOW_CONFIRMATION':
-            newState.showConfirmation = action.showConfirmation;
             return newState;
 
         default:

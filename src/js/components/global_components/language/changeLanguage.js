@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import languages from './languages';
@@ -12,6 +13,7 @@ import { changeLanguage } from 'actions/appActions';
 
 const ChangeLanguage = (props) => {
     const { t } = useTranslation();
+    const { gameId } = useParams(null);
     const [showLanguages, setShowLanguages] = useState(false);
     const styles = props.vertical ? stylesV : stylesH;
 
@@ -20,7 +22,7 @@ const ChangeLanguage = (props) => {
     };
 
     const handleLanguageChange = (lang) => {
-        setTimeout(() => props.changeLanguage(lang), 100);
+        setTimeout(() => props.changeLanguage(lang, gameId), 100);
     }
 
     const getLanguages = () => {
@@ -73,7 +75,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeLanguage: (language) => dispatch(changeLanguage(language)),
+        changeLanguage: (language, gameId) => dispatch(changeLanguage(language, gameId)),
     }
 }
 

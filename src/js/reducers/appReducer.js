@@ -6,12 +6,7 @@ const initialState = {
     isTouchDevice: false,
     deviceOrientation: '',
     user: null,
-    userInfo: {
-        currentGame: null,
-        allGames: [],
-    },
     fetchingGameData: true,
-    gameId: null,
     language: 'en-GB',
     admin: false,
     playedAgain: false,
@@ -45,17 +40,6 @@ const appReducer = (state = initialState, action) => {
             newState.fetchingGameData = action.fetching;
             return newState;
 
-        case 'APP/SET_GAME_ID':
-            newState.gameId = action.gameId;
-            return newState;
-
-        case 'APP/SET_USER_INFO':
-            newState.userInfo = {
-                currentGame: action.currentGame || newState.userInfo.currentGame,
-                allGames: action.allGames || newState.userInfo.allGames,
-            };
-            return newState;
-
         case 'APP/CLEAR_APP_STATE':
             newState = cloneDeep(initialState);
             newState.language = state.language;
@@ -63,22 +47,13 @@ const appReducer = (state = initialState, action) => {
 
         case 'APP/EXIT_GAME':
             newState.fetchingGameData = true;
-            newState.gameId = null;
             newState.admin = false;
             newState.playedAgain = false;
             newState.playedAgainWithSettings = false;
-            newState.userInfo = {
-                currentGame: null,
-                allGames: [],
-            };
             return newState;
 
         case 'APP/SET_LANGUAGE':
             newState.language = action.language;
-            return newState;
-
-        case 'APP/SET_ADMIN':
-            newState.admin = action.admin;
             return newState;
 
         case 'APP/SET_PLAYED_AGAIN':

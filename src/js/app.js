@@ -81,7 +81,7 @@ const App = (props) => {
                 <Switch>
                     <Route exact path={["/", "/login", "/signup"]} component={Main} />
                     <PrivateRoute path="/main_menu" component={MainMenu} />
-                    <PrivateRoute path="/game_menu" component={GameMenu} />
+                    <PrivateRoute exact path="/game_menu/:gameId" component={GameMenu} />
                     <PrivateRoute exact path="/game/:gameId" component={Game} />
                     <PrivateRoute exact path="/game/:gameId/subtract_points" component={SubtractPoints} />
                     <PrivateRoute exact path="/game/:gameId/game_summary" component={GameSummary} />

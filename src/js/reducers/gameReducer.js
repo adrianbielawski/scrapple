@@ -12,42 +12,12 @@ const initialState = {
     timeLeft: null,
     showMenu: false,
     showFinishedGameCover: false,
+    adminId: null,
 };
 
 const gameReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
-        case 'GAME_MENU/ADD_PLAYER':
-            const newPlayers = [...newState.players];
-            newPlayers.push({
-                playerName: action.playerName,
-                uid: action.uid,
-                profileImage: null,
-                admin: action.admin,
-                playerIndex: newState.players.length,
-                currentScore: 0,
-                bestScore: 0,
-                allPoints: [],
-            });
-            newState.players = newPlayers;
-            return newState;
-
-        case 'GAME_MENU/REMOVE_PLAYER':
-            const players = newState.players.filter((_, index) => {
-                return action.playerIndex !== index;
-            });
-            newState.players = players;
-            return newState;
-
-        case 'GAME_MENU/REORDER_PLAYERS':
-            const reorderedPlayers = [...newState.players];
-            reorderedPlayers.splice(action.newIndex, 0, reorderedPlayers.splice(action.playerIndex, 1)[0]);
-            reorderedPlayers.map((player, i) => {
-                return player.playerIndex = i;
-            })
-            newState.players = reorderedPlayers;
-            return newState;
-
         case 'GAME/SET_FETCHING_GAME_DATA':
             newState.fetchingGameData = action.fetchingGameData;
             return newState;
@@ -79,9 +49,10 @@ const gameReducer = (state = initialState, action) => {
         case 'GAME/SET_THIS_USER_PAUSED':
             newState.thisUserPaused = action.thisUserPaused;
             return newState;
-
-        case 'GAME/SET_PLAYERS':
+        
+        case 'GAME_MENU/FETCH_GAME_DATA/SUCCESS':
             newState.players = action.players;
+            newState.adminId = action.game.createdBy;
             return newState;
 
         case 'GAME/SET_TIME_LEFT':

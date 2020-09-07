@@ -62,7 +62,7 @@ const Player = (props) => {
 
         setIsGrabbed(true);
         setTop(topStart);
-        setMoveData({ eType: e.type, startX, startY, topStart })
+        setMoveData({ eType: e.type, startX, startY, topStart });
     }
 
     const setGrabbedElement = (index, eType) => {
@@ -110,6 +110,10 @@ const Player = (props) => {
     }
 
     const handleDrop = (e) => {
+        if (props.players.length === 1) {
+            return;
+        }
+
         props.setIsTransitionEnabled(false);
 
         if (props.touches > 0 && props.index !== props.grabbedElement) {
@@ -131,7 +135,7 @@ const Player = (props) => {
             touches = props.touches - 1;
         }
 
-        props.reorderPlayers(props.index, newIndex);
+        props.reorderPlayers(newIndex + 1, props.player.id);
         props.setInitialListSpace(null);
         props.setListSpace(null);
         props.setGrabbedElement(null);
@@ -144,7 +148,7 @@ const Player = (props) => {
     }
 
     const removePlayerHandler = () => {
-        if (props.player.uid === props.user.uid) {
+        if (props.player.user.id === props.adminId) {
             props.setAlert('alert', "You can't remove game admin")
             return;
         }
@@ -164,7 +168,7 @@ const Player = (props) => {
 
     const remove = () => {
         element.current.style = {};
-        props.removePlayer(props.index);
+        props.removePlayer(props.player.id);
     }
 
     const getStyles = () => {
@@ -209,19 +213,21 @@ const Player = (props) => {
 
     const getUserIcon = () => {
         const player = props.player;
-        if (player.admin) {
+        const admin = player.user.id == props.adminId;
+        
+        if (admin) {
             return (
                 <div className={styles.userIcon}>
                     <FontAwesomeIcon icon={faUserCog} />
                 </div>
             );
-        } else if (!player.admin && player.uid) {
+        } else if (!admin && !player.user.isAnonymous) {
             return (
                 <div className={styles.userIcon}>
                     <FontAwesomeIcon icon={faMobileAlt} />
                 </div>
             );
-        } else if (!player.admin && !player.uid) {
+        } else if (!admin && player.user.isAnonymous) {
             return (
                 <div className={`fa-layers fa-fw ${styles.userIcon}`}>
                     <FontAwesomeIcon icon={faMobileAlt} />
@@ -234,8 +240,14 @@ const Player = (props) => {
     const dynamicStyles = getStyles();
 
     return (
-        <li className={`${styles.player} ${dynamicStyles.grabbed} ${dynamicStyles.hover}`} style={dynamicStyles.position} ref={element}>
-            <div className={`${styles.topListSpace} ${dynamicStyles.topSpaceClass}`} style={dynamicStyles.topSpaceStyle}></div>
+        <li
+            className={`${styles.player} ${dynamicStyles.grabbed} ${dynamicStyles.hover}`}
+            style={dynamicStyles.position} ref={element}
+        >
+            <div
+                className={`${styles.topListSpace} ${dynamicStyles.topSpaceClass}`}
+                style={dynamicStyles.topSpaceStyle}>
+            </div>
             <div className={styles.wrapper}>
                 <div
                     className={styles.playerNameWrapper}
@@ -244,14 +256,19 @@ const Player = (props) => {
                     onTouchStart={handleGrab}
                     onTouchEnd={handleDrop}
                 >
-                    <p className={styles.playerName}>{props.index + 1}: <span> {props.player.playerName}</span></p>
+                    <p className={styles.playerName}>
+                        {props.index + 1}: <span> {props.player.user.username}</span>
+                    </p>
                 </div>
                 {getUserIcon()}
                 <Button onClick={removePlayerHandler} className={styles.remove}>
                     <FontAwesomeIcon icon={faTimes} />
                 </Button>
             </div>
-            <div className={`${styles.bottomListSpace} ${dynamicStyles.bottomSpaceClass}`} style={dynamicStyles.bottomSpaceStyle}></div>
+            <div
+                className={`${styles.bottomListSpace} ${dynamicStyles.bottomSpaceClass}`}
+                style={dynamicStyles.bottomSpaceStyle}>
+            </div>
         </li>
     );
 }
@@ -261,6 +278,7 @@ const mapStateToProps = (state) => {
         isTouchDevice: state.app.isTouchDevice,
         user: state.app.user,
         players: state.game.players,
+        adminId: state.game.adminId,
         initialListSpace: state.gameMenu.players.initialListSpace,
         listSpace: state.gameMenu.players.listSpace,
         grabbedElement: state.gameMenu.players.grabbedElement,
@@ -271,8 +289,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        reorderPlayers: (playerIndex, newIndex) => dispatch(reorderPlayers(playerIndex, newIndex)),
-        removePlayer: (playerIndex) => dispatch(removePlayer(playerIndex)),
+        reorderPlayers: (newIndex, id) => dispatch(reorderPlayers(newIndex, id)),
+        removePlayer: (playerId) => dispatch(removePlayer(playerId)),
         setIsTransitionEnabled: (isTransitionEnabled) => dispatch(setIsTransitionEnabled(isTransitionEnabled)),
         setInitialListSpace: (initialListSpace) => dispatch(setInitialListSpace(initialListSpace)),
         setGrabbedElement: (grabbedElement) => dispatch(setGrabbedElement(grabbedElement)),

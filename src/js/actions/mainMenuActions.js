@@ -3,45 +3,17 @@ import * as firebase from 'firebase';
 import moment from 'moment';
 import { some } from 'lodash';
 //Redux Actions
-import { changeLanguage, setGameId, setAlert, setAdmin, updateUserAllGames, updateUserCurrentGame } from 'actions/appActions';
+import { changeLanguage, setAlert, setAdmin } from 'actions/appActions';
+import axiosInstance from 'axiosInstance';
 
-export const createNewGame = (user, gameId, language, timer, time) => {
-    return dispatch => {
-        let game = {
-            admin: user.uid,
-            language,
-            players: [
-                {
-                    playerName: user.displayName,
-                    uid: user.uid,
-                    profileImage: user.photoURL,
-                    admin: true,
-                    playerIndex: 0,
-                    currentScore: 0,
-                    bestScore: 0,
-                    allPoints: [],
-                },
-            ],
-            currentPlayer: 0,
-            gameStarted: false,
-        }
-
-        if (timer) {
-            game = {
-                ...game,
-                gameStarted: false,
-                timer,
-                time,
-                endTime: null,
-                isTimerPaused: false,
-            }
-        }
-
-        return db.collection('games').doc(gameId).set(game)
-            .catch(() => {
-                dispatch(setAlert('alert', 'Something went wrong'));
-            });
-    }
+export const createNewGame = (language, timeLimit, history) => dispatch => {
+    axiosInstance.post('/games/', {language, time_limit: timeLimit})
+        .then(response => {
+            history.push(`/game_menu/${response.data.id}`);
+        })
+        .catch(() => {
+            dispatch(setAlert('alert', 'Something went wrong'));
+        });
 }
 
 export const joinGame = (gameId, language, user, history) => {

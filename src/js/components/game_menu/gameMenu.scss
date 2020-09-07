@@ -1,6 +1,7 @@
 @import "global_styles/variables";
 
 .gameMenu {
+    height: 100%;
     .topWrapper {
         display: flex;
         width: 100%;
@@ -30,6 +31,7 @@
 
     .card {
         margin-bottom: 5px;
+        overflow: unset;
         p {
             font-size: 1.2em;
             color: $darkText;

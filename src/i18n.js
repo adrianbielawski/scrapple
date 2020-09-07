@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 const resources = {
-  en: {
+  'en-GB': {
     translation: {
       //Languages
       "English" : "English",
@@ -115,7 +115,7 @@ const resources = {
       "Hide two-letter words" : "Hide two-letter words",
     }
   },
-  pl: {
+  'pl-PL': {
     translation: {
       //Languages
       "English" : "Angielski",
@@ -234,8 +234,8 @@ const resources = {
 i18n
   .use(initReactI18next)
   .init({
-    lng: 'en',
-    fallbackLng: 'en',
+    lng: 'en-GB',
+    fallbackLng: 'en-GB',
     resources,
     debug: true,
     interpolation: {

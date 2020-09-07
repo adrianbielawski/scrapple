@@ -4,6 +4,7 @@ import i18n from 'i18n';
 //Redux Actions
 import { clearGameSummaryState } from 'actions/gameSummaryActions';
 import { setShowFinishedGameCover } from 'actions/gameActions';
+import axios from 'axiosInstance';
 
 export const setGameId = (gameId) => {
     return {
@@ -106,26 +107,16 @@ export const removeAlert = () => {
     }
 }
 
-export const changeLanguage = (language) => {
+export const changeLanguage = (language, gameId) => {
     return dispatch => {
+        if (gameId) {
+            axios.patch(`/games/${gameId}/`, { language })
+        }
         const html = document.getElementsByTagName('html');
         html[0].lang = language;
         i18n.changeLanguage(language);
-        auth.languageCode = language;
         dispatch(setLanguage(language));
     }
-}
-
-export const updateUserCurrentGame = (uid, currentGame) => () => {
-    return db.collection('users').doc(uid).collection('currentGame').doc('gameId')
-        .update({ id: currentGame });
-}
-
-export const updateUserAllGames = (uid, gameId, date) => () => {
-    return db.collection('users').doc(uid).collection('allGames').doc('allGames')
-        .update({
-            'allGames': firebase.firestore.FieldValue.arrayUnion({ gameId, date })
-        });
 }
 
 export const getGameData = (gameId) => {
