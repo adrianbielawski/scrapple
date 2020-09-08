@@ -1,8 +1,9 @@
+import { cloneDeep } from 'lodash';
+
 const initialState = {
     fetchingGameData: true,
     players: {
-        initialListSpace: null,
-        listSpace: null,
+        placeholder: null,
         grabbedElement: null,
         isTransitionEnabled: false,
         touches: 0
@@ -13,7 +14,7 @@ const initialState = {
 };
 
 const gameMenuReducer = (state = initialState, action) => {
-    let newState = { ...state };
+    let newState = cloneDeep(state);
     switch (action.type) {
         case 'GAME_MENU/TIME_PICKER_ON':
             newState.showTimePicker = true;
@@ -37,23 +38,41 @@ const gameMenuReducer = (state = initialState, action) => {
             return newState;
 
         case 'GAME_MENU/SET_LIST_SPACE':
-            newState.players.listSpace = action.listSpace;
+            newState.players.placeholder = action.placeholder;
             return newState;
 
         case 'GAME_MENU/SET_INITIAL_LIST_SPACE':
-            newState.players.initialListSpace = action.initialListSpace;
+            newState.players.initialPlaceholder = action.initialPlaceholder;
             return newState;
 
-        case 'GAME_MENU/SET_GRABBED_ELEMENT':
-            newState.players.grabbedElement = action.grabbedElement;
+        case 'GAME_MENU/PLAYER_GRABBED':
+            newState.players.grabbedElement = action.index;
+            newState.players.placeholder = action.index - 1;
+            newState.players.initialPlaceholder = action.index - 1;
+            newState.players.touches += 1;
             return newState;
 
-        case 'GAME_MENU/SET_IS_TRANSITION_ENABLED':
-            newState.players.isTransitionEnabled = action.isTransitionEnabled;
+        case 'GAME_MENU/PLAYER_DROPPED':
+            newState.players.grabbedElement = null;
+            newState.players.placeholder = null;
+            newState.players.initialPlaceholder = null;
+            newState.players.touches -= 1;
+            newState.players.isTransitionEnabled = false;
             return newState;
 
-        case 'GAME_MENU/SET_TOUCHES':
-            newState.players.touches = action.touches;
+        case 'GAME_MENU/PLAYER_MOVED':
+            if (!newState.players.isTransitionEnabled) {
+                newState.players.isTransitionEnabled = true;
+            }
+            newState.players.placeholder = action.placeholder;
+            return newState;
+
+        case 'GAME_MENU/PLAYER_TOUCHED':
+            newState.players.touches += 1;
+            return newState;
+
+        case 'GAME_MENU/PLAYER_UNTOUCHED':
+            newState.players.touches -= 1;
             return newState;
 
         default:

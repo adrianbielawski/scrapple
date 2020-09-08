@@ -72,6 +72,14 @@
         z-index: 10;
         width: 100%;
     }
+    &.removed {
+        transition-property: width, max-height;
+        transition-duration: .4s, .4s;
+        transition-delay: 0.1s, .4s;
+        transition-timing-function: ease-in, ease;
+        width: 0;
+        max-height: 0;
+    }
     button {
         margin: 0 4px;
         width: 25px;

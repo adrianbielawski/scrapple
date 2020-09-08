@@ -6,18 +6,18 @@ import styles from './player.scss';
 //Custom components
 import Button from 'components/global_components/button/button';
 //Redux Actions
-import { removePlayer, reorderPlayers, setGrabbedElement, setIsTransitionEnabled,
-    setInitialListSpace, setListSpace, setTouches } from 'actions/gameMenuActions';
+import { removePlayer, playerTouched, playerUntouched,
+    playerGrabbed, dropPlayer, playerMoved } from 'actions/gameMenuActions';
 import { setAlert } from 'actions/appActions';
 
 const Player = (props) => {
+    const element = useRef(null);
     const [isGrabbed, setIsGrabbed] = useState(false);
-    const [top, setTop] = useState(0);
-    const [left, setLeft] = useState(0);
+    const [coords, setCoords] = useState({ top: 0, left: 0 });
     const [distance, setDistance] = useState(0);
     const [elementH, setElementH] = useState(null);
-    const element = useRef(null);
     const [moveData, setMoveData] = useState(null);
+    const [playerRemoved, setPlayerRemoved] = useState(null)
 
     useEffect(() => {
         setElementH(element.current.getBoundingClientRect().height);
@@ -25,17 +25,19 @@ const Player = (props) => {
 
     useEffect(() => {
         if (isGrabbed) {
-            if (moveData.eType === 'mousedown') {
-                window.addEventListener('mousemove', move);
-            }
-            if (moveData.eType === 'touchstart') {
+            window.document.body.style.overscrollBehavior = 'contain';
+            
+            if (props.isTouchDevice) {
                 window.addEventListener('touchmove', move);
+            } else {
+                window.addEventListener('mousemove', move);
             }
         }
         
         return () => {
             window.removeEventListener('mousemove', move);
             window.removeEventListener('touchmove', move);
+            window.document.body.style.overscrollBehavior = 'unset';
         }
     }, [isGrabbed])
 
@@ -43,127 +45,102 @@ const Player = (props) => {
         if (props.players.length === 1) {
             return;
         }
-        if (e.type === 'touchstart') {
-            if (props.touches > 0 && props.index !== props.grabbedElement) {
-                props.setTouches(props.touches + 1);
+        if (props.isTouchDevice) {
+            if (props.touches > 0 && props.position !== props.grabbedElement) {
+                props.playerTouched();
                 return;
             }
         };
-        setGrabbedElement(props.index, e.type);
         
-        const topStart = props.index * elementH;
+        const topStart = props.position * elementH;
 
         let startX = e.clientX;
         let startY = e.clientY;
-        if (e.type === 'touchstart') {
+        if (props.isTouchDevice) {
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
         }
 
         setIsGrabbed(true);
-        setTop(topStart);
-        setMoveData({ eType: e.type, startX, startY, topStart });
+        setCoords({ top: topStart, left: coords.left });
+        setMoveData({ startX, startY, topStart });
+        props.playerGrabbed(props.position, e.type);
     }
 
-    const setGrabbedElement = (index, eType) => {
-        eType === 'touchstart' && props.setTouches(props.touches + 1);
-        props.setInitialListSpace(index - 1);
-        props.setListSpace(index - 1);
-        props.setGrabbedElement(index);
-    }
-
-    const move = (e) => {
-        props.setIsTransitionEnabled(true);
+    const move = (e) => {            
         let x = e.clientX;
         let y = e.clientY;
-        if (e.type == 'touchmove') {
+        if (props.isTouchDevice) {
             x = e.touches[0].clientX;
             y = e.touches[0].clientY;
         };
+
         const newTop = y - moveData.startY + moveData.topStart;
         const newLeft = x - moveData.startX;
+
         let newDistance = (newTop - moveData.topStart) / elementH;
         newDistance = Math.round(newDistance);
         if (newDistance === -0) {
             newDistance = 0;
         };
+
+        let placeholder = props.placeholder;
         if (newDistance !== distance) {
-            addSpace(newDistance);
+            placeholder = getPlaceholder(newDistance);
         };
-        setTop(newTop);
-        setLeft(newLeft);
+
+        setCoords({ top: newTop, left: newLeft });
         setDistance(newDistance);
+        props.playerMoved(placeholder);
     }
 
-    const addSpace = (distance) => {
-        let listSpace = props.initialListSpace + distance;
-        if (props.grabbedElement <= listSpace) {
-            listSpace += 1;
+    const getPlaceholder = (distance) => {
+        let placeholder = props.initialPlaceholder + distance;
+        if (props.grabbedElement <= placeholder) {
+            placeholder += 1;
         }
-        if (listSpace >= props.players.length) {
-            listSpace = props.players.length - 1;
+        if (placeholder >= props.players.length) {
+            placeholder = props.players.length - 1;
         }
-        if (props.grabbedElement === props.players.length - 1 && listSpace >= props.players.length - 2) {
-            listSpace = props.players.length - 2;
+        if (props.grabbedElement === props.players.length - 1 && placeholder >= props.players.length - 2) {
+            placeholder = props.players.length - 2;
         }
-        props.setListSpace(listSpace);
+
+        return placeholder;
     }
 
-    const handleDrop = (e) => {
+    const handleDrop = () => {
         if (props.players.length === 1) {
             return;
         }
 
-        props.setIsTransitionEnabled(false);
-
-        if (props.touches > 0 && props.index !== props.grabbedElement) {
-            props.setTouches(-1)
-            return
+        if (props.touches > 0 && props.position !== props.grabbedElement) {
+            props.playerUntouched();
+            return;
         }
 
-        addSpace(0);
-
-        let newIndex = props.index + distance
-        if (newIndex < 1) {
-            newIndex = 0;
-        } else if (newIndex >= props.players.length) {
-            newIndex = props.players.length - 1;
+        let newPosition = props.position + distance
+        if (newPosition < 1) {
+            newPosition = 0;
+        } else if (newPosition >= props.players.length) {
+            newPosition = props.players.length - 1;
         }
 
-        let touches = 0;
-        if (e.type === 'touchend') {
-            touches = props.touches - 1;
-        }
-
-        props.reorderPlayers(newIndex + 1, props.player.id);
-        props.setInitialListSpace(null);
-        props.setListSpace(null);
-        props.setGrabbedElement(null);
-        props.setTouches(touches);
-
-        setIsGrabbed(false);
-        setTop(0);
-        setLeft(0);
-        setDistance(0);
+        const dropPlayerPromise = props.dropPlayer(newPosition, props.player.id);
+        dropPlayerPromise.then(() => {
+            setIsGrabbed(false);
+            setCoords({ top: 0, left: 0 })
+            setDistance(0);
+        })
     }
 
-    const removePlayerHandler = () => {
+    const handleRemovePlayer = () => {
         if (props.player.user.id === props.adminId) {
             props.setAlert('alert', "You can't remove game admin")
             return;
         }
-        removedPlayerTransition();
+        setPlayerRemoved(true);
         setTimeout(remove, 500);
-    }
-
-    const removedPlayerTransition = () => {
-        const el = element.current;
-        el.style.transitionProperty = 'width, max-height';
-        el.style.transitionDuration = '.4s, .4s';
-        el.style.transitionDelay = '0.1s, .4s';
-        el.style.transitionTimingFunction = 'ease-in, ease';
-        el.style.width = 0;
-        el.style.maxHeight = 0;
     }
 
     const remove = () => {
@@ -178,16 +155,17 @@ const Player = (props) => {
             topSpaceClass: '',
             bottomSpaceClass: '',
             grabbed: '',
+            removed: '',
             position: {},
             hover: 'no-touch-device'
         }
 
-        if (props.grabbedElement != 0 && props.listSpace < 0 && props.index === 0
-            || props.grabbedElement === 0 && props.listSpace < 0 && props.index === 1
+        if (props.grabbedElement != 0 && props.placeholder < 0 && props.position === 0
+            || props.grabbedElement === 0 && props.placeholder < 0 && props.position === 1
             && !isGrabbed) {
             dynamicStyles.topSpaceStyle = { height: elementH };
             dynamicStyles.topSpaceClass = styles.visible;
-        } else if (props.index === props.listSpace && !isGrabbed) {
+        } else if (props.position === props.placeholder && !isGrabbed) {
             dynamicStyles.bottomSpaceStyle = { height: elementH }
             dynamicStyles.bottomSpaceClass = styles.visible;
         };
@@ -200,13 +178,18 @@ const Player = (props) => {
         if (isGrabbed) {
             dynamicStyles.grabbed = styles.grabbed;
             dynamicStyles.position = {
-                top: top,
-                left: left
+                top: coords.top,
+                left: coords.left
             };
         };
+
         if (props.isTouchDevice) {
             dynamicStyles.hover = '';
         };
+
+        if (playerRemoved) {
+            dynamicStyles.removed = styles.removed;
+        }
 
         return dynamicStyles
     }
@@ -241,7 +224,12 @@ const Player = (props) => {
 
     return (
         <li
-            className={`${styles.player} ${dynamicStyles.grabbed} ${dynamicStyles.hover}`}
+            className={`
+                ${styles.player}
+                ${dynamicStyles.grabbed}
+                ${dynamicStyles.hover}
+                ${dynamicStyles.removed}
+            `}
             style={dynamicStyles.position} ref={element}
         >
             <div
@@ -257,11 +245,11 @@ const Player = (props) => {
                     onTouchEnd={handleDrop}
                 >
                     <p className={styles.playerName}>
-                        {props.index + 1}: <span> {props.player.user.username}</span>
+                        {props.position + 1}: <span> {props.player.user.username}</span>
                     </p>
                 </div>
                 {getUserIcon()}
-                <Button onClick={removePlayerHandler} className={styles.remove}>
+                <Button onClick={handleRemovePlayer} className={styles.remove}>
                     <FontAwesomeIcon icon={faTimes} />
                 </Button>
             </div>
@@ -279,8 +267,8 @@ const mapStateToProps = (state) => {
         user: state.app.user,
         players: state.game.players,
         adminId: state.game.adminId,
-        initialListSpace: state.gameMenu.players.initialListSpace,
-        listSpace: state.gameMenu.players.listSpace,
+        initialPlaceholder: state.gameMenu.players.initialPlaceholder,
+        placeholder: state.gameMenu.players.placeholder,
         grabbedElement: state.gameMenu.players.grabbedElement,
         isTransitionEnabled: state.gameMenu.players.isTransitionEnabled,
         touches: state.gameMenu.players.touches,
@@ -289,14 +277,16 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        reorderPlayers: (newIndex, id) => dispatch(reorderPlayers(newIndex, id)),
         removePlayer: (playerId) => dispatch(removePlayer(playerId)),
-        setIsTransitionEnabled: (isTransitionEnabled) => dispatch(setIsTransitionEnabled(isTransitionEnabled)),
-        setInitialListSpace: (initialListSpace) => dispatch(setInitialListSpace(initialListSpace)),
-        setGrabbedElement: (grabbedElement) => dispatch(setGrabbedElement(grabbedElement)),
-        setListSpace: (listSpace) => dispatch(setListSpace(listSpace)),
-        setTouches: (touches) => dispatch(setTouches(touches)),
-        setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(setAlert(type, messageKey, messageValue, action, alertProps)),
+        playerGrabbed: (index, eType) => dispatch(playerGrabbed(index, eType)),
+        playerMoved: (placeholder) => dispatch(playerMoved(placeholder)),
+        dropPlayer: (newPosition, id) => dispatch(dropPlayer(newPosition, id)),
+        setListSpace: (placeholder) => dispatch(setListSpace(placeholder)),
+        playerTouched: () => dispatch(playerTouched()),
+        playerUntouched: () => dispatch(playerUntouched()),
+        setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(
+            setAlert(type, messageKey, messageValue, action, alertProps)
+        ),
     }
 }
 

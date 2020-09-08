@@ -7,41 +7,6 @@ import { gameDeserializer, playerDeserializer } from "serializers";
 import { setAlert } from 'actions/appActions';
 import { changeLanguage } from 'actions/appActions';
 
-export const setInitialListSpace = (initialListSpace) => {
-  return {
-    type: 'GAME_MENU/SET_INITIAL_LIST_SPACE',
-    initialListSpace
-  }
-}
-
-export const setListSpace = (listSpace) => {
-  return {
-    type: 'GAME_MENU/SET_LIST_SPACE',
-    listSpace
-  }
-}
-
-export const setGrabbedElement = (grabbedElement) => {
-  return {
-    type: 'GAME_MENU/SET_GRABBED_ELEMENT',
-    grabbedElement
-  }
-}
-
-export const setIsTransitionEnabled = (isTransitionEnabled) => {
-  return {
-    type: 'GAME_MENU/SET_IS_TRANSITION_ENABLED',
-    isTransitionEnabled
-  }
-}
-
-export const setTouches = (touches) => {
-  return {
-    type: 'GAME_MENU/SET_TOUCHES',
-    touches
-  }
-}
-
 export const startAdminGame = (gameId, history) => {
   return dispatch => {    
     axiosInstance.put(`/games/${gameId}/start`)
@@ -136,10 +101,35 @@ export const removePlayer = (playerId) => dispatch => {
   });
 }
 
-export const reorderPlayers = (position, id) => dispatch => {
-  axiosInstance.patch(`/players/${id}/`, { position })
+export const playerGrabbed = (index) => ({
+    type: 'GAME_MENU/PLAYER_GRABBED',
+    index,
+})
+
+export const playerMoved = (placeholder) => ({
+  type: 'GAME_MENU/PLAYER_MOVED',
+  placeholder,
+})
+
+const playerDropped = () => ({
+    type: 'GAME_MENU/PLAYER_DROPPED',
+})
+
+export const dropPlayer = (position, id) => dispatch => {
+  return axiosInstance.patch(`/players/${id}/`, { position })
+  .then(() => {
+    dispatch(playerDropped());
+  })
   .catch(error => {
     console.log(error.response.data);
     dispatch(setAlert('alert', 'Something went wrong'));
   });
 }
+
+export const playerTouched = () => ({
+    type: 'GAME_MENU/PLAYER_TOUCHED',
+})
+
+export const playerUntouched = () => ({
+    type: 'GAME_MENU/PLAYER_UNTOUCHED',
+})
