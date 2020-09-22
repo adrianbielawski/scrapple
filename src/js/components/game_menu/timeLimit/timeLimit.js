@@ -8,7 +8,7 @@ import styles from './timeLimit.scss';
 import Switch from '@material-ui/core/Switch';
 import Input from 'components/global_components/input/input';
 //Redux Actions
-import { timePickerOn, timePickerOff, updateTimeLimit } from 'actions/gameMenuActions';
+import { updateTimeLimit } from 'actions/gameMenuActions';
 
 const TIME_FORMAT = 'HH:mm:ss'
 
@@ -19,9 +19,9 @@ const timeLimit = (props) => {
 
     const toggleTimePicker = () => {
         if (props.showTimePicker) {
-            props.timePickerOff();
+            props.updateTimeLimit(gameId, null);
         } else {
-            props.timePickerOn();
+            props.updateTimeLimit(gameId, props.timeLimit);
         }
     }
 

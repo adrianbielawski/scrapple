@@ -62,23 +62,16 @@ export const fetchGameData = (gameId) => dispatch => {
   });
 }
 
-export const timePickerOn = () => ({
-  type: 'GAME_MENU/TIME_PICKER_ON',
-})
-
-export const timePickerOff = () => ({
-  type: 'GAME_MENU/TIME_PICKER_OFF',
-})
-
-const timeLimitUpdateSuccess = () => ({
+const timeLimitUpdateSuccess = (gameId, timeLimit) => ({
   type: 'GAME_MENU/TIME_LIMIT_UPDATE/SUCCESS',
+  gameId,
   timeLimit,
 })
 
 export const updateTimeLimit = (gameId, timeLimit) => dispatch => {
   axiosInstance.patch(`/games/${gameId}/`, { time_limit: timeLimit })
   .then(() => {
-    dispatch(timeLimitUpdateSuccess(timeLimit));
+    dispatch(timeLimitUpdateSuccess(gameId, timeLimit));
   })
   .catch(error => {
     console.log(error.response.data)

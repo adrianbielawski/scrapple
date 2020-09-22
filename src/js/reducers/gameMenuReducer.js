@@ -16,16 +16,10 @@ const initialState = {
 const gameMenuReducer = (state = initialState, action) => {
     let newState = cloneDeep(state);
     switch (action.type) {
-        case 'GAME_MENU/TIME_PICKER_ON':
-            newState.showTimePicker = true;
-            return newState;
-
-        case 'GAME_MENU/TIME_PICKER_OFF':
-            newState.showTimePicker = false;
-            return newState;
 
         case 'GAME_MENU/TIME_LIMIT_UPDATE/SUCCESS':
-            newState.timeLimit = action.timeLimit;
+            newState.timeLimit =  action.timeLimit || initialState.timeLimit;
+            newState.showTimePicker = action.timeLimit ? true : false;
             return newState;
 
         case 'GAME_MENU/FETCH_GAME_DATA/START':
@@ -33,7 +27,10 @@ const gameMenuReducer = (state = initialState, action) => {
             return newState;
 
         case 'GAME_MENU/FETCH_GAME_DATA/SUCCESS':
-            newState.timeLimit = action.game.timeLimit;
+            newState.timeLimit = action.game.timeLimit || initialState.timeLimit;
+            if (action.game.timeLimit === null) {
+                newState.showTimePicker = false;
+            }
             newState.fetchingGameData = false;
             return newState;
 
