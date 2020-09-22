@@ -5,6 +5,7 @@ import { faTimes, faMobileAlt, faSlash, faUserCog } from '@fortawesome/free-soli
 import styles from './player.scss';
 //Custom components
 import Button from 'components/global_components/button/button';
+import UserIcon from 'components/global_components/user_icon/userIcon';
 //Redux Actions
 import { removePlayer, playerTouched, playerUntouched,
     playerGrabbed, dropPlayer, playerMoved } from 'actions/gameMenuActions';
@@ -194,32 +195,6 @@ const Player = (props) => {
         return dynamicStyles
     }
 
-    const getUserIcon = () => {
-        const player = props.player;
-        const admin = player.user.id == props.adminId;
-        
-        if (admin) {
-            return (
-                <div className={styles.userIcon}>
-                    <FontAwesomeIcon icon={faUserCog} />
-                </div>
-            );
-        } else if (!admin && !player.user.isAnonymous) {
-            return (
-                <div className={styles.userIcon}>
-                    <FontAwesomeIcon icon={faMobileAlt} />
-                </div>
-            );
-        } else if (!admin && player.user.isAnonymous) {
-            return (
-                <div className={`fa-layers fa-fw ${styles.userIcon}`}>
-                    <FontAwesomeIcon icon={faMobileAlt} />
-                    <FontAwesomeIcon icon={faSlash} />
-                </div>
-            );
-        }
-    }
-
     const dynamicStyles = getStyles();
 
     return (
@@ -247,8 +222,8 @@ const Player = (props) => {
                     <p className={styles.playerName}>
                         {props.position + 1}: <span> {props.player.user.username}</span>
                     </p>
+                    <UserIcon player={props.player} className={styles.userIcon} />
                 </div>
-                {getUserIcon()}
                 <Button onClick={handleRemovePlayer} className={styles.remove}>
                     <FontAwesomeIcon icon={faTimes} />
                 </Button>
