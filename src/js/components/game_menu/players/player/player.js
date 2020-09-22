@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faMobileAlt, faSlash, faUserCog } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import classNames from 'classnames/bind';
 import styles from './player.scss';
 //Custom components
 import Button from 'components/global_components/button/button';
@@ -151,74 +152,56 @@ const Player = (props) => {
 
     const getStyles = () => {
         let dynamicStyles = {
-            topSpaceStyle: {},
-            bottomSpaceStyle: {},
-            topSpaceClass: '',
-            bottomSpaceClass: '',
-            grabbed: '',
-            removed: '',
+            topPlaceholderStyle: {},
+            bottomPlaceholderStyle: {},
+            topPlaceholderVisible: false,
+            bottomPlaceholderVisible: false,
             position: {},
-            hover: 'no-touch-device'
         }
 
         if (props.grabbedElement != 0 && props.placeholder < 0 && props.position === 0
             || props.grabbedElement === 0 && props.placeholder < 0 && props.position === 1
             && !isGrabbed) {
-            dynamicStyles.topSpaceStyle = { height: elementH };
-            dynamicStyles.topSpaceClass = styles.visible;
+            dynamicStyles.topPlaceholderStyle = { height: elementH };
+            dynamicStyles.topPlaceholderVisible = true;
         } else if (props.position === props.placeholder && !isGrabbed) {
-            dynamicStyles.bottomSpaceStyle = { height: elementH }
-            dynamicStyles.bottomSpaceClass = styles.visible;
-        };
-
-        if (!props.isTransitionEnabled && !isGrabbed) {
-            dynamicStyles.bottomSpaceStyle.transition = 'none';
-            dynamicStyles.topSpaceStyle.transition = 'none';
+            dynamicStyles.bottomPlaceholderStyle = { height: elementH };
+            dynamicStyles.bottomPlaceholderVisible = true;
         };
 
         if (isGrabbed) {
-            dynamicStyles.grabbed = styles.grabbed;
             dynamicStyles.position = {
                 top: coords.top,
                 left: coords.left
             };
         };
 
-        if (props.isTouchDevice) {
-            dynamicStyles.hover = '';
-        };
-
-        if (playerRemoved) {
-            dynamicStyles.removed = styles.removed;
-        }
-
-        return dynamicStyles
+        return dynamicStyles;
     }
 
     const dynamicStyles = getStyles();
 
+    const cx = classNames.bind(styles);
+    const liClass = cx({
+        player: true,
+        removed: playerRemoved,
+        grabbed: isGrabbed,
+    });
+    const topPlaceholderClass = cx({
+        topPlaceholder: true,
+        visible: dynamicStyles.topPlaceholderVisible,
+        noTransition: !props.isTransitionEnabled && !isGrabbed,
+    });
+    const bottomPlaceholderClass = cx({
+        bottomPlaceholder: true,
+        visible: dynamicStyles.bottomPlaceholderVisible,
+        noTransition: !props.isTransitionEnabled && !isGrabbed,
+    });
+
     return (
-        <li
-            className={`
-                ${styles.player}
-                ${dynamicStyles.grabbed}
-                ${dynamicStyles.hover}
-                ${dynamicStyles.removed}
-            `}
-            style={dynamicStyles.position} ref={element}
-        >
-            <div
-                className={`${styles.topListSpace} ${dynamicStyles.topSpaceClass}`}
-                style={dynamicStyles.topSpaceStyle}>
-            </div>
+        <li className={liClass} style={dynamicStyles.position} ref={element}>
+            <div className={topPlaceholderClass} style={dynamicStyles.topPlaceholderStyle}></div>
             <div className={styles.wrapper}>
-                <div
-                    className={styles.playerNameWrapper}
-                    onMouseDown={handleGrab}
-                    onMouseUp={handleDrop}
-                    onTouchStart={handleGrab}
-                    onTouchEnd={handleDrop}
-                >
                     <p className={styles.playerName}>
                         {props.position + 1}: <span> {props.player.user.username}</span>
                     </p>
@@ -228,10 +211,7 @@ const Player = (props) => {
                     <FontAwesomeIcon icon={faTimes} />
                 </Button>
             </div>
-            <div
-                className={`${styles.bottomListSpace} ${dynamicStyles.bottomSpaceClass}`}
-                style={dynamicStyles.bottomSpaceStyle}>
-            </div>
+            <div className={bottomPlaceholderClass} style={dynamicStyles.bottomPlaceholderStyle}></div>
         </li>
     );
 }
