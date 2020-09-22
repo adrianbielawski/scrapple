@@ -207,9 +207,11 @@ const Player = (props) => {
                     </p>
                     <UserIcon player={props.player} className={styles.userIcon} />
                 </div>
+                {props.player.user.id !== props.adminId &&
                 <Button onClick={handleRemovePlayer} className={styles.remove}>
                     <FontAwesomeIcon icon={faTimes} />
                 </Button>
+                }
             </div>
             <div className={bottomPlaceholderClass} style={dynamicStyles.bottomPlaceholderStyle}></div>
         </li>
