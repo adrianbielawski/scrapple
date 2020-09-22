@@ -37,25 +37,15 @@ const gameMenuReducer = (state = initialState, action) => {
             newState.fetchingGameData = false;
             return newState;
 
-        case 'GAME_MENU/SET_LIST_SPACE':
-            newState.players.placeholder = action.placeholder;
-            return newState;
-
-        case 'GAME_MENU/SET_INITIAL_LIST_SPACE':
-            newState.players.initialPlaceholder = action.initialPlaceholder;
-            return newState;
-
         case 'GAME_MENU/PLAYER_GRABBED':
-            newState.players.grabbedElement = action.index;
-            newState.players.placeholder = action.index - 1;
-            newState.players.initialPlaceholder = action.index - 1;
+            newState.players.grabbedElement = action.position;
+            newState.players.placeholder = action.position - 1;
             newState.players.touches += 1;
             return newState;
 
-        case 'GAME_MENU/PLAYER_DROPPED':
+        case 'GAME_MENU/PLAYERS_REORDERED':
             newState.players.grabbedElement = null;
             newState.players.placeholder = null;
-            newState.players.initialPlaceholder = null;
             newState.players.touches -= 1;
             newState.players.isTransitionEnabled = false;
             return newState;
@@ -64,6 +54,7 @@ const gameMenuReducer = (state = initialState, action) => {
             if (!newState.players.isTransitionEnabled) {
                 newState.players.isTransitionEnabled = true;
             }
+            
             newState.players.placeholder = action.placeholder;
             return newState;
 

@@ -101,9 +101,9 @@ export const removePlayer = (playerId) => dispatch => {
   });
 }
 
-export const playerGrabbed = (index) => ({
+export const playerGrabbed = (position) => ({
     type: 'GAME_MENU/PLAYER_GRABBED',
-    index,
+    position,
 })
 
 export const playerMoved = (placeholder) => ({
@@ -111,14 +111,14 @@ export const playerMoved = (placeholder) => ({
   placeholder,
 })
 
-const playerDropped = () => ({
-    type: 'GAME_MENU/PLAYER_DROPPED',
+const playesReordered = () => ({
+    type: 'GAME_MENU/PLAYERS_REORDERED',
 })
 
-export const dropPlayer = (position, id) => dispatch => {
+export const playerDropped = (position, id) => dispatch => {
   return axiosInstance.patch(`/players/${id}/`, { position })
   .then(() => {
-    dispatch(playerDropped());
+    dispatch(playesReordered());
   })
   .catch(error => {
     console.log(error.response.data);
