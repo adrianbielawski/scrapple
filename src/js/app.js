@@ -21,24 +21,14 @@ const App = (props) => {
     // const location = useLocation();
     // let history = useHistory();
 
-    useEffect(() => {
-        window.addEventListener('resize', setScreenHeight);
-        window.addEventListener('touchstart', handleTouch);
-        window.addEventListener("orientationchange", handleOrientationChange);
-        handleOrientationChange();
-
-        return () => {
-            window.removeEventListener('resize', setScreenHeight);
-            window.removeEventListener('touchstart', handleTouch);
-            window.removeEventListener("orientationchange", handleOrientationChange);
+    const inspectDeviceScreen = () => {
+        try {
+            document.createEvent("TouchEvent");
+            return true;
+        } catch (e) {
+            return false;
         }
-    }, [])
-
-    useEffect(() => {
-        if (localStorage.getItem('token')) {
-            props.getUser();
-        }
-    }, [])
+    }
 
     useEffect(() => {
         if (props.user) {
@@ -60,14 +50,27 @@ const App = (props) => {
         }
     }, [props.user])
 
-    const setScreenHeight = () => {
-        const screenHeight = window.innerHeight;
-        props.setScreenHeight(screenHeight);
-    }
+    useEffect(() => {
+        props.setIsTouchDevice(inspectDeviceScreen());
 
-    const handleTouch = () => {
-        props.setIsTouchDevice(true);
-        window.removeEventListener('touchstart', handleTouch);
+        window.addEventListener('resize', setScreenHeight);
+        window.addEventListener("orientationchange", handleOrientationChange);
+        handleOrientationChange();
+
+        return () => {
+            window.removeEventListener('resize', setScreenHeight);
+            window.removeEventListener("orientationchange", handleOrientationChange);
+        }
+    }, [])
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            props.getUser();
+        }
+    }, [])
+
+    const setScreenHeight = () => {
+        props.setScreenHeight(window.innerHeight);
     }
 
     const handleOrientationChange = () => {
@@ -75,7 +78,7 @@ const App = (props) => {
     }
 
     return (
-        <div className={styles.App} style={{ height: props.screenHeight }}>
+        <div className={styles.App} style={{ minHeight: props.screenHeight }}>
             {props.alert.show && <Alert />}
             <Suspense fallback={<LoadingSpinner background={true} />}>
                 <Switch>
