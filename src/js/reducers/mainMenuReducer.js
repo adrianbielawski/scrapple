@@ -5,8 +5,8 @@ const initialState = {
 const mainMenuReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
-        case 'MAIN_MENU/SET_SHOW_CONFIRMATION':
-            newState.showConfirmation = action.showConfirmation;
+        case 'MAIN_MENU/JOIN_GAME/SUCCESS':
+            newState.showConfirmation = true;
             return newState;
 
         default:

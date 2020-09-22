@@ -18,39 +18,30 @@ const MainMenu = (props) => {
     const gameIdInput = useRef(null);
     const { t } = useTranslation();
 
-    let unsubscribeGameStart = null;
-
-    useEffect(() => {
-        props.setPlayers([]);
-        return () => {
-            props.setShowConfirmation(false);
-
-            if (unsubscribeGameStart !== null) {
-                unsubscribeGameStart();
-            }
-        }
-    }, []);
-
     const handleJoinGame = () => {
         const gameId = gameIdInput.current.value.trim();
-        const isValid = validateUserInput(gameId);
+        const { valid, error } = validateUserInput(gameId);
 
-        if (!isValid) {
+        if (!valid) {
+            setAlert('alert', error)
             return;
         }
 
-        const gameStartPromise = props.joinGame(gameId, props.language, props.user, props.history);
-        gameStartPromise.then((u) => unsubscribeGameStart = u);
+        props.joinGame(gameId, props.language, props.history);
         gameIdInput.current.value = '';
-
     }
 
     const validateUserInput = (gameId) => {
+        let error = null;
+
         if (!gameId) {
-            props.setAlert('alert', 'Please type in game ID');
-            return false;
+            error = 'Please type in game ID';
         };
-        return true;
+
+        return {
+            valid: error === null,
+            error,
+        };
     };
 
     const handleCreateNewGame = () => {
