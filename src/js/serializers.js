@@ -12,11 +12,11 @@ export const listDeserializer = (data, itemDeserializer) => ({
 
 export const gameDeserializer = game => ({
     id: game.id,
-    number: game.number,
     createdBy: game.created_by,
     createdAt: moment(game.created_at),
     startedAt: game.started_at && moment(game.started_at),
     finishedAt: game.finished_at && moment(game.finished_at),
+    pointsSubtracted: game.points_subtracted,
     timeLimit: game.time_limit,
     language: game.language,
 })

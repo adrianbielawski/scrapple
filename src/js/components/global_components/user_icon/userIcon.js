@@ -5,7 +5,7 @@ import { faMobileAlt, faSlash, faUserCog } from '@fortawesome/free-solid-svg-ico
 
 const UserIcon = (props) => {
     const player = props.player;
-    const admin = player.user.id == props.adminId;
+    const admin = player.user.id == props.createdBy;
 
     if (admin) {
         return (
@@ -26,7 +26,7 @@ const UserIcon = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        adminId: state.game.adminId,
+        createdBy: state.gamePage.gameData.createdBy,
     }
 }
 

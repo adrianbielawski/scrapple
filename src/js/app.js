@@ -5,10 +5,7 @@ import styles from 'global_styles/app.scss';
 //Custom Components
 import Main from './components/main/main';
 import MainMenu from './components/main_Menu/mainMenu';
-const GameMenu = React.lazy(() => import('./components/game_menu/gameMenu'));
-const Game = React.lazy(() => import('./components/game/game'));
-const GameSummary = React.lazy(() => import('./components/game_summary/gameSummary'));
-const SubtractPoints = React.lazy(() => import('./components/subtract_points/subtractPoints'));
+import GamePage from './components/game_page/gamePage';
 import PrivateRoute from 'hoc/PrivateRoute';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 import Alert from 'components/global_components/alert/alert';
@@ -84,10 +81,7 @@ const App = (props) => {
                 <Switch>
                     <Route exact path={["/", "/login", "/signup"]} component={Main} />
                     <PrivateRoute path="/main_menu" component={MainMenu} />
-                    <PrivateRoute exact path="/game_menu/:gameId" component={GameMenu} />
-                    <PrivateRoute exact path="/game/:gameId" component={Game} />
-                    <PrivateRoute exact path="/game/:gameId/subtract_points" component={SubtractPoints} />
-                    <PrivateRoute exact path="/game/:gameId/game_summary" component={GameSummary} />
+                    <PrivateRoute exact path="/game/:gameId" component={GamePage} />
                 </Switch>
             </Suspense>
         </div>

@@ -5,7 +5,7 @@ import { changeLanguage, setAlert } from 'actions/appActions';
 export const createNewGame = (language, timeLimit, history) => dispatch => {
     axiosInstance.post('/games/', {language, time_limit: timeLimit})
         .then(response => {
-            history.push(`/game_menu/${response.data.id}`);
+            history.push(`/game/${response.data.id}`);
         })
         .catch(() => {
             dispatch(setAlert('alert', 'Something went wrong'));

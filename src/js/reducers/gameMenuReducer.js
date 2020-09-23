@@ -1,7 +1,6 @@
 import { cloneDeep } from 'lodash';
 
 const initialState = {
-    fetchingGameData: true,
     players: {
         placeholder: null,
         grabbedElement: null,
@@ -9,29 +8,18 @@ const initialState = {
         touches: 0
     },
     showTimePicker: true,
-    timeLimit: 300,
     showConfirmation: false,
 };
 
 const gameMenuReducer = (state = initialState, action) => {
     let newState = cloneDeep(state);
     switch (action.type) {
+        case 'GAME_PAGE/FETCH_GAME_DATA/SUCCESS':
+            newState.showTimePicker = action.gameData.timeLimit ? true : false;
+            return newState;
 
         case 'GAME_MENU/TIME_LIMIT_UPDATE/SUCCESS':
-            newState.timeLimit =  action.timeLimit || initialState.timeLimit;
             newState.showTimePicker = action.timeLimit ? true : false;
-            return newState;
-
-        case 'GAME_MENU/FETCH_GAME_DATA/START':
-            newState.fetchingGameData = true;
-            return newState;
-
-        case 'GAME_MENU/FETCH_GAME_DATA/SUCCESS':
-            newState.timeLimit = action.game.timeLimit || initialState.timeLimit;
-            if (action.game.timeLimit === null) {
-                newState.showTimePicker = false;
-            }
-            newState.fetchingGameData = false;
             return newState;
 
         case 'GAME_MENU/PLAYER_GRABBED':

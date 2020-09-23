@@ -51,14 +51,12 @@ const timeLimit = (props) => {
 const mapStateToProps = (state) => {
     return {
         showTimePicker: state.gameMenu.showTimePicker,
-        timeLimit: state.gameMenu.timeLimit,
+        timeLimit: state.gamePage.gameData.timeLimit,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        timePickerOn: () => dispatch(timePickerOn()),
-        timePickerOff: () => dispatch(timePickerOff()),
         updateTimeLimit: (gameId, timeLimit) => dispatch(updateTimeLimit(gameId, timeLimit)),
     }
 }

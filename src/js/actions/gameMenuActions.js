@@ -1,65 +1,15 @@
 import axiosInstance from 'axiosInstance';
-import axios from 'axios';
-import i18n from 'i18next';
-//Serializers
-import { gameDeserializer, playerDeserializer } from "serializers";
 //Redux Actions
 import { setAlert } from 'actions/appActions';
-import { changeLanguage } from 'actions/appActions';
 
-export const startAdminGame = (gameId, history) => {
-  return dispatch => {    
-    axiosInstance.put(`/games/${gameId}/start`)
-      .then(() => {
-        history.push(`/game/${gameId}`);
-      })
-      .catch(() => {
-        dispatch(setAlert('alert', 'Something went wrong'));
-      });
-  }
-}
-
-const fetchGameDataStart = () => ({
-  type: 'GAME_MENU/FETCH_GAME_DATA/START',
-})
-
-const fetchGameDataSuccess = (game, players) => ({
-  type: 'GAME_MENU/FETCH_GAME_DATA/SUCCESS',
-  game,
-  players,
-})
-
-const getGameData = (gameId) => {
-  return axiosInstance.get(`/games/${gameId}/`)
-}
-
-const getPlayersData = (gameId) => {
-  return axiosInstance.get('/players/', {
-    params: {
-      game_id: gameId,
-    }
-  })
-}
-
-export const fetchGameData = (gameId) => dispatch => {
-  dispatch(fetchGameDataStart());
-  
-  axios.all([getGameData(gameId), getPlayersData(gameId)])
-  .then(axios.spread((gameResponse, playersResponse) => {
-    const game = gameDeserializer(gameResponse.data);
-    const players = playersResponse.data.results.map(player => {
-      return playerDeserializer(player);
+export const startGame = (gameId, history) => dispatch => {    
+  axiosInstance.put(`/games/${gameId}/start`)
+    .then(() => {
+      history.push(`/game/${gameId}`);
+    })
+    .catch(() => {
+      dispatch(setAlert('alert', 'Something went wrong'));
     });
-
-    dispatch(fetchGameDataSuccess(game, players));
-    
-    if (i18n.language !== game.language) {
-      dispatch(changeLanguage(game.language));
-    }
-  }))
-  .catch(error => {
-    dispatch(setAlert('alert', error.response.data));
-  });
 }
 
 const timeLimitUpdateSuccess = (gameId, timeLimit) => ({

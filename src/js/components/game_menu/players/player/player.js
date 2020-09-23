@@ -205,7 +205,7 @@ const Player = (props) => {
     }
 
     const handleRemovePlayer = () => {
-        if (props.player.user.id === props.adminId) {
+        if (props.player.user.id === props.createdBy) {
             props.setAlert('alert', "You can't remove game admin");
             return;
         }
@@ -276,7 +276,7 @@ const Player = (props) => {
                     </p>
                     <UserIcon player={props.player} className={styles.userIcon} />
                 </div>
-                {props.player.user.id !== props.adminId &&
+                {props.player.user.id !== props.createdBy &&
                 <Button onClick={handleRemovePlayer} className={styles.remove}>
                     <FontAwesomeIcon icon={faTimes} />
                 </Button>
@@ -291,8 +291,8 @@ const mapStateToProps = (state) => {
     return {
         isTouchDevice: state.app.isTouchDevice,
         user: state.app.user,
-        players: state.game.players,
-        adminId: state.game.adminId,
+        players: state.gamePage.players,
+        createdBy: state.gamePage.gameData.createdBy,
         placeholder: state.gameMenu.players.placeholder,
         grabbedElement: state.gameMenu.players.grabbedElement,
         isTransitionEnabled: state.gameMenu.players.isTransitionEnabled,

@@ -72,7 +72,7 @@ const MainMenu = (props) => {
 const mapStateToProps = (state) => {
     return {
         language: state.app.language,
-        timeLimit: state.gameMenu.timeLimit,
+        timeLimit: state.gamePage.gameData.timeLimit,
         showConfirmation: state.mainMenu.showConfirmation,
     }
 }
