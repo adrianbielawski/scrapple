@@ -43,6 +43,7 @@ const appReducer = (state = initialState, action) => {
         case 'APP/CLEAR_APP_STATE':
             newState = cloneDeep(initialState);
             newState.language = state.language;
+            newState.isTouchDevice = state.isTouchDevice;
             return newState;
 
         case 'APP/EXIT_GAME':
