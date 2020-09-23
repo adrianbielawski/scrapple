@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash';
+import { playerDeserializer, gameDeserializer } from 'serializers';
 
 const initialState = {
     fetchingGameData: true,
@@ -34,7 +35,15 @@ const gamePageReducer = (state = initialState, action) => {
             return newState;
 
         case 'GAME_MENU/TIME_LIMIT_UPDATE/SUCCESS':
-            newState.gameData.timeLimit =  action.timeLimit || initialState.gameData.timeLimit;
+            newState.gameData.timeLimit = action.timeLimit || initialState.gameData.timeLimit;
+            return newState;
+
+        case 'GAME_PAGE/PLAYERS_CHANGED':
+            newState.players = action.players.map(playerDeserializer);
+            return newState;
+
+        case 'GAME_PAGE/GAME_CHANGED':
+            newState.gameData = gameDeserializer(action.gameData);
             return newState;
 
         case 'APP/EXIT_GAME':

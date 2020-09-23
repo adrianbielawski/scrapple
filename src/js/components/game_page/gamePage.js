@@ -8,7 +8,7 @@ const Game = React.lazy(() => import('components/game/game'));
 const GameSummary = React.lazy(() => import('components/game_summary/gameSummary'));
 const SubtractPoints = React.lazy(() => import('components/subtract_points/subtractPoints'));
 //Redux Actions
-import { fetchGameData } from 'actions/gamePageActions';
+import { fetchGameData, playersChanged, gameChanged } from 'actions/gamePageActions';
 
 const NORMAL_CLOSE = 4000;
 
@@ -33,7 +33,14 @@ const GamePage = (props) => {
             const data = JSON.parse(e.data);
             console.log(data)
 
-            
+            switch (data.type) {
+                case 'players_changed':
+                    props.playersChanged(data.players);
+                    break;
+                case 'game_changed':
+                    props.gameChanged(data.game);
+                    break;
+            }
         };
 
         socket.current.onclose = (e) => {
@@ -80,6 +87,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchGameData: (gameId) => dispatch(fetchGameData(gameId)),
+        playersChanged: (players) => dispatch(playersChanged(players)),
+        gameChanged: (gameData) => dispatch(gameChanged(gameData)),
     }
 }
 

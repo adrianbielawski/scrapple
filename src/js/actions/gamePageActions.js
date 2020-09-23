@@ -54,3 +54,13 @@ export const fetchGameData = (gameId) => dispatch => {
             dispatch(setAlert('alert', 'Something went wrong'));
         });
 }
+
+export const playersChanged = (players) => ({
+    type: 'GAME_PAGE/PLAYERS_CHANGED',
+    players,
+})
+
+export const gameChanged = (gameData) => ({
+    type: 'GAME_PAGE/GAME_CHANGED',
+    gameData,
+})
