@@ -5,7 +5,6 @@ const initialState = {
         placeholder: null,
         grabbedElement: null,
         isTransitionEnabled: false,
-        touches: 0
     },
     showTimePicker: true,
     showConfirmation: false,
@@ -25,13 +24,11 @@ const gameMenuReducer = (state = initialState, action) => {
         case 'GAME_MENU/PLAYER_GRABBED':
             newState.players.grabbedElement = action.position;
             newState.players.placeholder = action.position - 1;
-            newState.players.touches += 1;
             return newState;
 
         case 'GAME_MENU/PLAYERS_REORDERED':
             newState.players.grabbedElement = null;
             newState.players.placeholder = null;
-            newState.players.touches -= 1;
             newState.players.isTransitionEnabled = false;
             return newState;
 
@@ -41,14 +38,6 @@ const gameMenuReducer = (state = initialState, action) => {
             }
             
             newState.players.placeholder = action.placeholder;
-            return newState;
-
-        case 'GAME_MENU/PLAYER_TOUCHED':
-            newState.players.touches += 1;
-            return newState;
-
-        case 'GAME_MENU/PLAYER_UNTOUCHED':
-            newState.players.touches -= 1;
             return newState;
 
         default:

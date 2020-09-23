@@ -65,11 +65,3 @@ export const playerDropped = (position, id) => dispatch => {
     dispatch(setAlert('alert', 'Something went wrong'));
   });
 }
-
-export const playerTouched = () => ({
-    type: 'GAME_MENU/PLAYER_TOUCHED',
-})
-
-export const playerUntouched = () => ({
-    type: 'GAME_MENU/PLAYER_UNTOUCHED',
-})

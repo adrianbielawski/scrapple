@@ -8,8 +8,7 @@ import styles from './player.scss';
 import Button from 'components/global_components/button/button';
 import UserIcon from 'components/global_components/user_icon/userIcon';
 //Redux Actions
-import { removePlayer, playerTouched, playerUntouched,
-    playerGrabbed, playerMoved, playerDropped } from 'actions/gameMenuActions';
+import { removePlayer, playerGrabbed, playerMoved, playerDropped } from 'actions/gameMenuActions';
 import { setAlert } from 'actions/appActions';
 
 const SCROLL_STEP = 1;
@@ -132,11 +131,8 @@ const Player = (props) => {
         if (props.players.length === 1) {
             return;
         }
-        if (props.isTouchDevice) {
-            if (props.touches > 0 && props.position !== props.grabbedElement) {
-                props.playerTouched();
-                return;
-            }
+        if (props.isTouchDevice && e.touches.length > 1) {
+            return;
         };
         
         const topStart = props.position * elementH;
@@ -172,13 +168,12 @@ const Player = (props) => {
         return placeholder;
     }
 
-    const handleDrop = () => {
+    const handleDrop = (e) => {
         if (props.players.length === 1) {
             return;
         }
 
-        if (props.touches > 0 && props.position !== props.grabbedElement) {
-            props.playerUntouched();
+        if (props.isTouchDevice && e.touches.length > 0) {
             return;
         }
 
@@ -296,7 +291,6 @@ const mapStateToProps = (state) => {
         placeholder: state.gameMenu.players.placeholder,
         grabbedElement: state.gameMenu.players.grabbedElement,
         isTransitionEnabled: state.gameMenu.players.isTransitionEnabled,
-        touches: state.gameMenu.players.touches,
     }
 }
 
@@ -307,8 +301,6 @@ const mapDispatchToProps = (dispatch) => {
         playerMoved: (placeholder) => dispatch(playerMoved(placeholder)),
         playerDropped: (newPosition, id) => dispatch(playerDropped(newPosition, id)),
         setListSpace: (placeholder) => dispatch(setListSpace(placeholder)),
-        playerTouched: () => dispatch(playerTouched()),
-        playerUntouched: () => dispatch(playerUntouched()),
         setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(
             setAlert(type, messageKey, messageValue, action, alertProps)
         ),
