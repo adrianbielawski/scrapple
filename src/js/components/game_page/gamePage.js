@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 //Custom Components
@@ -10,11 +10,47 @@ const SubtractPoints = React.lazy(() => import('components/subtract_points/subtr
 //Redux Actions
 import { fetchGameData } from 'actions/gamePageActions';
 
+const NORMAL_CLOSE = 4000;
+
 const GamePage = (props) => {
     const { gameId } = useParams(null);
+    const socket = useRef(null);
+
+    const connect = () => {
+        socket.current = new WebSocket(
+            `ws://192.168.1.10:8000/ws/games/${gameId}/`
+        );
+
+        socket.current.onopen = () => {
+            const token = localStorage.getItem('token');
+            socket.current.send(JSON.stringify({
+                type: 'authenticate',
+                token,
+            }));
+        }
+
+        socket.current.onmessage = (e) => {
+            const data = JSON.parse(e.data);
+            console.log(data)
+
+            
+        };
+
+        socket.current.onclose = (e) => {
+            if (e.code === NORMAL_CLOSE) {
+                return;
+            }
+            setTimeout(connect, 1000);
+        };
+    }
 
     useEffect(() => {
         props.fetchGameData(gameId);
+        connect();
+
+        return () => {
+            socket.current.close(NORMAL_CLOSE)
+        }
     }, []);
 
     const getContent = () => {
@@ -30,12 +66,7 @@ const GamePage = (props) => {
     }
 
     return (
-        <div>
-            {props.fetchingGameData 
-                ? <LoadingSpinner background={true} />
-                : getContent()
-            }
-        </div>
+        props.fetchingGameData ? <LoadingSpinner background={true} /> : getContent()
     );
 }
 
