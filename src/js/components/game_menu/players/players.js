@@ -6,8 +6,8 @@ import Player from './player/player';
 
 const Players = (props) => {
     const getPlayers = () => {
-        return props.players.map((player, index) => {
-            return <Player key={index} position={player.position} player={player} />
+        return props.players.map((player) => {
+            return <Player key={player.id} position={player.position} player={player} />
         });
     }
 

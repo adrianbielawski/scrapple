@@ -123,7 +123,7 @@ const Player = (props) => {
             playerNameWrapperRef.current.removeEventListener('mousedown', handleGrab);
             playerNameWrapperRef.current.removeEventListener('mouseup', handleDrop);
         }
-    }, [elementH, distance])
+    }, [elementH, distance, props.position, props.grabbedElement])
 
     const handleGrab = (e) => {
         e.preventDefault();
