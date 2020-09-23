@@ -86,8 +86,7 @@ export const getUser = () => dispatch => {
     .then(response => {
         dispatch(getUserSuccess(response.data));
     })
-    .catch(error => {
-        debugger
+    .catch(() => {
         localStorage.removeItem('token');
     });
 };
