@@ -2,11 +2,8 @@ import axiosInstance from 'axiosInstance';
 //Redux Actions
 import { setAlert } from 'actions/appActions';
 
-export const startGame = (gameId, history) => dispatch => {    
-  axiosInstance.put(`/games/${gameId}/start`)
-    .then(() => {
-      history.push(`/game/${gameId}`);
-    })
+export const startGame = (gameId) => dispatch => {    
+  axiosInstance.put(`/games/${gameId}/start/`)
     .catch(() => {
       dispatch(setAlert('alert', 'Something went wrong'));
     });

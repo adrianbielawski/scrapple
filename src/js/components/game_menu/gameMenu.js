@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import styles from './gameMenu.scss';
@@ -15,10 +16,11 @@ import Button from 'components/global_components/button/button';
 import SideMenu from 'components/global_components/side_menu/sideMenu';
 //Redux Actions
 import { setAlert } from 'actions/appActions';
-import { startAdminGame, fetchGameData } from 'actions/gameMenuActions';
+import { startGame } from 'actions/gameMenuActions';
 
 const GameMenu = (props) => {
     const { t } = useTranslation();
+    const { gameId } = useParams(null);
 
     const handleSubmit = () => {
         const { valid, error } = validateSettings();
@@ -26,7 +28,7 @@ const GameMenu = (props) => {
             props.setAlert('alert', error);
             return;
         }
-        props.startGame(props.gameId, props.history);
+        props.startGame(gameId);
     }
 
     const validateSettings = () => {
@@ -35,7 +37,7 @@ const GameMenu = (props) => {
             error = 'Please add at least 2 players';
         }
 
-        if(props.timePicker && timeLimit < 60) {
+        if(props.showTimePicker && props.timeLimit < 60) {
             error = "Minimum player's time limit is 1 min"
         }
 
@@ -76,14 +78,14 @@ const mapStateToProps = (state) => {
     return {
         players: state.gamePage.players,
         timeLimit: state.gamePage.gameData.timeLimit,
-        timePicker: state.gameMenu.timePicker,
+        showTimePicker: state.gameMenu.showTimePicker,
         playedAgainWithSettings: state.app.playedAgainWithSettings,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        startAdminGame: (gameId, history) => dispatch(startAdminGame(gameId, history)),
+        startGame: (gameId) => dispatch(startGame(gameId)),
         setAlert: (type, messageKey, messageValue, action, props) => dispatch(
             setAlert(type, messageKey, messageValue, action, props)
         ),
