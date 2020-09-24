@@ -1,0 +1,23 @@
+@import "global_styles/variables";
+
+.pagination {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 auto;
+    p {
+        font-size: .8em;
+        margin: 0;
+    }
+    .chevron {
+        font-size: .7em;
+        padding: 0 5px;
+        cursor: pointer;
+        &:hover {
+            color: $mainGreen;
+        }
+        &.inactive {
+            color: $grey;
+            cursor: unset;
+        }
+    }
+}

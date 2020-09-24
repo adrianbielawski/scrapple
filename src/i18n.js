@@ -46,7 +46,6 @@ const resources = {
       "Account settings" : "Account settings",
       "Games history" : "Games history",
       "Date" : "Date",
-      "ofNum" : "of {{allGames}}",
       "Played in lang" : "Language: {{lang}}",
       "Time limit" : "Time limit: {{time}}",
       "No time limit" : "No time limit",
@@ -113,6 +112,8 @@ const resources = {
       "Join the game" : "Join the game",
       "Show two-letter words" : "Show two-letter words",
       "Hide two-letter words" : "Hide two-letter words",
+      //Global components
+      "ofNum" : "of {{count}}",
     }
   },
   'pl-PL': {
@@ -160,7 +161,6 @@ const resources = {
       "Account settings" : "Ustawienia konta",
       "Games history" : "Historia gier",
       "Date" : "Data",
-      "ofNum" : "z {{allGames}}",
       "Played in lang" : "Język: {{lang}}",
       "Time limit" : "Limit czasu: {{time}}",
       "No time limit" : "Bez limitu czasu",
@@ -227,6 +227,8 @@ const resources = {
       "Join the game" : "Dołącz do gry",
       "Show two-letter words" : "Pokaż słowa dwuliterowe",
       "Hide two-letter words" : "Ukryj słowa dwuliterowe",
+      //Global components
+      "ofNum" : "z {{count}}",
     }
   }
 };
