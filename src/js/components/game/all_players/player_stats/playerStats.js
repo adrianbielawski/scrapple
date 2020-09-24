@@ -2,17 +2,24 @@ import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMobileAlt, faSlash, faCog, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import classNames from 'classnames/bind';
 import styles from './playerStats.scss';
 //Custom Components
-import RoundPoints from './round_points/roundPoints';
+import AllPoints from './all_points/allPoints';
 import Card from 'components/global_components/card/card';
 import Button from 'components/global_components/button/button';
+import UserIcon from 'components/global_components/user_icon/userIcon';
+//Redux actions
+import { getAllPoints, allPointsClosed } from 'actions/gameActions';
+
+const ANIMATION_DURATION = 200;
 
 const PlayerStats = (props) => {
     const { t } = useTranslation();
     const playerStats = useRef(null)
-    const [displayAllPoints, setDisplayAllPoints] = useState(false);
+    const [displayPoints, setDisplayPoints] = useState(false);
+    const [closingPoints, setClosingPoints] = useState(false);
 
     useEffect(() => {
         if (props.isCurrent) {
@@ -21,51 +28,40 @@ const PlayerStats = (props) => {
     })
 
     const toggleDisplayAllPoints = () => {
-        setDisplayAllPoints(!displayAllPoints);
-    };
-
-    const getRoundPoints = () => {
-        return props.player.allPoints.map((points, index) => (
-            <RoundPoints round={index + 1} points={points} key={index} />
-        ));
-    };
-
-    const getUserIcon = () => {
-        const player = props.player;
-        if (player.admin) {
-            return (
-                <span className={styles.badge}>
-                    <FontAwesomeIcon icon={faCog} />
-                </span>
-            );
-        } else if (!player.admin && !player.uid) {
-            return (
-                <div className={styles.badge}>
-                    <span className="fa-layers fa-fw">
-                        <FontAwesomeIcon icon={faMobileAlt} />
-                        <FontAwesomeIcon icon={faSlash} />
-                    </span>
-                </div>
-            );
+        if (displayPoints) {
+            setClosingPoints(true);
+            setTimeout(() => {
+                props.allPointsClosed(props.player.id)
+                setDisplayPoints(false);
+            }, ANIMATION_DURATION);
+        } else {
+            setClosingPoints(false);
+            setDisplayPoints(true);
         }
-    }
+    };
 
-    const allPointsStyle = displayAllPoints ? props.player.allPoints.length * 24 + 50 : 0;
-    const currentClass = props.isCurrent ? styles.current : '';
+    const cx = classNames.bind(styles);
+    const playerStatsClass = cx({
+        playerStats: true,
+        current: props.isCurrent,
+    });
 
     return (
-        <Card className={`${styles.playerStats} ${currentClass}`} ref={playerStats}>
+        <Card className={playerStatsClass} ref={playerStats}>
             <div className={styles.wrapper}>
                 <div className={styles.profileImage}>
-                    {props.player.profileImage ? <img src={props.player.profileImage}/> : <FontAwesomeIcon icon={faUser} />}
-                    {getUserIcon()}
+                    {props.player.profileImage
+                        ? <img src={props.player.profileImage}/>
+                        : <FontAwesomeIcon icon={faUser} />
+                    }
+                    <UserIcon className={styles.badge} player={props.player} />
                 </div>
                 <div className={styles.player}>
                     <p className={styles.playerName}>
-                        {props.player.playerName}
+                        {props.player.user.username}
                     </p>
                     <div className={styles.points}>
-                        <p>{t("Current score")} {props.player.currentScore}</p>
+                        <p>{t("Current score")} {props.player.score}</p>
                         <Button onClick={toggleDisplayAllPoints}>{t("All points")}</Button>
                     </div>
                 </div>
@@ -81,4 +77,11 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(PlayerStats)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getAllPoints: (gameId, playerId) => dispatch(getAllPoints(gameId, playerId)),
+        allPointsClosed: (playerId) => dispatch(allPointsClosed(playerId)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlayerStats)
