@@ -70,12 +70,7 @@ const PlayerStats = (props) => {
                     </div>
                 </div>
             </div>
-            <div className={styles.allPoints} style={{ maxHeight: `${allPointsStyle}px` }}>
-                <p>{t("Best score", {'best': props.player.bestScore})}</p>
-                <ul>
-                    {getRoundPoints()}
-                </ul>
-            </div>
+            {displayPoints && <AllPoints player={props.player} closing={closingPoints} />}
         </Card>
     );
 }

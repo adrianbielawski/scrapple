@@ -1,4 +1,5 @@
 import db from 'firebaseConfig';
+import axiosInstance from 'axiosInstance';
 import Moment from 'react-moment';//important
 import moment from 'moment';
 import { cloneDeep } from 'lodash';
@@ -6,6 +7,32 @@ import { cloneDeep } from 'lodash';
 import { setAdmin, setAlert, handleFinishGame, changeLanguage, exitGame } from 'actions/appActions';
 import { setTimer, setTime } from './gameMenuActions';
 
+const fetchAllPointsSuccess = (playerId, data) => ({
+    type: 'GAME/FETCH_ALL_POINTS/SUCCESS',
+    playerId,
+    data,
+})
+
+export const getAllPoints = (playerId, page) => dispatch => {
+    axiosInstance.get('/points/', {
+        params: {
+            player_id: playerId,
+            page_size: 5,
+            page,
+        }
+    })
+    .then(response => {
+        dispatch(fetchAllPointsSuccess(playerId, response.data));
+    })
+    .catch(() => {
+        dispatch(setAlert('alert', 'Something went wrong'));
+    })
+}
+
+export const allPointsClosed = (playerId) => ({
+    type: 'GAME/ALL_POINTS_CLOSED',
+    playerId,
+})
 export const toggleShowWords = () => {
     return {
         type: 'GAME/TOGGLE_SHOW_WORDS',

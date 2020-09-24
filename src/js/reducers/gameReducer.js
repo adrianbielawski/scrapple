@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash';
+import { listDeserializer, pointsDataDeserializer } from 'serializers';
 
 const initialState = {
-    fetchingGameData: true,
     showWords: false,
     isAudioEnabled: false,
     currentPlayer: 0,
@@ -13,13 +13,26 @@ const initialState = {
     showMenu: false,
     showFinishedGameCover: false,
     adminId: null,
+    allPointsData: {},
 };
 
 const gameReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
-        case 'GAME/SET_FETCHING_GAME_DATA':
-            newState.fetchingGameData = action.fetchingGameData;
+        case 'GAME/ALL_POINTS_CLOSED':
+            const newPointsData = cloneDeep(newState.allPointsData);
+            newPointsData[action.playerId] = null;
+            newState.allPointsData = newPointsData;
+            return newState;
+
+        case 'GAME/FETCH_ALL_POINTS/SUCCESS':
+            const data = listDeserializer(action.data, pointsDataDeserializer);
+            
+            const allPointsData = cloneDeep(newState.allPointsData);
+            allPointsData[action.playerId] = cloneDeep(data);
+            
+            newState.allPointsData = allPointsData;
+            newState.fetchingAllPoints = false;
             return newState;
 
         case 'GAME/SHOW_FINISHED_GAME_COVER':
