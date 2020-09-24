@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
+import axiosInstance from 'axiosInstance';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import classNames from 'classnames/bind';
 import styles from './wordChecker.scss';
 //Custom Components
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
@@ -46,27 +48,15 @@ const WordChecker = (props) => {
         setFetching(true);
         setValid(null);
 
-        let url = '';
-        let params = '';
-        if (props.language === 'en-GB') {
-            url = 'https://burek.it/sowpods/';
-            params = new URLSearchParams({
-                word: word
-            });
-        } else if (props.language === 'pl-PL') {
-            url = 'https://burek.it/osps/files/php/osps_funkcje2.php';
-            params = new URLSearchParams({
-                s: 'spr',
-                slowo_arbiter2: word
-            });
-        };
-
-        fetch(`${url}?${params.toString()}`).then(
-            response => response.text()
-        ).then(
-            response => {
+        axiosInstance.get('words/check', {
+            params: {
+                word,
+                language: props.language,
+            }
+        })
+        .then(response => {
                 setFetching(false);
-                setValid(response === '1');
+                setValid(response.data.valid);
             }
         );
     }
@@ -85,6 +75,12 @@ const WordChecker = (props) => {
 
     const image = getImage();
 
+    const cx = classNames.bind(styles);
+    const imageClass = cx({
+        resoultImg: true,
+        noAudio: !props.gameData.timeLimit || props.user.id !== props.gameData.createdBy,
+    });
+
     return (
         <div className={styles.wordChecker}>
             <Input type="text"
@@ -94,7 +90,7 @@ const WordChecker = (props) => {
                 placeholder={t("Check your word")}
                 spellCheck="false"
                 autoFocus />
-            <div className={`${styles.resoultImg} ${!props.timer || !props.admin ? styles.noAudio : ''}`}>
+            <div className={imageClass}>
                 {image}
             </div>
         </div>
@@ -103,9 +99,9 @@ const WordChecker = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        admin: state.app.admin,
         language: state.app.language,
-        timer: state.timeLimit.timer,
+        gameData: state.gamePage.gameData,
+        user: state.app.user,
     }
 }
 export default connect(mapStateToProps)(WordChecker);
