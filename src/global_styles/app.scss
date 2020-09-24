@@ -6,7 +6,7 @@ html, body, div, span, h1, h2, p, a, ul, li {
     margin: 0;
     padding: 0;
     border: 0;
-    font-family: "nunito";
+    font-family: "nunito", sans-serif;
 }
 
 h2 {
@@ -27,7 +27,7 @@ p {
 .App {
     margin: 0 auto;
     max-width: 800px;
-    font-family: "nunito";
+    font-family: "nunito", sans-serif;
     position: relative;
     box-sizing: border-box;
     display: flex;

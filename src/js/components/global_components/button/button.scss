@@ -14,7 +14,7 @@ button {
 	box-sizing: border-box;
 	cursor: pointer;
 	outline: none;
-	font-family: "nunito";
+	font-family: "nunito", sans-serif;
 	-webkit-tap-highlight-color: transparent;
 	&:active {
 		background: darken($mainGreen, 10);
