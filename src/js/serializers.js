@@ -19,6 +19,7 @@ export const gameDeserializer = game => ({
     pointsSubtracted: game.points_subtracted,
     timeLimit: game.time_limit,
     language: game.language,
+    currentPlayer: game.current_player,
 })
 
 export const userDeserializer = (user) => ({
@@ -36,4 +37,10 @@ export const playerDeserializer = (player) => ({
     position: player.position,
     score: player.score,
     bestScore: player.best_score,
+})
+
+export const pointsDataDeserializer = (pointsData) => ({
+    createdAt: pointsData.created_by,
+    playerId: pointsData.player_id,
+    value: pointsData.value,
 })
