@@ -6,13 +6,16 @@ const initialState = {
     players: [],
     gameData: {
         id: null,
+        language: 'en-GB',
+        currentPlayer: null,
+        timeLimit: 300,
+        timeEnd: null,
+        timePausedBy: null,
         createdBy: null,
         createdAt: null,
         startedAt: null,
         finishedAt: null,
         pointsSubtracted: false,
-        timeLimit: 300,
-        language: 'en-GB',
     },
 };
 
