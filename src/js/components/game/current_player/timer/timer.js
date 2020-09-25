@@ -27,6 +27,7 @@ const Timer = (props) => {
     const admin = props.user.id === props.gameData.createdBy;
 
     useEffect(() => {
+        updateTimer();
         if (props.gameData.timePausedBy === null) {
             timerInterval.current = setInterval(updateTimer, 100);
         }
@@ -41,7 +42,7 @@ const Timer = (props) => {
             AUDIO.beep.play();
         }
 
-        if (props.timeLeft === 0 && admin) {
+        if (props.timeLeft <= 0 && props.timeLeft !== null && admin) {
             props.isAudioEnabled && AUDIO.longBeep.play();
             setTimeout(props.onTimeOut, 1000);
         }
