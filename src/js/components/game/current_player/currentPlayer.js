@@ -8,7 +8,7 @@ import Timer from './timer/timer';
 import AddPointsForm from './add_points_form/addPointsForm';
 
 const CurrentPlayer = (props) => {
-    const playerName = props.players[props.currentPlayer].playerName;
+    const playerName = props.players[props.gameData.currentPlayer].user.username;
 
     return (
         <div className={styles.currentPlayer}>
@@ -17,7 +17,7 @@ const CurrentPlayer = (props) => {
                     It is <span>{{ playerName }}</span>'s turn now
                 </Trans>
             </p>
-            {props.timer && <Timer />}
+            {props.gameData.timeLimit && <Timer />}
             <AddPointsForm />
         </div>
     );
@@ -25,9 +25,10 @@ const CurrentPlayer = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        timer: state.timeLimit.timer,
-        currentPlayer: state.game.currentPlayer,
-        players: state.game.players,
+        gameData: state.gamePage.gameData,
+        players: state.gamePage.players,
+    }
+}
     }
 }
 
