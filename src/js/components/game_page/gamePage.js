@@ -9,6 +9,7 @@ const GameSummary = React.lazy(() => import('components/game_summary/gameSummary
 const SubtractPoints = React.lazy(() => import('components/subtract_points/subtractPoints'));
 //Redux Actions
 import { fetchGameData, playersChanged, gameChanged } from 'actions/gamePageActions';
+import JoinGameConfirmation from './join_game_confirmation/joinGameConfirmation';
 
 const NORMAL_CLOSE = 4000;
 
@@ -67,6 +68,8 @@ const GamePage = (props) => {
             return <SubtractPoints />;
         } else if (props.gameData.startedAt !== null) {
             return <Game />;
+        } else if (props.gameData.createdAt !== null && props.user.id !== props.gameData.createdBy) {
+            return <JoinGameConfirmation />;
         } else if (props.gameData.createdAt !== null) {
             return <GameMenu />;
         }
@@ -81,6 +84,7 @@ const mapStateToProps = (state) => {
     return {
         fetchingGameData: state.gamePage.fetchingGameData,
         gameData: state.gamePage.gameData,
+        user: state.app.user,
     }
 }
 

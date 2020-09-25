@@ -1,28 +1,23 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import styles from './confirmation.scss';
+import styles from './joinGameConfirmation.scss';
 //Custom Components
 import Modal from 'components/global_components/modal/modal';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 
 const Confirmation = (props) => {
     const { t } = useTranslation();
+    const { gameId } = useParams(null);
 
     return (
-        <Modal show={props.show} className={styles.confirmation} cardClassName={styles.card}>
+        <Modal show={true} className={styles.confirmation} cardClassName={styles.card}>
             <h2>{t("You have joined the game")}</h2>
-            <p className={styles.gameId}>{t("Game ID")}: {props.gameId}</p>
+            <p className={styles.gameId}>{t("Game ID")}: {gameId}</p>
             <p className={styles.message}>{t("Please wait until game started")}</p>
             <LoadingSpinner background={false} />
         </Modal>
     );
 }
 
-const mapStateToProps = (state) => {
-    return {
-        gameId: state.app.gameId,
-    }
-}
-
-export default connect(mapStateToProps)(Confirmation)
+export default Confirmation;

@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import styles from './mainMenu.scss';
 //Custom Components
 import Header from 'components/global_components/header/header';
-import Confirmation from './confirmation/confirmation';
 import Card from 'components/global_components/card/card';
 import AccountInfo from 'components/global_components/accountInfo/accountInfo';
 import Button from 'components/global_components/button/button';
@@ -50,7 +49,6 @@ const MainMenu = (props) => {
 
     return (
         <div className={styles.mainMenu}>
-            <Confirmation show={props.showConfirmation} />
             <Header />
             <div className={styles.content}>
                 <div className={styles.topWrapper}>
@@ -73,7 +71,6 @@ const mapStateToProps = (state) => {
     return {
         language: state.app.language,
         timeLimit: state.gamePage.gameData.timeLimit,
-        showConfirmation: state.mainMenu.showConfirmation,
     }
 }
 

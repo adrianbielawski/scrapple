@@ -12,21 +12,13 @@ export const createNewGame = (language, timeLimit, history) => dispatch => {
         });
 }
 
-const joinGameSuccess = () => ({
-    type: 'MAIN_MENU/JOIN_GAME/SUCCESS',
-})
-
-const joinGameFailure = () => ({
-    type: 'MAIN_MENU/JOIN_GAME/FAILURE',
-})
-
-export const joinGame = (gameId, language) => dispatch => {
+export const joinGame = (gameId, language, history) => dispatch => {
     axiosInstance.put(`/games/${gameId}/join/`)
     .then((response) => {
         if (response.data.language !== language) {
             dispatch(changeLanguage(response.data.language));
-        };        
-        dispatch(joinGameSuccess());
+        };
+        history.push(`/game/${gameId}`);
     })
     .catch((error) => {
         dispatch(joinGameFailure());
