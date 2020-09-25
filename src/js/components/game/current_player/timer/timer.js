@@ -34,7 +34,7 @@ const Timer = (props) => {
         return () => {
             clearInterval(timerInterval.current);
         }
-    }, [props.gameData.timeEnd, props.gameData.timePausedBy])
+    }, [props.gameData.timeEnd.valueOf(), props.gameData.timePausedBy])
 
     useEffect(() => {
         if (props.timeLeft % 60 === 0 && admin && props.isAudioEnabled
