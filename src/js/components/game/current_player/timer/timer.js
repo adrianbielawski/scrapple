@@ -29,7 +29,7 @@ const Timer = (props) => {
     useEffect(() => {
         updateTimer();
         if (props.gameData.timePausedBy === null) {
-            timerInterval.current = setInterval(updateTimer, 1000);
+            timerInterval.current = setInterval(updateTimer, 10);
         }
         return () => {
             clearInterval(timerInterval.current);
@@ -52,7 +52,7 @@ const Timer = (props) => {
         if (props.gameData.timeEnd === null) {
             return;
         }
-        props.timerUpdated(props.gameData.timeEnd)
+        props.timerUpdated(props.gameData.timeEnd, props.gameData.timeDiff);
     }
 
     const getTimer = () => {
@@ -96,7 +96,6 @@ const mapStateToProps = (state) => {
     return {
         user: state.app.user,
         gameData: state.gamePage.gameData,
-        players: state.gamePage.players,
         timeLeft: state.game.timeLeft,
         isAudioEnabled: state.game.isAudioEnabled,
         thisUserPaused: state.game.thisUserPaused,
@@ -105,7 +104,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        timerUpdated: (timeLeft) => dispatch(timerUpdated(timeLeft)),
+        timerUpdated: (timeLeft, timeDiff) => dispatch(timerUpdated(timeLeft, timeDiff)),
         timerPaused: (gameId) => dispatch(timerPaused(gameId)),
         timerUnpaused: (gameId) => dispatch(timerUnpaused(gameId)),
     }

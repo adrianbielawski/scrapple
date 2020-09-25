@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash';
+import moment from 'moment';
 import { playerDeserializer, gameDeserializer } from 'serializers';
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
         startedAt: null,
         finishedAt: null,
         pointsSubtracted: false,
+        timeDiff: null,
     },
 };
 
@@ -47,6 +49,7 @@ const gamePageReducer = (state = initialState, action) => {
 
         case 'GAME_PAGE/GAME_CHANGED':
             newState.gameData = gameDeserializer(action.gameData);
+            newState.gameData.timeDiff = moment(action.timestamp).diff(moment());
             return newState;
 
         case 'APP/EXIT_GAME':

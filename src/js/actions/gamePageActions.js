@@ -60,7 +60,8 @@ export const playersChanged = (players) => ({
     players,
 })
 
-export const gameChanged = (gameData) => ({
+export const gameChanged = (gameData, timestamp) => ({
     type: 'GAME_PAGE/GAME_CHANGED',
     gameData,
+    timestamp,
 })

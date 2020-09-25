@@ -39,7 +39,7 @@ const GamePage = (props) => {
                     props.playersChanged(data.players);
                     break;
                 case 'game_changed':
-                    props.gameChanged(data.game);
+                    props.gameChanged(data.game, data.timestamp);
                     break;
             }
         };
@@ -92,7 +92,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchGameData: (gameId) => dispatch(fetchGameData(gameId)),
         playersChanged: (players) => dispatch(playersChanged(players)),
-        gameChanged: (gameData) => dispatch(gameChanged(gameData)),
+        gameChanged: (gameData, timestamp) => dispatch(gameChanged(gameData, timestamp)),
     }
 }
 
