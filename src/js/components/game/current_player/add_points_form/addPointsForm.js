@@ -2,9 +2,9 @@ import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { withTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import classNames from 'classnames/bind';
 import styles from './addPointsForm.scss';
 //Custom Components
 import Button from 'components/global_components/button/button';
@@ -15,25 +15,42 @@ import { addPoints } from 'actions/gameActions';
 const AddPointsForm = (props) => {
     const { t } = useTranslation();
     const pointsInput = useRef(null);
-    const { gameId } = useParams();
 
     useEffect(() => {
-        if (props.thisUserPaused) {
+        if (props.gameData.timePausedBy === props.user.id) {
             pointsInput.current.focus();
         }
-    }, [props.thisUserPaused])
+    }, [props.gameData.timePausedBy])
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        let points = pointsInput.current.value;
-        points = parseInt(points, 10);
+        let points = parseInt(pointsInput.current.value, 10);
         e.target.reset();
-        props.addPoints(points, props.players, props.currentPlayer, props.timer, props.time, gameId);
+
+        props.addPoints(
+            points,
+            props.players,
+            props.gameData.currentPlayer,
+            props.gameData.timeLimit,
+        );
     }
 
+    const cx = classNames.bind(styles);
+    const addPointsClass = cx({
+        addPoints: true,
+        active: props.gameData.timePausedBy === props.user.id || !props.gameData.timeLimit,
+    });
+
     return (
-        <form className={`${styles.addPoints} ${props.thisUserPaused || !props.timer ? styles.active : ''}`} onSubmit={handleSubmit}>
-            <Input type="number" placeholder={t("Add points")} ref={pointsInput} required min="0" max="999" />
+        <form className={addPointsClass} onSubmit={handleSubmit}>
+            <Input
+                type="number"
+                placeholder={t("Add points")}
+                ref={pointsInput}
+                min="0"
+                max="999"
+                required
+            />
             <Button type="submit" className={styles.confirm}>
                 <FontAwesomeIcon icon={faCheck} />
             </Button>
@@ -43,17 +60,17 @@ const AddPointsForm = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        timer: state.timeLimit.timer,
-        time: state.timeLimit.time,
-        thisUserPaused: state.game.thisUserPaused,
-        currentPlayer: state.game.currentPlayer,
-        players: state.game.players,
+        user: state.app.user,
+        gameData: state.gamePage.gameData,
+        players: state.gamePage.players,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addPoints: (points, players, currentPlayer, timer, time, gameId) => dispatch(addPoints(points, players, currentPlayer, timer, time, gameId)),
+        addPoints: (points, players, currentPlayer, timeLimit) => dispatch(
+            addPoints(points, players, currentPlayer, timeLimit)
+        ),
     }
 }
 
