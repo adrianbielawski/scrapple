@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash';
+import moment from 'moment';
 import { listDeserializer, pointsDataDeserializer } from 'serializers';
 
 const initialState = {
@@ -6,8 +7,6 @@ const initialState = {
     isAudioEnabled: false,
     currentPlayer: 0,
     endTime: null,
-    isTimerPaused: false,
-    thisUserPaused: false,
     players: [],
     timeLeft: null,
     showMenu: false,
@@ -35,6 +34,13 @@ const gameReducer = (state = initialState, action) => {
             newState.fetchingAllPoints = false;
             return newState;
 
+        case 'GAME/TIMER_UPDATED':
+            const now = moment();
+            let timeLeft = moment(action.timeEnd).diff(now, 'seconds', true);
+            timeLeft = Math.ceil(timeLeft);
+            newState.timeLeft = timeLeft;
+            return newState;
+
         case 'GAME/SHOW_FINISHED_GAME_COVER':
             newState.showFinishedGameCover = action.showFinishedGameCover;
             return newState;
@@ -46,30 +52,10 @@ const gameReducer = (state = initialState, action) => {
         case 'GAME/TOGGLE_AUDIO':
             newState.isAudioEnabled = !newState.isAudioEnabled;
             return newState;
-
-        case 'GAME/SET_CURRENT_PLAYER':
-            newState.currentPlayer = action.currentPlayer;
-            return newState;
-
-        case 'GAME/SET_END_TIME':
-            newState.endTime = action.endTime;
-            return newState;
-
-        case 'GAME/SET_TIMER_PAUSED':
-            newState.isTimerPaused = action.isTimerPaused;
-            return newState;
-
-        case 'GAME/SET_THIS_USER_PAUSED':
-            newState.thisUserPaused = action.thisUserPaused;
-            return newState;
         
         case 'GAME_MENU/FETCH_GAME_DATA/SUCCESS':
             newState.players = action.players;
             newState.adminId = action.game.createdBy;
-            return newState;
-
-        case 'GAME/SET_TIME_LEFT':
-            newState.timeLeft = action.timeLeft;
             return newState;
 
         case 'GAME/TOGGLE_SHOW_MENU':

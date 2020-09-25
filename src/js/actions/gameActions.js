@@ -39,31 +39,30 @@ export const toggleShowWords = () => {
     }
 }
 
-export const toggleAudio = () => {
-    return {
-        type: 'GAME/TOGGLE_AUDIO',
-    }
+export const addPoints = (points, players, currentPlayer) => () => {
+    axiosInstance.post('/points/', {
+        player_id: players[currentPlayer].id,
+        value: points,
+    })
 }
 
-export const setCurrentPlayer = (currentPlayer) => {
-    return {
-        type: 'GAME/SET_CURRENT_PLAYER',
-        currentPlayer
-    }
+export const timerUpdated = (timeEnd) => ({
+    type: 'GAME/TIMER_UPDATED',
+    timeEnd,
+})
+
+export const timerPaused = (gameId) => dispatch => {
+    axiosInstance.put(`/games/${gameId}/pause/`)
+    .catch(() => {
+        dispatch(setAlert('alert', 'Something went wrong'));
+    })
 }
 
-export const setEndTime = (endTime) => {
-    return {
-        type: 'GAME/SET_END_TIME',
-        endTime
-    }
-}
-
-export const setPlayers = (players) => {
-    return {
-        type: 'GAME/SET_PLAYERS',
-        players
-    }
+export const timerUnpaused = (gameId) => dispatch => {
+    axiosInstance.put(`/games/${gameId}/unpause/`)
+    .catch(() => {
+        dispatch(setAlert('alert', 'Something went wrong'));
+    })
 }
 
 export const setFetchingGameData = (fetchingGameData) => {
