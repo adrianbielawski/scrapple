@@ -13,7 +13,7 @@ const CurrentPlayer = (props) => {
     const playerName = props.players[props.gameData.currentPlayer].user.username;
 
     const handleTimeOut = () => {
-        props.addPoints(0, props.players, props.gameData.currentPlayer);
+        props.addPoints(0, props.players[props.gameData.currentPlayer].id);
     }
 
     return (
@@ -38,7 +38,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addPoints: (points, players, currentPlayer) => dispatch(addPoints(points, players, currentPlayer)),
+        addPoints: (points, playerId) => dispatch(addPoints(points, playerId)),
     }
 }
 

@@ -39,9 +39,9 @@ export const toggleShowWords = () => {
     }
 }
 
-export const addPoints = (points, players, currentPlayer) => () => {
+export const addPoints = (points, playerId) => () => {
     axiosInstance.post('/points/', {
-        player_id: players[currentPlayer].id,
+        player_id: playerId,
         value: points,
     })
 }

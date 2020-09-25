@@ -29,9 +29,7 @@ const AddPointsForm = (props) => {
 
         props.addPoints(
             points,
-            props.players,
-            props.gameData.currentPlayer,
-            props.gameData.timeLimit,
+            props.players[props.gameData.currentPlayer].id,
         );
     }
 
@@ -68,9 +66,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addPoints: (points, players, currentPlayer, timeLimit) => dispatch(
-            addPoints(points, players, currentPlayer, timeLimit)
-        ),
+        addPoints: (points, playerId) => dispatch(addPoints(points, playerId)),
     }
 }
 
