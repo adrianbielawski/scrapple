@@ -16,7 +16,7 @@ export const gameDeserializer = game => ({
     currentPlayer: game.current_player,
     timeLimit: game.time_limit,
     timeEnd: game.time_end && moment(game.time_end),
-    timePausedBy: game.time_paused_by && moment(game.time_paused_by),
+    timePausedBy: game.time_paused_by,
     createdBy: game.created_by,
     createdAt: moment(game.created_at),
     startedAt: game.started_at && moment(game.started_at),
