@@ -20,6 +20,12 @@ const AllPoints = (props) => {
         props.getAllPoints(props.player.id, 1);
     }, [])
 
+    useEffect(() => {
+        if (allPointsData !== null) {
+            props.getAllPoints(props.player.id, allPointsData.current);
+        }
+    }, [props.players])
+
     const getRoundPoints = () => {
         const data = cloneDeep(allPointsData);
         const points = allPointsData.results.map((points, index) => (
@@ -59,6 +65,7 @@ const AllPoints = (props) => {
 const mapStateToProps = (state) => {
     return {
         allPointsData: state.game.allPointsData,
+        players: state.gamePage.players,
     }
 }
 
