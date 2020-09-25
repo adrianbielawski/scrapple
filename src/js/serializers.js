@@ -5,6 +5,7 @@ export const listDeserializer = (data, itemDeserializer) => ({
     pageSize: data.page_size,
     startIndex: data.start_index,
     endIndex: data.end_index,
+    current: data.current,
     next: data.next,
     previous: data.previous,
     results: data.results.map(itemDeserializer)
