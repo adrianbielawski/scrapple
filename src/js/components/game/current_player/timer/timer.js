@@ -37,13 +37,24 @@ const Timer = (props) => {
     }, [props.gameData.timeEnd.valueOf(), props.gameData.timePausedBy])
 
     useEffect(() => {
-        if (props.timeLeft % 60 === 0 && admin && props.isAudioEnabled
-            || props.timeLeft <= 10 && admin && props.isAudioEnabled) {
+        if (!admin) {
+            return;
+        }
+        const timeLeft = props.timeLeft;
+        const timeLimit = props.gameData.timeLimit;
+
+        if (
+            props.isAudioEnabled
+            && (timeLeft % 60 === 0 && timeLeft !== timeLimit || timeLeft <= 10)
+            && timeLeft !== 0
+        ) {
             AUDIO.beep.play();
         }
 
-        if (props.timeLeft <= 0 && props.timeLeft !== null && admin) {
-            props.isAudioEnabled && AUDIO.longBeep.play();
+        if (timeLeft !== null && timeLeft <= 0) {
+            if (props.isAudioEnabled) {
+                AUDIO.longBeep.play();
+            }
             setTimeout(props.onTimeOut, 1000);
         }
     }, [props.timeLeft])
