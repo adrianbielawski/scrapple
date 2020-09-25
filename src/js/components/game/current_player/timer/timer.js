@@ -29,7 +29,7 @@ const Timer = (props) => {
     useEffect(() => {
         updateTimer();
         if (props.gameData.timePausedBy === null) {
-            timerInterval.current = setInterval(updateTimer, 100);
+            timerInterval.current = setInterval(updateTimer, 1000);
         }
         return () => {
             clearInterval(timerInterval.current);
@@ -60,7 +60,7 @@ const Timer = (props) => {
         if (time === null) {
             return <LoadingSpinner background={true} />;
         }
-        const duration = moment.duration(Math.max(0, time), 'seconds');
+        const duration = moment.duration(time, 'seconds');
         let timer = time >= 3600 ? duration.format('HH:mm:ss') : duration.format('mm:ss', { trim: false });
         return timer;
     }

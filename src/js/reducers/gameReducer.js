@@ -37,7 +37,7 @@ const gameReducer = (state = initialState, action) => {
         case 'GAME/TIMER_UPDATED':
             const now = moment();
             let timeLeft = moment(action.timeEnd).diff(now, 'seconds', true);
-            timeLeft = Math.ceil(timeLeft);
+            timeLeft = Math.ceil(Math.max(0, timeLeft));
             newState.timeLeft = timeLeft;
             return newState;
 
