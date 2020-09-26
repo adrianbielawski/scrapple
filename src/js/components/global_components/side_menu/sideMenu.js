@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import classNames from 'classnames/bind';
 import styles from './sideMenu.scss';
 //Custom Components
 import MenuContent from './menu_content/menuContent';
@@ -9,17 +10,26 @@ import { toggleShowMenu } from 'actions/sideMenuActions';
 import burgerIcon from "img/burger-menu-icon.png";
 
 const SideMenu = (props) => {
+    const cx = classNames.bind(styles);
+    const menuClass = cx({
+        content: true,
+        show: props.showMenu,
+    });
+    const backgroundClass = cx({
+        background: true,
+        show: props.showMenu,
+    });
     return (
         <div className={styles.menuWrapper}>
             <div className={`${styles.menuIcon} ${props.className}`}>
                 <img src={burgerIcon} onClick={props.toggleShowMenu}></img>
             </div>
-            <div className={props.showMenu ? `${styles.content} ${styles.show}` : styles.content}>
+            <div className={menuClass}>
                 <div className={styles.menu}>
                     <MenuHeader title="Menu" />
                     <MenuContent />
                 </div>
-                <div className={props.showMenu ? `${styles.background} ${styles.show}` : styles.background} onClick={props.toggleShowMenu}></div>
+                <div className={backgroundClass} onClick={props.toggleShowMenu}></div>
             </div>
         </div>
     );
