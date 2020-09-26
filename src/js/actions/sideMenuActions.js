@@ -1,5 +1,11 @@
 import axios from 'axiosInstance';
 
+export const toggleShowMenu = () => {
+    return {
+        type: 'GAME/TOGGLE_SHOW_MENU',
+    }
+}
+
 export const toggleMyAccount = () => {
     return {
         type: 'SIDE_MENU/TOGGLE_MY_ACCOUNT',

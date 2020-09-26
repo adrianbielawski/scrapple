@@ -9,7 +9,6 @@ const initialState = {
     endTime: null,
     players: [],
     timeLeft: null,
-    showMenu: false,
     showFinishedGameCover: false,
     adminId: null,
     allPointsData: {},
@@ -56,10 +55,6 @@ const gameReducer = (state = initialState, action) => {
         case 'GAME_MENU/FETCH_GAME_DATA/SUCCESS':
             newState.players = action.players;
             newState.adminId = action.game.createdBy;
-            return newState;
-
-        case 'GAME/TOGGLE_SHOW_MENU':
-            newState.showMenu = !state.showMenu;
             return newState;
 
         case 'APP/CLEAR_APP_STATE':

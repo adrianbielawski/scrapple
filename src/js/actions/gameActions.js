@@ -93,9 +93,7 @@ export const setThisUserPaused = (thisUserPaused) => {
     }
 }
 
-export const toggleShowMenu = () => {
     return {
-        type: 'GAME/TOGGLE_SHOW_MENU',
     }
 }
 

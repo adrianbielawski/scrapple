@@ -3,6 +3,7 @@ import moment from 'moment';
 import languages from 'components/global_components/language/languages';
 
 const initialState = {
+    showMenu: false,
     showMyAccount: false,
     showAccountSettings: false,
     showNewNameModal: false,
@@ -19,6 +20,10 @@ const initialState = {
 const sideMenuReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
+        case 'GAME/TOGGLE_SHOW_MENU':
+            newState.showMenu = !state.showMenu;
+            return newState;
+
         case 'SIDE_MENU/TOGGLE_MY_ACCOUNT':
             newState.showMyAccount = !newState.showMyAccount;
             return newState;

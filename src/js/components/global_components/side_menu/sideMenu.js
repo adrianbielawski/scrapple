@@ -5,7 +5,7 @@ import styles from './sideMenu.scss';
 import MenuContent from './menu_content/menuContent';
 import MenuHeader from './menu_header/menuHeader';
 //Redux Actions
-import { toggleShowMenu } from 'actions/gameActions';
+import { toggleShowMenu } from 'actions/sideMenuActions';
 import burgerIcon from "img/burger-menu-icon.png";
 
 const SideMenu = (props) => {
@@ -28,7 +28,7 @@ const SideMenu = (props) => {
 const mapStateToProps = (state) => {
     return {
         gameId: state.app.gameId,
-        showMenu: state.game.showMenu,
+        showMenu: state.sideMenu.showMenu,
     }
 }
 
