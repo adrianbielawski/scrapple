@@ -9,19 +9,21 @@ import QuitGame from './quit_game/quitGame';
 
 const MenuContent = (props) => {
     const { gameId } = useParams();
+    const admin = props.user.id === props.createdBy;
     
     return (
         <div className={styles.menuContent}>
             {gameId && <GameId />}
-            {!props.admin && gameId ? <QuitGame /> : null}
             <MyAccount />
+            {!admin && gameId ? <QuitGame /> : null}
         </div>
     );
 }
 
 const mapStateToProps = (state) => {
     return {
-        admin: state.app.admin,
+        user: state.app.user,
+        createdBy: state.gamePage.gameData.createdBy,
     }
 }
 
