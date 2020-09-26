@@ -13,6 +13,7 @@ import UserIcon from 'components/global_components/user_icon/userIcon';
 //Redux actions
 import { getAllPoints, allPointsClosed } from 'actions/gameActions';
 
+const BASE_URL = 'http://192.168.1.10:8000';
 const ANIMATION_DURATION = 200;
 
 const PlayerStats = (props) => {
@@ -50,8 +51,8 @@ const PlayerStats = (props) => {
         <Card className={playerStatsClass} ref={playerStats}>
             <div className={styles.wrapper}>
                 <div className={styles.profileImage}>
-                    {props.player.profileImage
-                        ? <img src={props.player.profileImage}/>
+                    {props.player.user.image
+                        ? <img src={`${BASE_URL}${props.player.user.image}`}/>
                         : <FontAwesomeIcon icon={faUser} />
                     }
                     <UserIcon className={styles.badge} player={props.player} />
