@@ -8,7 +8,7 @@ import Button from 'components/global_components/button/button';
 //Redux Actions
 import { setAlert, removeAlert, handleFinishGame } from 'actions/appActions';
 import { changeUserName, changeUserPassword } from 'actions/authActions';
-import { quitGame } from 'actions/gameActions';
+import { quitGame } from 'actions/sideMenuActions';
 
 const Alert = (props) => {
     const { t } = useTranslation();
@@ -75,7 +75,7 @@ const mapDispatchToProps = (dispatch) => {
         handleFinishGame: (gameId, admin, history) => dispatch(handleFinishGame(gameId, admin, history)),
         changeUserName: (newName) => dispatch(changeUserName(newName)),
         changeUserPassword: (newPassword) => dispatch(changeUserPassword(newPassword)),
-        quitGame: (uid, gameId, players, currentPlayer, endTime, time, history) => dispatch(quitGame(uid, gameId, players, currentPlayer, endTime, time, history)),
+        quitGame: (playerId, history) => dispatch(quitGame(playerId, history)),
     }
 }
 

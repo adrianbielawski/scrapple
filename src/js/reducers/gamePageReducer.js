@@ -55,6 +55,7 @@ const gamePageReducer = (state = initialState, action) => {
             newState.gameData = gameDeserializer(action.gameData);
             return newState;
 
+        case 'SIDE_MENU/QUIT_GAME_SUCCESS':
         case 'APP/EXIT_GAME':
         case 'APP/CLEAR_APP_STATE':
             newState = cloneDeep(initialState);

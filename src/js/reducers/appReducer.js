@@ -45,7 +45,8 @@ const appReducer = (state = initialState, action) => {
             newState.language = state.language;
             newState.isTouchDevice = state.isTouchDevice;
             return newState;
-
+            
+        case 'SIDE_MENU/QUIT_GAME_SUCCESS':
         case 'APP/EXIT_GAME':
             newState.fetchingGameData = true;
             newState.admin = false;

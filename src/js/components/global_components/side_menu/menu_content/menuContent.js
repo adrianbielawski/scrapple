@@ -15,7 +15,7 @@ const MenuContent = (props) => {
         <div className={styles.menuContent}>
             {gameId && <GameId />}
             <MyAccount />
-            {!admin && gameId ? <QuitGame /> : null}
+            {!admin && props.players.length > 0 ? <QuitGame /> : null}
         </div>
     );
 }

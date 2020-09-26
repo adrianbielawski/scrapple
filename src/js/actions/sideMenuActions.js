@@ -1,4 +1,5 @@
 import axios from 'axiosInstance';
+import axiosInstance from 'axiosInstance';
 
 export const toggleShowMenu = () => {
     return {
@@ -142,4 +143,18 @@ export const openGameDetails = (game) => dispatch => {
     .catch(() => {
         dispatch(fetchGameDetailsFailure());
     });
+}
+
+const quitGameSuccess = () => ({
+    type: 'SIDE_MENU/QUIT_GAME_SUCCESS',
+})
+
+export const quitGame = ({playerId, history}) => dispatch => {
+    axiosInstance.delete(`/players/${playerId}`)
+    .then(() => {
+        history.push('/main_menu')
+        dispatch(quitGameSuccess())
+    }).catch(() => {
+        dispatch(setAlert('alert', 'Something went wrong'));
+    });;
 }
