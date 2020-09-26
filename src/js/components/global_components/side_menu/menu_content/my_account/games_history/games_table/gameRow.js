@@ -12,7 +12,7 @@ const GameRow = (props) => {
     return (
         <tr>
             <td className={styles.gameId} onClick={handleGameClick}>
-                {props.game.number}
+                {props.game.id}
             </td>
             <td className={styles.date}>
                 {props.game.createdAt.format(DATE_FORMAT)}
