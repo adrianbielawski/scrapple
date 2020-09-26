@@ -63,7 +63,7 @@ const Timer = (props) => {
         if (props.gameData.timeEnd === null) {
             return;
         }
-        props.timerUpdated(props.gameData.timeEnd, props.gameData.timeDiff);
+        props.timerUpdated(props.gameData.timeEnd, props.timeDiff);
     }
 
     const getTimer = () => {
@@ -106,6 +106,7 @@ const Timer = (props) => {
 const mapStateToProps = (state) => {
     return {
         user: state.app.user,
+        timeDiff: state.gamePage.timeDiff,
         gameData: state.gamePage.gameData,
         timeLeft: state.game.timeLeft,
         isAudioEnabled: state.game.isAudioEnabled,

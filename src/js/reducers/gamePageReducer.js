@@ -4,6 +4,7 @@ import { playerDeserializer, gameDeserializer } from 'serializers';
 
 const initialState = {
     fetchingGameData: true,
+    timeDiff: null,
     players: [],
     gameData: {
         id: null,
@@ -17,13 +18,16 @@ const initialState = {
         startedAt: null,
         finishedAt: null,
         pointsSubtracted: false,
-        timeDiff: null,
     },
 };
 
 const gamePageReducer = (state = initialState, action) => {
     let newState = cloneDeep(state);
     switch (action.type) {
+        case 'GAME_PAGE/WEB_SOCKET_AUTHENTICATED':
+            newState.timeDiff = moment(action.timestamp).diff(moment());
+            return newState;
+
         case 'GAME_PAGE/FETCH_GAME_DATA/START':
             newState.fetchingGameData = true;
             return newState;
@@ -49,7 +53,6 @@ const gamePageReducer = (state = initialState, action) => {
 
         case 'GAME_PAGE/GAME_CHANGED':
             newState.gameData = gameDeserializer(action.gameData);
-            newState.gameData.timeDiff = moment(action.timestamp).diff(moment());
             return newState;
 
         case 'APP/EXIT_GAME':

@@ -7,6 +7,11 @@ import { gameDeserializer, playerDeserializer } from "serializers";
 import { setAlert } from 'actions/appActions';
 import { changeLanguage } from 'actions/appActions';
 
+export const webSocketAuthenticated = (timestamp) => ({
+    type: 'GAME_PAGE/WEB_SOCKET_AUTHENTICATED',
+    timestamp,
+})
+
 const fetchGameDataStart = () => ({
     type: 'GAME_PAGE/FETCH_GAME_DATA/START',
 })
@@ -60,8 +65,7 @@ export const playersChanged = (players) => ({
     players,
 })
 
-export const gameChanged = (gameData, timestamp) => ({
+export const gameChanged = (gameData) => ({
     type: 'GAME_PAGE/GAME_CHANGED',
     gameData,
-    timestamp,
 })

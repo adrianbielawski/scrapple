@@ -8,7 +8,7 @@ const Game = React.lazy(() => import('components/game/game'));
 const GameSummary = React.lazy(() => import('components/game_summary/gameSummary'));
 const SubtractPoints = React.lazy(() => import('components/subtract_points/subtractPoints'));
 //Redux Actions
-import { fetchGameData, playersChanged, gameChanged } from 'actions/gamePageActions';
+import { webSocketAuthenticated, fetchGameData, playersChanged, gameChanged } from 'actions/gamePageActions';
 import JoinGameConfirmation from './join_game_confirmation/joinGameConfirmation';
 
 const NORMAL_CLOSE = 4000;
@@ -35,11 +35,14 @@ const GamePage = (props) => {
             console.log(data)
 
             switch (data.type) {
+                case 'authentication_successful':
+                    props.webSocketAuthenticated(data.timestamp);
+                    break;
                 case 'players_changed':
                     props.playersChanged(data.players);
                     break;
                 case 'game_changed':
-                    props.gameChanged(data.game, data.timestamp);
+                    props.gameChanged(data.game);
                     break;
             }
         };
@@ -90,9 +93,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        webSocketAuthenticated: (timestamp) => dispatch(webSocketAuthenticated(timestamp)),
         fetchGameData: (gameId) => dispatch(fetchGameData(gameId)),
         playersChanged: (players) => dispatch(playersChanged(players)),
-        gameChanged: (gameData, timestamp) => dispatch(gameChanged(gameData, timestamp)),
+        gameChanged: (gameData) => dispatch(gameChanged(gameData)),
     }
 }
 
