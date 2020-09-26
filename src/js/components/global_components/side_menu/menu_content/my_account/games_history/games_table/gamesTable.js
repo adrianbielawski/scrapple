@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import classNames from 'classnames/bind';
 import styles from './gamesTable.scss';
 //Custom Components
-import Pagination from 'components/global_components/pagination/Pagination';
+import Pagination from 'components/global_components/pagination/pagination';
 import GameRow from './gameRow';
 import GameDetails from './game_details/gameDetails';
 //Redux actions

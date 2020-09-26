@@ -6,8 +6,9 @@ import styles from './alert.scss';
 //Custom components
 import Button from 'components/global_components/button/button';
 //Redux Actions
-import { setAlert, removeAlert, handleFinishGame } from 'actions/appActions';
+import { setAlert, removeAlert } from 'actions/appActions';
 import { changeUserName, changeUserPassword } from 'actions/authActions';
+import { handleFinishGame } from 'actions/gameActions';
 import { quitGame } from 'actions/sideMenuActions';
 
 const Alert = (props) => {
@@ -72,7 +73,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(setAlert(type, messageKey, messageValue, action, alertProps)),
         removeAlert: () => dispatch(removeAlert()),
-        handleFinishGame: (gameId, admin, history) => dispatch(handleFinishGame(gameId, admin, history)),
+        handleFinishGame: (gameId, admin) => dispatch(handleFinishGame(gameId, admin)),
         changeUserName: (newName) => dispatch(changeUserName(newName)),
         changeUserPassword: (newPassword) => dispatch(changeUserPassword(newPassword)),
         quitGame: (playerId, history) => dispatch(quitGame(playerId, history)),

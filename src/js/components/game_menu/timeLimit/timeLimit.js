@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { useTranslation } from 'react-i18next';
+import Moment from 'react-moment';//important
 import moment from 'moment';
 import styles from './timeLimit.scss';
 //Custom Components

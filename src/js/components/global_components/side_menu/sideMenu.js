@@ -37,14 +37,13 @@ const SideMenu = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        gameId: state.app.gameId,
         showMenu: state.sideMenu.showMenu,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        toggleShowMenu: () => { dispatch(toggleShowMenu()) },
+        toggleShowMenu: () => dispatch(toggleShowMenu()),
     }
 }
 

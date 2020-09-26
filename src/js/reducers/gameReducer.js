@@ -5,12 +5,8 @@ import { listDeserializer, pointsDataDeserializer } from 'serializers';
 const initialState = {
     showWords: false,
     isAudioEnabled: false,
-    currentPlayer: 0,
-    endTime: null,
-    players: [],
     timeLeft: null,
     showFinishedGameCover: false,
-    adminId: null,
     allPointsData: {},
 };
 
@@ -40,21 +36,12 @@ const gameReducer = (state = initialState, action) => {
             newState.timeLeft = timeLeft;
             return newState;
 
-        case 'GAME/SHOW_FINISHED_GAME_COVER':
-            newState.showFinishedGameCover = action.showFinishedGameCover;
-            return newState;
-
         case 'GAME/TOGGLE_SHOW_WORDS':
             newState.showWords = !newState.showWords;
             return newState;
 
         case 'GAME/TOGGLE_AUDIO':
             newState.isAudioEnabled = !newState.isAudioEnabled;
-            return newState;
-        
-        case 'GAME_MENU/FETCH_GAME_DATA/SUCCESS':
-            newState.players = action.players;
-            newState.adminId = action.game.createdBy;
             return newState;
 
         case 'APP/CLEAR_APP_STATE':

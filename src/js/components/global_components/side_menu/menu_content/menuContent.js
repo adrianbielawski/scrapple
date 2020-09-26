@@ -23,6 +23,7 @@ const MenuContent = (props) => {
 const mapStateToProps = (state) => {
     return {
         user: state.app.user,
+        players: state.gamePage.players,
         createdBy: state.gamePage.gameData.createdBy,
     }
 }

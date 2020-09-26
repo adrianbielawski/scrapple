@@ -79,7 +79,7 @@ const AddPlayer = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        players: state.game.players,
+        players: state.gamePage.players,
     }
 }
 
