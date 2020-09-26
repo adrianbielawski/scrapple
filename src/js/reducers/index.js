@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import timeLimitReducer from './timeLimitReducer';
 import gamePageReducer from './gamePageReducer';
 import gameMenuReducer from './gameMenuReducer';
 import gameReducer from './gameReducer';
@@ -9,7 +8,6 @@ import authReducer from './authReducer';
 import sideMenuReducer from './sideMenuReducer';
 
 const rootReducer = combineReducers({
-    timeLimit: timeLimitReducer,
     gamePage: gamePageReducer,
     gameMenu: gameMenuReducer,
     game: gameReducer,
