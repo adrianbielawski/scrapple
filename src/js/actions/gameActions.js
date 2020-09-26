@@ -13,7 +13,7 @@ const fetchAllPointsSuccess = (playerId, data) => ({
     data,
 })
 
-export const getAllPoints = (playerId, page) => dispatch => {
+export const getAllPoints = (page, {playerId}) => dispatch => {
     axiosInstance.get('/points/', {
         params: {
             player_id: playerId,

@@ -17,12 +17,12 @@ const AllPoints = (props) => {
     const allPointsData = props.allPointsData[props.player.id] || null;
 
     useEffect(() => {
-        props.getAllPoints(props.player.id, 1);
+        props.getAllPoints(1, {playerId: props.player.id});
     }, [])
 
     useEffect(() => {
         if (allPointsData !== null) {
-            props.getAllPoints(props.player.id, allPointsData.current);
+            props.getAllPoints(allPointsData.current, {playerId: props.player.id});
         }
     }, [props.players])
 
@@ -50,10 +50,8 @@ const AllPoints = (props) => {
             {allPointsData !== null &&
                 <Pagination
                     data={props.allPointsData[props.player.id]}
-                    fetch={{
-                        action: props.getAllPoints,
-                        playerId: props.player.id
-                    }}
+                    fetchAction={props.getAllPoints}
+                    params={{playerId: props.player.id}}
                 />}
             <ul>
                 {allPointsData !== null && getRoundPoints()}

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import styles from './gamesTable.scss';
 //Custom Components
-import GamesHistoryPagination from '../games_history_pagination/gamesHistoryPagination';
+import Pagination from 'components/global_components/pagination/Pagination';
 import GameRow from './gameRow';
 import GameDetails from './game_details/gameDetails';
 //Redux actions
@@ -26,7 +26,10 @@ const GamesTable = (props) => {
         props.fetchingGamesHistory === false &&
         <div className={`${styles.gamesTable} ${props.showGamesHistory && styles.showGames}`}>
             <GameDetails show={props.showGameDetails} />
-            <GamesHistoryPagination />
+            <Pagination
+                    data={props.gamesHistory}
+                    fetchAction={props.fetchGamesHistory}
+                />
             <table>
                 <thead>
                     <tr>

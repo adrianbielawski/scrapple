@@ -9,11 +9,11 @@ const Pagination = (props) => {
     const { t } = useTranslation();
 
     const handlePreviousPage = () => {
-        props.fetch.action(props.fetch.playerId, props.data.previous);
+        props.fetchAction(props.data.previous, { ...props.params });
     }
 
     const handleNextPage = () => {
-        props.fetch.action(props.fetch.playerId, props.data.next);
+        props.fetchAction(props.data.next, { ...props.params });
     }
 
     const cx = classNames.bind(styles);
