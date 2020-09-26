@@ -1,4 +1,3 @@
-import axios from 'axiosInstance';
 import axiosInstance from 'axiosInstance';
 
 export const toggleShowMenu = () => {
@@ -98,7 +97,7 @@ const fetchGamesHistoryFailure = () => ({
 
 export const fetchGamesHistory = (page) => dispatch => {
     dispatch(fetchGamesHistoryStart());
-    axios.get('/games/', {
+    axiosInstance.get('/games/', {
         params: {
             page,
         }
@@ -132,7 +131,7 @@ export const fetchGameDetailsFailure = () => ({
 export const openGameDetails = (game) => dispatch => {
     dispatch(fetchGameDetailsStart());
 
-    axios.get('/players/', {
+    axiosInstance.get('/players/', {
         params: {
             game_id: game.id,
         }

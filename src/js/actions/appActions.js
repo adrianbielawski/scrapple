@@ -4,7 +4,7 @@ import i18n from 'i18n';
 //Redux Actions
 import { clearGameSummaryState } from 'actions/gameSummaryActions';
 import { setShowFinishedGameCover } from 'actions/gameActions';
-import axios from 'axiosInstance';
+import axiosInstance from 'axiosInstance';
 
 export const setGameId = (gameId) => {
     return {
@@ -110,7 +110,7 @@ export const removeAlert = () => {
 export const changeLanguage = (language, gameId) => {
     return dispatch => {
         if (gameId) {
-            axios.patch(`/games/${gameId}/`, { language })
+            axiosInstance.patch(`/games/${gameId}/`, { language })
         }
         const html = document.getElementsByTagName('html');
         html[0].lang = language;

@@ -1,4 +1,4 @@
-import axios from 'axiosInstance';
+import axiosInstance from 'axiosInstance';
 //Redux Actions
 import { setAlert, clearAppState } from 'actions/appActions';
 
@@ -18,7 +18,7 @@ const signUpFailure = () => ({
 export const signUp = (userName, email, password, repeatedPassword, history) => dispatch => {
     dispatch(signUpStart());
 
-    axios.post('/registration/', {
+    axiosInstance.post('/registration/', {
         email,
         password1: password,
         password2: repeatedPassword,
@@ -51,7 +51,7 @@ const logInFailure = () => ({
 export const logIn = (email, password, history) => dispatch => {
     dispatch(logInStart());
     
-    axios.post('/login/', {
+    axiosInstance.post('/login/', {
         email,
         password,
     })
@@ -67,7 +67,7 @@ export const logIn = (email, password, history) => dispatch => {
 };
 
 export const logOut = () => dispatch => {
-    axios.post('/logout/').then(() => {
+    axiosInstance.post('/logout/').then(() => {
         dispatch(clearAppState());
         localStorage.removeItem('token');
     })
@@ -82,7 +82,7 @@ const getUserSuccess = (user) => ({
 })
 
 export const getUser = () => dispatch => {
-    axios.get('/user/')
+    axiosInstance.get('/user/')
     .then(response => {
         dispatch(getUserSuccess(response.data));
     })
@@ -107,7 +107,7 @@ const changeUsernameFailure = () => ({
 export const changeUserName = ({ newName }) => dispatch => {
     dispatch(changeUsernameStart());
 
-    axios.patch('/user/', { username: newName })
+    axiosInstance.patch('/user/', { username: newName })
     .then(() => {
         dispatch(changeUsernameSuccess(newName));
         dispatch(setAlert('alert', 'Name changed successfully'));
@@ -132,7 +132,7 @@ const changePasswordFailure = () => ({
 
 export const changeUserPassword = ({ newPassword, repeatPassword }) => dispatch => {
     dispatch(changePasswordStart());
-    axios.post('/password/change/', { new_password1: newPassword, new_password2: repeatPassword })
+    axiosInstance.post('/password/change/', { new_password1: newPassword, new_password2: repeatPassword })
     .then(() => {
         dispatch(changePasswordSuccess());
         dispatch(setAlert('alert', 'Password changed successfully'));
@@ -162,7 +162,7 @@ export const updateProfileImage = (image) => dispatch => {
     const data = new FormData();
     data.append('image', image);
 
-    axios.patch('/user/', data)
+    axiosInstance.patch('/user/', data)
     .then(response => {
         dispatch(profileImageUpdateSuccess(response.data.image));
         dispatch(setAlert('alert', 'Profile image updated'));
