@@ -11,8 +11,6 @@ const SubtractPoints = React.lazy(() => import('components/subtract_points/subtr
 import { webSocketAuthenticated, fetchGameData, playersChanged, gameChanged } from 'actions/gamePageActions';
 import JoinGameConfirmation from './join_game_confirmation/joinGameConfirmation';
 
-const NORMAL_CLOSE = 4000;
-
 const GamePage = (props) => {
     const { gameId } = useParams(null);
     const socket = useRef(null);
@@ -32,7 +30,6 @@ const GamePage = (props) => {
 
         socket.current.onmessage = (e) => {
             const data = JSON.parse(e.data);
-            console.log(data)
 
             switch (data.type) {
                 case 'authentication_successful':
@@ -48,7 +45,7 @@ const GamePage = (props) => {
         };
 
         socket.current.onclose = (e) => {
-            if (e.code === NORMAL_CLOSE) {
+            if (e.wasClean) {
                 return;
             }
             setTimeout(connect, 1000);
@@ -60,7 +57,7 @@ const GamePage = (props) => {
         connect();
 
         return () => {
-            socket.current.close(NORMAL_CLOSE)
+            socket.current.close();
         }
     }, []);
 
