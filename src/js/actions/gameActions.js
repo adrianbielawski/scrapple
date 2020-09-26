@@ -91,6 +91,11 @@ export const setThisUserPaused = (thisUserPaused) => {
         type: 'GAME/SET_THIS_USER_PAUSED',
         thisUserPaused
     }
+export const handleFinishGame = ({gameId}) => dispatch => {
+    axiosInstance.put(`/games/${gameId}/finish/`)
+    .catch(() => {
+      dispatch(setAlert('alert', 'Something went wrong'));
+    });
 }
 
     return {

@@ -129,26 +129,6 @@ export const getGameData = (gameId) => {
     }
 }
 
-export const handleFinishGame = ({gameId, admin}) => {
-    return dispatch => {
-        if (admin) {
-            db.collection('games').doc(gameId).update({
-                gameFinished: true,
-                exitOption: null,
-            }).then(() => {
-                dispatch(setPlayedAgain(false));
-                dispatch(setPlayedAgainWithSettings(false));
-                dispatch(removeAlert());
-            }).catch(() => {
-                dispatch(setAlert('alert', 'Something went wrong'));
-            });
-        } else {
-            dispatch(setShowFinishedGameCover(true));
-            dispatch(removeAlert());
-        }
-    }
-}
-
 export const playAgain = (gameId, admin, history) => {
     return dispatch => {
         if (admin) {

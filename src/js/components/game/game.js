@@ -64,6 +64,7 @@ const Game = (props) => {
                 {props.admin && <Button className={styles.gameFinishButton} onClick={handleGameFinish}>
                     {props.t("Finish the game")}
                 </Button>}
+            <FinishedGameCover show={props.gameData.finishedAt} />
             </div>
         )
     );

@@ -14,6 +14,7 @@ import JoinGameConfirmation from './join_game_confirmation/joinGameConfirmation'
 const GamePage = (props) => {
     const { gameId } = useParams(null);
     const socket = useRef(null);
+    const admin = props.user.id === props.gameData.createdBy;
 
     const connect = () => {
         socket.current = new WebSocket(
@@ -64,7 +65,7 @@ const GamePage = (props) => {
     const getContent = () => {
         if (props.gameData.pointsSubtracted !== false) {
             return <GameSummary />;
-        } else if (props.gameData.finishedAt !== null) {
+        } else if (admin && props.gameData.finishedAt !== null) {
             return <SubtractPoints />;
         } else if (props.gameData.startedAt !== null) {
             return <Game />;
