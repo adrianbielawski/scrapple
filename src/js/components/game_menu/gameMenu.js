@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import styles from './gameMenu.scss';
 //Custom Components
-import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 import Players from './players/players';
 import Language from 'components/global_components/language/changeLanguage';
 import TimeLimit from './timeLimit/timeLimit';
@@ -15,86 +15,53 @@ import GameId from 'components/global_components/game_id/gameId';
 import Button from 'components/global_components/button/button';
 import SideMenu from 'components/global_components/side_menu/sideMenu';
 //Redux Actions
-import { setGameId, setAlert, getGameData, changeLanguage } from 'actions/appActions';
-import { setPlayers } from 'actions/gameActions';
-import { startAdminGame, updateGameMenuData, setFetchingGameData, subscribeJoinedPlayers,
-    getCurrentGameFromDatabase, setTimer, setTime } from 'actions/gameMenuActions';
+import { setAlert } from 'actions/appActions';
+import { startGame, changeLanguage } from 'actions/gameMenuActions';
 
 const GameMenu = (props) => {
     const { t } = useTranslation();
-    let unsubscribeJoinedPlayers = null;
+    const { gameId } = useParams(null);
 
-    useEffect(() => {
-        if (props.user.uid) {
-            const gameIdPromise = props.getCurrentGameFromDatabase(props.user.uid);
-            gameIdPromise.then((currentGame) => {
-                props.setGameId(currentGame);
-                const gameDataPromise = props.getGameData(currentGame);
-                gameDataPromise.then((gameData) => {
-                    props.changeLanguage(gameData.language);
-                    props.setPlayers(gameData.players);
-                    props.setTimer(gameData.timer, currentGame);
-                    props.setTime(gameData.time, currentGame);
-                    props.setFetchingGameData(false);
+    const handleLanguageChange = (language) => {
+        props.changeLanguage(gameId, language);
+    }
 
-                    unsubscribeJoinedPlayers = props.subscribeJoinedPlayers(currentGame);
-                })
-            })
+    const handleSubmit = () => {
+        const { valid, error } = validateSettings();
+        if (!valid) {
+            props.setAlert('alert', error);
+            return;
         }
-    }, [props.user.uid]);
-
-    useEffect(() => {
-        if (!props.fetchingGameData) {
-            props.updateGameMenuData(props.gameId, props.language, props.timer, props.time, props.players);
-        }
-    });
-
-    useEffect(() => {
-        return () => {
-            if (unsubscribeJoinedPlayers !== null) {
-                unsubscribeJoinedPlayers();
-            }
-        }
-    }, []);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const isValid = validateSettings();
-        if (isValid) {
-            props.startAdminGame(props.gameId, props.user, props.history);
-        }
+        props.startGame(gameId);
     }
 
     const validateSettings = () => {
+        let error = null;
         if (props.players.length < 2) {
-            const messageKey = 'Please add at least 2 players';
-            props.setAlert('alert', messageKey);
-            return false;
+            error = 'Please add at least 2 players';
         }
 
-        if(props.timer) {
-            const time = props.time;
-            if(time.hours == 0 && time.minutes == 0) {
-                const messageKey = "Minimum player's time limit is 1 min";
-                props.setAlert('alert', messageKey);
-                return false;
-            }
+        if(props.showTimePicker && props.timeLimit < 60) {
+            error = "Minimum player's time limit is 1 min"
         }
-        return true;
+
+        return {
+            valid: error === null,
+            error,
+        };
     }
 
-    const buttonText = props.playedAgainWithSettings ? 'Play again' : 'Play';
     return (
         <div className={styles.gameMenu}>
             <Header />
-            {props.fetchingGameData ? <LoadingSpinner background={true} /> : <div className={styles.menu}>
+            <div className={styles.menu}>
                 <div className={styles.topWrapper}>
                     <SideMenu />
                     <AccountInfo />
                 </div>
                 <GameId />
                 <Card className={styles.card}>
-                    <Language showName={true} vertical={true} />
+                    <Language showName={true} vertical={true} onChange={handleLanguageChange} />
                 </Card>
                 <Card className={styles.card}>
                     <TimeLimit />
@@ -103,40 +70,30 @@ const GameMenu = (props) => {
                     <AddPlayer />
                     <Players />
                 </Card>
-                <Button onClick={handleSubmit} type="submit">{t(buttonText)}</Button>
-            </div>}
+                <Button onClick={handleSubmit} type="submit">
+                    {t(props.playedAgainWithSettings ? 'Play again' : 'Play')}
+                </Button>
+            </div>
         </div>
     );
 }
 
 const mapStateToProps = (state) => {
     return {
-        fetchingGameData: state.gameMenu.fetchingGameData,
-        user: state.app.user,
-        gameId: state.app.gameId,
-        language: state.app.language,
-        players: state.game.players,
-        timer: state.timeLimit.timer,
-        time: state.timeLimit.time,
-        playedAgain: state.app.playedAgain,
+        players: state.gamePage.players,
+        timeLimit: state.gamePage.gameData.timeLimit,
+        showTimePicker: state.gameMenu.showTimePicker,
         playedAgainWithSettings: state.app.playedAgainWithSettings,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateGameMenuData: (gameId, language, timer, time, players) => dispatch(updateGameMenuData(gameId, language, timer, time, players)),
-        setFetchingGameData: (fetching) => dispatch(setFetchingGameData(fetching)),
-        startAdminGame: (gameId, user, history) => dispatch(startAdminGame(gameId, user, history)),
-        setGameId: (gameId) => dispatch(setGameId(gameId)),
-        getGameData: (gameId) => dispatch(getGameData(gameId)),
-        setPlayers: (players) => dispatch(setPlayers(players)),
-        setTime: (time, gameId) => dispatch(setTime(time, gameId)),
-        setTimer: (timer, gameId) => dispatch(setTimer(timer, gameId)),
-        changeLanguage: (language) => dispatch(changeLanguage(language)),
-        setAlert: (type, messageKey, messageValue, action, props) => dispatch(setAlert(type, messageKey, messageValue, action, props)),
-        subscribeJoinedPlayers: (gameId) => dispatch(subscribeJoinedPlayers(gameId)),
-        getCurrentGameFromDatabase: (uid) => dispatch(getCurrentGameFromDatabase(uid)),
+        startGame: (gameId) => dispatch(startGame(gameId)),
+        changeLanguage: (gameId, language) => dispatch(changeLanguage(gameId, language)),
+        setAlert: (type, messageKey, messageValue, action, props) => dispatch(
+            setAlert(type, messageKey, messageValue, action, props)
+        ),
     }
 }
 

@@ -1,75 +1,56 @@
-import { db, auth, storageRef } from 'firebaseConfig';
-import moment from 'moment';
-import { cloneDeep } from 'lodash';
-import languages from 'components/global_components/language/languages';
-//Redux actions
-import { setUserInfo, setAlert } from 'actions/appActions';
+import axiosInstance from 'axiosInstance';
 
-export const setFetchingGamesHistory = (fetchingGamesHistory) => {
+export const toggleShowMenu = () => {
     return {
-        type: 'SIDE_MENU/SET_FETCHING_GAMES_HISTORY',
-        fetchingGamesHistory,
+        type: 'GAME/TOGGLE_SHOW_MENU',
+    }
+}
+
+export const toggleMyAccount = () => {
+    return {
+        type: 'SIDE_MENU/TOGGLE_MY_ACCOUNT',
     };
 }
 
-export const setFetchingGameDetails = (fetchingGameDetails) => {
+export const toggleAccountSettings = () => {
     return {
-        type: 'SIDE_MENU/SET_FETCHING_GAME_DETAILS',
-        fetchingGameDetails,
+        type: 'SIDE_MENU/TOGGLE_ACCOUNT_SETTINGS',
     };
 }
 
-export const setShowGamesHistory = (showGamesHistory) => {
+export const openNewNameModal = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_GAMES_HISTORY',
-        showGamesHistory,
+        type: 'SIDE_MENU/OPEN_NEW_NAME_MODAL',
     };
 }
 
-export const setShowMyAccount = (showMyAccount) => {
+export const closeNewNameModal = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_MY_ACCOUNT',
-        showMyAccount,
+        type: 'SIDE_MENU/CLOSE_NEW_NAME_MODAL',
     };
 }
 
-export const setShowAccountSettings = (showAccountSettings) => {
+export const openNewPasswordModal = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_ACCOUNT_SETTINGS',
-        showAccountSettings,
+        type: 'SIDE_MENU/OPEN_NEW_PASSWORD_MODAL',
     };
 }
 
-export const setShowChangeNameModal = (showChangeNameModal) => {
+export const closeNewPasswordModal = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_CHANGE_NAME_MODAL',
-        showChangeNameModal,
+        type: 'SIDE_MENU/CLOSE_NEW_PASSWORD_MODAL',
     };
 }
 
-export const setShowChangePasswordModal = (showChangePasswordModal) => {
+export const openProfileImageModal = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_CHANGE_PASSWORD_MODAL',
-        showChangePasswordModal,
+        type: 'SIDE_MENU/OPEN_PROFILE_IMAGE_MODAL',
     };
 }
 
-export const setShowChangeProfileImageModal = (showChangeProfileImageModal) => {
+export const closeProfileImageModal = () => {
     return {
-        type: 'SIDE_MENU/SET_SHOW_CHANGE_PROFILE_IMAGE_MODAL',
-        showChangeProfileImageModal,
-    };
-}
-
-export const decreaseGamesToRender = () => {
-    return {
-        type: 'SIDE_MENU/DECREASE_GAMES_TO_RENDER'
-    };
-}
-
-export const increaseGamesToRender = () => {
-    return {
-        type: 'SIDE_MENU/INCREASE_GAMES_TO_RENDER'
+        type: 'SIDE_MENU/CLOSE_PROFILE_IMAGE_MODAL',
     };
 }
 
@@ -93,70 +74,86 @@ export const clearSideMenuState = () => {
     };
 }
 
-export const fetchGamesHistory = (uid) => dispatch => {
-    return db.collection('users').doc(uid).collection('allGames').doc('allGames').get()
-        .then((response) => {
-            let data = response.data();
-            let gamesHistory = data.allGames;
-            let reversedGamesHistory = [];
+export const openGamesHistory = () => ({
+    type: 'SIDE_MENU/OPEN_GAMES_HISTORY',
+})
 
-            for (let i = 0; i < gamesHistory.length; i++) {
-                reversedGamesHistory.unshift(gamesHistory[i]);
-            }
+export const closeGamesHistory = () => ({
+    type: 'SIDE_MENU/CLOSE_GAMES_HISTORY',
+})
 
-            dispatch(setUserInfo(null, reversedGamesHistory));
-            dispatch(setFetchingGamesHistory(false));
-        }).catch((err) => {
-            console.log(err)
-        });
+const fetchGamesHistoryStart = () => ({
+    type: 'SIDE_MENU/FETCH_GAMES_HISTORY/START',
+})
+
+const fetchGamesHistorySuccess = (data) => ({
+    type: 'SIDE_MENU/FETCH_GAMES_HISTORY/SUCCESS',
+    data,
+})
+
+const fetchGamesHistoryFailure = () => ({
+    type: 'SIDE_MENU/FETCH_GAMES_HISTORY/FAILURE',
+})
+
+export const fetchGamesHistory = (page) => dispatch => {
+    dispatch(fetchGamesHistoryStart());
+    axiosInstance.get('/games/', {
+        params: {
+            page,
+        }
+    })
+    .then((response) => {
+        dispatch(fetchGamesHistorySuccess(response.data));
+    })
+    .catch(() => {
+        dispatch(fetchGamesHistoryFailure());
+    });
 }
 
-export const fetchGameDetails = (gameId) => dispatch => {
-    return db.collection('games').doc(gameId).get()
-        .then((response) => {
-            const data = response.data();
+export const closeGameDetails = () => ({
+    type: 'SIDE_MENU/CLOSE_GAME_DETAILS',
+})
 
-            const lang = languages[data.language].name;
-            const time = data.time ? `${data.time.hours}:${data.time.minutes}:${data.time.seconds}` : null;
+export const fetchGameDetailsStart = () => ({
+    type: 'SIDE_MENU/FETCH_GAMES_DETAILS/START',
+})
 
-            dispatch(setGameDetails(
-                {
-                    language: lang,
-                    players: data.players,
-                    time: time
-                }
-            ));
-            dispatch(setFetchingGameDetails(false));
-        }).catch((err) => {
-            console.log(err)
-        });
+export const fetchGameDetailsSuccess = (data, game) => ({
+    type: 'SIDE_MENU/FETCH_GAME_DETAILS/SUCCESS',
+    data,
+    game,
+})
+
+export const fetchGameDetailsFailure = () => ({
+    type: 'SIDE_MENU/FETCH_GAME_DETAILS/FAILURE',
+})
+
+export const openGameDetails = (game) => dispatch => {
+    dispatch(fetchGameDetailsStart());
+
+    axiosInstance.get('/players/', {
+        params: {
+            game_id: game.id,
+        }
+    })
+    .then((response) => {
+        dispatch(fetchGameDetailsSuccess(response.data.results, game));
+    })
+    .catch(() => {
+        dispatch(fetchGameDetailsFailure());
+    });
 }
 
-export const updateProfileImage = (profileImage, gameId, uid, players) => dispatch => {
-    const profileImageRef = storageRef.child(`profile_image_${uid}_${moment().unix()}`);
-    return profileImageRef.put(profileImage).then(() => {
-        profileImageRef.getDownloadURL().then((url) => {
-            auth.currentUser.updateProfile({ photoURL: url }).then(() => {
-                updateProfileImageInCurrentGame(url, gameId, uid, players);
-                dispatch(setAlert('alert', 'Profile image updated'));
-                dispatch(setShowChangeProfileImageModal(false));
-            })
-        })
+const quitGameSuccess = () => ({
+    type: 'SIDE_MENU/QUIT_GAME_SUCCESS',
+})
+
+export const quitGame = ({playerId, history}) => dispatch => {
+    axiosInstance.delete(`/players/${playerId}`)
+    .then(() => {
+        history.push('/main_menu')
+        dispatch(quitGameSuccess())
     }).catch(() => {
         dispatch(setAlert('alert', 'Something went wrong'));
-    });
-}
-
-const updateProfileImageInCurrentGame = (url, gameId, uid, players) => {
-    let updatedPlayers = cloneDeep(players);
-    updatedPlayers.map(player => {
-        if (player.uid === uid) {
-            const updatedPlayer = player;
-            updatedPlayer.profileImage = url;
-        }
-    });
-
-    db.collection('games').doc(gameId).update({
-        players: updatedPlayers,
-    });
+    });;
 }

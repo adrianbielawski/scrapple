@@ -7,8 +7,8 @@ const RoundPoints = (props) => {
     const points = props.points;
     return (
         <li className={styles.roundPoints}>
-            <div className={styles.round}>{t("Round")} {props.round}</div>
-            <div>{points} {t('points.key', { count: points })}</div>
+            <p className={styles.round}>{t("Round")} {props.round}</p>
+            <p>{points} {t('points.key', { count: points })}</p>
         </li>
     );
 }

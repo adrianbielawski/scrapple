@@ -1,29 +1,29 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import classNames from 'classnames/bind';
 import styles from './myAccount.scss'
 //Custom Components
 import GamesHistory from './games_history/gamesHistory';
 import AccountSettings from './account_settings/accountSettings';
-import LogOut from 'components/global_components/accountInfo/logout';
 //Redux actions
-import { setShowMyAccount } from 'actions/sideMenuActions';
+import { toggleMyAccount } from 'actions/sideMenuActions';
 
 const MyAccount = (props) => {
     const { t } = useTranslation();
-  
-    const handleMyAccountClick = () => {
-        props.setShowMyAccount(!props.showMyAccount);
-    }
+
+    const cx = classNames.bind(styles);
+    const accountContentClass = cx({
+        accountContent: true,
+        showContent: props.showMyAccount,
+    });
 
     return (
         <div className={styles.myAccount}>
-            <p className={styles.title} onClick={handleMyAccountClick}>{t("My account")}</p>
-            <div className={`${styles.accountContent} ${props.showMyAccount && styles.showContent}`}
-                style={props.showGamesHistory && props.showMyAccount ? {maxHeight: '400px'} : null}>
+            <p className={styles.title} onClick={props.toggleMyAccount}>{t("My account")}</p>
+            <div className={accountContentClass}>
                 <AccountSettings />
                 <GamesHistory />
-                <LogOut className={styles.logout} />
             </div>
         </div>
     );
@@ -38,7 +38,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setShowMyAccount: (showMyAccount) => dispatch(setShowMyAccount(showMyAccount)),
+        toggleMyAccount: () => dispatch(toggleMyAccount()),
     }
 }
 

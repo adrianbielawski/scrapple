@@ -1,29 +1,38 @@
 import React from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { withRouter } from "react-router";
-import { useParams } from 'react-router-dom';
 import styles from './exitOptions.scss';
 //Custom Components
 import Modal from 'components/global_components/modal/modal';
 import Button from 'components/global_components/button/button';
 //Redux Actions
-import { exitGame, playAgain, playAgainSettings } from 'actions/appActions';
+import { createNewGameFromSource, exitGame } from 'actions/gameSummaryActions';
 
 const ExitOptions = (props) => {
     const { t } = useTranslation();
     const { gameId } = useParams();
+    const history = useHistory();
+    const admin = props.user.id === props.gameData.createdBy;
 
     const handlePlayAgain = () => {
-        props.playAgain(gameId, props.admin, props.history);
+        props.createNewGameFromSource(
+            gameId,
+            true,
+            history,
+        );
     };
 
     const handlePlayAgainSettings = () => {
-        props.playAgainSettings(gameId, props.admin, props.history);
+        props.createNewGameFromSource(
+            gameId,
+            false,
+            history,
+        );
     };
 
     const handleExitGame = () => {
-        props.exitGame(props.user.uid, gameId, props.admin, props.history);
+        props.exitGame(admin, gameId, props.history);
     }
 
     return (
@@ -40,17 +49,17 @@ const ExitOptions = (props) => {
 const mapStateToProps = (state) => {
     return {
         user: state.app.user,
-        gameId: state.app.gameId,
-        admin: state.app.admin,
+        gameData: state.gamePage.gameData,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        exitGame: (uid, gameId, admin, history) => { dispatch(exitGame(uid, gameId, admin, history)) },
-        playAgain: (gameId, admin, history) => { dispatch(playAgain(gameId, admin, history)) },
-        playAgainSettings: (gameId, admin, history) => { dispatch(playAgainSettings(gameId, admin, history)) },
+        exitGame: (admin, gameId, history) => { dispatch(exitGame(admin, gameId, history)) },
+        createNewGameFromSource: (gameId, startImmediately, history) => dispatch(
+            createNewGameFromSource(gameId, startImmediately, history)
+        ),
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ExitOptions));
+export default connect(mapStateToProps, mapDispatchToProps)(ExitOptions);

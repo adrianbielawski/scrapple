@@ -14,10 +14,14 @@ button {
 	box-sizing: border-box;
 	cursor: pointer;
 	outline: none;
-	font-family: "nunito";
+	font-family: "nunito", sans-serif;
 	-webkit-tap-highlight-color: transparent;
 	&:active {
 		background: darken($mainGreen, 10);
 		outline: none;
+	}
+	&[disabled] {
+		background: $grey;
+		cursor: no-drop;
 	}
 }

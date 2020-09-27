@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 const resources = {
-  en: {
+  'en-GB': {
     translation: {
       //Languages
       "English" : "English",
@@ -10,8 +10,9 @@ const resources = {
       //Auth
       "e-mail" : "e-mail",
       "password" : "password",
-      "Don't have an account" : "Don't have an account? <1>Create new account here!</1>",
+      "repeat password" : "repeat password",
       "user name" : "user name",
+      "Don't have an account" : "Don't have an account? <1>Create new account here!</1>",
       "Logout" : "Logout",
       "Logged in as" : "Logged in as: {{name}}",
       //MainMenu
@@ -45,7 +46,6 @@ const resources = {
       "Account settings" : "Account settings",
       "Games history" : "Games history",
       "Date" : "Date",
-      "fromNum" : "from {{allGames}}",
       "Played in lang" : "Language: {{lang}}",
       "Time limit" : "Time limit: {{time}}",
       "No time limit" : "No time limit",
@@ -54,6 +54,7 @@ const resources = {
       "repeat new password" : "repeat new password",
       "Change profile image" : "Change profile image",
       "Quit this game" : "Quit this game",
+      "Show QR code to other players for easy join" : "Show QR code to other players for easy join",
       //SubtractPoints
       "Subtract points of unused letters" : "Subtract points of unused letters",
       //GameSummary
@@ -64,7 +65,7 @@ const resources = {
       "3rd" : "3rd",
       "4th" : "4th",
       "place" : "{{place}} place",
-      "Total" : "Total: {{total}}",
+      "Score" : "Score: {{score}}",
       "Best score" : "Best score: {{best}}",
       "Game continues!" : "Game continues!",
       "Please wait until settings will be changed" : "Please wait until settings will be changed",
@@ -75,7 +76,7 @@ const resources = {
       "Please add at least 2 players" : "Please add at least 2 players",
       "Minimum player's time limit is 1 min" : "Minimum player's time limit is 1 min",
       "You can't remove game admin" :"You can't remove game admin",
-      "You can't quit this game, 2 players is required" : "You can't quit this game, 2 players is required",
+      "You can't quit this game, 2 players are required" : "You can't quit this game, 2 players are required",
       "Points value must be positive integer" : "Points value must be positive integer",
       "Are you sure you want to quit this game" : "Are you sure you want to quit this game?",
       "Are you sure you want to change your password" : "Are you sure you want to change your password",
@@ -112,9 +113,11 @@ const resources = {
       "Join the game" : "Join the game",
       "Show two-letter words" : "Show two-letter words",
       "Hide two-letter words" : "Hide two-letter words",
+      //Global components
+      "ofNum" : "of {{count}}",
     }
   },
-  pl: {
+  'pl-PL': {
     translation: {
       //Languages
       "English" : "Angielski",
@@ -122,8 +125,9 @@ const resources = {
       //Auth
       "e-mail" : "e-mail",
       "password" : "hasło",
-      "Don't have an account" : "Nie masz konta? <1>Zarejestruj się tutaj!</1>",
+      "repeat password" : "powtórz hasło",
       "user name" : "imię",
+      "Don't have an account" : "Nie masz konta? <1>Zarejestruj się tutaj!</1>",
       "Logout" : "Wyloguj",
       "Logged in as" : "Zalogowany jako: {{name}}",
       //MainMenu
@@ -158,7 +162,6 @@ const resources = {
       "Account settings" : "Ustawienia konta",
       "Games history" : "Historia gier",
       "Date" : "Data",
-      "fromNum" : "z {{allGames}}",
       "Played in lang" : "Język: {{lang}}",
       "Time limit" : "Limit czasu: {{time}}",
       "No time limit" : "Bez limitu czasu",
@@ -167,6 +170,7 @@ const resources = {
       "repeat new password" : "powtórz hasło",
       "Change profile image" : "Zmień zdjęcie profilowe",
       "Quit this game" : "Quit this game",
+      "Show QR code to other players for easy join" : "Pokaż QR kod innym graczom aby łatwo dołączyć do gry",
       //SubtractPoints
       "Subtract points of unused letters" : "Odejmij wartość pozostałych liter",
       //GameSummary
@@ -177,7 +181,7 @@ const resources = {
       "3rd" : "Trzecie",
       "4th" : "Czwarte",
       "place" : "{{place}} miejsce",
-      "Total" : "Wynik: {{total}}",
+      "Score" : "Wynik: {{score}}",
       "Best score" : "Najlepszy wynik: {{best}}",
       "Game continues!" : "Kontynuujemy grę!",
       "Please wait until settings will be changed" : "Poczekaj, aż ustawienia gry zostaną zmienione",
@@ -188,7 +192,7 @@ const resources = {
       "Please add at least 2 players" : "Proszę dodać co najmniej 2 graczy",
       "Minimum player's time limit is 1 min" : "Minimalny limit czasu to 1 min",
       "You can't remove game admin" :"Nie możesz usunąć administratora gry",
-      "You can't quit this game, 2 players is required" : "Nie możesz wyjść z tej gry, gra wymaga dwuch graczy",
+      "You can't quit this game, 2 players are required" : "Nie możesz wyjść z tej gry, gra wymaga dwóch graczy",
       "Points value must be positive integer" : "Wprowadzona wartość musi byc całkowitą liczbą dodatnią",
       "Are you sure you want to quit this game" : "Jesteś pewien, że chcesz wyjść z tej gry?",
       "Are you sure you want to change your password" : "Jesteś pewien, że chcesz zmienić hasło",
@@ -225,6 +229,8 @@ const resources = {
       "Join the game" : "Dołącz do gry",
       "Show two-letter words" : "Pokaż słowa dwuliterowe",
       "Hide two-letter words" : "Ukryj słowa dwuliterowe",
+      //Global components
+      "ofNum" : "z {{count}}",
     }
   }
 };
@@ -232,8 +238,8 @@ const resources = {
 i18n
   .use(initReactI18next)
   .init({
-    lng: 'en',
-    fallbackLng: 'en',
+    lng: 'en-GB',
+    fallbackLng: 'en-GB',
     resources,
     debug: true,
     interpolation: {

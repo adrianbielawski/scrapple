@@ -1,20 +1,26 @@
 const initialState = {
     showExitOptions: false,
     exitOption: null,
+    isGameClosed: false,
 };
 
 const gameSummaryReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
-        case 'GAME_SUMMARY/SET_EXIT_OPTION':
-            newState.exitOption = action.exitOption;
+        case 'GAME_SUMMARY/GAME_CLOSED':
+            newState.isGameClosed = true;
             return newState;
 
-        case 'GAME_SUMMARY/SET_SHOW_EXIT_OPTIONS':
-            newState.showExitOptions = action.show;
+        case 'GAME_SUMMARY/OPEN_EXIT_OPTIONS':
+            newState.showExitOptions = true;
             return newState;
 
-        case 'GAME_SUMMARY/CLEAR_STATE':
+        case 'GAME_SUMMARY/OPEN_EXIT_OPTIONS':
+            newState.showExitOptions = true;
+            return newState;
+
+        case 'APP/CLEAR_APP_STATE':
+        case 'APP/EXIT_GAME':
             newState = { ...initialState };
             return newState;
 

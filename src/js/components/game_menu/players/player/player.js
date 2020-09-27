@@ -1,23 +1,91 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faMobileAlt, faSlash, faUserCog } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import classNames from 'classnames/bind';
 import styles from './player.scss';
 //Custom components
 import Button from 'components/global_components/button/button';
+import UserIcon from 'components/global_components/user_icon/userIcon';
 //Redux Actions
-import { removePlayer, reorderPlayers, setGrabbedElement, setIsTransitionEnabled,
-    setInitialListSpace, setListSpace, setTouches } from 'actions/gameMenuActions';
+import { removePlayer, playerGrabbed, playerMoved, playerDropped } from 'actions/gameMenuActions';
 import { setAlert } from 'actions/appActions';
 
+const SCROLL_STEP = 1;
+
 const Player = (props) => {
+    const element = useRef(null);
+    const playerNameWrapperRef = useRef(null);
+    const scrollInterval = useRef(null);
     const [isGrabbed, setIsGrabbed] = useState(false);
-    const [top, setTop] = useState(0);
-    const [left, setLeft] = useState(0);
+    const [coords, setCoords] = useState({ top: 0, left: 0 });
     const [distance, setDistance] = useState(0);
     const [elementH, setElementH] = useState(null);
-    const element = useRef(null);
     const [moveData, setMoveData] = useState(null);
+    const [playerRemoved, setPlayerRemoved] = useState(null);
+    const [scrollStep, setScrollStep] = useState(null);
+    const [initialTopOffset, setInitialTopOffset] = useState(0);
+    const [topOffset, setTopOffset] = useState(0);
+
+    const doScroll = () => {
+        if (scrollStep > 0 && window.innerHeight + window.pageYOffset >= document.body.clientHeight) {
+            return;
+        }
+        if (scrollStep < 0 && window.pageYOffset <= 0) {
+            return;
+        }
+        
+        window.scrollBy({
+            left: 0,
+            top: scrollStep,
+        });
+    }
+
+    const updateTopOffset = () => {
+        setTopOffset(window.pageYOffset);
+    }
+    
+    const move = (e) => {
+        let x = e.clientX;
+        let y = e.clientY;
+        if (e.type === 'touchmove') {
+            x = e.touches[0].clientX;
+            y = e.touches[0].clientY;
+        };
+
+        let scrollStep = null;
+        if (y >= window.innerHeight - elementH * .8) {
+            scrollStep = SCROLL_STEP;
+        } else if (y <= elementH * .8) {
+            scrollStep = -SCROLL_STEP;
+        }
+        
+        const newTop = y - moveData.startY + moveData.topStart;
+        const newLeft = x - moveData.startX;
+
+        let newDistance = (newTop + topOffset - initialTopOffset - moveData.topStart) / elementH;
+        newDistance = Math.round(newDistance);
+        if (newDistance === -0) {
+            newDistance = 0;
+        };
+        
+        setDistance(newDistance);
+        setCoords({ top: newTop, left: newLeft });
+        setScrollStep(scrollStep);
+
+        const placeholder = getPlaceholder(newDistance);
+        props.playerMoved(placeholder);
+    };
+
+    useEffect(() => {
+        if (scrollStep !== null && !scrollInterval.current) {
+            scrollInterval.current = setInterval(doScroll, 5);
+        }
+        return () => {
+            clearInterval(scrollInterval.current);
+            scrollInterval.current = null;
+        }
+    }, [scrollStep, scrollInterval.current])
 
     useEffect(() => {
         setElementH(element.current.getBoundingClientRect().height);
@@ -25,33 +93,49 @@ const Player = (props) => {
 
     useEffect(() => {
         if (isGrabbed) {
-            if (moveData.eType === 'mousedown') {
-                window.addEventListener('mousemove', move);
-            }
-            if (moveData.eType === 'touchstart') {
+            window.document.body.style.overscrollBehavior = 'contain';
+            window.addEventListener('scroll', updateTopOffset);
+            
+            if (props.isTouchDevice) {
                 window.addEventListener('touchmove', move);
+            } else {
+                window.addEventListener('mousemove', move);
             }
         }
         
         return () => {
             window.removeEventListener('mousemove', move);
             window.removeEventListener('touchmove', move);
+            window.removeEventListener('scroll', updateTopOffset);
+            window.document.body.style.overscrollBehavior = 'unset';
         }
-    }, [isGrabbed])
+    }, [isGrabbed, move])
+
+    useEffect(() => {
+        playerNameWrapperRef.current.addEventListener('touchstart', handleGrab, {passive: false});
+        playerNameWrapperRef.current.addEventListener('touchend', handleDrop);
+        playerNameWrapperRef.current.addEventListener('mousedown', handleGrab);
+        playerNameWrapperRef.current.addEventListener('mouseup', handleDrop);
+
+        return () => {
+            playerNameWrapperRef.current.removeEventListener('touchstart', handleGrab, {passive: false});
+            playerNameWrapperRef.current.removeEventListener('touchend', handleDrop);
+            playerNameWrapperRef.current.removeEventListener('mousedown', handleGrab);
+            playerNameWrapperRef.current.removeEventListener('mouseup', handleDrop);
+        }
+    }, [elementH, distance, props.position, props.grabbedElement])
 
     const handleGrab = (e) => {
+        e.preventDefault();
+
         if (props.players.length === 1) {
             return;
         }
-        if (e.type === 'touchstart') {
-            if (props.touches > 0 && props.index !== props.grabbedElement) {
-                props.setTouches(props.touches + 1);
-                return;
-            }
+        if (props.isTouchDevice && e.touches.length > 1) {
+            return;
         };
-        setGrabbedElement(props.index, e.type);
         
-        const topStart = props.index * elementH;
+        const topStart = props.position * elementH;
 
         let startX = e.clientX;
         let startY = e.clientY;
@@ -60,198 +144,140 @@ const Player = (props) => {
             startY = e.touches[0].clientY;
         }
 
+        setInitialTopOffset(window.pageYOffset);
+        setTopOffset(window.pageYOffset);
         setIsGrabbed(true);
-        setTop(topStart);
-        setMoveData({ eType: e.type, startX, startY, topStart })
+        setCoords({ top: topStart, left: coords.left });
+        setMoveData({ startX, startY, topStart });
+        props.playerGrabbed(props.position);
     }
 
-    const setGrabbedElement = (index, eType) => {
-        eType === 'touchstart' && props.setTouches(props.touches + 1);
-        props.setInitialListSpace(index - 1);
-        props.setListSpace(index - 1);
-        props.setGrabbedElement(index);
-    }
+    const getPlaceholder = (newDistance) => {
+        let placeholder = props.grabbedElement - 1 + newDistance;
 
-    const move = (e) => {
-        props.setIsTransitionEnabled(true);
-        let x = e.clientX;
-        let y = e.clientY;
-        if (e.type == 'touchmove') {
-            x = e.touches[0].clientX;
-            y = e.touches[0].clientY;
-        };
-        const newTop = y - moveData.startY + moveData.topStart;
-        const newLeft = x - moveData.startX;
-        let newDistance = (newTop - moveData.topStart) / elementH;
-        newDistance = Math.round(newDistance);
-        if (newDistance === -0) {
-            newDistance = 0;
-        };
-        if (newDistance !== distance) {
-            addSpace(newDistance);
-        };
-        setTop(newTop);
-        setLeft(newLeft);
-        setDistance(newDistance);
-    }
+        if (props.grabbedElement <= placeholder) {
+            placeholder += 1;
+        }
+        if (placeholder >= props.players.length) {
+            placeholder = props.players.length - 1;
+        }
+        if (props.grabbedElement === props.players.length - 1 && placeholder >= props.players.length - 2) {
+            placeholder = props.players.length - 2;
+        }
 
-    const addSpace = (distance) => {
-        let listSpace = props.initialListSpace + distance;
-        if (props.grabbedElement <= listSpace) {
-            listSpace += 1;
-        }
-        if (listSpace >= props.players.length) {
-            listSpace = props.players.length - 1;
-        }
-        if (props.grabbedElement === props.players.length - 1 && listSpace >= props.players.length - 2) {
-            listSpace = props.players.length - 2;
-        }
-        props.setListSpace(listSpace);
+        return placeholder;
     }
 
     const handleDrop = (e) => {
-        props.setIsTransitionEnabled(false);
-
-        if (props.touches > 0 && props.index !== props.grabbedElement) {
-            props.setTouches(-1)
-            return
-        }
-
-        addSpace(0);
-
-        let newIndex = props.index + distance
-        if (newIndex < 1) {
-            newIndex = 0;
-        } else if (newIndex >= props.players.length) {
-            newIndex = props.players.length - 1;
-        }
-
-        let touches = 0;
-        if (e.type === 'touchend') {
-            touches = props.touches - 1;
-        }
-
-        props.reorderPlayers(props.index, newIndex);
-        props.setInitialListSpace(null);
-        props.setListSpace(null);
-        props.setGrabbedElement(null);
-        props.setTouches(touches);
-
-        setIsGrabbed(false);
-        setTop(0);
-        setLeft(0);
-        setDistance(0);
-    }
-
-    const removePlayerHandler = () => {
-        if (props.player.uid === props.user.uid) {
-            props.setAlert('alert', "You can't remove game admin")
+        if (props.players.length === 1) {
             return;
         }
-        removedPlayerTransition();
-        setTimeout(remove, 500);
+
+        if (props.isTouchDevice && e.touches.length > 0) {
+            return;
+        }
+
+        let newPosition = props.position + distance
+        if (newPosition < 1) {
+            newPosition = 0;
+        } else if (newPosition >= props.players.length) {
+            newPosition = props.players.length - 1;
+        }
+
+        const dropPlayerPromise = props.playerDropped(newPosition, props.player.id);
+        dropPlayerPromise.then(() => {
+            setIsGrabbed(false);
+            setCoords({ top: 0, left: 0 });
+            setDistance(0);
+            setInitialTopOffset(0);
+            setTopOffset(0);
+            setScrollStep(null);
+            if (scrollInterval.current) {
+                clearInterval(scrollInterval.current);
+                scrollInterval.current = null;
+            }
+        })
     }
 
-    const removedPlayerTransition = () => {
-        const el = element.current;
-        el.style.transitionProperty = 'width, max-height';
-        el.style.transitionDuration = '.4s, .4s';
-        el.style.transitionDelay = '0.1s, .4s';
-        el.style.transitionTimingFunction = 'ease-in, ease';
-        el.style.width = 0;
-        el.style.maxHeight = 0;
+    const handleRemovePlayer = () => {
+        if (props.player.user.id === props.createdBy) {
+            props.setAlert('alert', "You can't remove game admin");
+            return;
+        }
+        setPlayerRemoved(true);
+        setTimeout(remove, 500);
     }
 
     const remove = () => {
         element.current.style = {};
-        props.removePlayer(props.index);
+        props.removePlayer(props.player.id);
     }
 
     const getStyles = () => {
         let dynamicStyles = {
-            topSpaceStyle: {},
-            bottomSpaceStyle: {},
-            topSpaceClass: '',
-            bottomSpaceClass: '',
-            grabbed: '',
+            topPlaceholderStyle: {},
+            bottomPlaceholderStyle: {},
+            topPlaceholderVisible: false,
+            bottomPlaceholderVisible: false,
             position: {},
-            hover: 'no-touch-device'
         }
 
-        if (props.grabbedElement != 0 && props.listSpace < 0 && props.index === 0
-            || props.grabbedElement === 0 && props.listSpace < 0 && props.index === 1
+        if (props.grabbedElement != 0 && props.placeholder < 0 && props.position === 0
+            || props.grabbedElement === 0 && props.placeholder < 0 && props.position === 1
             && !isGrabbed) {
-            dynamicStyles.topSpaceStyle = { height: elementH };
-            dynamicStyles.topSpaceClass = styles.visible;
-        } else if (props.index === props.listSpace && !isGrabbed) {
-            dynamicStyles.bottomSpaceStyle = { height: elementH }
-            dynamicStyles.bottomSpaceClass = styles.visible;
-        };
-
-        if (!props.isTransitionEnabled && !isGrabbed) {
-            dynamicStyles.bottomSpaceStyle.transition = 'none';
-            dynamicStyles.topSpaceStyle.transition = 'none';
+            dynamicStyles.topPlaceholderStyle = { height: elementH };
+            dynamicStyles.topPlaceholderVisible = true;
+        } else if (props.position === props.placeholder && !isGrabbed) {
+            dynamicStyles.bottomPlaceholderStyle = { height: elementH };
+            dynamicStyles.bottomPlaceholderVisible = true;
         };
 
         if (isGrabbed) {
-            dynamicStyles.grabbed = styles.grabbed;
             dynamicStyles.position = {
-                top: top,
-                left: left
+                top: coords.top + topOffset - initialTopOffset,
+                left: coords.left
             };
         };
-        if (props.isTouchDevice) {
-            dynamicStyles.hover = '';
-        };
 
-        return dynamicStyles
-    }
-
-    const getUserIcon = () => {
-        const player = props.player;
-        if (player.admin) {
-            return (
-                <div className={styles.userIcon}>
-                    <FontAwesomeIcon icon={faUserCog} />
-                </div>
-            );
-        } else if (!player.admin && player.uid) {
-            return (
-                <div className={styles.userIcon}>
-                    <FontAwesomeIcon icon={faMobileAlt} />
-                </div>
-            );
-        } else if (!player.admin && !player.uid) {
-            return (
-                <div className={`fa-layers fa-fw ${styles.userIcon}`}>
-                    <FontAwesomeIcon icon={faMobileAlt} />
-                    <FontAwesomeIcon icon={faSlash} />
-                </div>
-            );
-        }
+        return dynamicStyles;
     }
 
     const dynamicStyles = getStyles();
 
+    const cx = classNames.bind(styles);
+    const liClass = cx({
+        player: true,
+        removed: playerRemoved,
+        grabbed: isGrabbed,
+    });
+    const topPlaceholderClass = cx({
+        topPlaceholder: true,
+        visible: dynamicStyles.topPlaceholderVisible,
+        noTransition: !props.isTransitionEnabled && !isGrabbed,
+    });
+    const bottomPlaceholderClass = cx({
+        bottomPlaceholder: true,
+        visible: dynamicStyles.bottomPlaceholderVisible,
+        noTransition: !props.isTransitionEnabled && !isGrabbed,
+    });
+
     return (
-        <li className={`${styles.player} ${dynamicStyles.grabbed} ${dynamicStyles.hover}`} style={dynamicStyles.position} ref={element}>
-            <div className={`${styles.topListSpace} ${dynamicStyles.topSpaceClass}`} style={dynamicStyles.topSpaceStyle}></div>
+        <li className={liClass} style={dynamicStyles.position} ref={element}>
+            <div className={topPlaceholderClass} style={dynamicStyles.topPlaceholderStyle}></div>
             <div className={styles.wrapper}>
-                <div
-                    className={styles.playerNameWrapper}
-                    onMouseDown={handleGrab}
-                    onMouseUp={handleDrop}
-                    onTouchStart={handleGrab}
-                    onTouchEnd={handleDrop}
-                >
-                    <p className={styles.playerName}>{props.index + 1}: <span> {props.player.playerName}</span></p>
+                <div className={styles.playerNameWrapper} ref={playerNameWrapperRef} >
+                    <p className={styles.playerName}>
+                        {props.position + 1}: <span> {props.player.user.username}</span>
+                    </p>
+                    <UserIcon player={props.player} className={styles.userIcon} />
                 </div>
-                {getUserIcon()}
-                <Button onClick={removePlayerHandler} className={styles.remove}>
+                {props.player.user.id !== props.createdBy &&
+                <Button onClick={handleRemovePlayer} className={styles.remove}>
                     <FontAwesomeIcon icon={faTimes} />
                 </Button>
+                }
             </div>
-            <div className={`${styles.bottomListSpace} ${dynamicStyles.bottomSpaceClass}`} style={dynamicStyles.bottomSpaceStyle}></div>
+            <div className={bottomPlaceholderClass} style={dynamicStyles.bottomPlaceholderStyle}></div>
         </li>
     );
 }
@@ -260,25 +286,24 @@ const mapStateToProps = (state) => {
     return {
         isTouchDevice: state.app.isTouchDevice,
         user: state.app.user,
-        players: state.game.players,
-        initialListSpace: state.gameMenu.players.initialListSpace,
-        listSpace: state.gameMenu.players.listSpace,
+        players: state.gamePage.players,
+        createdBy: state.gamePage.gameData.createdBy,
+        placeholder: state.gameMenu.players.placeholder,
         grabbedElement: state.gameMenu.players.grabbedElement,
         isTransitionEnabled: state.gameMenu.players.isTransitionEnabled,
-        touches: state.gameMenu.players.touches,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        reorderPlayers: (playerIndex, newIndex) => dispatch(reorderPlayers(playerIndex, newIndex)),
-        removePlayer: (playerIndex) => dispatch(removePlayer(playerIndex)),
-        setIsTransitionEnabled: (isTransitionEnabled) => dispatch(setIsTransitionEnabled(isTransitionEnabled)),
-        setInitialListSpace: (initialListSpace) => dispatch(setInitialListSpace(initialListSpace)),
-        setGrabbedElement: (grabbedElement) => dispatch(setGrabbedElement(grabbedElement)),
-        setListSpace: (listSpace) => dispatch(setListSpace(listSpace)),
-        setTouches: (touches) => dispatch(setTouches(touches)),
-        setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(setAlert(type, messageKey, messageValue, action, alertProps)),
+        removePlayer: (playerId) => dispatch(removePlayer(playerId)),
+        playerGrabbed: (position) => dispatch(playerGrabbed(position)),
+        playerMoved: (placeholder) => dispatch(playerMoved(placeholder)),
+        playerDropped: (newPosition, id) => dispatch(playerDropped(newPosition, id)),
+        setListSpace: (placeholder) => dispatch(setListSpace(placeholder)),
+        setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(
+            setAlert(type, messageKey, messageValue, action, alertProps)
+        ),
     }
 }
 

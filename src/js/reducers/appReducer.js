@@ -1,20 +1,12 @@
 import { cloneDeep } from 'lodash';
+import { userDeserializer } from '../serializers'
 
 const initialState = {
     screenHeight: window.innerHeight,
     isTouchDevice: false,
     deviceOrientation: '',
-    user: {},
-    userInfo: {
-        currentGame: null,
-        allGames: [],
-    },
-    fetchingGameData: true,
-    gameId: null,
+    user: null,
     language: 'en-GB',
-    admin: false,
-    playedAgain: false,
-    playedAgainWithSettings: false,
     alert: {
         show: false,
         type: '',
@@ -40,52 +32,14 @@ const appReducer = (state = initialState, action) => {
             newState.deviceOrientation = action.deviceOrientation;
             return newState;
 
-        case 'APP/SET_FETCHING_GAME_DATA':
-            newState.fetchingGameData = action.fetching;
-            return newState;
-
-        case 'APP/SET_GAME_ID':
-            newState.gameId = action.gameId;
-            return newState;
-
-        case 'APP/SET_USER_INFO':
-            newState.userInfo = {
-                currentGame: action.currentGame || newState.userInfo.currentGame,
-                allGames: action.allGames || newState.userInfo.allGames,
-            };
-            return newState;
-
-        case 'APP/CLEAR_APP_STATE':
-            newState = cloneDeep(initialState);
+        case 'GAME_MENU/CHANGE_LANGUAGE_SUCCESS':
+        case 'APP/LANGUAGE_CHANGED':
             newState.language = action.language;
             return newState;
 
-        case 'APP/EXIT_GAME':
-            newState.fetchingGameData = true;
-            newState.gameId = null;
-            newState.admin = false;
-            newState.playedAgain = false;
-            newState.playedAgainWithSettings = false;
-            newState.userInfo = {
-                currentGame: null,
-                allGames: [],
-            };
-            return newState;
-
-        case 'APP/SET_LANGUAGE':
-            newState.language = action.language;
-            return newState;
-            
-        case 'APP/SET_ADMIN':
-            newState.admin = action.admin;
-            return newState;
-
-        case 'APP/SET_PLAYED_AGAIN':
-            newState.playedAgain = action.playedAgain;
-            return newState;
-
-        case 'APP/SET_PLAYED_AGAIN_WITH_SETTINGS':
-            newState.playedAgainWithSettings = action.playedAgainWithSettings;
+        case 'GAME_PAGE/FETCH_GAME_DATA/SUCCESS':
+        case 'GAME_PAGE/GAME_CHANGED':
+            newState.language = action.gameData.language;
             return newState;
 
         case 'APP/SET_ALERT':
@@ -111,7 +65,26 @@ const appReducer = (state = initialState, action) => {
             return newState;
 
         case 'APP/SET_USER':
-            newState.user = action.user
+        case 'AUTH/LOG_IN/SUCCESS':
+        case 'AUTH/SIGN_UP/SUCCESS':
+        case 'AUTH/GET_USER/SUCCESS':
+            newState.user = userDeserializer(action.user);
+            return newState;
+
+        case 'AUTH/USERNAME_CHANGE/SUCCESS':
+            newState = cloneDeep(newState);
+            newState.user.username = action.newName;
+            return newState;
+
+        case 'AUTH/PROFILE_IMAGE_UPDATE/SUCCESS':
+            newState = cloneDeep(newState);
+            newState.user.image = action.image;
+            return newState;
+
+        case 'APP/CLEAR_APP_STATE':
+            newState = cloneDeep(initialState);
+            newState.language = state.language;
+            newState.isTouchDevice = state.isTouchDevice;
             return newState;
 
         default:

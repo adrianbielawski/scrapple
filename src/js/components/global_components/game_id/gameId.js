@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './gameId.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,8 +7,9 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons';
 import { faCopy as faCopyBold } from '@fortawesome/free-solid-svg-icons';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-const GameId = (props) => {
+const GameId = () => {
     const { t } = useTranslation();
+    const { gameId } = useParams(null);
     const [copy, setCopy] = useState(false);
 
     const toggleCopy = () => {
@@ -19,9 +20,9 @@ const GameId = (props) => {
         <div className={styles.gameId}>
             <p>{t("Game ID")}: </p>
             <div>
-                <p className={styles.id}>{props.gameId}</p>
-                <p className={`${styles.id} ${styles.copyId} ${copy ? styles.move : ''}`}>{props.gameId}</p>
-                <CopyToClipboard text={props.gameId}>
+                <p className={styles.id}>{gameId}</p>
+                <p className={`${styles.id} ${styles.copyId} ${copy ? styles.move : ''}`}>{gameId}</p>
+                <CopyToClipboard text={gameId}>
                     <span><FontAwesomeIcon icon={copy ? faCopyBold : faCopy}
                         onMouseDown={toggleCopy}
                         onMouseUp={toggleCopy}
@@ -34,10 +35,4 @@ const GameId = (props) => {
     );
 }
 
-const mapStateToProps = (state) => {
-    return {
-        gameId: state.app.gameId,
-    }
-}
-
-export default connect(mapStateToProps)(GameId);
+export default GameId;

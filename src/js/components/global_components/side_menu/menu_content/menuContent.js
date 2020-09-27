@@ -6,22 +6,29 @@ import styles from './menuContent.scss'
 import GameId from 'components/global_components/game_id/gameId';
 import MyAccount from './my_account/myAccount';
 import QuitGame from './quit_game/quitGame';
+import UrlQrCode from './url_qr_code/urlQrCode';
+import LogOut from 'components/global_components/accountInfo/logout';
 
 const MenuContent = (props) => {
     const { gameId } = useParams();
+    const admin = props.user.id === props.createdBy;
     
     return (
         <div className={styles.menuContent}>
             {gameId && <GameId />}
-            {!props.admin && gameId ? <QuitGame /> : null}
             <MyAccount />
+            {!admin && props.players.length > 0 ? <QuitGame /> : null}
+            <LogOut className={styles.logout} />
+            {gameId && <UrlQrCode />}
         </div>
     );
 }
 
 const mapStateToProps = (state) => {
     return {
-        admin: state.app.admin,
+        user: state.app.user,
+        players: state.gamePage.players,
+        createdBy: state.gamePage.gameData.createdBy,
     }
 }
 

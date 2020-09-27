@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,53 +13,62 @@ import { addPlayer } from 'actions/gameMenuActions';
 import { setAlert } from 'actions/appActions';
 
 const AddPlayer = (props) => {
-    const inputEl = useRef(null);
     const { t } = useTranslation();
+    const { gameId } = useParams(null);
+    const inputEl = useRef(null);
+
+    const checkPlayers = (player) => {
+        const lowNewPlayer = player.toLowerCase();
+        const lowPlayers = props.players.map(p => {
+            return p.user.username.toLowerCase();
+        });
+        return lowPlayers.includes(lowNewPlayer);
+    }
+
+    const validatePlayerName = (player) => {
+        let error = null;
+        const isPlayerExists = checkPlayers(player);
+
+        if (props.players.length >= 4) {
+            error = ['Max 4 players'];
+        }
+        if (isPlayerExists) {
+            error = ['Player exists', { 'player': player }];
+        }
+        if (player.length < 1) {
+            error = ["Please type in player's name"];
+        }
+
+        return {
+            valid: error === null,
+            error,
+        };
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const player = inputEl.current.value.trim();
-        const isValid = validatePlayerName(player);
-
-        if (isValid) {
-            inputEl.current.value = '';
-            props.addPlayer(player, null, false)
+        const { valid, error } = validatePlayerName(player);
+        if (!valid) {
+            props.setAlert('alert', ...error);
+            return;
         }
+
+        inputEl.current.value = '';
+        props.addPlayer(player, gameId);
     };
-
-    const validatePlayerName = (player) => {
-        const isPlayerExists = checkPlayers(player);
-
-        if (props.players.length >= 4) {
-            props.setAlert('alert', 'Max 4 players');
-            return
-        }
-        if (isPlayerExists) {
-            props.setAlert('alert', 'Player exists', { 'player': player }, null);
-            return
-        }
-        if (player.length < 1) {
-            props.setAlert('alert', "Please type in player's name");
-            return
-        }
-        return true;
-    }
-
-    const checkPlayers = (player) => {
-        const lowNewPlayer = player.toLowerCase();
-        const players = [...props.players];
-        const lowPlayers = players.map((player) => {
-            const lowPlayer = player.playerName.toLowerCase();
-            return lowPlayer
-        });
-        return lowPlayers.includes(lowNewPlayer);
-    }
 
     return (
         <div className={styles.addPlayer}>
             <p>{t("Add player")}</p>
             <div className={styles.form}>
-                <Input type="text" autoComplete="false" spellCheck="false" maxLength="30" ref={inputEl} />
+                <Input
+                    type="text"
+                    autoComplete="false"
+                    spellCheck="false"
+                    maxLength="30"
+                    ref={inputEl}
+                />
                 <Button className={styles.add} onClick={handleSubmit}>
                     <FontAwesomeIcon icon={faPlus} className="plus" />
                 </Button>
@@ -69,15 +79,16 @@ const AddPlayer = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        gameId: state.app.gameId,
-        players: state.game.players,
+        players: state.gamePage.players,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addPlayer: (playerName, uid, admin) => dispatch(addPlayer(playerName, uid, admin)),
-        setAlert: (type, messageKey, messageValue, action, props) => dispatch(setAlert(type, messageKey, messageValue, action, props)),
+        addPlayer: (playerName, gameId) => dispatch(addPlayer(playerName, gameId)),
+        setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(
+            setAlert(type, messageKey, messageValue, action, alertProps)
+        ),
     }
 }
 

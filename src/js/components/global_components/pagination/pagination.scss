@@ -6,6 +6,7 @@
     margin: 0 auto;
     p {
         font-size: .8em;
+        margin: 0;
     }
     .chevron {
         font-size: .7em;
@@ -13,6 +14,10 @@
         cursor: pointer;
         &:hover {
             color: $mainGreen;
+        }
+        &.inactive {
+            color: $grey;
+            cursor: unset;
         }
     }
 }

@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import classNames from 'classnames/bind';
 import styles from './twoLetterWords.scss';
 //Custom components
 import Button from 'components/global_components/button/button';
-import ZoomableComponent from '../../global_components/zoomable_component/zoomableComponent';
+import ZoomableComponent from 'components/global_components/zoomable_component/zoomableComponent';
 import WordsTable from './wordsTable';
 //Redux Actions
 import { toggleShowWords } from 'actions/gameActions';
@@ -43,6 +44,13 @@ const TwoLetterWords = (props) => {
 
     }, [props.screenHeight])
 
+    const cx = classNames.bind(styles);
+    const zoomableClass = cx({
+        zoomable: true,
+        scrollable: isElementScrollable,
+        active: props.showWords,
+    });
+
     return (
         <div className={styles.twoLetterWords} ref={componentRef}>
             <Button onClick={props.toggleShowWords} className={wordsClass}>
@@ -50,9 +58,7 @@ const TwoLetterWords = (props) => {
             </Button>
             <ZoomableComponent
                 isZoomable={isElementZoomable}
-                className={`${styles.zoomable} ${props.showWords ? styles.active : ''}
-                    ${isElementScrollable ? styles.scrollable : ''}`
-                }
+                className={zoomableClass}
                 style={props.showWords ? {maxHeight: `${maxHeight}px`} : {}}
             >
                 <WordsTable />

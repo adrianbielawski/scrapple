@@ -14,12 +14,8 @@
         overflow: hidden;
         transition: all 0.2s ease-out;
         &.showContent {
-            max-height: 200px;
+            max-height: 2000px;
             padding: 10px 20px;
-        }
-        .logout {
-            display: inline-flex;
-            margin-bottom: 5px;
         }
     }
 }

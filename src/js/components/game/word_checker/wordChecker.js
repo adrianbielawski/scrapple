@@ -1,6 +1,9 @@
 import React, { useRef, useState } from 'react';
+import axiosInstance from 'axiosInstance';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import classNames from 'classnames/bind';
 import styles from './wordChecker.scss';
 //Custom Components
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
@@ -13,10 +16,11 @@ import thumbDown from 'img/thumb-down.png';
 const WordChecker = (props) => {
     const { t } = useTranslation();
     const wordInput = useRef(null);
+    const timeout = useRef(null);
+    const cancelToken = useRef(null);
     const [word, setWord] = useState('');
     const [fetching, setFetching] = useState(false);
     const [valid, setValid] = useState(false);
-    let timeout = null;
 
     const clearInput = () => {
         setWord('');
@@ -27,11 +31,11 @@ const WordChecker = (props) => {
         let word = wordInput.current.value;
         setWord(word);
 
-        if (timeout) {
-            clearTimeout(timeout);
+        if (timeout.current) {
+            clearTimeout(timeout.current);
         };
 
-        timeout = setTimeout(
+        timeout.current = setTimeout(
             () => checkWord(word),
             300,
         );
@@ -43,32 +47,33 @@ const WordChecker = (props) => {
             setFetching(false);
             return;
         };
+
+        if (cancelToken.current) {
+          cancelToken.current.cancel("Operation canceled due to new request.");
+        }
+        cancelToken.current = axios.CancelToken.source();
+
         setFetching(true);
         setValid(null);
 
-        let url = '';
-        let params = '';
-        if (props.language === 'en-GB') {
-            url = 'https://burek.it/sowpods/';
-            params = new URLSearchParams({
-                word: word
-            });
-        } else if (props.language === 'pl-PL') {
-            url = 'https://burek.it/osps/files/php/osps_funkcje2.php';
-            params = new URLSearchParams({
-                s: 'spr',
-                slowo_arbiter2: word
-            });
-        };
-
-        fetch(`${url}?${params.toString()}`).then(
-            response => response.text()
-        ).then(
-            response => {
+        axiosInstance.get('words/check', {
+            params: {
+                word,
+                language: props.language,
+            },
+            cancelToken: cancelToken.current.token,
+        })
+        .then(response => {
                 setFetching(false);
-                setValid(response === '1');
+                setValid(response.data.valid);
             }
-        );
+        ).catch(err => {
+            if (axios.isCancel(err)) {
+              console.log(err.message);
+            } else {
+                dispatch(setAlert('alert', 'Something went wrong'));
+            }
+          });
     }
 
     const getImage = () => {
@@ -85,6 +90,12 @@ const WordChecker = (props) => {
 
     const image = getImage();
 
+    const cx = classNames.bind(styles);
+    const imageClass = cx({
+        resoultImg: true,
+        noAudio: !props.gameData.timeLimit || props.user.id !== props.gameData.createdBy,
+    });
+
     return (
         <div className={styles.wordChecker}>
             <Input type="text"
@@ -94,7 +105,7 @@ const WordChecker = (props) => {
                 placeholder={t("Check your word")}
                 spellCheck="false"
                 autoFocus />
-            <div className={`${styles.resoultImg} ${!props.timer || !props.admin ? styles.noAudio : ''}`}>
+            <div className={imageClass}>
                 {image}
             </div>
         </div>
@@ -103,9 +114,9 @@ const WordChecker = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        admin: state.app.admin,
         language: state.app.language,
-        timer: state.timeLimit.timer,
+        gameData: state.gamePage.gameData,
+        user: state.app.user,
     }
 }
 export default connect(mapStateToProps)(WordChecker);

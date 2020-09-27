@@ -1,17 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
+import Moment from 'react-moment';//important
 import moment from 'moment';
-import db from 'firebaseConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
+import classNames from 'classnames/bind';
 import styles from './timer.scss';
 //Custom Components
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 import Button from 'components/global_components/button/button';
 //Redux Actions
-import { timeOut, setTimeLeft, setTimerPaused, setThisUserPaused } from 'actions/gameActions';
+import { timerUpdated, timerPaused, timerUnpaused } from 'actions/gameActions';
 //Assets
 import beep from 'audio/beep.mp3';
 import longBeep from 'audio/long-beep.mp3';
@@ -23,103 +24,102 @@ const AUDIO = {
 
 const Timer = (props) => {
     const { gameId } = useParams();
+    const timerInterval = useRef(null);
+    const admin = props.user.id === props.gameData.createdBy;
 
     useEffect(() => {
-        let startTimer = null;
-        if (!props.isTimerPaused) {
-            props.setThisUserPaused(false);
-            startTimer = setInterval(updateTimer, 100);
+        updateTimer();
+        if (props.gameData.timePausedBy === null) {
+            timerInterval.current = setInterval(updateTimer, 10);
         }
         return () => {
-            clearInterval(startTimer);
+            clearInterval(timerInterval.current);
         }
-    }, [props.endTime, props.isTimerPaused])
+    }, [props.gameData.timeEnd.valueOf(), props.gameData.timePausedBy])
 
     useEffect(() => {
-        if (props.timeLeft % 60 === 0 && props.admin && props.isAudioEnabled) {
+        if (!admin) {
+            return;
+        }
+        const timeLeft = props.timeLeft;
+        const timeLimit = props.gameData.timeLimit;
+
+        if (
+            props.isAudioEnabled
+            && (timeLeft % 60 === 0 && timeLeft !== timeLimit || timeLeft <= 10)
+            && timeLeft !== 0
+        ) {
             AUDIO.beep.play();
         }
 
-        if (props.timeLeft <= 10 && props.admin && props.isAudioEnabled) {
-            AUDIO.beep.play();
-        }
-
-        if (props.timeLeft === 0 && props.admin) {
-            props.isAudioEnabled && AUDIO.longBeep.play();
-            setTimeout(handleTimeOut, 1000);
+        if (timeLeft !== null && timeLeft <= 0) {
+            if (props.isAudioEnabled) {
+                AUDIO.longBeep.play();
+            }
+            setTimeout(props.onTimeOut, 1000);
         }
     }, [props.timeLeft])
 
-    const handleTimeOut = () => {
-        props.timeOut(props.players, props.currentPlayer, props.time, gameId)
-    }
-
     const updateTimer = () => {
-        if (props.endTime === null) {
+        if (props.gameData.timeEnd === null) {
             return;
         }
-
-        const now = moment();
-        let timeLeft = moment(props.endTime).diff(now, 'seconds', true);
-        timeLeft = Math.ceil(timeLeft);
-
-        props.setTimeLeft(timeLeft);
+        props.timerUpdated(props.gameData.timeEnd, props.timeDiff);
     }
 
-    const getTimeLeft = () => {
+    const getTimer = () => {
         const time = props.timeLeft;
         if (time === null) {
             return <LoadingSpinner background={true} />;
         }
-        const duration = moment.duration(Math.max(0, time), 'seconds');
-        let timeLeft = time >= 3600 ? duration.format('HH:mm:ss') : duration.format('mm:ss', { trim: false });
-        return timeLeft;
+        const duration = moment.duration(time, 'seconds');
+        let timer = time >= 3600 ? duration.format('HH:mm:ss') : duration.format('mm:ss', { trim: false });
+        return timer;
     }
 
     const handleTimePause = () => {
-        props.setTimerPaused(!props.isTimerPaused);
-        props.setThisUserPaused(!props.thisUserPaused);
-
-        db.collection('games').doc(gameId).update({
-            isTimerPaused: !props.isTimerPaused
-        });
+        if (props.gameData.timePausedBy === null) {
+            props.timerPaused(gameId);
+        } else {
+            props.timerUnpaused(gameId);
+        }
     }
 
-    const shortTimeClass = props.timeLeft <= 30 ? styles.shortTime : '';
+    const cx = classNames.bind(styles);
+    const timerClass = cx({
+        timer: true,
+        shortTime: props.timeLeft <= 30,
+    });
 
     return (
         <div className={styles.timerWrapper}>
-            <div className={`${styles.timer} ${shortTimeClass}`}>{getTimeLeft()}</div>
+            <div className={timerClass}>{getTimer()}</div>
             {!props.timeLeft <= 30 ?
                 <Button className={styles.button}>
-                    <FontAwesomeIcon icon={props.isTimerPaused ? faPlay : faPause} onClick={handleTimePause} />
+                    <FontAwesomeIcon icon={props.gameData.timePausedBy ? faPlay : faPause} onClick={handleTimePause} />
                 </Button>
-            : null}
+                : null
+            }
         </div>
     );
 }
 
 const mapStateToProps = (state) => {
     return {
-        admin: state.app.admin,
-        isAudioEnabled: state.game.isAudioEnabled,
-        timer: state.timeLimit.timer,
-        time: state.timeLimit.time,
-        endTime: state.game.endTime,
+        user: state.app.user,
+        timeDiff: state.gamePage.timeDiff,
+        gameData: state.gamePage.gameData,
         timeLeft: state.game.timeLeft,
-        currentPlayer: state.game.currentPlayer,
-        players: state.game.players,
-        isTimerPaused: state.game.isTimerPaused,
+        isAudioEnabled: state.game.isAudioEnabled,
         thisUserPaused: state.game.thisUserPaused,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        timeOut: (players, currentPlayer, time, gameId) => dispatch(timeOut(players, currentPlayer, time, gameId)),
-        setTimeLeft: (timeLeft) => dispatch(setTimeLeft(timeLeft)),
-        setTimerPaused: (isTimerPaused) => dispatch(setTimerPaused(isTimerPaused)),
-        setThisUserPaused: (thisUserPaused) => dispatch(setThisUserPaused(thisUserPaused)),
+        timerUpdated: (timeLeft, timeDiff) => dispatch(timerUpdated(timeLeft, timeDiff)),
+        timerPaused: (gameId) => dispatch(timerPaused(gameId)),
+        timerUnpaused: (gameId) => dispatch(timerUnpaused(gameId)),
     }
 }
 

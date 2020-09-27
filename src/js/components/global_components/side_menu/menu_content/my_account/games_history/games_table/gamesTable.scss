@@ -7,6 +7,12 @@
     flex-flow: column;
     transition: all .2s ease-out;
     &.showGames {
+        overflow: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
         max-height: 300px;
         padding: 3px 0;
     }

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from './menuHeader.scss';
 //Redux Actions
-import { toggleShowMenu } from 'actions/gameActions';
+import { toggleShowMenu } from 'actions/sideMenuActions';
 
 const MenuHeader = (props) => {
     const { t } = useTranslation();

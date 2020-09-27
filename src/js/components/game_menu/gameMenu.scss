@@ -1,17 +1,12 @@
 @import "global_styles/variables";
 
 .gameMenu {
+    height: 100%;
+    padding-bottom: 5px;
     .topWrapper {
         display: flex;
         width: 100%;
         margin-bottom: 5px;
-    }
-    padding-bottom: 5px;
-    overflow: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-        display: none;
     }
     h1 {
         margin: 0;
@@ -20,7 +15,7 @@
     .menu {
         width: 100%;
         max-width: 400px;
-        padding: 0 10px;
+        padding: 0 5px;
         margin: 0 auto;
         display: flex;
         align-items: center;
@@ -29,7 +24,9 @@
     }
 
     .card {
+        padding: 10px 5px;
         margin-bottom: 5px;
+        overflow: unset;
         p {
             font-size: 1.2em;
             color: $darkText;

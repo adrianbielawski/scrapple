@@ -1,131 +1,86 @@
-import db from 'firebaseConfig';
-import moment from 'moment';
+import axiosInstance from 'axiosInstance';
 //Redux Actions
-import { setAlert, updateUserAllGames, updateUserCurrentGame } from 'actions/appActions';
-import { setPlayers } from 'actions/gameActions';
+import { setAlert } from 'actions/appActions';
 
-export const setFetchingGameData = (fetching) => {
-  return {
-    type: 'GAME_MENU/SET_FETCHING_GAME_DATA',
-    fetching
-  }
+export const startGame = (gameId) => dispatch => {    
+  axiosInstance.put(`/games/${gameId}/start/`)
+    .catch(() => {
+      dispatch(setAlert('alert', 'Something went wrong'));
+    });
 }
 
-export const addPlayer = (playerName, uid, admin) => {
-  return {
-    type: 'GAME_MENU/ADD_PLAYER',
-    playerName,
-    uid,
-    admin
-  }
-}
+const timeLimitUpdateSuccess = (gameId, timeLimit) => ({
+  type: 'GAME_MENU/TIME_LIMIT_UPDATE/SUCCESS',
+  gameId,
+  timeLimit,
+})
 
-export const removePlayer = (playerIndex) => {
-  return {
-    type: 'GAME_MENU/REMOVE_PLAYER',
-    playerIndex
-  }
-}
-
-export const reorderPlayers = (playerIndex, newIndex) => {
-  return {
-    type: 'GAME_MENU/REORDER_PLAYERS',
-    playerIndex,
-    newIndex
-  }
-}
-
-export const updateGameMenuData = (gameId, language, timer, time, players) => () => {
-  db.collection('games').doc(gameId).update({ language, timer, time, players });
-}
-
-export const setTimer = (timer) => {
-  return {
-    type: 'GAME_MENU/SET_TIMER',
-    timer
-  }
-}
-
-export const setTime = (time) => {
-  return {
-    type: 'GAME_MENU/SET_TIME',
-    time
-  }
-}
-
-export const setInitialListSpace = (initialListSpace) => {
-  return {
-    type: 'GAME_MENU/SET_INITIAL_LIST_SPACE',
-    initialListSpace
-  }
-}
-
-export const setListSpace = (listSpace) => {
-  return {
-    type: 'GAME_MENU/SET_LIST_SPACE',
-    listSpace
-  }
-}
-
-export const setGrabbedElement = (grabbedElement) => {
-  return {
-    type: 'GAME_MENU/SET_GRABBED_ELEMENT',
-    grabbedElement
-  }
-}
-
-export const setIsTransitionEnabled = (isTransitionEnabled) => {
-  return {
-    type: 'GAME_MENU/SET_IS_TRANSITION_ENABLED',
-    isTransitionEnabled
-  }
-}
-
-export const setTouches = (touches) => {
-  return {
-    type: 'GAME_MENU/SET_TOUCHES',
-    touches
-  }
-}
-
-export const setShowConfirmation = (showConfirmation) => {
-  return {
-    type: 'GAME_MENU/SET_SHOW_CONFIRMATION',
-    showConfirmation
-  }
-}
-
-export const subscribeJoinedPlayers = (gameId) => dispatch => {
-  return db.collection('games').doc(gameId).onSnapshot(doc => {
-    const data = doc.data();
-    dispatch(setPlayers(data.players));
+export const updateTimeLimit = (gameId, timeLimit) => dispatch => {
+  axiosInstance.patch(`/games/${gameId}/`, { time_limit: timeLimit })
+  .then(() => {
+    dispatch(timeLimitUpdateSuccess(gameId, timeLimit));
+  })
+  .catch(error => {
+    console.log(error.response.data)
   });
 }
 
-export const startAdminGame = (gameId, user, history) => {
-  return dispatch => {
-    const date = moment().format('DD.MM.YYYY');
-    
-    db.collection('games').doc(gameId).update({ gameStarted: true })
-      .then(() => {
-        dispatch(updateUserAllGames(user.uid, gameId, date));
-      })
-      .then(() => {
-        dispatch(updateUserCurrentGame(user.uid, gameId));
-        history.push(`/game/${gameId}`);
-      })
-      .catch(() => {
-        dispatch(setAlert('alert', 'Something went wrong'));
-      });
-  }
+export const addPlayer = (playerName, gameId) => dispatch => {
+  axiosInstance.post('/players/', { game_id: gameId, username: playerName })
+  .catch(error => {
+    console.log(error.response.data);
+    dispatch(setAlert('alert', 'Something went wrong'));
+  });
 }
 
-export const getCurrentGameFromDatabase = (uid) => {
-  return dispatch => {
-    return db.collection('users').doc(uid).collection('currentGame').doc('gameId').get()
-      .then(response => response.data().id)
-      .catch(() => {
-        dispatch(setAlert('alert', 'Something went wrong'));
-      });
+export const removePlayer = (playerId) => dispatch => {
+  axiosInstance.delete(`/players/${playerId}/`)
+  .catch(error => {
+    console.log(error.response.data);
+    dispatch(setAlert('alert', 'Something went wrong'));
+  });
+}
+
+export const playerGrabbed = (position) => ({
+    type: 'GAME_MENU/PLAYER_GRABBED',
+    position,
+})
+
+export const playerMoved = (placeholder) => ({
+  type: 'GAME_MENU/PLAYER_MOVED',
+  placeholder,
+})
+
+const playesReordered = () => ({
+    type: 'GAME_MENU/PLAYERS_REORDERED',
+})
+
+export const playerDropped = (position, id) => dispatch => {
+  return axiosInstance.patch(`/players/${id}/`, { position })
+  .then(() => {
+    dispatch(playesReordered());
+  })
+  .catch(error => {
+    console.log(error.response.data);
+    dispatch(setAlert('alert', 'Something went wrong'));
+  });
+}
+
+const changeLanguageSuccess = (language) => ({
+  type: 'GAME_MENU/CHANGE_LANGUAGE_SUCCESS',
+  language,
+})
+
+export const changeLanguage = (gameId, language) => dispatch => {
+  if (gameId) {
+    axiosInstance.patch(`/games/${gameId}/`, { language })
+    .then(() => {
+      dispatch(changeLanguageSuccess(language));
+    })
+    .catch(() => {
+      dispatch(setAlert('alert', 'Something went wrong'));
+    });
+  } else {
+    dispatch(changeLanguageSuccess(language));
   }
 }

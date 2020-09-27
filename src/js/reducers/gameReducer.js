@@ -1,59 +1,39 @@
 import { cloneDeep } from 'lodash';
+import moment from 'moment';
+import { listDeserializer, pointsDataDeserializer } from 'serializers';
 
 const initialState = {
-    fetchingGameData: true,
     showWords: false,
     isAudioEnabled: false,
-    currentPlayer: 0,
-    endTime: null,
-    isTimerPaused: false,
-    thisUserPaused: false,
-    players: [],
     timeLeft: null,
-    showMenu: false,
     showFinishedGameCover: false,
+    allPointsData: {},
 };
 
 const gameReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
-        case 'GAME_MENU/ADD_PLAYER':
-            const newPlayers = [...newState.players];
-            newPlayers.push({
-                playerName: action.playerName,
-                uid: action.uid,
-                profileImage: null,
-                admin: action.admin,
-                playerIndex: newState.players.length,
-                currentScore: 0,
-                bestScore: 0,
-                allPoints: [],
-            });
-            newState.players = newPlayers;
+        case 'GAME/ALL_POINTS_CLOSED':
+            const newPointsData = cloneDeep(newState.allPointsData);
+            newPointsData[action.playerId] = null;
+            newState.allPointsData = newPointsData;
             return newState;
 
-        case 'GAME_MENU/REMOVE_PLAYER':
-            const players = newState.players.filter((_, index) => {
-                return action.playerIndex !== index;
-            });
-            newState.players = players;
+        case 'GAME/FETCH_ALL_POINTS/SUCCESS':
+            const data = listDeserializer(action.data, pointsDataDeserializer);
+            
+            const allPointsData = cloneDeep(newState.allPointsData);
+            allPointsData[action.playerId] = cloneDeep(data);
+            
+            newState.allPointsData = allPointsData;
+            newState.fetchingAllPoints = false;
             return newState;
 
-        case 'GAME_MENU/REORDER_PLAYERS':
-            const reorderedPlayers = [...newState.players];
-            reorderedPlayers.splice(action.newIndex, 0, reorderedPlayers.splice(action.playerIndex, 1)[0]);
-            reorderedPlayers.map((player, i) => {
-                return player.playerIndex = i;
-            })
-            newState.players = reorderedPlayers;
-            return newState;
-
-        case 'GAME/SET_FETCHING_GAME_DATA':
-            newState.fetchingGameData = action.fetchingGameData;
-            return newState;
-
-        case 'GAME/SHOW_FINISHED_GAME_COVER':
-            newState.showFinishedGameCover = action.showFinishedGameCover;
+        case 'GAME/TIMER_UPDATED':
+            const now = moment().add(moment(action.timeDiff));
+            let timeLeft = moment(action.timeEnd).diff(now, 'seconds', true);
+            timeLeft = Math.ceil(Math.max(0, timeLeft));
+            newState.timeLeft = timeLeft;
             return newState;
 
         case 'GAME/TOGGLE_SHOW_WORDS':
@@ -64,38 +44,8 @@ const gameReducer = (state = initialState, action) => {
             newState.isAudioEnabled = !newState.isAudioEnabled;
             return newState;
 
-        case 'GAME/SET_CURRENT_PLAYER':
-            newState.currentPlayer = action.currentPlayer;
-            return newState;
-
-        case 'GAME/SET_END_TIME':
-            newState.endTime = action.endTime;
-            return newState;
-
-        case 'GAME/SET_TIMER_PAUSED':
-            newState.isTimerPaused = action.isTimerPaused;
-            return newState;
-
-        case 'GAME/SET_THIS_USER_PAUSED':
-            newState.thisUserPaused = action.thisUserPaused;
-            return newState;
-
-        case 'GAME/SET_PLAYERS':
-            newState.players = action.players;
-            return newState;
-
-        case 'GAME/SET_TIME_LEFT':
-            newState.timeLeft = action.timeLeft;
-            return newState;
-
-        case 'GAME/TOGGLE_SHOW_MENU':
-            newState.showMenu = !state.showMenu;
-            return newState;
-
         case 'APP/CLEAR_APP_STATE':
-            newState = cloneDeep(initialState);
-            return newState;
-
+        case 'SIDE_MENU/QUIT_GAME_SUCCESS':
         case 'APP/EXIT_GAME':
             newState = cloneDeep(initialState);
             return newState;

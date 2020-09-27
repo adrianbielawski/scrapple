@@ -1,44 +1,43 @@
+import { cloneDeep } from 'lodash';
+
 const initialState = {
-    fetchingGameData: true,
     players: {
-        initialListSpace: null,
-        listSpace: null,
+        placeholder: null,
         grabbedElement: null,
         isTransitionEnabled: false,
-        touches: 0
     },
+    showTimePicker: true,
     showConfirmation: false,
 };
 
 const gameMenuReducer = (state = initialState, action) => {
-    let newState = { ...state };
+    let newState = cloneDeep(state);
     switch (action.type) {
-        case 'GAME_MENU/SET_FETCHING_GAME_DATA':
-            newState.fetchingGameData = action.fetching;
+        case 'GAME_PAGE/FETCH_GAME_DATA/SUCCESS':
+            newState.showTimePicker = action.gameData.timeLimit ? true : false;
             return newState;
 
-        case 'GAME_MENU/SET_LIST_SPACE':
-            newState.players.listSpace = action.listSpace;
+        case 'GAME_MENU/TIME_LIMIT_UPDATE/SUCCESS':
+            newState.showTimePicker = action.timeLimit ? true : false;
             return newState;
 
-        case 'GAME_MENU/SET_INITIAL_LIST_SPACE':
-            newState.players.initialListSpace = action.initialListSpace;
+        case 'GAME_MENU/PLAYER_GRABBED':
+            newState.players.grabbedElement = action.position;
+            newState.players.placeholder = action.position - 1;
             return newState;
 
-        case 'GAME_MENU/SET_GRABBED_ELEMENT':
-            newState.players.grabbedElement = action.grabbedElement;
+        case 'GAME_MENU/PLAYERS_REORDERED':
+            newState.players.grabbedElement = null;
+            newState.players.placeholder = null;
+            newState.players.isTransitionEnabled = false;
             return newState;
 
-        case 'GAME_MENU/SET_IS_TRANSITION_ENABLED':
-            newState.players.isTransitionEnabled = action.isTransitionEnabled;
-            return newState;
-
-        case 'GAME_MENU/SET_TOUCHES':
-            newState.players.touches = action.touches;
-            return newState;
-
-        case 'GAME_MENU/SET_SHOW_CONFIRMATION':
-            newState.showConfirmation = action.showConfirmation;
+        case 'GAME_MENU/PLAYER_MOVED':
+            if (!newState.players.isTransitionEnabled) {
+                newState.players.isTransitionEnabled = true;
+            }
+            
+            newState.players.placeholder = action.placeholder;
             return newState;
 
         default:

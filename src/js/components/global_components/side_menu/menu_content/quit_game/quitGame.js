@@ -1,5 +1,4 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -9,22 +8,19 @@ import { setAlert } from 'actions/appActions';
 
 const QuitGame = (props) => {
     const { t } = useTranslation();
-    const { gameId } = useParams();
     let history = useHistory();
+    const player = props.players.find(player => {
+        return player.user.id === props.user.id
+    })
 
     const handleQuitGame = () => {
         if (props.players.length === 2) {
-            props.setAlert('alert', "You can't quit this game, 2 players is required",);
+            props.setAlert('alert', "You can't quit this game, 2 players are required",);
             return;
         }
         props.setAlert('confirm', 'Are you sure you want to quit this game', null, 'quit-game',
             {
-                uid: props.user.uid,
-                gameId,
-                players: props.players,
-                currentPlayer: props.currentPlayer,
-                endTime: props.endTime,
-                time: props.time,
+                playerId: player.id,
                 history,
             }
         );
@@ -40,16 +36,15 @@ const QuitGame = (props) => {
 const mapStateToProps = (state) => {
     return {
         user: state.app.user,
-        players: state.game.players,
-        currentPlayer: state.game.currentPlayer,
-        endTime: state.game.endTime,
-        time: state.timeLimit.time,
+        players: state.gamePage.players,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setAlert: (alertType, messageKey, messageValue, action, alertProps) => dispatch(setAlert(alertType, messageKey, messageValue, action, alertProps)),
+        setAlert: (alertType, messageKey, messageValue, action, alertProps) => dispatch(setAlert(
+            alertType, messageKey, messageValue, action, alertProps)
+        ),
     }
 }
 
