@@ -87,14 +87,6 @@ const appReducer = (state = initialState, action) => {
             newState.isTouchDevice = state.isTouchDevice;
             return newState;
 
-        case 'SIDE_MENU/QUIT_GAME_SUCCESS':
-        case 'APP/EXIT_GAME':
-            newState.fetchingGameData = true;
-            newState.admin = false;
-            newState.playedAgain = false;
-            newState.playedAgainWithSettings = false;
-            return newState;
-
         default:
             return state;
     }
