@@ -241,7 +241,7 @@ i18n
     lng: 'en-GB',
     fallbackLng: 'en-GB',
     resources,
-    debug: true,
+    debug: process.env.NODE_ENV === 'development',
     interpolation: {
       escapeValue: false,
     }
