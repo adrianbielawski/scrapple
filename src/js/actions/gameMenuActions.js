@@ -65,3 +65,22 @@ export const playerDropped = (position, id) => dispatch => {
     dispatch(setAlert('alert', 'Something went wrong'));
   });
 }
+
+const changeLanguageSuccess = (language) => ({
+  type: 'GAME_MENU/CHANGE_LANGUAGE_SUCCESS',
+  language,
+})
+
+export const changeLanguage = (gameId, language) => dispatch => {
+  if (gameId) {
+    axiosInstance.patch(`/games/${gameId}/`, { language })
+    .then(() => {
+      dispatch(changeLanguageSuccess(language));
+    })
+    .catch(() => {
+      dispatch(setAlert('alert', 'Something went wrong'));
+    });
+  } else {
+    dispatch(changeLanguageSuccess(language));
+  }
+}

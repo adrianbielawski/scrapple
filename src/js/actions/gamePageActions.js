@@ -1,10 +1,9 @@
 import axiosInstance from 'axiosInstance';
 import axios from 'axios';
-import i18n from 'i18next';
 //Serializers
 import { gameDeserializer, playerDeserializer } from "serializers";
 //Redux Actions
-import { changeLanguage, setAlert, clearAppStateOnExit } from 'actions/appActions';
+import { setAlert, clearAppStateOnExit } from 'actions/appActions';
 import { setIsGameClosed } from 'actions/gameSummaryActions';
 
 export const webSocketAuthenticated = (timestamp) => ({
@@ -47,10 +46,6 @@ export const fetchGameData = (gameId) => dispatch => {
             const players = playersResponse.data.results.map(player => {
                 return playerDeserializer(player);
             });
-
-            if (i18n.language !== gameData.language) {
-                dispatch(changeLanguage(gameData.language));
-            }
 
             dispatch(fetchGameDataSuccess(gameData, players));
         }))

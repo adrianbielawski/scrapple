@@ -26,7 +26,7 @@ const MainMenu = (props) => {
             return;
         }
 
-        props.joinGame(gameId, props.language, props.history);
+        props.joinGame(gameId, props.history);
         gameIdInput.current.value = '';
     }
 
@@ -79,7 +79,7 @@ const mapDispatchToProps = (dispatch) => {
         setAlert: (type, messageKey, messageValue, action, props) => dispatch(
             setAlert(type, messageKey, messageValue, action, props)
         ),
-        joinGame: (gameId, user, history) => dispatch(joinGame(gameId, user, history)),
+        joinGame: (gameId, history) => dispatch(joinGame(gameId, history)),
         createNewGame: (language, timeLimit, history) => dispatch(createNewGame(language, timeLimit, history)),
     }
 }

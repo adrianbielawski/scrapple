@@ -16,11 +16,15 @@ import Button from 'components/global_components/button/button';
 import SideMenu from 'components/global_components/side_menu/sideMenu';
 //Redux Actions
 import { setAlert } from 'actions/appActions';
-import { startGame } from 'actions/gameMenuActions';
+import { startGame, changeLanguage } from 'actions/gameMenuActions';
 
 const GameMenu = (props) => {
     const { t } = useTranslation();
     const { gameId } = useParams(null);
+
+    const handleLanguageChange = (language) => {
+        props.changeLanguage(gameId, language);
+    }
 
     const handleSubmit = () => {
         const { valid, error } = validateSettings();
@@ -57,7 +61,7 @@ const GameMenu = (props) => {
                 </div>
                 <GameId />
                 <Card className={styles.card}>
-                    <Language showName={true} vertical={true} />
+                    <Language showName={true} vertical={true} onChange={handleLanguageChange} />
                 </Card>
                 <Card className={styles.card}>
                     <TimeLimit />
@@ -86,6 +90,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         startGame: (gameId) => dispatch(startGame(gameId)),
+        changeLanguage: (gameId, language) => dispatch(changeLanguage(gameId, language)),
         setAlert: (type, messageKey, messageValue, action, props) => dispatch(
             setAlert(type, messageKey, messageValue, action, props)
         ),

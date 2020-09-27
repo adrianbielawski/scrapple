@@ -1,6 +1,6 @@
 import axiosInstance from 'axiosInstance';
 //Redux Actions
-import { changeLanguage, setAlert } from 'actions/appActions';
+import { setAlert } from 'actions/appActions';
 
 export const createNewGame = (language, timeLimit, history) => dispatch => {
     axiosInstance.post('/games/', {
@@ -15,12 +15,9 @@ export const createNewGame = (language, timeLimit, history) => dispatch => {
         });
 }
 
-export const joinGame = (gameId, language, history) => dispatch => {
+export const joinGame = (gameId, history) => dispatch => {
     axiosInstance.put(`/games/${gameId}/join/`)
-    .then((response) => {
-        if (response.data.language !== language) {
-            dispatch(changeLanguage(response.data.language));
-        };
+    .then(() => {
         history.push(`/game/${gameId}`);
     })
     .catch((error) => {

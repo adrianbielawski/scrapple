@@ -32,8 +32,14 @@ const appReducer = (state = initialState, action) => {
             newState.deviceOrientation = action.deviceOrientation;
             return newState;
 
-        case 'APP/SET_LANGUAGE':
+        case 'GAME_MENU/CHANGE_LANGUAGE_SUCCESS':
+        case 'APP/LANGUAGE_CHANGED':
             newState.language = action.language;
+            return newState;
+
+        case 'GAME_PAGE/FETCH_GAME_DATA/SUCCESS':
+        case 'GAME_PAGE/GAME_CHANGED':
+            newState.language = action.gameData.language;
             return newState;
 
         case 'APP/SET_ALERT':

@@ -1,6 +1,7 @@
 import React, { useEffect, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import i18n from 'i18n';
 import styles from 'global_styles/app.scss';
 //Custom Components
 import Main from './components/main/main';
@@ -22,6 +23,12 @@ const App = (props) => {
             return false;
         }
     }
+
+    useEffect(() => {
+        const html = document.getElementsByTagName('html');
+        html[0].lang = props.language;
+        i18n.changeLanguage(props.language);
+    }, [props.language])
 
     useEffect(() => {
         if (!props.user) {
@@ -75,6 +82,7 @@ const mapStateToProps = (state) => {
         screenHeight: state.app.screenHeight,
         alert: state.app.alert,
         user: state.app.user,
+        language: state.app.language,
     }
 }
 

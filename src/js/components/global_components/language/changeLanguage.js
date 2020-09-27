@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import languages from './languages';
@@ -7,13 +6,9 @@ import stylesH from './changeLanguageHorizontal.scss';
 import stylesV from './changeLanguageVertical.scss';
 //Custom components
 import Language from './language';
-//Redux Actions
-import { changeLanguage } from 'actions/appActions';
-
 
 const ChangeLanguage = (props) => {
     const { t } = useTranslation();
-    const { gameId } = useParams(null);
     const [showLanguages, setShowLanguages] = useState(false);
     const styles = props.vertical ? stylesV : stylesH;
 
@@ -22,7 +17,7 @@ const ChangeLanguage = (props) => {
     };
 
     const handleLanguageChange = (lang) => {
-        setTimeout(() => props.changeLanguage(lang, gameId), 100);
+        setTimeout(() => props.onChange(lang), 100);
     }
 
     const getLanguages = () => {
@@ -34,7 +29,7 @@ const ChangeLanguage = (props) => {
             const onClick = useCallback(
                 () => handleLanguageChange(lang[1].symbol),
                 [lang[1].symbol]
-            )
+            );
             
             return (
                 <Language
@@ -73,10 +68,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        changeLanguage: (language, gameId) => dispatch(changeLanguage(language, gameId)),
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChangeLanguage);
+export default connect(mapStateToProps)(ChangeLanguage);

@@ -1,6 +1,3 @@
-import i18n from 'i18n';
-import axiosInstance from 'axiosInstance';
-
 export const clearAppState = () => {
     return {
         type: 'APP/CLEAR_APP_STATE',
@@ -52,17 +49,10 @@ export const removeAlert = () => {
     }
 }
 
-export const changeLanguage = (language, gameId) => {
-    return dispatch => {
-        if (gameId) {
-            axiosInstance.patch(`/games/${gameId}/`, { language })
-        }
-        const html = document.getElementsByTagName('html');
-        html[0].lang = language;
-        i18n.changeLanguage(language);
-        dispatch(setLanguage(language));
-    }
-}
+export const changeLanguage = (language) => ({
+    type: 'APP/LANGUAGE_CHANGED',
+    language,
+})
 
 export const clearAppStateOnExit = () => {
     return {
