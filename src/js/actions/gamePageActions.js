@@ -4,8 +4,8 @@ import i18n from 'i18next';
 //Serializers
 import { gameDeserializer, playerDeserializer } from "serializers";
 //Redux Actions
-import { setAlert } from 'actions/appActions';
-import { changeLanguage } from 'actions/appActions';
+import { changeLanguage, setAlert, clearAppStateOnExit } from 'actions/appActions';
+import { setIsGameClosed } from 'actions/gameSummaryActions';
 
 export const webSocketAuthenticated = (timestamp) => ({
     type: 'GAME_PAGE/WEB_SOCKET_AUTHENTICATED',
@@ -69,3 +69,16 @@ export const gameChanged = (gameData) => ({
     type: 'GAME_PAGE/GAME_CHANGED',
     gameData,
 })
+
+export const joinNewGame = (data, history) => () => {
+    history.push(`/game/${data.id}`);
+}
+
+export const gameClosed = (admin, history) => dispatch => {
+    if (admin) {
+        history.push(`/main_menu`);
+        dispatch(clearAppStateOnExit());
+    } else {
+        dispatch(setIsGameClosed())
+    }
+}

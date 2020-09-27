@@ -3,13 +3,14 @@ import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 //Custom Components
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
+import JoinGameConfirmation from './join_game_confirmation/joinGameConfirmation';
 const GameMenu = React.lazy(() => import('components/game_menu/gameMenu'));
 const Game = React.lazy(() => import('components/game/game'));
 const GameSummary = React.lazy(() => import('components/game_summary/gameSummary'));
 const SubtractPoints = React.lazy(() => import('components/subtract_points/subtractPoints'));
 //Redux Actions
-import { webSocketAuthenticated, fetchGameData, playersChanged, gameChanged } from 'actions/gamePageActions';
-import JoinGameConfirmation from './join_game_confirmation/joinGameConfirmation';
+import { webSocketAuthenticated, fetchGameData, playersChanged, gameChanged,
+    joinNewGame, gameClosed } from 'actions/gamePageActions';
 
 const GamePage = (props) => {
     const { gameId } = useParams(null);
@@ -27,7 +28,7 @@ const GamePage = (props) => {
                 type: 'authenticate',
                 token,
             }));
-        }
+        };
 
         socket.current.onmessage = (e) => {
             const data = JSON.parse(e.data);
@@ -41,6 +42,12 @@ const GamePage = (props) => {
                     break;
                 case 'game_changed':
                     props.gameChanged(data.game);
+                    break;
+                case 'game_created':
+                    props.joinNewGame(data.game, props.history);
+                    break;
+                case 'game_closed':
+                    props.gameClosed(admin, props.history);
                     break;
             }
         };
@@ -60,7 +67,7 @@ const GamePage = (props) => {
         return () => {
             socket.current.close();
         }
-    }, []);
+    }, [gameId, props.gameData.createdBy]);
 
     const getContent = () => {
         if (props.gameData.pointsSubtracted !== false) {
@@ -95,6 +102,8 @@ const mapDispatchToProps = (dispatch) => {
         fetchGameData: (gameId) => dispatch(fetchGameData(gameId)),
         playersChanged: (players) => dispatch(playersChanged(players)),
         gameChanged: (gameData) => dispatch(gameChanged(gameData)),
+        joinNewGame: (gameData, history) => dispatch(joinNewGame(gameData, history)),
+        gameClosed: (admin, history) => dispatch(gameClosed(admin, history)),
     }
 }
 
