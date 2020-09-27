@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import styles from './imagePreview.scss';
 
-const BASE_URL = 'http://192.168.1.10:8000';
+const BASE_URL = process.env.API_URL;
 
 const ImagePreview = (props) => {
     const getImage = () => {

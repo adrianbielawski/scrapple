@@ -12,6 +12,8 @@ const SubtractPoints = React.lazy(() => import('components/subtract_points/subtr
 import { webSocketAuthenticated, joinGame, playersChanged, gameChanged,
     joinNewGame, gameClosed } from 'actions/gamePageActions';
 
+const WS_URL = process.env.WS_URL;
+
 const GamePage = (props) => {
     const { gameId } = useParams(null);
     const socket = useRef(null);
@@ -19,7 +21,7 @@ const GamePage = (props) => {
 
     const connect = () => {
         socket.current = new WebSocket(
-            `ws://192.168.1.10:8000/ws/games/${gameId}/`
+            `${WS_URL}/ws/games/${gameId}/`
         );
 
         socket.current.onopen = () => {

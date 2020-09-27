@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://fafik.local:8000'
+    baseURL: process.env.API_URL,
 });
 
 instance.interceptors.request.use(request => {

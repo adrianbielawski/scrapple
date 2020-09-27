@@ -13,7 +13,7 @@ import UserIcon from 'components/global_components/user_icon/userIcon';
 //Redux actions
 import { getAllPoints, allPointsClosed } from 'actions/gameActions';
 
-const BASE_URL = 'http://192.168.1.10:8000';
+const BASE_URL = process.env.API_URL;
 const ANIMATION_DURATION = 200;
 
 const PlayerStats = (props) => {

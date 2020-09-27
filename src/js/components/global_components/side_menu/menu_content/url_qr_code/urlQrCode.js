@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import styles from './urlQrCode.scss'
 
-const BASE_URL = 'http://192.168.1.10:8000';
+const BASE_URL = process.env.API_URL;
 
 const UrlQrCode = (props) => {
     const { t } = useTranslation();
