@@ -2,8 +2,8 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const PrivateRoute = ({ component: Component, loadingAuthState, user, ...rest }) => {
-    if (loadingAuthState) {
+const PrivateRoute = ({ component: Component, isInitialized, user, ...rest }) => {
+    if (!isInitialized) {
         return <div>Loading...</div>
     }
 
@@ -11,7 +11,7 @@ const PrivateRoute = ({ component: Component, loadingAuthState, user, ...rest })
         <Route {...rest} render={props => (
             user ? <Component {...props} /> : <Redirect to={{
                 pathname: '/login',
-                state: { referrer: window.location.pathname.slice(1) }
+                state: { referrer: props.location }
             }} />
         )} />
     )
@@ -19,7 +19,7 @@ const PrivateRoute = ({ component: Component, loadingAuthState, user, ...rest })
 
 const mapStateToProps = (state) => {
     return {
-        loadingAuthState: state.auth.loadingAuthState,
+        isInitialized: state.auth.isInitialized,
         user: state.app.user,
     }
 }

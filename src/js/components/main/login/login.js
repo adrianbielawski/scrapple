@@ -10,9 +10,12 @@ import Input from 'components/global_components/input/input';
 import Button from 'components/global_components/button/button';
 //Redux Actions
 import { logIn } from 'actions/authActions';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const Login = (props) => {
     const { t } = useTranslation();
+    const history = useHistory();
+    const location = useLocation();
     const emailInput = useRef(null);
     const passwordInput = useRef(null);
 
@@ -21,7 +24,7 @@ const Login = (props) => {
         const email = emailInput.current.value;
         const password = passwordInput.current.value;
 
-        props.logIn(email, password, props.history);
+        props.logIn(email, password, history, location);
     }
 
     const handleSignUp = () => {
@@ -54,7 +57,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        logIn: (email, password, history) => dispatch(logIn(email, password, history)),
+        logIn: (email, password, history, location) => dispatch(logIn(email, password, history, location)),
     }
 }
 

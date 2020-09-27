@@ -48,7 +48,7 @@ const logInFailure = () => ({
     type: 'AUTH/LOG_IN/FAILURE',
 })
 
-export const logIn = (email, password, history) => dispatch => {
+export const logIn = (email, password, history, location) => dispatch => {
     dispatch(logInStart());
     
     axiosInstance.post('/login/', {
@@ -58,7 +58,9 @@ export const logIn = (email, password, history) => dispatch => {
     .then(response => {
         localStorage.setItem('token', response.data.key);
         dispatch(logInSuccess(response.data.user));
-        history.push('/main_menu');
+
+        const { referrer } = location.state || { referrer: '/main_menu' };
+        history.push(referrer);
     })
     .catch(error => {
         dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
@@ -81,6 +83,14 @@ const getUserSuccess = (user) => ({
     user,
 })
 
+const getUserFailure = () => ({
+    type: 'AUTH/GET_USER/FAILURE',
+})
+
+export const authInitialized = () => ({
+    type: 'AUTH/INITIALIZED',
+})
+
 export const getUser = () => dispatch => {
     axiosInstance.get('/user/')
     .then(response => {
@@ -88,6 +98,7 @@ export const getUser = () => dispatch => {
     })
     .catch(() => {
         localStorage.removeItem('token');
+        dispatch(getUserFailure());
     });
 };
 

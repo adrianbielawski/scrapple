@@ -1,5 +1,6 @@
 const initialState = {
-    loadingAuthState: true,
+    isInitialized: false,
+    userChecked: false,
     isLoggingIn: false,
     isSigningUp: false,
     isChangingName: false,
@@ -15,10 +16,6 @@ const authReducer = (state = initialState, action) => {
             return newState;
 
         case 'AUTH/LOG_IN/SUCCESS':
-            newState.isLoggingIn = false;
-            newState.loadingAuthState = false;
-            return newState;
-
         case 'AUTH/LOG_IN/FAILURE':
             newState.isLoggingIn = false;
             return newState;
@@ -28,22 +25,21 @@ const authReducer = (state = initialState, action) => {
             return newState;
 
         case 'AUTH/SIGN_UP/SUCCESS':
-            newState.isSigningUp = false;
-            newState.loadingAuthState = false;
-            return newState;
-
         case 'AUTH/SIGN_UP/FAILURE':
             newState.isSigningUp = false;
             return newState;
 
+        case 'AUTH/INITIALIZED':
         case 'AUTH/GET_USER/SUCCESS':
-            newState.loadingAuthState = false;
+        case 'AUTH/GET_USER/FAILURE':
+            newState.isInitialized = true;
             return newState;
 
         case 'AUTH/USERNAME_CHANGE/START':
             newState.isChangingName = true;
             return newState;
 
+        case 'AUTH/USERNAME_CHANGE/SUCCESS':
         case 'AUTH/USERNAME_CHANGE/FAILURE':
             newState.isChangingName = false;
             return newState;
@@ -52,6 +48,7 @@ const authReducer = (state = initialState, action) => {
             newState.isChangingPassword = true;
             return newState;
 
+        case 'AUTH/PASSWORD_CHANGE/SUCCESS':
         case 'AUTH/PASSWORD_CHANGE/FAILURE':
             newState.isChangingPassword = false;
             return newState;

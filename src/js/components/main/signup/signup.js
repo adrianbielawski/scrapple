@@ -13,6 +13,7 @@ import { setAlert } from 'actions/appActions';
 
 const Signup = (props) => {
     const { t } = useTranslation();
+    const history = useHistory();
     const userNameInput = useRef(null);
     const emailInput = useRef(null);
     const passwordInput = useRef(null);
@@ -45,7 +46,7 @@ const Signup = (props) => {
         const userName = userNameInput.current.value;
         const email = emailInput.current.value;
 
-        props.signUp(userName, email, password, repeatedPassword, props.history);
+        props.signUp(userName, email, password, repeatedPassword, history);
     }
 
     return (

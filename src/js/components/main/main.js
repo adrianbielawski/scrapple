@@ -20,8 +20,8 @@ const Main = (props) => {
             <div className={styles.content}>
                 <Language showName={false} onChange={handleLanguageChange} />
                 {props.location.pathname === '/signup' ?
-                    <Signup history={props.history} /> :
-                    <Login history={props.history} />
+                    <Signup /> :
+                    <Login />
                 }
             </div>
         </div>

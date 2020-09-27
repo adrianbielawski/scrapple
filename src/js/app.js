@@ -12,7 +12,7 @@ import LoadingSpinner from 'components/global_components/loading_spinner/loading
 import Alert from 'components/global_components/alert/alert';
 //Redux Actions
 import { setDeviceOrientation, setIsTouchDevice, setScreenHeight, clearAppState } from 'actions/appActions';
-import { getUser } from 'actions/authActions';
+import { getUser, authInitialized } from 'actions/authActions';
 
 const App = (props) => {
     const inspectDeviceScreen = () => {
@@ -52,6 +52,8 @@ const App = (props) => {
     useEffect(() => {
         if (localStorage.getItem('token')) {
             props.getUser();
+        } else {
+            props.authInitialized();
         }
     }, [])
 
@@ -93,6 +95,7 @@ const mapDispatchToProps = (dispatch) => {
         setDeviceOrientation: (deviceOrientation) => dispatch(setDeviceOrientation(deviceOrientation)),
         clearAppState: () => dispatch(clearAppState()),
         getUser: () => dispatch(getUser()),
+        authInitialized: () => dispatch(authInitialized()),
     }
 }
 
