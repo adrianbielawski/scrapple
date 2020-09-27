@@ -32,7 +32,7 @@ const ExitOptions = (props) => {
     };
 
     const handleExitGame = () => {
-        props.exitGame(admin, gameId, props.history);
+        props.exitGame(admin, gameId, history);
     }
 
     return (

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import { useTranslation } from 'react-i18next';
@@ -13,6 +14,7 @@ import { quitGame } from 'actions/sideMenuActions';
 
 const Alert = (props) => {
     const { t } = useTranslation();
+    const history = useHistory();
 
     const handleAlertResponse = (e) => {
         const response = e.target.value;
@@ -23,7 +25,7 @@ const Alert = (props) => {
                     break;
 
                 case 'user-registered':
-                    props.history.push('/login');
+                    history.push('/login');
                     break;
 
                 case 'change-name':

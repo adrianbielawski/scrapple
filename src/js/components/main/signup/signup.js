@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import styles from './signup.scss';

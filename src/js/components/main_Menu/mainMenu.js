@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import styles from './mainMenu.scss';
@@ -16,6 +17,7 @@ import { joinGame, createNewGame } from 'actions/mainMenuActions';
 const MainMenu = (props) => {
     const gameIdInput = useRef(null);
     const { t } = useTranslation();
+    const history = useHistory();
 
     const handleJoinGame = () => {
         const gameId = gameIdInput.current.value.trim();
@@ -26,7 +28,7 @@ const MainMenu = (props) => {
             return;
         }
 
-        props.joinGame(gameId, props.history);
+        props.joinGame(gameId, history);
         gameIdInput.current.value = '';
     }
 
@@ -44,7 +46,7 @@ const MainMenu = (props) => {
     };
 
     const handleCreateNewGame = () => {
-        props.createNewGame(props.language, props.timeLimit, props.history);
+        props.createNewGame(props.language, props.timeLimit, history);
     }
 
     return (

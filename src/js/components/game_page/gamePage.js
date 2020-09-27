@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 //Custom Components
@@ -16,6 +17,7 @@ const WS_URL = process.env.WS_URL;
 
 const GamePage = (props) => {
     const { gameId } = useParams(null);
+    const history = useHistory();
     const socket = useRef(null);
     const admin = props.user.id === props.gameData.createdBy;
 
@@ -46,10 +48,10 @@ const GamePage = (props) => {
                     props.gameChanged(data.game);
                     break;
                 case 'game_created':
-                    props.joinNewGame(data.game, props.history);
+                    props.joinNewGame(data.game, history);
                     break;
                 case 'game_closed':
-                    props.gameClosed(admin, props.history);
+                    props.gameClosed(admin, history);
                     break;
             }
         };
@@ -63,7 +65,7 @@ const GamePage = (props) => {
     }
 
     useEffect(() => {
-        props.joinGame(gameId, props.history);
+        props.joinGame(gameId, history);
         connect();
 
         return () => {

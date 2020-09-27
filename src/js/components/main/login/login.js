@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
@@ -10,7 +11,6 @@ import Input from 'components/global_components/input/input';
 import Button from 'components/global_components/button/button';
 //Redux Actions
 import { logIn } from 'actions/authActions';
-import { useHistory, useLocation } from 'react-router-dom';
 
 const Login = (props) => {
     const { t } = useTranslation();
@@ -28,7 +28,7 @@ const Login = (props) => {
     }
 
     const handleSignUp = () => {
-        props.history.push('/signup');
+        history.push('/signup');
     }
 
     return (
