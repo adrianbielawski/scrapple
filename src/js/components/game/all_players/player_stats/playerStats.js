@@ -52,7 +52,7 @@ const PlayerStats = (props) => {
             <div className={styles.wrapper}>
                 <div className={styles.profileImage}>
                     {props.player.user.image
-                        ? <img src={`${BASE_URL}${props.player.user.imageThumbnail}`}/>
+                        ? <img src={`${BASE_URL}${props.player.user.imageThumbnail}`} className={styles.img} />
                         : <FontAwesomeIcon icon={faUser} />
                     }
                     <UserIcon className={styles.badge} player={props.player} />
