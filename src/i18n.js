@@ -54,6 +54,7 @@ const resources = {
       "repeat new password" : "repeat new password",
       "Change profile image" : "Change profile image",
       "Quit this game" : "Quit this game",
+      "Show QR code to other players for easy join" : "Show QR code to other players for easy join",
       //SubtractPoints
       "Subtract points of unused letters" : "Subtract points of unused letters",
       //GameSummary
@@ -169,6 +170,7 @@ const resources = {
       "repeat new password" : "powtórz hasło",
       "Change profile image" : "Zmień zdjęcie profilowe",
       "Quit this game" : "Quit this game",
+      "Show QR code to other players for easy join" : "Pokaż QR kod innym graczom aby łatwo dołączyć do gry",
       //SubtractPoints
       "Subtract points of unused letters" : "Odejmij wartość pozostałych liter",
       //GameSummary

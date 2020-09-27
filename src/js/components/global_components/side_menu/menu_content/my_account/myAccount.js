@@ -6,7 +6,6 @@ import styles from './myAccount.scss'
 //Custom Components
 import GamesHistory from './games_history/gamesHistory';
 import AccountSettings from './account_settings/accountSettings';
-import LogOut from 'components/global_components/accountInfo/logout';
 //Redux actions
 import { toggleMyAccount } from 'actions/sideMenuActions';
 
@@ -25,7 +24,6 @@ const MyAccount = (props) => {
             <div className={accountContentClass}>
                 <AccountSettings />
                 <GamesHistory />
-                <LogOut className={styles.logout} />
             </div>
         </div>
     );

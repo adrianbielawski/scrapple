@@ -22,7 +22,7 @@ const SideMenu = (props) => {
     return (
         <div className={styles.menuWrapper}>
             <div className={`${styles.menuIcon} ${props.className}`}>
-                <img src={burgerIcon} onClick={props.toggleShowMenu}></img>
+                <img src={burgerIcon} onClick={props.toggleShowMenu} className={styles.icon} />
             </div>
             <div className={menuClass}>
                 <div className={styles.menu}>
