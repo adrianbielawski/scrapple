@@ -37,7 +37,7 @@ const getPlayersData = (gameId) => {
     })
 }
 
-export const fetchGameData = (gameId) => dispatch => {
+const fetchGameData = (gameId) => dispatch => {
     dispatch(fetchGameDataStart());
 
     axios.all([getGameData(gameId), getPlayersData(gameId)])
@@ -64,6 +64,16 @@ export const gameChanged = (gameData) => ({
     type: 'GAME_PAGE/GAME_CHANGED',
     gameData,
 })
+
+export const joinGame = (gameId, history) => dispatch => {
+    axiosInstance.put(`/games/${gameId}/join/`)
+    .then(() => {
+        dispatch(fetchGameData(gameId))
+    })
+    .catch((error) => {
+        history.push('/main_menu');
+    });
+}
 
 export const joinNewGame = (data, history) => () => {
     history.push(`/game/${data.id}`);

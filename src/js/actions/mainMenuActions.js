@@ -21,8 +21,6 @@ export const joinGame = (gameId, history) => dispatch => {
         history.push(`/game/${gameId}`);
     })
     .catch((error) => {
-        dispatch(joinGameFailure());
         dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
-    })
-
+    });
 }

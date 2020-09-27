@@ -9,7 +9,7 @@ const Game = React.lazy(() => import('components/game/game'));
 const GameSummary = React.lazy(() => import('components/game_summary/gameSummary'));
 const SubtractPoints = React.lazy(() => import('components/subtract_points/subtractPoints'));
 //Redux Actions
-import { webSocketAuthenticated, fetchGameData, playersChanged, gameChanged,
+import { webSocketAuthenticated, joinGame, playersChanged, gameChanged,
     joinNewGame, gameClosed } from 'actions/gamePageActions';
 
 const GamePage = (props) => {
@@ -61,7 +61,7 @@ const GamePage = (props) => {
     }
 
     useEffect(() => {
-        props.fetchGameData(gameId);
+        props.joinGame(gameId, props.history);
         connect();
 
         return () => {
@@ -99,7 +99,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         webSocketAuthenticated: (timestamp) => dispatch(webSocketAuthenticated(timestamp)),
-        fetchGameData: (gameId) => dispatch(fetchGameData(gameId)),
+        joinGame: (gameId, history) => dispatch(joinGame(gameId, history)),
         playersChanged: (players) => dispatch(playersChanged(players)),
         gameChanged: (gameData) => dispatch(gameChanged(gameData)),
         joinNewGame: (gameData, history) => dispatch(joinNewGame(gameData, history)),
