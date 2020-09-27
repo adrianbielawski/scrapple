@@ -3,7 +3,10 @@ import axiosInstance from 'axiosInstance';
 import { changeLanguage, setAlert } from 'actions/appActions';
 
 export const createNewGame = (language, timeLimit, history) => dispatch => {
-    axiosInstance.post('/games/', {language, time_limit: timeLimit})
+    axiosInstance.post('/games/', {
+        language,
+        time_limit: timeLimit,
+    })
         .then(response => {
             history.push(`/game/${response.data.id}`);
         })

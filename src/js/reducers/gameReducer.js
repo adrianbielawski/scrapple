@@ -45,9 +45,6 @@ const gameReducer = (state = initialState, action) => {
             return newState;
 
         case 'APP/CLEAR_APP_STATE':
-            newState = cloneDeep(initialState);
-            return newState;
-
         case 'SIDE_MENU/QUIT_GAME_SUCCESS':
         case 'APP/EXIT_GAME':
             newState = cloneDeep(initialState);

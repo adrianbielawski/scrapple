@@ -73,7 +73,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setAlert: (type, messageKey, messageValue, action, alertProps) => dispatch(setAlert(type, messageKey, messageValue, action, alertProps)),
         removeAlert: () => dispatch(removeAlert()),
-        handleFinishGame: (gameId, admin) => dispatch(handleFinishGame(gameId, admin)),
+        handleFinishGame: (gameId) => dispatch(handleFinishGame(gameId)),
         changeUserName: (newName) => dispatch(changeUserName(newName)),
         changeUserPassword: (newPassword) => dispatch(changeUserPassword(newPassword)),
         quitGame: (playerId, history) => dispatch(quitGame(playerId, history)),

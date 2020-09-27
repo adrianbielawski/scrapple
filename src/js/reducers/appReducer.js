@@ -6,11 +6,7 @@ const initialState = {
     isTouchDevice: false,
     deviceOrientation: '',
     user: null,
-    fetchingGameData: true,
     language: 'en-GB',
-    admin: false,
-    playedAgain: false,
-    playedAgainWithSettings: false,
     alert: {
         show: false,
         type: '',
@@ -36,34 +32,8 @@ const appReducer = (state = initialState, action) => {
             newState.deviceOrientation = action.deviceOrientation;
             return newState;
 
-        case 'APP/SET_FETCHING_GAME_DATA':
-            newState.fetchingGameData = action.fetching;
-            return newState;
-
-        case 'APP/CLEAR_APP_STATE':
-            newState = cloneDeep(initialState);
-            newState.language = state.language;
-            newState.isTouchDevice = state.isTouchDevice;
-            return newState;
-            
-        case 'SIDE_MENU/QUIT_GAME_SUCCESS':
-        case 'APP/EXIT_GAME':
-            newState.fetchingGameData = true;
-            newState.admin = false;
-            newState.playedAgain = false;
-            newState.playedAgainWithSettings = false;
-            return newState;
-
         case 'APP/SET_LANGUAGE':
             newState.language = action.language;
-            return newState;
-
-        case 'APP/SET_PLAYED_AGAIN':
-            newState.playedAgain = action.playedAgain;
-            return newState;
-
-        case 'APP/SET_PLAYED_AGAIN_WITH_SETTINGS':
-            newState.playedAgainWithSettings = action.playedAgainWithSettings;
             return newState;
 
         case 'APP/SET_ALERT':
@@ -103,6 +73,20 @@ const appReducer = (state = initialState, action) => {
         case 'AUTH/PROFILE_IMAGE_UPDATE/SUCCESS':
             newState = cloneDeep(newState);
             newState.user.image = action.image;
+            return newState;
+
+        case 'APP/CLEAR_APP_STATE':
+            newState = cloneDeep(initialState);
+            newState.language = state.language;
+            newState.isTouchDevice = state.isTouchDevice;
+            return newState;
+
+        case 'SIDE_MENU/QUIT_GAME_SUCCESS':
+        case 'APP/EXIT_GAME':
+            newState.fetchingGameData = true;
+            newState.admin = false;
+            newState.playedAgain = false;
+            newState.playedAgainWithSettings = false;
             return newState;
 
         default:

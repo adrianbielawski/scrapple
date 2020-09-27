@@ -1,5 +1,5 @@
 import React, { useEffect, Suspense } from 'react';
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styles from 'global_styles/app.scss';
 //Custom Components
@@ -10,14 +10,10 @@ import PrivateRoute from 'hoc/PrivateRoute';
 import LoadingSpinner from 'components/global_components/loading_spinner/loadingSpinner';
 import Alert from 'components/global_components/alert/alert';
 //Redux Actions
-import { setDeviceOrientation, setIsTouchDevice, setScreenHeight, setUser, clearAppState,
-    getUserCurrentGame, checkCurrentGameStatus } from 'actions/appActions';
+import { setDeviceOrientation, setIsTouchDevice, setScreenHeight, clearAppState } from 'actions/appActions';
 import { getUser } from 'actions/authActions';
 
 const App = (props) => {
-    // const location = useLocation();
-    // let history = useHistory();
-
     const inspectDeviceScreen = () => {
         try {
             document.createEvent("TouchEvent");
@@ -28,21 +24,7 @@ const App = (props) => {
     }
 
     useEffect(() => {
-        if (props.user) {
-            // TO DO
-
-            // const currentGamePromise = props.getUserCurrentGame(user.uid);
-            // currentGamePromise.then((currentGame) => {
-            //     if (currentGame) {
-            //         const isCurrentGameValid = props.checkCurrentGameStatus(currentGame)
-            //         isCurrentGameValid.then((isValid) => {
-            //             if (isValid) {
-            //                 history.push(`/game/${currentGame}`);
-            //             }
-            //         });
-            //     }
-            // });
-        } else {
+        if (!props.user) {
             props.clearAppState();
         }
     }, [props.user])
@@ -101,10 +83,7 @@ const mapDispatchToProps = (dispatch) => {
         setIsTouchDevice: (isTouchDevice) => dispatch(setIsTouchDevice(isTouchDevice)),
         setScreenHeight: (height) => dispatch(setScreenHeight(height)),
         setDeviceOrientation: (deviceOrientation) => dispatch(setDeviceOrientation(deviceOrientation)),
-        setUser: (user) => dispatch(setUser(user)),
-        getUserCurrentGame: (uid) => dispatch(getUserCurrentGame(uid)),
         clearAppState: () => dispatch(clearAppState()),
-        checkCurrentGameStatus: (gameId) => dispatch(checkCurrentGameStatus(gameId)),
         getUser: () => dispatch(getUser()),
     }
 }
