@@ -6,6 +6,7 @@ import styles from './menuContent.scss'
 import GameId from 'components/global_components/game_id/gameId';
 import MyAccount from './my_account/myAccount';
 import QuitGame from './quit_game/quitGame';
+import UrlQrCode from './url_qr_code/urlQrCode';
 
 const MenuContent = (props) => {
     const { gameId } = useParams();
@@ -16,6 +17,7 @@ const MenuContent = (props) => {
             {gameId && <GameId />}
             <MyAccount />
             {!admin && props.players.length > 0 ? <QuitGame /> : null}
+            {gameId && <UrlQrCode />}
         </div>
     );
 }
