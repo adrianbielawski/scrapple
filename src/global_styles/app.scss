@@ -9,6 +9,10 @@ html, body, div, span, h1, h2, p, a, ul, li {
     font-family: "nunito", sans-serif;
 }
 
+body {
+    overflow-y: scroll;
+}
+
 h2 {
     font-size: 2em;
     font-weight: 600;
