@@ -31,9 +31,8 @@ export const signUp = (userName, email, password, repeatedPassword, history) => 
     })
     .catch(error => {
         dispatch(signUpFailure());
-        const message = Object.values(error.response.data)[0][0];
-        if (message) {
-            dispatch(setAlert('alert', message));
+        if (error.response) {
+            dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
         } else {
             dispatch(setAlert('alert', 'Something went wrong'));
         }
@@ -69,9 +68,8 @@ export const logIn = (email, password, history, location) => dispatch => {
     })
     .catch(error => {
         dispatch(logInFailure());
-        const message = Object.values(error.response.data)[0][0];
-        if (message) {
-            dispatch(setAlert('alert', message));
+        if (error.response) {
+            dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
         } else {
             dispatch(setAlert('alert', 'Something went wrong'));
         }
@@ -84,9 +82,8 @@ export const logOut = () => dispatch => {
         localStorage.removeItem('token');
     })
     .catch(error => {
-        const message = Object.values(error.response.data)[0][0];
-        if (message) {
-            dispatch(setAlert('alert', message));
+        if (error.response) {
+            dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
         } else {
             dispatch(setAlert('alert', 'Something went wrong'));
         }
@@ -140,9 +137,8 @@ export const changeUserName = ({ newName }) => dispatch => {
     })
     .catch(() => {
         dispatch(changeUsernameFailure());
-        const message = Object.values(error.response.data)[0][0];
-        if (message) {
-            dispatch(setAlert('alert', message));
+        if (error.response) {
+            dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
         } else {
             dispatch(setAlert('alert', 'Something went wrong'));
         }
@@ -170,9 +166,8 @@ export const changeUserPassword = ({ newPassword, repeatPassword }) => dispatch 
     })
     .catch((error) => {
         dispatch(changePasswordFailure());
-        const message = Object.values(error.response.data)[0][0];
-        if (message) {
-            dispatch(setAlert('alert', message));
+        if (error.response) {
+            dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
         } else {
             dispatch(setAlert('alert', 'Something went wrong'));
         }
@@ -205,9 +200,8 @@ export const updateProfileImage = (image) => dispatch => {
     })
     .catch((error) => {
         dispatch(profileImageUpdateFailure());
-        const message = Object.values(error.response.data)[0][0];
-        if (message) {
-            dispatch(setAlert('alert', message));
+        if (error.response) {
+            dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
         } else {
             dispatch(setAlert('alert', 'Something went wrong'));
         }
