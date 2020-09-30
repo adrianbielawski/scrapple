@@ -1,0 +1,24 @@
+.item {
+    width: 100%;
+    list-style: none;
+    &.transition {
+        transition: transform .2s linear;
+    }
+    &.grabbed {
+        position: fixed;
+        box-shadow: 2px 2px 3px #a2a2a2;
+        z-index: 10000;
+    }
+    &.removed {
+        transition-property: width, max-height;
+        transition-duration: 0.4s, 0.4s;
+        transition-delay: 0.1s, 0.4s;
+        transition-timing-function: ease-in, ease;
+        width: 0;
+        max-height: 0;
+        &.rightAnimation {
+            float: right;
+            clear: both;
+        }
+    }
+}
