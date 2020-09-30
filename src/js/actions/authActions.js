@@ -30,8 +30,13 @@ export const signUp = (userName, email, password, repeatedPassword, history) => 
         history.push('/main_menu');
     })
     .catch(error => {
-        dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
         dispatch(signUpFailure());
+        const message = Object.values(error.response.data)[0][0];
+        if (message) {
+            dispatch(setAlert('alert', message));
+        } else {
+            dispatch(setAlert('alert', 'Something went wrong'));
+        }
     });
 }
 
@@ -63,8 +68,13 @@ export const logIn = (email, password, history, location) => dispatch => {
         history.push(referrer);
     })
     .catch(error => {
-        dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
         dispatch(logInFailure());
+        const message = Object.values(error.response.data)[0][0];
+        if (message) {
+            dispatch(setAlert('alert', message));
+        } else {
+            dispatch(setAlert('alert', 'Something went wrong'));
+        }
     });
 };
 
@@ -74,7 +84,12 @@ export const logOut = () => dispatch => {
         localStorage.removeItem('token');
     })
     .catch(error => {
-        dispatch(setAlert('alert', error.response.data));
+        const message = Object.values(error.response.data)[0][0];
+        if (message) {
+            dispatch(setAlert('alert', message));
+        } else {
+            dispatch(setAlert('alert', 'Something went wrong'));
+        }
     });
 }
 
@@ -125,7 +140,12 @@ export const changeUserName = ({ newName }) => dispatch => {
     })
     .catch(() => {
         dispatch(changeUsernameFailure());
-        dispatch(setAlert('alert', 'Something went wrong'));
+        const message = Object.values(error.response.data)[0][0];
+        if (message) {
+            dispatch(setAlert('alert', message));
+        } else {
+            dispatch(setAlert('alert', 'Something went wrong'));
+        }
     })
 }
 
@@ -150,7 +170,12 @@ export const changeUserPassword = ({ newPassword, repeatPassword }) => dispatch 
     })
     .catch((error) => {
         dispatch(changePasswordFailure());
-        dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
+        const message = Object.values(error.response.data)[0][0];
+        if (message) {
+            dispatch(setAlert('alert', message));
+        } else {
+            dispatch(setAlert('alert', 'Something went wrong'));
+        }
     })
 }
 
@@ -180,6 +205,11 @@ export const updateProfileImage = (image) => dispatch => {
     })
     .catch((error) => {
         dispatch(profileImageUpdateFailure());
-        dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
+        const message = Object.values(error.response.data)[0][0];
+        if (message) {
+            dispatch(setAlert('alert', message));
+        } else {
+            dispatch(setAlert('alert', 'Something went wrong'));
+        }
     });
 }
