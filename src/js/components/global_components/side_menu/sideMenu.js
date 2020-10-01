@@ -11,17 +11,13 @@ import burgerIcon from "img/burger-menu-icon.png";
 
 const SideMenu = (props) => {
     const cx = classNames.bind(styles);
-    const menuClass = cx({
-        content: true,
-        show: props.showMenu,
-    });
-    const backgroundClass = cx({
-        background: true,
-        show: props.showMenu,
-    });
+    const menuClass = cx('content', { show: props.showMenu });
+    const backgroundClass = cx('background', { show: props.showMenu });
+    const iconClass = cx('menuIcon', props.ClassName)
+    
     return (
         <div className={styles.menuWrapper}>
-            <div className={`${styles.menuIcon} ${props.className}`}>
+            <div className={iconClass}>
                 <img src={burgerIcon} onClick={props.toggleShowMenu} className={styles.icon} />
             </div>
             <div className={menuClass}>
