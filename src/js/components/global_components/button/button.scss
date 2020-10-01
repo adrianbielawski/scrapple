@@ -1,4 +1,4 @@
-@import "global_styles/variables.scss";
+@import "global_styles/variables_and_mixins";
 
 button {
 	display: flex;
@@ -15,7 +15,7 @@ button {
 	cursor: pointer;
 	outline: none;
 	font-family: "nunito", sans-serif;
-	-webkit-tap-highlight-color: transparent;
+	@include reserTapHighlight;
 	&:active {
 		background: darken($mainGreen, 10);
 		outline: none;

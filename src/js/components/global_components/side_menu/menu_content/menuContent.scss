@@ -1,4 +1,4 @@
-@import "global_styles/variables";
+@import "global_styles/variables_and_mixins";
 
 .menuContent {
     padding: 10px 10px 55px 10px;
@@ -13,6 +13,10 @@
     }
     p {
         font-size: 1.3em;
+        &:active {
+            background: none;
+            box-shadow: none;
+        }
     }
     .logout {
         display: inline-flex;

@@ -1,4 +1,4 @@
-@import "global_styles/variables";
+@import "global_styles/variables_and_mixins";
 
 .menuHeader {
     width: 100%;
@@ -12,6 +12,7 @@
         padding: 10px;
         color: $darkText;
         cursor: pointer;
+        @include reserTapHighlight;
     }
 
     p {

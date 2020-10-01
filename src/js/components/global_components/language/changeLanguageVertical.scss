@@ -1,3 +1,5 @@
+@import "global_styles/variables_and_mixins";
+
 .changeLanguage {
     display: flex;
     flex-direction: column;
@@ -12,18 +14,20 @@
     .currentLanguage {
         cursor: pointer;
         margin-top: 10px;
+        @include reserTapHighlight;
     }
 
     .languages {
         max-height: 0px;
         margin-top: 10px;
         overflow: hidden;
-        transition: max-height 0.4s ease-out, ;
+        transition: max-height 0.4s ease-out;
         &.active {
             max-height: 53px;
         }
         .language {
             cursor: pointer;
+            @include reserTapHighlight;
         }
     }
 

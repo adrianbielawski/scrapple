@@ -1,3 +1,5 @@
+@import "global_styles/variables_and_mixins";
+
 .gameId {
     display: inline-flex;
     align-items: center;
@@ -23,5 +25,6 @@
         font-size: 26px;
         z-index: 1;
         cursor: pointer;
+        @include reserTapHighlight;
     }
 }

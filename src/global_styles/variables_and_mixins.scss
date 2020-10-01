@@ -1,0 +1,17 @@
+$mainGreen: #32c7a2;
+$lightGreen: #8eff8e;
+$red: #e20000;
+$darkText: #5f5f5f;
+$grey: #eee;
+$boxShadow: #7b7b7b;
+$textShadow: #a2a2a2;
+$offWhite: #ffffff;
+
+@mixin reserTapHighlight {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}

@@ -1,7 +1,12 @@
+@import "global_styles/variables_and_mixins";
+
 .changeLanguage {
     display: inline-flex;
     align-self: center;
     margin-bottom: 5px;
+    .currentLanguage {
+        @include reserTapHighlight;
+    }
     .languages {
         display: inline-flex;
         margin-left: 10px;
@@ -22,6 +27,7 @@
         }
         .language {
             margin-right: 5px;
+            @include reserTapHighlight;
         }
     }
     img {
