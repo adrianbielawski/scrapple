@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
 import classNames from 'classnames/bind';
 import styles from './modal.scss';
 //Custom components
@@ -37,9 +38,9 @@ const Modal = (props) => {
 
     return (
         props.show && ReactDOM.createPortal(
-            <div className={modalClass} style={{ top }}>
+            <div className={modalClass} style={{ top, height: props.screenHeight }}>
                 <div className={styles.wrapper}>
-                    <Card className={`${styles.card} ${cardClass} ${props.cardClassName || ''}`}>
+                    <Card className={cardClass}>
                         {props.children}
                     </Card>
                 </div>
@@ -48,4 +49,10 @@ const Modal = (props) => {
     );
 }
 
-export default Modal;
+const mapStateToProps = (state) => {
+    return {
+        screenHeight: state.app.screenHeight,
+    }
+}
+
+export default connect(mapStateToProps)(Modal);
