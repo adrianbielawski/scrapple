@@ -5,7 +5,7 @@ button {
 	justify-content: center;
 	align-items: center;
 	border: none;
-	background: $mainGreen;
+	background: $themeColor;
 	color: #fff;
 	padding: 1px 20px;
 	border-radius: 17.5px;
@@ -14,14 +14,14 @@ button {
 	box-sizing: border-box;
 	cursor: pointer;
 	outline: none;
-	font-family: "nunito", sans-serif;
-	@include reserTapHighlight;
+	font-family: $mainFont;
+	@include resetTapHighlight;
 	&:active {
-		background: darken($mainGreen, 10);
+		background: darken($themeColor, 10);
 		outline: none;
 	}
 	&[disabled] {
-		background: $grey;
+		background: $lightGrey;
 		cursor: no-drop;
 	}
 }

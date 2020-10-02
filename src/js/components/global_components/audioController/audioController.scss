@@ -5,10 +5,10 @@
 	min-width: 35px;
 	margin-left: 5px;
 	font-size: 30px;
-	color: $darkText;
+	color: $darkGrey;
 	display: inline-flex;
 	align-items: center;
 	&.on {
-		color: $mainGreen;
+		color: $themeColor;
 	}
 }

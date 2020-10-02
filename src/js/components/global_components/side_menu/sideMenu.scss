@@ -4,7 +4,7 @@
     .menuIcon {
         flex: 1;
         cursor: pointer;
-        @include reserTapHighlight;
+        @include resetTapHighlight;
     }
     .icon {
         width: 35px;
@@ -45,7 +45,7 @@
     height: 100%;
     padding: 0;
     background-color: $offWhite;
-    box-shadow: 5px 0px 5px $boxShadow;
+    box-shadow: 5px 0px 5px $grey;
     .menuContent {
         padding: 10px;
         width: 100%;

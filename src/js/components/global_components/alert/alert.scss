@@ -9,7 +9,7 @@
 }
 
 .alert {
-    background: lighten($grey, 3);
+    background: $lightGrey;
     width: 90%;
     left: 5%;
     top: 10px;
@@ -45,7 +45,7 @@
     }
 
     .yes {
-        color: lightGreen;
+        color: #8eff8e;
     }
 
     .no {

@@ -21,12 +21,12 @@
         border-collapse: collapse;
     }
     td, th {
-        border: 1px solid $darkText;
+        border: 1px solid $darkGrey;
         text-align: center;
     }
     .gameId {
         &:hover {
-            color: $mainGreen;
+            color: $themeColor;
             font-weight: 700;
             cursor: pointer;
         }

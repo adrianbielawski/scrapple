@@ -6,7 +6,7 @@
         display: inline-flex;
         cursor: pointer;
         &:hover {
-            color: $mainGreen;
+            color: $themeColor;
         }
     }
     .settings {
@@ -24,7 +24,7 @@
         p {
             display: inline-flex;
             &:hover {
-            color: $mainGreen;
+            color: $themeColor;
             cursor: pointer;
             }
         }

@@ -1,12 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900");
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;800");
 @import "global_styles/variables_and_mixins";
 
 html, body, div, span, h1, h2, p, a, ul, li {
     margin: 0;
     padding: 0;
     border: 0;
-    font-family: "nunito", sans-serif;
+    font-family: $mainFont;
 }
 
 body {
@@ -16,7 +14,7 @@ body {
 h2 {
     font-size: 2em;
     font-weight: 600;
-    color: $darkText;
+    color: $darkGrey;
     text-align: center;
 }
 
@@ -25,14 +23,13 @@ li {
 }
 
 p {
-    color: $darkText;
-    @include reserTapHighlight;
+    color: $darkGrey;
+    @include resetTapHighlight;
 }
 
 .App {
     margin: 0 auto;
     max-width: 800px;
-    font-family: "nunito", sans-serif;
     position: relative;
     box-sizing: border-box;
     display: flex;
@@ -40,36 +37,5 @@ p {
     flex-grow: 1;
     height: 100%;
     overflow: hidden;
-    background: $grey;
+    background: $lightGrey;
 }
-
-// @media only screen and (max-height: 640px) {
-//     .game, .game-menu, .game-summary {
-//         display: flex;
-//         flex-flow: column;
-//         flex-grow: 1;
-//         overflow: scroll;
-//         -ms-overflow-style: none;
-//         scrollbar-width: none;
-//         &::-webkit-scrollbar {
-//             display: none;
-//         }
-//     }
-// }
-
-// @media only screen and (max-height: 530px) {
-//     .game .stats {
-//         overflow: visible;
-//         -ms-overflow-style: none;
-//         scrollbar-width: none;
-//         &::-webkit-scrollbar {
-//             display: none;
-//         }
-//     }
-// }
-
-// @media only screen and (min-width: 400px) {
-//     .stats {
-//         width: 400px;
-//     }
-// }

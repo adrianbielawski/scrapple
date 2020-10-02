@@ -25,6 +25,6 @@
         font-size: 26px;
         z-index: 1;
         cursor: pointer;
-        @include reserTapHighlight;
+        @include resetTapHighlight;
     }
 }

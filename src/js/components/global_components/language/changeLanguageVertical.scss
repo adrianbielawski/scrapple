@@ -14,7 +14,7 @@
     .currentLanguage {
         cursor: pointer;
         margin-top: 10px;
-        @include reserTapHighlight;
+        @include resetTapHighlight;
     }
 
     .languages {
@@ -27,7 +27,7 @@
         }
         .language {
             cursor: pointer;
-            @include reserTapHighlight;
+            @include resetTapHighlight;
         }
     }
 

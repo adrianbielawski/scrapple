@@ -12,10 +12,10 @@
         margin-left: -15px;
     }
     .switch {
-        color: $mainGreen;
+        color: $themeColor;
     }
     .switchTrack {
-        background-color: darken($grey, 30);
+        background-color: darken($lightGrey, 30);
     }
     input {
         width: 85%;
@@ -44,13 +44,13 @@
         }
         &.active {
             max-height: 50px;
-            border: 1px solid darken($grey, 20);
+            border: 1px solid darken($lightGrey, 20);
         }
         &::-webkit-datetime-edit-hour-field:focus,
         &::-webkit-datetime-edit-minute-field:focus,
         &::-webkit-datetime-edit-second-field:focus {
-            background: darken($grey, 5);
-            color: $mainGreen;
+            background: darken($lightGrey, 5);
+            color: $themeColor;
         }
     }
 }

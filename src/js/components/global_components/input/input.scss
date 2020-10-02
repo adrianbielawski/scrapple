@@ -3,19 +3,18 @@
 input {
     padding: 3px;
     height: 35px;
-    border: 1px solid darken($grey, 20);
-    background: lighten($grey, 3);
-    box-shadow: inset 0 100px lighten($grey, 3);
+    border: 1px solid darken($lightGrey, 20);
+    box-shadow: inset 0 100px $lightGrey;
     font-weight: 700;
     font-size: 1.5em;
-    font-family: "nunito", sans-serif;
-    color: $mainGreen;
+    font-family: $mainFont;
+    color: $themeColor;
     text-align: center;
     box-sizing: border-box;
     outline: none;
     &::placeholder {
         opacity: 0.5;
-        color: darken($grey, 40);
+        color: darken($lightGrey, 40);
     }
     &:invalid {
         color: $red;

@@ -3,7 +3,7 @@
 .title {
     display: inline-flex;
     &:hover {
-        color: $mainGreen;
+        color: $themeColor;
         cursor: pointer;
     }
 }

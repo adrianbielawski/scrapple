@@ -12,12 +12,12 @@
         font-size: .7em;
         padding: 0 5px;
         cursor: pointer;
-        @include reserTapHighlight;
+        @include resetTapHighlight;
         &:hover {
-            color: $mainGreen;
+            color: $themeColor;
         }
         &.inactive {
-            color: $grey;
+            color: $lightGrey;
             cursor: unset;
         }
     }

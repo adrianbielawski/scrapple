@@ -5,7 +5,7 @@
     align-self: center;
     margin-bottom: 5px;
     .currentLanguage {
-        @include reserTapHighlight;
+        @include resetTapHighlight;
     }
     .languages {
         display: inline-flex;
@@ -27,7 +27,7 @@
         }
         .language {
             margin-right: 5px;
-            @include reserTapHighlight;
+            @include resetTapHighlight;
         }
     }
     img {
