@@ -8,6 +8,10 @@ export const openExitOptions = () => {
     }
 }
 
+const createNewGameFromSourceSuccess = () => ({
+    type: 'GAME_SUMMARY/CREATE_NEW_GAME_FROM_SOURCE/SUCCESS',
+})
+
 export const createNewGameFromSource = (gameId, startImmediately, history) => dispatch => {
     axiosInstance.post('/games/', {
         source_game_id: gameId,
@@ -15,6 +19,7 @@ export const createNewGameFromSource = (gameId, startImmediately, history) => di
     })
         .then(response => {
             history.push(`/game/${response.data.id}`);
+            dispatch(createNewGameFromSourceSuccess())
         })
         .catch(() => {
             dispatch(setAlert('alert', 'Something went wrong'));

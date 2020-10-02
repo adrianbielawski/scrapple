@@ -18,6 +18,7 @@ const gameSummaryReducer = (state = initialState, action) => {
             newState.showExitOptions = true;
             return newState;
 
+        case 'GAME_SUMMARY/CREATE_NEW_GAME_FROM_SOURCE/SUCCESS':
         case 'APP/CLEAR_APP_STATE':
         case 'APP/EXIT_GAME':
             newState = { ...initialState };
