@@ -1,6 +1,5 @@
 const initialState = {
     showExitOptions: false,
-    exitOption: null,
     isGameClosed: false,
 };
 

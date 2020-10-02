@@ -18,7 +18,6 @@ const resources = {
       //MainMenu
       "Game ID" : "Game ID",
       "You have joined the game" : "You have joined the game!",
-      "Please wait until game started" : "Please wait until game started",
       //GameMenu
       "Language" : "Language",
       "Player's time limit" : "Player's time limit",
@@ -67,8 +66,6 @@ const resources = {
       "place" : "{{place}} place",
       "Score" : "Score: {{score}}",
       "Best score" : "Best score: {{best}}",
-      "Game continues!" : "Game continues!",
-      "Please wait until settings will be changed" : "Please wait until settings will be changed",
       //Alert
       "Player exists": "Player with name {{player}} already exists",
       "Please type in player's name" : "Please type in player's name",
@@ -135,7 +132,6 @@ const resources = {
       //MainMenu
       "Game ID" : "Numer gry",
       "You have joined the game" : "Dołączyłeś do gry!",
-      "Please wait until game started" : "Poczekaj, aż gra się rozpocznie",
       //GameMenu
       "Language" : 'Język',
       "Player's time limit" : 'Limit czasu',
@@ -185,8 +181,6 @@ const resources = {
       "place" : "{{place}} miejsce",
       "Score" : "Wynik: {{score}}",
       "Best score" : "Najlepszy wynik: {{best}}",
-      "Game continues!" : "Kontynuujemy grę!",
-      "Please wait until settings will be changed" : "Poczekaj, aż ustawienia gry zostaną zmienione",
       //Alert
       "Player exists" : "Gracz o imieniu {{player}} już istnieje",
       "Please type in player's name" : "Proszę podać imię gracza",
