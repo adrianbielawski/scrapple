@@ -70,7 +70,7 @@ const App = (props) => {
             {props.alert.show && <Alert />}
             <Suspense fallback={<LoadingSpinner background={true} />}>
                 <Switch>
-                    <Route exact path={["/", "/login", "/signup"]} component={Main} />
+                    <Route exact path={["/", "/signup"]} component={Main} />
                     <PrivateRoute path="/main_menu" component={MainMenu} />
                     <PrivateRoute exact path="/game/:gameId" component={GamePage} />
                 </Switch>
