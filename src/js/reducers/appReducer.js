@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash';
 import { userDeserializer } from '../serializers'
 
-const initialState = {
+export const initialState = {
     screenHeight: window.innerHeight,
     isTouchDevice: false,
     deviceOrientation: '',
@@ -17,7 +17,7 @@ const initialState = {
     },
 };
 
-const appReducer = (state = initialState, action) => {
+export const appReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
         case 'APP/SET_SCREEN_HEIGHT':
