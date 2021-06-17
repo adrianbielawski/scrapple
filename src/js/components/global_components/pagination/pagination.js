@@ -17,29 +17,31 @@ const Pagination = (props) => {
     }
 
     const cx = classNames.bind(styles);
-    const chewronL = cx({
+    const chevronL = cx({
         chevron: true,
         inactive: !props.data.next,
     });
-    const chewronR = cx({
+    const chevronR = cx({
         chevron: true,
         inactive: !props.data.previous,
     });
 
     return (
-        <div className={styles.pagination}>
+        <div className={styles.pagination} data-automation="pagination">
             <FontAwesomeIcon
                 icon={faChevronLeft}
-                className={chewronR}
+                className={chevronR}
                 onClick={props.data.previous ? handlePreviousPage : null}
+                data-automation="chevronLeft"
             />
             <p>{props.data.startIndex} - {props.data.endIndex}</p>
             <FontAwesomeIcon
                 icon={faChevronRight}
-                className={chewronL}
+                className={chevronL}
                 onClick={props.data.next ? handleNextPage : null}
+                data-automation="chevronRight"
             />
-            <p>{t('ofNum', {'count': props.data.count})}</p>
+            <p data-automation="number">{t('ofNum', {'count': props.data.count})}</p>
         </div>
     );
 }
