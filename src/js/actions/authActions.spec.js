@@ -65,3 +65,48 @@ describe('logIn action', () => {
     ])
   })
 });
+
+describe('getUser action', () => {
+  beforeEach(() => {
+    axiosInstance.get.mockReset();
+    delete window.localStorage;
+    window.localStorage = { removeItem: jest.fn() }
+  });
+
+  it('works as expected when successful', async () => {
+    const dispatch = jest.fn();
+    const apiResult = { data: { userName: 'Adrian' } };
+
+    axiosInstance.get.mockReturnValue(Promise.resolve(apiResult));
+
+    await actions.getUser()(dispatch);
+
+    expect(axiosInstance.get).toHaveBeenCalledTimes(1);
+    expect(axiosInstance.get).toHaveBeenCalledWith('/user/');
+
+    expect(dispatch).toHaveBeenCalledTimes(1);
+
+    expect(dispatch.mock.calls).toEqual([
+      [actions.getUserSuccess(apiResult.data)],
+    ]);
+  });
+
+  it('handles errors correctly', async () => {
+    const dispatch = jest.fn();
+
+    axiosInstance.get.mockReturnValue(Promise.reject());
+
+    await actions.getUser()(dispatch);
+
+    expect(axiosInstance.get).toHaveBeenCalledTimes(1);
+    expect(axiosInstance.get).toHaveBeenCalledWith('/user/');
+
+    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect(window.localStorage.removeItem).toHaveBeenCalledTimes(1);
+    expect(window.localStorage.removeItem).toHaveBeenCalledWith('token');
+
+    expect(dispatch.mock.calls).toEqual([
+      [actions.getUserFailure()],
+    ]);
+  });
+})

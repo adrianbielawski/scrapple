@@ -90,12 +90,12 @@ export const logOut = () => dispatch => {
     });
 }
 
-const getUserSuccess = (user) => ({
+export const getUserSuccess = (user) => ({
     type: 'AUTH/GET_USER/SUCCESS',
     user,
 })
 
-const getUserFailure = () => ({
+export const getUserFailure = () => ({
     type: 'AUTH/GET_USER/FAILURE',
 })
 
@@ -104,12 +104,12 @@ export const authInitialized = () => ({
 })
 
 export const getUser = () => dispatch => {
-    axiosInstance.get('/user/')
+    return axiosInstance.get('/user/')
     .then(response => {
         dispatch(getUserSuccess(response.data));
     })
     .catch(() => {
-        localStorage.removeItem('token');
+        window.localStorage.removeItem('token');
         dispatch(getUserFailure());
     });
 };
