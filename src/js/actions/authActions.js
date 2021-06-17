@@ -1,6 +1,6 @@
 import axiosInstance from 'axiosInstance';
 //Redux Actions
-import { setAlert, clearAppState } from 'actions/appActions';
+import { setAlert, clearAppState } from './appActions';
 
 const signUpStart = () => ({
     type: 'AUTH/SIGN_UP/START',
@@ -39,28 +39,28 @@ export const signUp = (userName, email, password, repeatedPassword, history) => 
     });
 }
 
-const logInStart = () => ({
+export const logInStart = () => ({
     type: 'AUTH/LOG_IN/START',
 })
 
-const logInSuccess = (user) => ({
+export const logInSuccess = (user) => ({
     type: 'AUTH/LOG_IN/SUCCESS',
     user,
 })
 
-const logInFailure = () => ({
+export const logInFailure = () => ({
     type: 'AUTH/LOG_IN/FAILURE',
 })
 
 export const logIn = (email, password, history, location) => dispatch => {
     dispatch(logInStart());
     
-    axiosInstance.post('/login/', {
+    return axiosInstance.post('/login/', {
         email,
         password,
     })
     .then(response => {
-        localStorage.setItem('token', response.data.key);
+        window.localStorage.setItem('token', response.data.key);
         dispatch(logInSuccess(response.data.user));
 
         const { referrer } = location.state || { referrer: '/main_menu' };
@@ -68,7 +68,7 @@ export const logIn = (email, password, history, location) => dispatch => {
     })
     .catch(error => {
         dispatch(logInFailure());
-        if (error.response) {
+        if (error && error.response) {
             dispatch(setAlert('alert', Object.values(error.response.data)[0][0]));
         } else {
             dispatch(setAlert('alert', 'Something went wrong'));
