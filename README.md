@@ -14,6 +14,6 @@ webSocket for multiplayer instant updates.
 
 ## Showcase
 
-Admin user | other user
+Admin user | Other user
 ---------- | ---------
 ![admin](./assets/readme/admin.gif) | ![user](./assets/readme/user.gif)
