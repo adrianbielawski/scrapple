@@ -9,6 +9,10 @@ import thunk from 'redux-thunk';
 import rootReducer from 'reducers/';
 import theme from 'hoc/muiTheme';
 import { ThemeProvider } from '@material-ui/core';
+import moment from 'moment';
+import momentDurationFormatSetup from 'moment-duration-format';
+
+momentDurationFormatSetup(moment);
 
 let composeEnhancers = compose;
 
