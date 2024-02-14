@@ -18,8 +18,8 @@ module.exports = merge(common, {
     }),
     new DefinePlugin({
         'process.env.PUBLIC_URL': JSON.stringify(basename),
-        'process.env.API_URL': JSON.stringify('https://api.scrapple.adrian.bielaw.ski'),
-        'process.env.WS_URL': JSON.stringify('wss://api.scrapple.adrian.bielaw.ski'),
+        'process.env.API_URL': JSON.stringify('https://scrapple.adrian.bielaw.ski/api'),
+        'process.env.WS_URL': JSON.stringify('wss://scrapple.adrian.bielaw.ski'),
     })
   ],
 });
