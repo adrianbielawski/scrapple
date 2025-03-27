@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import * as styles from "./players.scss";
+import styles from "./players.scss";
 import playerStyles from "./player/player.scss";
 //Custom components
 import Player from "./player/player";
@@ -46,4 +46,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Players);
-

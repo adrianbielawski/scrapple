@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames/bind";
-import * as styles from "./playerStats.scss";
+import styles from "./playerStats.scss";
 //Custom Components
 import AllPoints from "./all_points/allPoints";
 import Card from "components/global_components/card/card";
@@ -97,4 +97,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerStats);
-

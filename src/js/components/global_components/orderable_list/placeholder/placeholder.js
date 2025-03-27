@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames/bind";
-import * as styles from "./placeholder.scss";
+import styles from "./placeholder.scss";
 
 const cx = classNames.bind(styles);
 
@@ -23,4 +23,3 @@ Placeholder.propTypes = {
 };
 
 export default Placeholder;
-

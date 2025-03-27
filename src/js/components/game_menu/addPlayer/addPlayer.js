@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import * as styles from "./addPlayer.scss";
+import styles from "./addPlayer.scss";
 //Custom components
 import Button from "components/global_components/button/button";
 import Input from "components/global_components/input/input";
@@ -92,4 +92,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddPlayer);
-

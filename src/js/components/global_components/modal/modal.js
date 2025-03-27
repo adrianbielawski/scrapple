@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import classNames from "classnames/bind";
-import * as styles from "./modal.scss";
+import styles from "./modal.scss";
 //Custom components
 import Card from "../card/card";
 
@@ -52,4 +52,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(Modal);
-

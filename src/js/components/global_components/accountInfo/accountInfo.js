@@ -1,5 +1,5 @@
 import React from "react";
-import * as styles from "./accountInfo.scss";
+import styles from "./accountInfo.scss";
 //Custom Components
 import LogOut from "./logout";
 import UserName from "./userName";
@@ -14,4 +14,3 @@ const AccountInfo = (props) => {
 };
 
 export default AccountInfo;
-

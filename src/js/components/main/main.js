@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import * as styles from "./main.scss";
+import styles from "./main.scss";
 //Custom Components
 import Header from "components/global_components/header/header";
 import Language from "components/global_components/language/changeLanguage";
@@ -32,4 +32,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(null, mapDispatchToProps)(Main);
-

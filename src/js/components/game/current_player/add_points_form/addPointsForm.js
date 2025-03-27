@@ -5,7 +5,7 @@ import { withTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames/bind";
-import * as styles from "./addPointsForm.scss";
+import styles from "./addPointsForm.scss";
 //Custom Components
 import Button from "components/global_components/button/button";
 import Input from "components/global_components/input/input";
@@ -73,4 +73,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(withTranslation()(AddPointsForm));
-

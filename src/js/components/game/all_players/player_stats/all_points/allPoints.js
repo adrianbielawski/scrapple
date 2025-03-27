@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { cloneDeep } from "lodash";
 import { useTranslation } from "react-i18next";
-import * as styles from "./allPoints.scss";
+import styles from "./allPoints.scss";
 //Custom Components
 import RoundPoints from "../round_points/roundPoints";
 //Redux actions
@@ -72,4 +72,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllPoints);
-

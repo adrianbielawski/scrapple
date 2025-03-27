@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { useTranslation } from "react-i18next";
-import * as styles from "./alert.scss";
+import styles from "./alert.scss";
 //Custom components
 import Button from "components/global_components/button/button";
 //Redux Actions
@@ -102,4 +102,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Alert));
-

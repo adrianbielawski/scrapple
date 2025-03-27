@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Trans } from "react-i18next";
 import { withTranslation } from "react-i18next";
-import * as styles from "./currentPlayer.scss";
+import styles from "./currentPlayer.scss";
 //Custom Components
 import Timer from "./timer/timer";
 import AddPointsForm from "./add_points_form/addPointsForm";
@@ -46,4 +46,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(withTranslation()(CurrentPlayer));
-

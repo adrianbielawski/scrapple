@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-import * as styles from "./accountInfo.scss";
+import styles from "./accountInfo.scss";
 //Redux Actions
 import { logOut } from "actions/authActions";
 
@@ -32,4 +32,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogOut);
-

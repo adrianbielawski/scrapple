@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
-import * as styles from "./menuContent.scss";
+import styles from "./menuContent.scss";
 //Custom Components
 import GameId from "components/global_components/game_id/gameId";
 import MyAccount from "./my_account/myAccount";
@@ -33,4 +33,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(MenuContent);
-

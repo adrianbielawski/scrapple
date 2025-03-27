@@ -2,8 +2,8 @@ import React, { useState, useCallback } from "react";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import languages from "./languages";
-import * as stylesH from "./changeLanguageHorizontal.scss";
-import * as stylesV from "./changeLanguageVertical.scss";
+import stylesH from "./changeLanguageHorizontal.scss";
+import stylesV from "./changeLanguageVertical.scss";
 //Custom components
 import Language from "./language";
 
@@ -67,4 +67,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(ChangeLanguage);
-

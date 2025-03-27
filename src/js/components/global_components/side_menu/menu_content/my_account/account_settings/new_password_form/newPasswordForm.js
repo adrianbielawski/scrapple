@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-import * as styles from "./newPasswordForm.scss";
+import styles from "./newPasswordForm.scss";
 //Custom Components
 import Modal from "components/global_components/modal/modal";
 import Button from "components/global_components/button/button";
@@ -114,4 +114,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewPasswordForm);
-

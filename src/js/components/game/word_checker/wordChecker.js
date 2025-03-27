@@ -4,7 +4,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames/bind";
-import * as styles from "./wordChecker.scss";
+import styles from "./wordChecker.scss";
 //Custom Components
 import LoadingSpinner from "components/global_components/loading_spinner/loadingSpinner";
 import Input from "components/global_components/input/input";
@@ -119,4 +119,3 @@ const mapStateToProps = (state) => {
   };
 };
 export default connect(mapStateToProps)(WordChecker);
-

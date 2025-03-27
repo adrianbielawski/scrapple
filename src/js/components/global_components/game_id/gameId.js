@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import * as styles from "./gameId.scss";
+import styles from "./gameId.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import { faCopy as faCopyBold } from "@fortawesome/free-solid-svg-icons";
@@ -43,4 +43,3 @@ const GameId = () => {
 };
 
 export default GameId;
-

@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import * as styles from "./quitGame.scss";
+import styles from "./quitGame.scss";
 //Redux actions
 import { setAlert } from "actions/appActions";
 
@@ -59,4 +59,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuitGame);
-

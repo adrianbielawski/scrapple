@@ -1,5 +1,5 @@
 import React from "react";
-import * as styles from "./card.scss";
+import styles from "./card.scss";
 
 const Card = (props, ref) => {
   return (
@@ -10,4 +10,3 @@ const Card = (props, ref) => {
 };
 
 export default React.forwardRef(Card);
-

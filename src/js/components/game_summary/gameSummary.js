@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
-import * as styles from "./gameSummary.scss";
+import styles from "./gameSummary.scss";
 //Components
 import PlayersSummary from "./playersSummary";
 import Header from "components/global_components/header/header";
@@ -64,4 +64,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameSummary);
-

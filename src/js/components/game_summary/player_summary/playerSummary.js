@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import * as styles from "./playerSummary.scss";
+import styles from "./playerSummary.scss";
 //Custom Components
 import Card from "components/global_components/card/card";
 import place1st from "img/1st-place.png";
@@ -37,4 +37,3 @@ const PlayerSummary = (props) => {
 };
 
 export default PlayerSummary;
-

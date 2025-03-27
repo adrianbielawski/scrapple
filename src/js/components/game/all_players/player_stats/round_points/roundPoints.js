@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import * as styles from "./roundPoints.scss";
+import styles from "./roundPoints.scss";
 
 const RoundPoints = (props) => {
   const { t } = useTranslation();
@@ -18,4 +18,3 @@ const RoundPoints = (props) => {
 };
 
 export default RoundPoints;
-

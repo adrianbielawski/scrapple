@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import * as styles from "./game.scss";
+import styles from "./game.scss";
 //Custom Components
 import WordChecker from "./word_checker/wordChecker";
 import CurrentPlayer from "./current_player/currentPlayer";
@@ -70,4 +70,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
-

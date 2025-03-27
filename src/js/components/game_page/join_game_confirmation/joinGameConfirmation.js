@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import * as styles from "./joinGameConfirmation.scss";
+import styles from "./joinGameConfirmation.scss";
 //Custom Components
 import Modal from "components/global_components/modal/modal";
 import LoadingSpinner from "components/global_components/loading_spinner/loadingSpinner";
@@ -27,4 +27,3 @@ const Confirmation = (props) => {
 };
 
 export default Confirmation;
-

@@ -1,5 +1,5 @@
 import React from "react";
-import * as styles from "./loadingSpinner.scss";
+import styles from "./loadingSpinner.scss";
 
 const LoadingSpinner = (props) => (
   <div
@@ -11,4 +11,3 @@ const LoadingSpinner = (props) => (
 );
 
 export default LoadingSpinner;
-

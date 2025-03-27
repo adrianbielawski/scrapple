@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import * as styles from "./allPlayers.scss";
+import styles from "./allPlayers.scss";
 // Custom Components
 import PlayerStats from "./player_stats/playerStats";
 
@@ -25,4 +25,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(AllPlayers);
-

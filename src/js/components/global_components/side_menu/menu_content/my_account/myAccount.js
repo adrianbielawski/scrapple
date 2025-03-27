@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import classNames from "classnames/bind";
-import * as styles from "./myAccount.scss";
+import styles from "./myAccount.scss";
 //Custom Components
 import GamesHistory from "./games_history/gamesHistory";
 import AccountSettings from "./account_settings/accountSettings";
@@ -45,4 +45,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyAccount);
-

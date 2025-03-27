@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import * as styles from "./player.scss";
+import styles from "./player.scss";
 //Custom components
 import OrderableList from "components/global_components/orderable_list/orderableList";
 import UserIcon from "components/global_components/user_icon/userIcon";
@@ -34,4 +34,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(Player);
-

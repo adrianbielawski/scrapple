@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-import * as styles from "./accountSettings.scss";
+import styles from "./accountSettings.scss";
 //Custom Components
 import NewNameForm from "./new_name_form/newNameForm";
 import NewPasswordForm from "./new_password_form/newPasswordForm";
@@ -62,4 +62,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountSettings);
-

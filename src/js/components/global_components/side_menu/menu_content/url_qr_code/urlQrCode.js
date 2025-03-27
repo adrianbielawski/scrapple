@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import * as styles from "./urlQrCode.scss";
+import styles from "./urlQrCode.scss";
 
 const BASE_URL = process.env.API_URL;
 
@@ -25,4 +25,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(UrlQrCode);
-

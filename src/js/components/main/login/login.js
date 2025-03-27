@@ -3,7 +3,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Trans } from "react-i18next";
-import * as styles from "./login.scss";
+import styles from "./login.scss";
 //Custom Components
 import Card from "components/global_components/card/card";
 import LoadingSpinner from "components/global_components/loading_spinner/loadingSpinner";
@@ -79,4 +79,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
-

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames/bind";
-import * as styles from "./twoLetterWords.scss";
+import styles from "./twoLetterWords.scss";
 //Custom components
 import Button from "components/global_components/button/button";
 import ZoomableComponent from "components/global_components/zoomable_component/zoomableComponent";
@@ -90,4 +90,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TwoLetterWords);
-

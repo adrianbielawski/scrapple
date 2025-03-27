@@ -7,7 +7,7 @@ import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames/bind";
-import * as styles from "./timer.scss";
+import styles from "./timer.scss";
 //Custom Components
 import LoadingSpinner from "components/global_components/loading_spinner/loadingSpinner";
 import Button from "components/global_components/button/button";
@@ -133,4 +133,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(withTranslation()(Timer));
-

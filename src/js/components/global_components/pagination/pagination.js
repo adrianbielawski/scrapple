@@ -6,7 +6,7 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames/bind";
-import * as styles from "./pagination.scss";
+import styles from "./pagination.scss";
 
 const Pagination = (props) => {
   const { t } = useTranslation();
@@ -50,4 +50,3 @@ const Pagination = (props) => {
 };
 
 export default Pagination;
-

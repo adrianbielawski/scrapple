@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import * as styles from "./imagePreview.scss";
+import styles from "./imagePreview.scss";
 
 const BASE_URL = process.env.API_URL;
 
@@ -41,4 +41,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(ImagePreview);
-

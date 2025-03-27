@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import { clamp } from "lodash";
-import * as styles from "./zoomableComponent.scss";
+import styles from "./zoomableComponent.scss";
 
 const ZoomableComponent = (props) => {
   const wrapper = useRef(null);
@@ -139,4 +139,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(ZoomableComponent);
-

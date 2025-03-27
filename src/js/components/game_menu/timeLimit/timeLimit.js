@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import Moment from "react-moment"; // tslint:disable-line
 import moment from "moment";
-import * as styles from "./timeLimit.scss";
+import styles from "./timeLimit.scss";
 //Custom Components
 import Switch from "@mui/material/Switch";
 import Input from "components/global_components/input/input";
@@ -70,4 +70,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(timeLimit);
-

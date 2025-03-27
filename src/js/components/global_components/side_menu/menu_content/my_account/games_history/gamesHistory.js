@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-import * as styles from "./gamesHistory.scss";
+import styles from "./gamesHistory.scss";
 //Custom Components
 import GamesTable from "./games_table/gamesTable";
 import LoadingSpinner from "components/global_components/loading_spinner/loadingSpinner";
@@ -46,4 +46,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GamesHistory);
-

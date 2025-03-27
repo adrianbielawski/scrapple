@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { words } from "./words.js";
-import * as styles from "./wordsTable.scss";
+import styles from "./wordsTable.scss";
 
 const WordsTable = (props) => {
   const [rows, setRows] = useState([]);
@@ -57,4 +57,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(WordsTable);
-

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useContext } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames/bind";
-import * as styles from "../orderableList.scss";
+import styles from "../orderableList.scss";
 //Contexts
 import ItemContext from "./itemContext";
 import { ListContext } from "../listStore";
@@ -78,4 +78,3 @@ ListItem.propTypes = {
 };
 
 export default ListItem;
-

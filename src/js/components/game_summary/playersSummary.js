@@ -1,5 +1,5 @@
 import React from "react";
-import * as styles from "./playersSummary.scss";
+import styles from "./playersSummary.scss";
 //Components
 import PlayerSummary from "./player_summary/playerSummary";
 
@@ -43,4 +43,3 @@ const PlayersSummary = (props) => {
 };
 
 export default PlayersSummary;
-

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import * as styles from "./audioController.scss";
+import styles from "./audioController.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 import { faVolumeUp } from "@fortawesome/free-solid-svg-icons";
@@ -39,4 +39,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AudioController);
-

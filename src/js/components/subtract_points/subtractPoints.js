@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-import * as styles from "./subtractPoints.scss";
+import styles from "./subtractPoints.scss";
 //Custom Components
 import PlayerSubPoints from "./player_subtract_points/playerSubtractPoints";
 import Header from "components/global_components/header/header";
@@ -80,4 +80,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SubtractPoints);
-

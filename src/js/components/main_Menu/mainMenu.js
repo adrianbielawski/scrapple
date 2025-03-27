@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-import "./mainMenu.scss";
+import styles from "./mainMenu.scss";
 //Custom Components
 import Header from "components/global_components/header/header";
 import Card from "components/global_components/card/card";
@@ -87,4 +87,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainMenu);
-

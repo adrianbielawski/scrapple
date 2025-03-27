@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-import * as styles from "./gameMenu.scss";
+import styles from "./gameMenu.scss";
 //Custom Components
 import Players from "./players/players";
 import Language from "components/global_components/language/changeLanguage";
@@ -102,4 +102,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameMenu);
-

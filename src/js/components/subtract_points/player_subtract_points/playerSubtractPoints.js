@@ -1,5 +1,5 @@
 import React from "react";
-import * as styles from "./playerSubtractPoints.scss";
+import styles from "./playerSubtractPoints.scss";
 //Custom Components
 import Card from "components/global_components/card/card";
 import Input from "components/global_components/input/input";
@@ -15,4 +15,3 @@ const PlayerSubPoints = (props) => {
   );
 };
 export default PlayerSubPoints;
-

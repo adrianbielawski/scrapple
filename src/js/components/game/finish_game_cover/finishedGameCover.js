@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import * as styles from "./finishedGameCover.scss";
+import styles from "./finishedGameCover.scss";
 //Custom Components
 import Modal from "components/global_components/modal/modal";
 import LoadingSpinner from "components/global_components/loading_spinner/loadingSpinner";
@@ -23,4 +23,3 @@ const FinishedGameCover = (props) => {
 };
 
 export default FinishedGameCover;
-

@@ -2,7 +2,7 @@ import React, { useEffect, Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import i18n from "i18n";
-import * as styles from "global_styles/app.scss";
+import styles from "global_styles/app.scss";
 //Custom Components
 import Main from "./components/main/main";
 import MainMenu from "./components/main_Menu/mainMenu";
@@ -107,4 +107,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
-

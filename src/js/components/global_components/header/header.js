@@ -1,5 +1,5 @@
 import React from "react";
-import * as styles from "./header.scss";
+import styles from "./header.scss";
 import logo from "img/logo.jpg";
 
 const Header = () => (
@@ -9,4 +9,3 @@ const Header = () => (
 );
 
 export default Header;
-

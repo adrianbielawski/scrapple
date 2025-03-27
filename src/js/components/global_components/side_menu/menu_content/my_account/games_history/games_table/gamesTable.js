@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames/bind";
-import * as styles from "./gamesTable.scss";
+import styles from "./gamesTable.scss";
 //Custom Components
 import Pagination from "components/global_components/pagination/pagination";
 import GameRow from "./gameRow";
@@ -67,4 +67,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GamesTable);
-

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import classNames from "classnames/bind";
-import * as styles from "./sideMenu.scss";
+import styles from "./sideMenu.scss";
 //Custom Components
 import MenuContent from "./menu_content/menuContent";
 import MenuHeader from "./menu_header/menuHeader";
@@ -48,4 +48,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideMenu);
-

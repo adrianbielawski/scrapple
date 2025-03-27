@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-import * as styles from "./profileImageForm.scss";
+import styles from "./profileImageForm.scss";
 //Custom Components
 import Modal from "components/global_components/modal/modal";
 import Button from "components/global_components/button/button";
@@ -78,4 +78,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileImageForm);
-

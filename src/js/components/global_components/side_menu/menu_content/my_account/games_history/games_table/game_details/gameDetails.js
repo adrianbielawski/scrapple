@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-import * as styles from "./gameDetails.scss";
+import styles from "./gameDetails.scss";
 //Custom Components
 import Button from "components/global_components/button/button";
 import Modal from "components/global_components/modal/modal";
@@ -52,4 +52,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameDetails);
-

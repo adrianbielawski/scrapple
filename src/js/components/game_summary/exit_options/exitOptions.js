@@ -2,7 +2,7 @@ import React from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-import * as styles from "./exitOptions.scss";
+import styles from "./exitOptions.scss";
 //Custom Components
 import Modal from "components/global_components/modal/modal";
 import Button from "components/global_components/button/button";
@@ -58,4 +58,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExitOptions);
-
