@@ -1,9 +1,10 @@
-@import "global_styles/variables_and_mixins";
+@use "sass:color";
+@use "global_styles/variables_and_mixins" as *;
 
 .player {
     font-size: 1.2em;
     background: $offWhite;
-    border-bottom: 1px solid darken($lightGrey, 20);
+    border-bottom: 1px solid color.adjust($lightGrey, $lightness: -20%);
     max-height: 100px;
     overflow: hidden;
     box-sizing: border-box;

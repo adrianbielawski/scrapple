@@ -1,4 +1,4 @@
-@import "global_styles/variables_and_mixins";
+@use "./variables_and_mixins" as *;
 
 html, body, div, span, h1, h2, p, a, ul, li {
     margin: 0;

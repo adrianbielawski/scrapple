@@ -1,4 +1,4 @@
-@import "global_styles/variables_and_mixins";
+@use "global_styles/variables_and_mixins" as *;
 
 .gameId {
     display: inline-flex;

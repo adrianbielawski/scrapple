@@ -1,9 +1,10 @@
-@import "global_styles/variables_and_mixins";
+@use "sass:color";
+@use "global_styles/variables_and_mixins" as *;
 
 input {
     padding: 3px;
     height: 35px;
-    border: 1px solid darken($lightGrey, 20);
+    border: 1px solid color.adjust($lightGrey, $lightness: -20%);
     box-shadow: inset 0 100px $lightGrey;
     font-weight: 700;
     font-size: 1.5em;
@@ -14,7 +15,7 @@ input {
     outline: none;
     &::placeholder {
         opacity: 0.5;
-        color: darken($lightGrey, 40);
+        color: color.adjust($lightGrey, $lightness: -40%);
     }
     &:invalid {
         color: $red;

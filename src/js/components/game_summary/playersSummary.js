@@ -1,42 +1,46 @@
-import React from 'react';
-import styles from './playersSummary.scss';
+import React from "react";
+import * as styles from "./playersSummary.scss";
 //Components
-import PlayerSummary from './player_summary/playerSummary';
+import PlayerSummary from "./player_summary/playerSummary";
 
 const PlayersSummary = (props) => {
-    const getPlayersSummary = () => {
-        let players = [...props.players];
-        players.sort((a, b) => {
-            return b.score - a.score;
-        });
+  const getPlayersSummary = () => {
+    let players = [...props.players];
+    players.sort((a, b) => {
+      return b.score - a.score;
+    });
 
-        let previousPlayerScore = '';
-        let previousPlayerPlaceText = '';
-        let previousPlace = '';
-        let playersSummary = players.map((player, index) => {
-            const placeTexts = ['1st', '2nd', '3rd', '4th'];
-            let place = index + 1;
-            let placeText = placeTexts[index];
+    let previousPlayerScore = "";
+    let previousPlayerPlaceText = "";
+    let previousPlace = "";
+    let playersSummary = players.map((player, index) => {
+      const placeTexts = ["1st", "2nd", "3rd", "4th"];
+      let place = index + 1;
+      let placeText = placeTexts[index];
 
-            if (player.score === previousPlayerScore) {
-                placeText = previousPlayerPlaceText
-                place = previousPlace
-            };
+      if (player.score === previousPlayerScore) {
+        placeText = previousPlayerPlaceText;
+        place = previousPlace;
+      }
 
-            previousPlayerScore = player.score;
-            previousPlayerPlaceText = placeText;
-            previousPlace = place;
+      previousPlayerScore = player.score;
+      previousPlayerPlaceText = placeText;
+      previousPlace = place;
 
-            return <PlayerSummary player={player} placeText={placeText} place={place} key={index} />
-        });
-        return playersSummary;
-    };
+      return (
+        <PlayerSummary
+          player={player}
+          placeText={placeText}
+          place={place}
+          key={index}
+        />
+      );
+    });
+    return playersSummary;
+  };
 
-    return (
-        <ul className={styles.results}>
-            {getPlayersSummary()}
-        </ul>
-    );
-}
+  return <ul className={styles.results}>{getPlayersSummary()}</ul>;
+};
 
 export default PlayersSummary;
+

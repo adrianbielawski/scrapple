@@ -1,6 +1,7 @@
-import React from 'react';
-import styles from './input.scss';
+import React from "react";
+import "./input.scss";
 
-const Input = (props, ref) => <input className={styles.input} {...props} ref={ref} spellCheck="false" />;
+const Input = (props, ref) => <input {...props} ref={ref} spellCheck="false" />;
 
 export default React.forwardRef(Input);
+
