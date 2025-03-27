@@ -1,4 +1,4 @@
-FROM nikolaik/python-nodejs:python3.10-nodejs12 as builder
+FROM node:lts-alpine as builder
 
 WORKDIR /app
 
