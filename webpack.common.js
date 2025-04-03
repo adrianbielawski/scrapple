@@ -43,9 +43,10 @@ module.exports = {
             loader: "css-loader",
             options: {
               modules: {
+                auto: () => true,
                 localIdentName: "[name]_[local]_[hash:base64:3]",
                 exportLocalsConvention: "dashes",
-                namedExport: true,
+                namedExport: false,
               },
             },
           },
@@ -60,4 +61,3 @@ module.exports = {
   },
   plugins: [new FaviconsWebpackPlugin("./assets/img/icon.png")],
 };
-
