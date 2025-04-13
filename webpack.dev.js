@@ -13,6 +13,27 @@ module.exports = merge(common, {
   },
   devServer: {
     historyApiFallback: true,
+    webSocketServer: {
+      type: "ws",
+      options: {
+        path: "/webpack-dev-server-websocket",
+      },
+    },
+    proxy: [
+      {
+        context: ["/api"],
+        target: "http://localhost:8000",
+        secure: false,
+        changeOrigin: true,
+      },
+      {
+        context: ["/ws"],
+        target: "ws://localhost:8000",
+        ws: true,
+        secure: false,
+        changeOrigin: true,
+      },
+    ],
   },
   devtool: "cheap-module-source-map",
   plugins: [
@@ -23,8 +44,8 @@ module.exports = merge(common, {
     }),
     new DefinePlugin({
       "process.env.PUBLIC_URL": JSON.stringify(basename),
-      "process.env.API_URL": JSON.stringify("http://192.168.1.10:8000"),
-      "process.env.WS_URL": JSON.stringify("ws://192.168.1.10:8000"),
+      "process.env.API_URL": JSON.stringify("/api"),
+      "process.env.WS_URL": JSON.stringify("/ws"),
     }),
   ],
 });

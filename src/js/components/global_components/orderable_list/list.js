@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import "./orderableList.scss";
+import styles from "./orderableList.scss";
 //Custom Components
 import ListItem from "./list_item/listItem";
 import Placeholder from "./placeholder/placeholder";
@@ -120,4 +120,3 @@ List.propTypes = {
 };
 
 export default List;
-

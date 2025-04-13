@@ -55,11 +55,14 @@ const App = (props) => {
   }, []);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      props.getUser();
-    } else {
-      props.authInitialized();
-    }
+    (async () => {
+      const token = await window.cookieStore.get("scrapple-auth");
+      if (token) {
+        props.getUser();
+      } else {
+        props.authInitialized();
+      }
+    })();
   }, []);
 
   const setScreenHeight = () => {
